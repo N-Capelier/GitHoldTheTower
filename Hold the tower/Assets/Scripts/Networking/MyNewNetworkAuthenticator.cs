@@ -67,8 +67,6 @@ public class MyNewNetworkAuthenticator : NetworkAuthenticator
             conn.Send(authResponseMessage);
             ServerReject(conn);
         }
-      
-        
 
         // Accept the successful authentication
         

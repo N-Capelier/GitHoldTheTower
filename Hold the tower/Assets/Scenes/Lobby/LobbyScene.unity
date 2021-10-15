@@ -888,9 +888,6 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSubmit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1505,7 +1502,10 @@ MonoBehaviour:
   playerPrefab: {fileID: 0}
   autoCreatePlayer: 0
   playerSpawnMethod: 0
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 636420859277789967, guid: cc1145e4adf84084aabc6663ccb0cfd1, type: 3}
+  lobbyPlayer: {fileID: 636420859277789967, guid: cc1145e4adf84084aabc6663ccb0cfd1, type: 3}
+  lobbyGameobject: {fileID: 408179668}
 --- !u!114 &1715714068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1881,9 +1881,6 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSubmit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2228,9 +2225,6 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_CharacterLimit: 0
   m_OnEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
   m_OnValueChanged:
