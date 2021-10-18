@@ -50,11 +50,12 @@ public class MenuManager : MonoBehaviour
         {
             serverManager.GetComponent<MyNewNetworkManager>().StopClient();
         }
+        
     }
 
     #endregion
 
-    private void changeMenu()
+    public void changeMenu()
     {
         menuObject.SetActive(!menuObject.activeSelf);
         lobbyObject.SetActive(!lobbyObject.activeSelf);

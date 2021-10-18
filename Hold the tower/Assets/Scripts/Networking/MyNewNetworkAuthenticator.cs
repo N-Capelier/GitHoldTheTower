@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Mirror;
 
 /*
@@ -9,6 +10,12 @@ using Mirror;
 
 public class MyNewNetworkAuthenticator : NetworkAuthenticator
 {
+    public string lobbyPseudo;
+    public string lobbyPassword;
+
+    [SerializeField]
+    private GameObject PseudoTextInput;
+
     #region Messages
 
     public struct AuthRequestMessage : NetworkMessage {
@@ -21,9 +28,15 @@ public class MyNewNetworkAuthenticator : NetworkAuthenticator
         public string message;
     }
 
-    public string lobbyPseudo;
-    public string lobbyPassword;
+    public struct ClientConnectionMessage : NetworkMessage //Message permettant de créer le joueur
+    {
+        public string pseudo;
+    }
 
+    public struct CreateClientPlayer : NetworkMessage
+    {
+        public string teamName;
+    }
     #endregion
 
     #region Server
@@ -52,7 +65,6 @@ public class MyNewNetworkAuthenticator : NetworkAuthenticator
     public void OnAuthRequestMessage(NetworkConnection conn, AuthRequestMessage msg)
     {
         AuthResponseMessage authResponseMessage = new AuthResponseMessage();
-
         if (msg.password == lobbyPassword)
         {
             authResponseMessage.status = 100;
@@ -86,6 +98,12 @@ public class MyNewNetworkAuthenticator : NetworkAuthenticator
         NetworkClient.RegisterHandler<AuthResponseMessage>(OnAuthResponseMessage, false);
     }
 
+    public override void OnStopClient()
+    {
+        base.OnStopClient();
+        NetworkClient.UnregisterHandler<AuthResponseMessage>();
+    }
+
     /// <summary>
     /// Called on client from OnClientAuthenticateInternal when a client needs to authenticate
     /// </summary>
@@ -103,9 +121,16 @@ public class MyNewNetworkAuthenticator : NetworkAuthenticator
     /// <param name="msg">The message payload</param>
     public void OnAuthResponseMessage(AuthResponseMessage msg)
     {
-        // Authentication has been accepted
-        ClientAccept();
+        if (msg.status == 100)
+            ClientAccept();
+        else
+            ClientReject();
     }
 
     #endregion
+
+    public void inputPseudo(string n) //met à jour le pseudo en fonction de l'input
+    {
+        lobbyPseudo = PseudoTextInput.GetComponent<Text>().text;
+    }
 }
