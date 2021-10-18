@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Mirror;
 
 /*
@@ -10,8 +11,16 @@ using Mirror;
 
 public class MyNewNetworkManager : NetworkManager
 {
+    [Header("A remplir")]
     public GameObject lobbyPlayer;
-    public GameObject lobbyGameobject;
+    public GameObject Player;
+    public GameObject MenuManagerObject;
+    public GameObject StartButton;
+    public GameObject TextInputIp;
+    public GameObject[] lobbyPlayerServer = new GameObject[4];
+
+    //[HideInInspector]
+    public string playerTeamName;
 
     #region Unity Callbacks
 
@@ -119,6 +128,17 @@ public class MyNewNetworkManager : NetworkManager
     public override void OnClientSceneChanged(NetworkConnection conn)
     {
         base.OnClientSceneChanged(conn);
+
+        if(SceneManager.GetActiveScene().name != "LobbyScene")
+        {
+            MyNewNetworkAuthenticator.CreateClientPlayer msg = new MyNewNetworkAuthenticator.CreateClientPlayer
+            {
+                teamName = playerTeamName
+            };
+
+            conn.Send(msg);
+        }
+       
     }
 
     #endregion
@@ -131,7 +151,7 @@ public class MyNewNetworkManager : NetworkManager
     /// </summary>
     /// <param name="conn">Connection from client.</param>
     public override void OnServerConnect(NetworkConnection conn) {
-        addPlayerToConnection(conn, "lol");
+        
     }
 
     /// <summary>
@@ -181,9 +201,14 @@ public class MyNewNetworkManager : NetworkManager
     /// <para>The default implementation of this function sets the client as ready and adds a player. Override the function to dictate what happens when the client connects.</para>
     /// </summary>
     /// <param name="conn">Connection to the server.</param>
-    public override void OnClientConnect(NetworkConnection conn)
+    public override void OnClientConnect(NetworkConnection conn)//Quand le client se connecte envoit un message contenant le pseudo
     {
         base.OnClientConnect(conn);
+        MyNewNetworkAuthenticator.ClientConnectionMessage clientMsg = new MyNewNetworkAuthenticator.ClientConnectionMessage 
+        {
+            pseudo = GetComponent<MyNewNetworkAuthenticator>().lobbyPseudo
+        };
+        NetworkClient.Send(clientMsg);
     }
 
     /// <summary>
@@ -194,6 +219,7 @@ public class MyNewNetworkManager : NetworkManager
     public override void OnClientDisconnect(NetworkConnection conn)
     {
         base.OnClientDisconnect(conn);
+        
     }
 
     /// <summary>
@@ -207,7 +233,9 @@ public class MyNewNetworkManager : NetworkManager
     /// Called on client when transport raises an exception.</summary>
     /// </summary>
     /// <param name="exception">Exception thrown from the Transport.</param>
-    public override void OnClientError(Exception exception) { }
+    public override void OnClientError(Exception exception) {
+        Debug.Log(exception.Message);
+    }
 
     #endregion
 
@@ -221,7 +249,10 @@ public class MyNewNetworkManager : NetworkManager
     /// This is invoked when a host is started.
     /// <para>StartHost has multiple signatures, but they all cause this hook to be called.</para>
     /// </summary>
-    public override void OnStartHost() { }
+    public override void OnStartHost() {
+        NetworkServer.RegisterHandler<MyNewNetworkAuthenticator.ClientConnectionMessage>(CreateClientFromServer, true);
+        NetworkServer.RegisterHandler<MyNewNetworkAuthenticator.CreateClientPlayer>(CreatePlayer, true);
+    }
 
     /// <summary>
     /// This is invoked when a server is started - including when a host is started.
@@ -232,30 +263,108 @@ public class MyNewNetworkManager : NetworkManager
     /// <summary>
     /// This is invoked when the client is started.
     /// </summary>
-    public override void OnStartClient() { }
+    public override void OnStartClient() {
+        StartButton.SetActive(false);
+    }
 
     /// <summary>
     /// This is called when a host is stopped.
     /// </summary>
-    public override void OnStopHost() { }
+    public override void OnStopHost() {
+        
+    }
 
     /// <summary>
     /// This is called when a server is stopped - including when a host is stopped.
     /// </summary>
-    public override void OnStopServer() { }
+    public override void OnStopServer() {
+        ClearArray(lobbyPlayerServer);
+    }
 
     /// <summary>
     /// This is called when a client is stopped.
     /// </summary>
-    public override void OnStopClient() { }
+    public override void OnStopClient() {
+        if (SceneManager.GetActiveScene().name == "LobbyScene" && MenuManagerObject.GetComponent<MenuManager>().lobbyObject.activeSelf)
+        {
+            MenuManagerObject.GetComponent<MenuManager>().changeMenu();
+        }
+    }
 
     #endregion
 
-    #region Server local
-    public void addPlayerToConnection(NetworkConnection conn,string pseudo)
+
+    #region Mes fonctions qui gère le network
+    private void CreateClientFromServer(NetworkConnection conn, MyNewNetworkAuthenticator.ClientConnectionMessage msg)
     {
-        GameObject localPlayer = Instantiate(lobbyPlayer, lobbyGameobject.transform);
-        NetworkServer.Spawn(localPlayer);
+        if (conn.clientOwnedObjects.Count < 1) // Débug quand le joueur se connecte à un server qui n'existe pas, et ensuite host
+        {
+            GameObject obj = Instantiate(lobbyPlayer);
+            obj.GetComponent<LobbyPlayerLogic>().clientPseudo = msg.pseudo;
+            obj.transform.position = new Vector3(0, 0, 0);
+            NetworkServer.AddPlayerForConnection(conn, obj);
+            AddToServerArray(obj);
+        }
+        
+    } //Spawn l'objet lobbyPlayer et configure le server
+
+    private void CreatePlayer(NetworkConnection conn, MyNewNetworkAuthenticator.CreateClientPlayer msg)
+    {
+        GameObject obj = Instantiate(Player);
+        obj.GetComponent<PlayerLogic>().teamName = msg.teamName;
+        NetworkServer.AddPlayerForConnection(conn, obj);
+    }
+
+    public void StartGame()
+    {
+        ServerChangeScene("Debug");
+    }
+
+    public void ChangeNetworkAdress(string n)
+    {
+        networkAddress = TextInputIp.GetComponent<Text>().text;
     }
     #endregion
+
+    #region Gestion du tableau contenant les objets des clients coté server
+    private void AddToServerArray(GameObject obj)
+    {
+        for(int i =0; i< lobbyPlayerServer.Length; i++)
+        {
+            if(lobbyPlayerServer[i] == null)
+            {
+                lobbyPlayerServer[i] = obj;
+                obj.GetComponent<LobbyPlayerLogic>().RpcChangePosition(i);
+                break;
+            }
+        }
+    }
+
+    private void ClearArray(GameObject[] array)
+    {
+        for(int i =0; i < array.Length; i++)
+        {
+            array[i] = null;
+        }
+    }
+
+    public bool CheckIsReady()
+    {
+        for (int i = 0; i < lobbyPlayerServer.Length; i++)
+        {
+            if (lobbyPlayerServer[i] != null)
+            {
+                if (!lobbyPlayerServer[i].GetComponent<LobbyPlayerLogic>().isReady)
+                {
+                    StartButton.SetActive(false);
+                    return false;
+                }
+            }
+        }
+        StartButton.SetActive(true);
+        return true;
+    }
+    #endregion
+
+
 }
