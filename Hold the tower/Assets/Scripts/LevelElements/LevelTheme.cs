@@ -4,5 +4,7 @@ using UnityEngine;
 
 public class LevelTheme : ScriptableObject
 {
+	public GameObject prefab;
 
+	public LevelTerrain[] terrains;
 }

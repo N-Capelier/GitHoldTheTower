@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[DisallowMultipleComponent]
-public class BlockBahaviour : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
 
 }
