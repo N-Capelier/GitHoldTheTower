@@ -226,7 +226,10 @@ public class LevelEditorWindow : EditorWindow
 
 	void LoadTerrain()
 	{
-		themeManager.LoadTerrain(themeManager.terrain);
+		for (int i = 0; i < themeManager.blocks.Length; i++)
+		{
+			themeManager.blocks[i].transform.position = themeManager.terrain.positions[i];
+		}
 
 		Debug.Log($"Loaded terrain: {themeManager.terrain.terrainName}.");
 	}
