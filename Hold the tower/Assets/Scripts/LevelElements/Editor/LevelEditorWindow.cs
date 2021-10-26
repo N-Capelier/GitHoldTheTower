@@ -179,14 +179,14 @@ public class LevelEditorWindow : EditorWindow
 	{
 		themeManager.SetupTheme();
 
-		PrefabUtility.SaveAsPrefabAsset(themeManager.gameObject, $"Assets/Prefabs/Level Elements/Themes/{newThemeName}.prefab");
+		PrefabUtility.SaveAsPrefabAsset(themeManager.gameObject, $"Assets/Prefabs/LevelElements/Themes/{newThemeName}.prefab");
 
 		LevelTheme _newTheme = CreateInstance<LevelTheme>();
 
 		_newTheme.themeName = newThemeName;
-		_newTheme.prefab = (GameObject)AssetDatabase.LoadAssetAtPath($"Assets/Prefabs/Level Elements/Themes/{newThemeName}.prefab", typeof(GameObject));
+		_newTheme.prefab = (GameObject)AssetDatabase.LoadAssetAtPath($"Assets/Prefabs/LevelElements/Themes/{newThemeName}.prefab", typeof(GameObject));
 
-		string _path = AssetDatabase.GenerateUniqueAssetPath($"Assets/Level Elements/Themes/{newThemeName}.asset");
+		string _path = AssetDatabase.GenerateUniqueAssetPath($"Assets/LevelElements/Themes/{newThemeName}.asset");
 		AssetDatabase.CreateAsset(_newTheme, _path);
 		AssetDatabase.SaveAssets();
 
@@ -205,13 +205,15 @@ public class LevelEditorWindow : EditorWindow
 
 		for (int i = 0; i < _newTerrain.positions.Length; i++)
 		{
-			////////////////////////////////// Could change to themeManager.blocks[i].tranform.child.position if we use child object for the renderer
+			////////////////////////////////// Could change to "= themeManager.blocks[i].tranform.child.position" if we use child object for the renderer
 			_newTerrain.positions[i] = themeManager.blocks[i].transform.position;
 		}
 
 		string _path = AssetDatabase.GenerateUniqueAssetPath($"Assets/LevelElements/Terrains/{newTerrainName}.asset");
 		AssetDatabase.CreateAsset(_newTerrain, _path);
 		AssetDatabase.SaveAssets();
+
+		themeManager.terrain = (LevelTerrain)AssetDatabase.LoadAssetAtPath(_path, typeof(LevelTerrain));
 
 		EditorUtility.FocusProjectWindow();
 		Selection.activeObject = _newTerrain;
