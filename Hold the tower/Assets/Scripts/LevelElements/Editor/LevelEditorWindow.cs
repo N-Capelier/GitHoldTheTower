@@ -100,7 +100,7 @@ public class LevelEditorWindow : EditorWindow
 
 		EditorGUILayout.Space(10);
 
-		EditorGUILayout.LabelField("Theme Manager:", textStyle);
+		EditorGUILayout.LabelField("Base Theme Manager:", textStyle);
 		themeManager = (ThemeManager)EditorGUILayout.ObjectField(themeManager, typeof(ThemeManager), true);
 
 		EditorGUILayout.Space(10);
@@ -177,13 +177,14 @@ public class LevelEditorWindow : EditorWindow
 
 	void CreateTheme()
 	{
-		themeManager.SetupTheme();
+		themeManager.InitTerrainBlocks();
 
 		PrefabUtility.SaveAsPrefabAsset(themeManager.gameObject, $"Assets/Prefabs/LevelElements/Themes/{newThemeName}.prefab");
 
 		LevelTheme _newTheme = CreateInstance<LevelTheme>();
 
 		_newTheme.themeName = newThemeName;
+
 		_newTheme.prefab = (GameObject)AssetDatabase.LoadAssetAtPath($"Assets/Prefabs/LevelElements/Themes/{newThemeName}.prefab", typeof(GameObject));
 
 		string _path = AssetDatabase.GenerateUniqueAssetPath($"Assets/LevelElements/Themes/{newThemeName}.asset");
@@ -192,6 +193,8 @@ public class LevelEditorWindow : EditorWindow
 
 		EditorUtility.FocusProjectWindow();
 		Selection.activeObject = _newTheme;
+
+		themeManager.blocks = null;
 
 		Debug.Log($"Created new theme: {newThemeName}.");
 	}
@@ -223,10 +226,7 @@ public class LevelEditorWindow : EditorWindow
 
 	void LoadTerrain()
 	{
-		for (int i = 0; i < themeManager.blocks.Length; i++)
-		{
-			themeManager.blocks[i].transform.position = themeManager.terrain.positions[i];
-		}
+		themeManager.LoadTerrain(themeManager.terrain);
 
 		Debug.Log($"Loaded terrain: {themeManager.terrain.terrainName}.");
 	}
