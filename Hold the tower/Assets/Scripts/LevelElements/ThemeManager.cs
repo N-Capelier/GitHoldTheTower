@@ -4,8 +4,12 @@ public class ThemeManager : MonoBehaviour
 {
 	[HideInInspector] public BlockBehaviour[] blocks;
 
-	public LevelTheme theme;
 	public LevelTerrain terrain;
+
+	public void LoadActiveTerrain()
+	{
+
+	}
 
 #if UNITY_EDITOR
 	public void SetupTheme()
