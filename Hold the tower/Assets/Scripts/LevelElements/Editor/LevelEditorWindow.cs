@@ -7,7 +7,7 @@ public class LevelEditorWindow : EditorWindow
 {
 	static LevelEditorWindow themeCreator;
 
-	[MenuItem("Window/Tools/Level Editor", priority = 1)]
+	[MenuItem("Tools/Level Editor", priority = 1)]
 	public static void Init()
 	{
 		themeCreator = GetWindow<LevelEditorWindow>("Level Editor");
