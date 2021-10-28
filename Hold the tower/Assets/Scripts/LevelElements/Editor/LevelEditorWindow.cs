@@ -235,6 +235,9 @@ public class LevelEditorWindow : EditorWindow
 		EditorUtility.SetDirty(themeManager);
 		PrefabUtility.RecordPrefabInstancePropertyModifications(themeManager);
 
+		AssetDatabase.SaveAssets();
+		AssetDatabase.Refresh();
+
 		EditorUtility.FocusProjectWindow();
 		Selection.activeObject = _newTerrain;
 
