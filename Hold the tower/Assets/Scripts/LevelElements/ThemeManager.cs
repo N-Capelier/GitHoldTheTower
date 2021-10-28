@@ -1,15 +1,13 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class ThemeManager : MonoBehaviour
 {
 	[HideInInspector] public BlockBehaviour[] blocks;
 
-	public LevelTerrain terrain;
+	public List<LevelTerrain> terrains = new List<LevelTerrain>();
 
-	public void LoadActiveTerrain()
-	{
-
-	}
+	public LevelTerrain activeTerrain;
 
 #if UNITY_EDITOR
 
@@ -21,7 +19,7 @@ public class ThemeManager : MonoBehaviour
 #endif
 	public void LoadTerrain(LevelTerrain _terrain)
 	{
-		terrain = _terrain;
+		activeTerrain = _terrain;
 
 		blocks = GetComponentsInChildren<BlockBehaviour>();
 
@@ -30,19 +28,19 @@ public class ThemeManager : MonoBehaviour
 			Debug.LogError("No block found in theme");
 			return;
 		}
-		else if (terrain == null)
+		else if (activeTerrain == null)
 		{
 			Debug.LogError("No terrain found in ThemeManager");
 			return;
 		}
-		else if (blocks.Length != terrain.positions.Length)
+		else if (blocks.Length != activeTerrain.positions.Length)
 		{
 			Debug.LogError("Terrain does not correspond to this theme");
 		}
 
 		for (int i = 0; i < blocks.Length; i++)
 		{
-			blocks[i].SetTargetPosition(terrain.positions[i]);
+			blocks[i].SetTargetPosition(activeTerrain.positions[i]);
 		}
 	}
 }

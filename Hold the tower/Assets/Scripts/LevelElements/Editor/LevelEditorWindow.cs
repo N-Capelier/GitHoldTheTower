@@ -155,24 +155,37 @@ public class LevelEditorWindow : EditorWindow
 		if (themeManager == null)
 		{
 			EditorGUILayout.LabelField("ThemeManager can not be null.", errorStyle);
+			return;
 		}
-		else if(themeManager.terrain == null)
-		{
-			EditorGUILayout.LabelField("ThemeManager must have a terrain to edit.", errorStyle);
-		}
-		else
+
+		EditorGUILayout.LabelField("Load Terrain:", textStyle);
+		
+		EditorGUILayout.BeginVertical();
+		foreach(LevelTerrain _terrain in themeManager.terrains)
 		{
 			EditorGUILayout.BeginHorizontal();
-			if(GUILayout.Button("Load Terrain"))
+			GUILayout.Space(50);
+			if (GUILayout.Button($"Load {_terrain.terrainName}"))
 			{
+				themeManager.activeTerrain = _terrain;
 				LoadTerrain();
 			}
-			if (GUILayout.Button("Save Terrain"))
-			{
-				SaveTerrain();
-			}
+			GUILayout.Space(50);
+
 			EditorGUILayout.EndHorizontal();
 		}
+		EditorGUILayout.EndHorizontal();
+
+		EditorGUILayout.Space(10);
+
+		EditorGUILayout.BeginHorizontal();
+		GUILayout.Space(50);
+		if (GUILayout.Button("Save active Terrain"))
+		{
+			SaveTerrain();
+		}
+		GUILayout.Space(50);
+		EditorGUILayout.EndHorizontal();
 	}
 
 	void CreateTheme()
@@ -216,7 +229,11 @@ public class LevelEditorWindow : EditorWindow
 		AssetDatabase.CreateAsset(_newTerrain, _path);
 		AssetDatabase.SaveAssets();
 
-		themeManager.terrain = (LevelTerrain)AssetDatabase.LoadAssetAtPath(_path, typeof(LevelTerrain));
+		themeManager.activeTerrain = (LevelTerrain)AssetDatabase.LoadAssetAtPath(_path, typeof(LevelTerrain));
+		themeManager.terrains.Add((LevelTerrain)AssetDatabase.LoadAssetAtPath(_path, typeof(LevelTerrain)));
+
+		EditorUtility.SetDirty(themeManager);
+		PrefabUtility.RecordPrefabInstancePropertyModifications(themeManager);
 
 		EditorUtility.FocusProjectWindow();
 		Selection.activeObject = _newTerrain;
@@ -228,10 +245,10 @@ public class LevelEditorWindow : EditorWindow
 	{
 		for (int i = 0; i < themeManager.blocks.Length; i++)
 		{
-			themeManager.blocks[i].transform.position = themeManager.terrain.positions[i];
+			themeManager.blocks[i].transform.position = themeManager.activeTerrain.positions[i];
 		}
 
-		Debug.Log($"Loaded terrain: {themeManager.terrain.terrainName}.");
+		Debug.Log($"Loaded terrain: {themeManager.activeTerrain.terrainName}.");
 	}
 
 	void SaveTerrain()
@@ -239,11 +256,11 @@ public class LevelEditorWindow : EditorWindow
 		for (int i = 0; i < themeManager.blocks.Length; i++)
 		{
 			////////////////////////////////// Could change to themeManager.blocks[i].tranform.child.position if we use child object for the renderer
-			themeManager.terrain.positions[i] = themeManager.blocks[i].transform.position;
+			themeManager.activeTerrain.positions[i] = themeManager.blocks[i].transform.position;
 		}
 
 		AssetDatabase.SaveAssets();
 
-		Debug.Log($"Saved terrain: {themeManager.terrain.terrainName}.");
+		Debug.Log($"Saved terrain: {themeManager.activeTerrain.terrainName}.");
 	}
 }
