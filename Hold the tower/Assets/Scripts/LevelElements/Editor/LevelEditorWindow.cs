@@ -168,6 +168,7 @@ public class LevelEditorWindow : EditorWindow
 			if (GUILayout.Button($"Load {_terrain.terrainName}"))
 			{
 				themeManager.activeTerrain = _terrain;
+				AssetDatabase.Refresh();
 				LoadTerrain();
 			}
 			GUILayout.Space(50);
@@ -244,23 +245,26 @@ public class LevelEditorWindow : EditorWindow
 	void LoadTerrain()
 	{
 		for (int i = 0; i < themeManager.blocks.Length; i++)
-		{
-			themeManager.blocks[i].transform.position = themeManager.activeTerrain.positions[i];
-		}
+        {
+            themeManager.blocks[i].transform.position = themeManager.activeTerrain.positions[i];
+        }
 
-		Debug.Log($"Loaded terrain: {themeManager.activeTerrain.terrainName}.");
-	}
+        Debug.Log($"Loaded terrain: {themeManager.activeTerrain.terrainName}.");
+    }
 
-	void SaveTerrain()
-	{
-		for (int i = 0; i < themeManager.blocks.Length; i++)
-		{
-			////////////////////////////////// Could change to themeManager.blocks[i].tranform.child.position if we use child object for the renderer
-			themeManager.activeTerrain.positions[i] = themeManager.blocks[i].transform.position;
-		}
+    void SaveTerrain()
+    {
 
-		AssetDatabase.SaveAssets();
+        for (int i = 0; i < themeManager.blocks.Length; i++)
+        {
+            ////////////////////////////////// Could change to themeManager.blocks[i].tranform.child.position if we use child object for the renderer
+            themeManager.activeTerrain.positions[i] = themeManager.blocks[i].transform.position;
+        }
 
-		Debug.Log($"Saved terrain: {themeManager.activeTerrain.terrainName}.");
-	}
+
+
+        AssetDatabase.SaveAssets();
+
+        Debug.Log($"Saved terrain: {themeManager.activeTerrain.terrainName}.");
+    }
 }
