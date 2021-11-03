@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class BlockBehaviour : MonoBehaviour
 {
-	[SerializeField] float moveSpeed = 0f;
-	[SerializeField] float snapThreshold = .1f;
-
+	Vector3 startPosition;
 	Vector3 targetPosition;
 	bool movingToTargetPos;
 
+	[SerializeField] float moveDuration = 1.2f;
+	float elapsedTime;
+	float completion;
+
 	public void SetTargetPosition(Vector3 _position)
 	{
+		startPosition = transform.position;
 		targetPosition = _position;
 		movingToTargetPos = true;
 	}
@@ -26,13 +29,11 @@ public class BlockBehaviour : MonoBehaviour
 
 	void MoveToTargetPos()
 	{
-		Vector3 _direction = targetPosition - transform.position;
-		_direction.Normalize();
-		_direction *= moveSpeed;
+		elapsedTime += Time.fixedDeltaTime;
+		completion = elapsedTime / moveDuration;
 
-		transform.Translate(_direction * Time.fixedDeltaTime);
-
-		if((targetPosition - transform.position).magnitude <= snapThreshold)
+		transform.position = Vector3.Lerp(startPosition, targetPosition, Mathf.SmoothStep(0, 1, completion));
+		if(completion >= 1)
 		{
 			transform.position = targetPosition;
 			movingToTargetPos = false;

@@ -7,7 +7,7 @@ public class LevelEditorWindow : EditorWindow
 {
 	static LevelEditorWindow themeCreator;
 
-	[MenuItem("Window/Tools/Level Editor", priority = 1)]
+	[MenuItem("Tools/Level Editor", priority = 1)]
 	public static void Init()
 	{
 		themeCreator = GetWindow<LevelEditorWindow>("Level Editor");
@@ -234,6 +234,9 @@ public class LevelEditorWindow : EditorWindow
 
 		EditorUtility.SetDirty(themeManager);
 		PrefabUtility.RecordPrefabInstancePropertyModifications(themeManager);
+
+		AssetDatabase.SaveAssets();
+		AssetDatabase.Refresh();
 
 		EditorUtility.FocusProjectWindow();
 		Selection.activeObject = _newTerrain;
