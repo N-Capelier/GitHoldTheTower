@@ -126,7 +126,6 @@ public class PlayerLogic : NetworkBehaviour
             }
             else
             {
-                selfMovement.NoGravity();
                 if (!isJumping)
                 {
                     selfMovement.NoGravity();
