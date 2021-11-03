@@ -25,7 +25,10 @@ public class PlayerLogic : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (hasAuthority)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
     // Update is called once per frame
@@ -41,8 +44,8 @@ public class PlayerLogic : NetworkBehaviour
 
     private void fpsView()
     {
-        float mouseX = Input.GetAxis("Mouse X") * selfParams.mouseSensivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * selfParams.mouseSensivity * Time.deltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * selfParams.mouseSensivity * Time.fixedDeltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * selfParams.mouseSensivity * Time.fixedDeltaTime;
 
         yRotation += mouseX;
         xRotation -= mouseY;
@@ -54,7 +57,7 @@ public class PlayerLogic : NetworkBehaviour
 
     private void HorizontalMovement()
     {
-        if (!selfMovement.isClimbingMovement)
+        if (!selfMovement.isClimbingMovement && !isAttachToWall && !selfMovement.isAttacking)
         {
             if (Input.GetKey(selfParams.left) || Input.GetKey(selfParams.right) || Input.GetKey(selfParams.front) || Input.GetKey(selfParams.back))
             {
@@ -64,8 +67,6 @@ public class PlayerLogic : NetworkBehaviour
                 {
                     selfMovement.Move(selfCamera.forward, Time.time - timeStampRunAccel);
                     selfMovement.CanClimb();
-                    /*if (selfMovement.CanClimb())
-                        Debug.Log("climb");*/
                 }
 
                 if (Input.GetKey(selfParams.back))
@@ -89,6 +90,11 @@ public class PlayerLogic : NetworkBehaviour
                 selfMovement.Decelerate(Time.time - timeStampRunDecel);
                 timeStampRunAccel = Time.time;
             }
+
+            if (Input.GetMouseButtonDown(selfParams.attackMouseInput))
+            {
+                selfMovement.Attack();
+            }
         }
         else
         {
@@ -105,10 +111,12 @@ public class PlayerLogic : NetworkBehaviour
                 if (selfMovement.isSomethingCollide() && Input.GetMouseButton(selfParams.wallMouseInput))
                 {
                     selfMovement.NoGravity();
+                    isAttachToWall = true;
                 }
                 else
                 {
                     selfMovement.ApplyGravity();
+                    isAttachToWall = false;
                 }
                 
             }
@@ -122,6 +130,11 @@ public class PlayerLogic : NetworkBehaviour
                 if (Input.GetKeyDown(selfParams.jump) && !isJumping)
                 {
                     selfMovement.Jump();
+                }
+
+                if (selfMovement.isAttacking) //Enable attack if on ground to change maybe a timer
+                {
+                    selfMovement.isAttacking = false;
                 }
             }
         }

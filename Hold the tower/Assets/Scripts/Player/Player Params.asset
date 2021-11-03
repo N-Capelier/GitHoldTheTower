@@ -18,7 +18,7 @@ MonoBehaviour:
   back: 115
   jump: 32
   wallMouseInput: 1
-  mouseSensivity: 120
+  mouseSensivity: 150
   hspdAcceleration:
     serializedVersion: 2
     m_Curve:
@@ -70,8 +70,8 @@ MonoBehaviour:
   hspdForce: 8
   gravity: 50
   forwardForceJump: 4
-  topForceJump: 30
-  jumpNumberToApply: 25
+  topForceJump: 200
+  jumpNumberToApply: 5
   climbHeight: 5
   climbWidth: 5
   climbPrecision: 5

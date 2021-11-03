@@ -13,16 +13,21 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody selfRbd;
     [SerializeField]
     private Transform selfCamera;
+    [SerializeField]
+    private GameObject selfAttackCollider;
 
     private Vector3 moveDirection = new Vector3(0, 0, 0);
 
     private Vector3 hspd;
     private Vector3 vspd;
+    private Vector3 attackspd = new Vector3();
 
     private bool leftCollide, rightCollide, backCollide, frontTopCollide, frontBotCollide;
 
-    [SerializeField]
+    [HideInInspector]
     public bool isClimbingMovement;
+    [HideInInspector]
+    public bool isAttacking;
 
     // Start is called before the first frame update
     void Start()
@@ -39,11 +44,19 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            selfRbd.velocity = hspd + vspd;
+            if(vspd.y > 0) //if apply positive force ( jump ...)
+            {
+                if(isSomethingCollide() && hspd != Vector3.zero)
+                {
+                    Debug.Log(vspd);
+                    vspd += new Vector3(0, -selfParams.gravity, 0) * Time.deltaTime;
+                }
+            }
+
+            selfRbd.velocity = hspd + vspd + attackspd;
         }
 
     }
-
    
 
     #region HorizontalPhysics
@@ -87,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
     {
         selfLogic.isJumping = true;
 
-        for(int i = 1;i< selfParams.jumpNumberToApply; i++)
+        for(int i = 0;i< selfParams.jumpNumberToApply; i++)
         {
             if(IsFrontCollide() || leftCollide || rightCollide || backCollide)
             {
@@ -101,9 +114,13 @@ public class PlayerMovement : MonoBehaviour
                     hspd.x = 0;
                 }
 
+                vspd = Vector3.zero;
+                Debug.Log("Break");
+                break;
             }
+
             vspd += transform.up * selfParams.topForceJump*Time.fixedDeltaTime;
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
         
         selfLogic.isJumping = false;
@@ -159,7 +176,6 @@ public class PlayerMovement : MonoBehaviour
         selfRbd.isKinematic = false;
         isClimbingMovement = false;
         selfRbd.collisionDetectionMode = CollisionDetectionMode.Continuous;
-        Debug.Log("End climb");
     }
     #endregion
 
@@ -183,6 +199,49 @@ public class PlayerMovement : MonoBehaviour
 
         return false;
     }
+
+    #endregion
+
+    #region Attack
+
+    public void Attack()
+    {
+        StartCoroutine("AttackManage");
+    }
+
+    public IEnumerator AttackManage()
+    {
+        isAttacking = true;
+        selfAttackCollider.SetActive(true);
+
+        Vector3 directionAttack = selfCamera.forward;
+
+        for(int i =0; i< selfParams.forceAttackNumberToApply; i++)
+        {
+            attackspd = directionAttack * selfParams.forceAttack * Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+        float attackTimeStamp = Time.time;
+
+        //Decelerate attack speed
+        while(attackspd != Vector3.zero)
+        {
+            DecelerateAttack(Time.time - attackTimeStamp);
+            yield return new WaitForFixedUpdate();
+        }
+
+        selfAttackCollider.SetActive(false);
+    }
+
+    public void DecelerateAttack(float timeStamp)
+    {
+        if (attackspd != Vector3.zero)
+        {
+            attackspd = attackspd * selfParams.hspdDeceleration.Evaluate(timeStamp);
+        }
+    }
+
+
 
     #endregion
 

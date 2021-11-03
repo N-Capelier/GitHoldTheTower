@@ -24,7 +24,7 @@ public class SensorCollider : MonoBehaviour
         if(other.tag == "Wall")
         {
             collide.Invoke();
-            Debug.Log(transform.name);
+            //Debug.Log(transform.name);
         }
             
     }
@@ -34,7 +34,7 @@ public class SensorCollider : MonoBehaviour
         if(other.tag == "Wall")
         {
             Uncollide.Invoke();
-            Debug.Log(transform.name);
+            //Debug.Log(transform.name);
         }
             
     }

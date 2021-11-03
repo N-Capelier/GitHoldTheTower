@@ -16,6 +16,7 @@ public class ScriptableParamsPlayer : ScriptableObject
     public KeyCode jump = KeyCode.Space;
 
     [Range(0, 2)] public int wallMouseInput;
+    [Range(0, 2)] public int attackMouseInput;
     public float mouseSensivity;
 
 
@@ -37,4 +38,9 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float climbHeight = 5f;
     public float climbWidth = 5f;
     public float climbPrecision = 5f;
+
+    [Header("Attack")]
+    public float forceAttack = 20f;
+
+    [Range(1, 100)] public int forceAttackNumberToApply;
 }
