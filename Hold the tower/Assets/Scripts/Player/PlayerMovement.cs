@@ -44,7 +44,17 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    #region VerticalPhysics
+    #region WallDetection
+
+    private bool IsFrontCollide()
+    {
+        if(frontTopWall && frontBotWall)
+        {
+            return true;
+        }
+
+        return false;
+    }
 
     #endregion
 
@@ -107,7 +117,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if(frontBotWall && !frontTopWall && !isClimbingMovement)
         {
-            isClimbingMovement = true;
             Climb();
             return true;
         }
@@ -123,14 +132,13 @@ public class PlayerMovement : MonoBehaviour
     {
         selfRbd.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
         selfRbd.isKinematic = true;
-       
-
+        isClimbingMovement = true;
 
         Vector3 startPosition = transform.position;
-        Vector3 endPosition = transform.position + (selfCamera.forward * 5f) + transform.up * 5f; // front and up
+        Vector3 endPosition = transform.position + (selfCamera.forward * selfParams.climbWidth) + transform.up * selfParams.climbHeight; // front and up
         float time = Time.deltaTime;
 
-        while ((endPosition - transform.position).magnitude > 5f)
+        while ((endPosition - transform.position).magnitude > selfParams.climbPrecision)
         {
             //Debug.Log((endPosition - transform.position).magnitude);
             transform.position = Vector3.Lerp(startPosition,endPosition, time);
@@ -140,6 +148,7 @@ public class PlayerMovement : MonoBehaviour
         vspd = Vector3.zero;
         frontBotWall = false;
         frontTopWall = true;
+
         selfRbd.isKinematic = false;
         isClimbingMovement = false;
         selfRbd.collisionDetectionMode = CollisionDetectionMode.Continuous;
@@ -187,13 +196,11 @@ public class PlayerMovement : MonoBehaviour
     public void onFrontTopUnCollide()
     {
         frontTopWall = false;
-        CanClimb();
     }
 
     public void onFrontBotCollide()
     {
         frontBotWall = true;
-        CanClimb();
     }
 
     public void onFrontBotUnCollide()

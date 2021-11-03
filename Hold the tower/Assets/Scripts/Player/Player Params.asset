@@ -69,5 +69,8 @@ MonoBehaviour:
   hspdForce: 8
   gravity: 50
   forwardForceJump: 4
-  topForceJump: 300
+  topForceJump: 30
   jumpNumberToApply: 25
+  climbHeight: 5
+  climbWidth: 5
+  climbPrecision: 5

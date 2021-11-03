@@ -31,4 +31,8 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float topForceJump;
     [Range(1,100)] public int jumpNumberToApply;
 
+    [Header("Climb")]
+    public float climbHeight = 5f;
+    public float climbWidth = 5f;
+    public float climbPrecision = 5f;
 }

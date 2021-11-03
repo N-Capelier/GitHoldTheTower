@@ -63,6 +63,7 @@ public class PlayerLogic : NetworkBehaviour
                 if (Input.GetKey(selfParams.front))
                 {
                     selfMovement.Move(selfCamera.forward, Time.time - timeStampRunAccel);
+                    selfMovement.CanClimb();
                     /*if (selfMovement.CanClimb())
                         Debug.Log("climb");*/
                 }

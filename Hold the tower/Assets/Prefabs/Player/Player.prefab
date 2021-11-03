@@ -690,8 +690,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.804115, y: 0.8595916, z: 0.39203644}
-  m_Center: {x: 0.03764072, y: 0.36030412, z: -0.37538117}
+  m_Size: {x: 0.804115, y: 0.8535101, z: 0.39203644}
+  m_Center: {x: 0.03764072, y: 0.27212128, z: -0.37538117}
 --- !u!114 &2283582401440189527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -724,7 +724,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4205374861408034103}
         m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-        m_MethodName: onBackUnCollide
+        m_MethodName: onFrontBotUnCollide
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -763,7 +763,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5081187766417711880}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.17, z: 0.01}
+  m_LocalPosition: {x: 0, y: 0.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6480739295593869591}
@@ -780,8 +780,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.804115, y: 0.40649855, z: 0.39203644}
-  m_Center: {x: 0.03764072, y: 0.4001276, z: -0.37538117}
+  m_Size: {x: 0.804115, y: 0.71057737, z: 0.39203644}
+  m_Center: {x: 0.03764072, y: 0.43661708, z: -0.37538117}
 --- !u!114 &1688659597601429249
 MonoBehaviour:
   m_ObjectHideFlags: 0
