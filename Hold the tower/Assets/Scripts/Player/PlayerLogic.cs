@@ -25,9 +25,12 @@ public class PlayerLogic : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        selfCamera.gameObject.SetActive(false);
         if (hasAuthority)
         {
+            selfCamera.gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
+            
         }
     }
 
@@ -51,8 +54,9 @@ public class PlayerLogic : NetworkBehaviour
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90);
 
-        selfCamera.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
         selfCamera.Rotate(Vector3.up * mouseX);
+        selfCamera.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+        
     }
 
     private void HorizontalMovement()
@@ -122,6 +126,7 @@ public class PlayerLogic : NetworkBehaviour
             }
             else
             {
+                selfMovement.NoGravity();
                 if (!isJumping)
                 {
                     selfMovement.NoGravity();

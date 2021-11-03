@@ -1773,8 +1773,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1715714064}
   - component: {fileID: 1715714067}
-  - component: {fileID: 1715714066}
   - component: {fileID: 1715714065}
+  - component: {fileID: 1715714066}
   - component: {fileID: 1715714069}
   - component: {fileID: 1715714068}
   m_Layer: 0
@@ -1886,6 +1886,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   playerTeamName: 
+  gameScene: Poc
 --- !u!114 &1715714068
 MonoBehaviour:
   m_ObjectHideFlags: 0

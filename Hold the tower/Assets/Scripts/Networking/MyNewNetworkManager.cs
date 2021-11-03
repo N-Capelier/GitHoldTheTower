@@ -19,8 +19,11 @@ public class MyNewNetworkManager : NetworkManager
     public GameObject TextInputIp;
     public GameObject[] lobbyPlayerServer = new GameObject[4];
 
-    //[HideInInspector]
+    [HideInInspector]
     public string playerTeamName;
+
+    [SerializeField]
+    private string gameScene;
 
     #region Unity Callbacks
 
@@ -317,7 +320,7 @@ public class MyNewNetworkManager : NetworkManager
 
     public void StartGame()
     {
-        ServerChangeScene("Debug");
+        ServerChangeScene(gameScene);
     }
 
     public void ChangeNetworkAdress(string n)

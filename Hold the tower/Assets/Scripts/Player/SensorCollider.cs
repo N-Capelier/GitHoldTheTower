@@ -12,6 +12,8 @@ public class SensorCollider : MonoBehaviour
     public Transform selfCamera;
     public Transform selfCollision;
 
+    private int nbCollide = 0;
+
     public void Update()
     {
         if (followTheCamera)
@@ -21,9 +23,14 @@ public class SensorCollider : MonoBehaviour
     // Start is called before the first frame update
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Wall")
+        if(other.CompareTag("Wall"))
         {
-            collide.Invoke();
+            nbCollide++;
+            if(nbCollide == 1)
+            {
+                collide.Invoke();
+            }
+            
             //Debug.Log(transform.name);
         }
             
@@ -31,11 +38,15 @@ public class SensorCollider : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.tag == "Wall")
+        if(other.CompareTag("Wall"))
         {
-            Uncollide.Invoke();
+            nbCollide--;
+            if (nbCollide == 0) {
+                Uncollide.Invoke();
+            }
             //Debug.Log(transform.name);
         }
             
     }
+
 }

@@ -9,7 +9,7 @@ public class BlockBehaviour : MonoBehaviour
 	bool movingToTargetPos;
 
 	[SerializeField] float moveDuration = 1.2f;
-	float elapsedTime;
+	float elapsedTime = 0f;
 	float completion;
 
 	public void SetTargetPosition(Vector3 _position)
@@ -17,6 +17,7 @@ public class BlockBehaviour : MonoBehaviour
 		startPosition = transform.position;
 		targetPosition = _position;
 		movingToTargetPos = true;
+		elapsedTime = 0f;
 	}
 
 	private void FixedUpdate()

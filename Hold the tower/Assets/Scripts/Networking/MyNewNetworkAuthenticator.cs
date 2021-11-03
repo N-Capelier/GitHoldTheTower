@@ -101,7 +101,7 @@ public class MyNewNetworkAuthenticator : NetworkAuthenticator
     public override void OnStopClient()
     {
         base.OnStopClient();
-        NetworkClient.UnregisterHandler<AuthResponseMessage>();
+        z.UnregisterHandler<AuthResponseMessage>();
     }
 
     /// <summary>
