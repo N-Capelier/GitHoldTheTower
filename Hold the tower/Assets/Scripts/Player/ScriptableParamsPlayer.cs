@@ -1,0 +1,34 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu(fileName ="Player Params",menuName ="Player/Params")]
+public class ScriptableParamsPlayer : ScriptableObject
+{
+
+    #region Key
+    [Header("Input")]
+    public KeyCode front = KeyCode.Z;
+    public KeyCode left = KeyCode.Q;
+    public KeyCode right = KeyCode.D;
+    public KeyCode back = KeyCode.S;
+
+    public KeyCode jump = KeyCode.Space;
+
+    public float mouseSensivity;
+
+    #endregion
+
+    [Header("Hspd")]
+    public AnimationCurve hspdAcceleration;
+    public AnimationCurve hspdDeceleration;
+    public float hspdForce;
+
+    [Header("Vspd")]
+    public float gravity;
+
+    public float forwardForceJump;
+    public float topForceJump;
+    [Range(1,100)] public int jumpNumberToApply;
+
+}

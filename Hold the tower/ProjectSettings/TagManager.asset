@@ -6,6 +6,7 @@ TagManager:
   tags:
   - LobbyPosition
   - LobbyPlayer
+  - Wall
   layers:
   - Default
   - TransparentFX
