@@ -44,16 +44,18 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            if(vspd.y > 0) //if apply positive force ( jump ...)
+            if(vspd.y > 0 && hspd != Vector3.zero) //if apply positive force ( jump ...)
             {
-                if(isSomethingCollide() && hspd != Vector3.zero)
+                if(isSomethingCollide())
                 {
-                    Debug.Log(vspd);
-                    vspd += new Vector3(0, -selfParams.gravity, 0) * Time.deltaTime;
+                    vspd.y = 0;
+                    ApplyGravity();
+                    Debug.Log("Collide");
                 }
             }
 
             selfRbd.velocity = hspd + vspd + attackspd;
+            Debug.Log(selfRbd.velocity);
         }
 
     }
@@ -102,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
 
         for(int i = 0;i< selfParams.jumpNumberToApply; i++)
         {
-            if(IsFrontCollide() || leftCollide || rightCollide || backCollide)
+            /*if(IsFrontCollide() || leftCollide || rightCollide || backCollide)
             {
                 if (IsFrontCollide() || backCollide) 
                 {
@@ -117,7 +119,7 @@ public class PlayerMovement : MonoBehaviour
                 vspd = Vector3.zero;
                 Debug.Log("Break");
                 break;
-            }
+            }*/
 
             vspd += transform.up * selfParams.topForceJump*Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
