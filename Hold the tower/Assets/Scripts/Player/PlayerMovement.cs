@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 hspd;
     private Vector3 vspd;
 
-    private bool leftWall, rightWall, backWall, frontTopWall, frontBotWall;
+    private bool leftCollide, rightCollide, backCollide, frontTopCollide, frontBotCollide;
 
     [SerializeField]
     public bool isClimbingMovement;
@@ -44,19 +44,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    #region WallDetection
-
-    private bool IsFrontCollide()
-    {
-        if(frontTopWall && frontBotWall)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    #endregion
+   
 
     #region HorizontalPhysics
     public void Move(Vector3 direction, float timeStamp)
@@ -88,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
     {
         vspd = Vector3.zero;
     }
-
+    //WIP need to adjust jump to interact with wall
     public void Jump()
     {
         vspd = Vector3.zero;
@@ -101,7 +89,19 @@ public class PlayerMovement : MonoBehaviour
 
         for(int i = 1;i< selfParams.jumpNumberToApply; i++)
         {
-            Debug.Log("Jump");
+            if(IsFrontCollide() || leftCollide || rightCollide || backCollide)
+            {
+                if (IsFrontCollide() || backCollide) 
+                {
+                    hspd.z = 0;
+                }
+
+                if (leftCollide || rightCollide)
+                {
+                    hspd.x = 0;
+                }
+
+            }
             vspd += transform.up * selfParams.topForceJump*Time.fixedDeltaTime;
             yield return new WaitForEndOfFrame();
         }
@@ -109,13 +109,22 @@ public class PlayerMovement : MonoBehaviour
         selfLogic.isJumping = false;
     }
 
+    public void WallJump()
+    {
+
+    }
+
+    public IEnumerator WallJumpManage()
+    {
+        return null;
+    }
     //manage jump
     #endregion
 
     #region Climb
     public bool CanClimb()
     {
-        if(frontBotWall && !frontTopWall && !isClimbingMovement)
+        if(frontBotCollide && !frontTopCollide && !isClimbingMovement)
         {
             Climb();
             return true;
@@ -146,8 +155,6 @@ public class PlayerMovement : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         vspd = Vector3.zero;
-        frontBotWall = false;
-        frontTopWall = true;
 
         selfRbd.isKinematic = false;
         isClimbingMovement = false;
@@ -156,56 +163,79 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
 
+    #region WallDetection
+
+    private bool IsFrontCollide()
+    {
+        if (frontTopCollide && frontBotCollide)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool isSomethingCollide() //is there any wall collide
+    {
+        if(IsFrontCollide() || leftCollide || rightCollide || backCollide){
+            return true;
+        }
+
+        return false;
+    }
+
+    #endregion
+
     #region Sensor Event
 
     public void onLeftCollide()
     {
-        leftWall = true;
+        leftCollide = true;
     }
 
     public void onLeftUnCollide()
     {
-        leftWall = false;
+        leftCollide = false;
     }
 
     public void onRightCollide()
     {
-        rightWall = true;
+        rightCollide = true;
     }
 
     public void onRightUnCollide()
     {
-        rightWall = false;
+        rightCollide = false;
     }
 
     public void onBackCollide()
     {
-        backWall = true;
+        backCollide = true;
     }
 
     public void onBackUnCollide()
     {
-        backWall = false;
+        backCollide = false;
     }
 
     public void onFrontTopCollide()
     {
-        frontTopWall = true;
+        frontTopCollide = true;
     }
 
     public void onFrontTopUnCollide()
     {
-        frontTopWall = false;
+        frontTopCollide = false;
     }
 
     public void onFrontBotCollide()
     {
-        frontBotWall = true;
+        frontBotCollide = true;
     }
 
     public void onFrontBotUnCollide()
     {
-        frontBotWall = false;
+        frontBotCollide = false;
     }
 
     public void isGrounded()

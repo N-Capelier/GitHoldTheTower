@@ -102,7 +102,15 @@ public class PlayerLogic : NetworkBehaviour
         {
             if (!isGrounded)
             {
-                selfMovement.ApplyGravity();
+                if (selfMovement.isSomethingCollide() && Input.GetMouseButton(selfParams.wallMouseInput))
+                {
+                    selfMovement.NoGravity();
+                }
+                else
+                {
+                    selfMovement.ApplyGravity();
+                }
+                
             }
             else
             {

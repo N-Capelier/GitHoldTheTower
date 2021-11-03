@@ -15,7 +15,9 @@ public class ScriptableParamsPlayer : ScriptableObject
 
     public KeyCode jump = KeyCode.Space;
 
+    [Range(0, 2)] public int wallMouseInput;
     public float mouseSensivity;
+
 
     #endregion
 

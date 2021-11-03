@@ -17,6 +17,7 @@ MonoBehaviour:
   right: 100
   back: 115
   jump: 32
+  wallMouseInput: 1
   mouseSensivity: 120
   hspdAcceleration:
     serializedVersion: 2
