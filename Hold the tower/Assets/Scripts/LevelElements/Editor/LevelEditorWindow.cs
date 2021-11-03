@@ -262,7 +262,7 @@ public class LevelEditorWindow : EditorWindow
         }
 
 
-
+		EditorUtility.SetDirty(themeManager.activeTerrain);
         AssetDatabase.SaveAssets();
 
         Debug.Log($"Saved terrain: {themeManager.activeTerrain.terrainName}.");
