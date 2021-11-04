@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     private GameObject selfAttackCollider;
 
     private Vector3 moveDirection = new Vector3(0, 0, 0);
+    [HideInInspector]
+    public Vector3 groundSpeed = Vector3.zero;
 
     private Vector3 hspd;
     private Vector3 vspd;
@@ -38,6 +40,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (selfLogic.isGrounded && groundSpeed != Vector3.zero)
+        {
+            transform.position += groundSpeed * Time.fixedDeltaTime;
+        }
+
         if (isClimbingMovement)
         {
 

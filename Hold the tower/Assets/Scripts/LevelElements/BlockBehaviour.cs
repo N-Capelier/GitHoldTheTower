@@ -12,6 +12,9 @@ public class BlockBehaviour : MonoBehaviour
 	float elapsedTime = 0f;
 	float completion;
 
+	[HideInInspector]
+	public Vector3 speedPerframe;
+
 	public void SetTargetPosition(Vector3 _position)
 	{
 		startPosition = transform.position;
@@ -33,7 +36,10 @@ public class BlockBehaviour : MonoBehaviour
 		elapsedTime += Time.fixedDeltaTime;
 		completion = elapsedTime / moveDuration;
 
+		Vector3 beforeMovement = transform.position;
 		transform.position = Vector3.Lerp(startPosition, targetPosition, Mathf.SmoothStep(0, 1, completion));
+		speedPerframe = transform.position - beforeMovement;
+
 		if(completion >= 1)
 		{
 			transform.position = targetPosition;

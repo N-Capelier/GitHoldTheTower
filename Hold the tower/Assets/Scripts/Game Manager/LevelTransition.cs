@@ -10,6 +10,9 @@ public class LevelTransition : NetworkBehaviour
     private double networkTime = 0;
     private int niveau = 0;
 
+    [SerializeField]
+    private double timerCHange = 5d;
+
     private struct LevelInformation : NetworkMessage
     {
         float niveau;
@@ -37,7 +40,7 @@ public class LevelTransition : NetworkBehaviour
     void Update()
     {
         
-        if(NetworkTime.time >= networkTime + 10d)
+        if(NetworkTime.time >= networkTime + timerCHange)
         {
             OnChangeTerrain();
         }

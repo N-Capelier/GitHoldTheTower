@@ -187,6 +187,7 @@ MonoBehaviour:
   selfRbd: {fileID: 3467959007138746707}
   selfCamera: {fileID: 9175226997489984019}
   selfAttackCollider: {fileID: 6498416899167114560}
+  groundSpeed: {x: 0, y: 0, z: 0}
   isClimbingMovement: 0
   isAttacking: 0
 --- !u!1 &357448910990213783
@@ -396,7 +397,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2937716405550520954}
   - component: {fileID: 4206331319353820378}
-  - component: {fileID: 8195515878603110988}
+  - component: {fileID: 658297650622991473}
   m_Layer: 0
   m_Name: CollisionGround
   m_TagString: Untagged
@@ -429,9 +430,9 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.50677127, y: 0.16677892, z: 0.38265496}
-  m_Center: {x: -0.0035663247, y: -0.92714506, z: 0.0016191602}
---- !u!114 &8195515878603110988
+  m_Size: {x: 0.50677127, y: 0.2088443, z: 0.38265496}
+  m_Center: {x: -0.0035663247, y: -0.94817775, z: 0.0016191602}
+--- !u!114 &658297650622991473
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -440,7 +441,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1985864153651916231}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e70285136fd19a94eacb9d7da52d51fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 90863b7425a5f6b44a492fbef2146260, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collide:
@@ -473,9 +474,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  followTheCamera: 0
-  selfCamera: {fileID: 9175226997489984019}
-  selfCollision: {fileID: 0}
+  selfMovement: {fileID: 4205374861408034103}
 --- !u!1 &1998580965231456933
 GameObject:
   m_ObjectHideFlags: 0
@@ -662,7 +661,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fdc4fedc27348a249aaa460a7e4d4f8a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
