@@ -13,6 +13,12 @@ public class SensorGround : MonoBehaviour
     [SerializeField]
     private PlayerMovement selfMovement;
 
+    [SerializeField]
+    private Transform selfTransform;
+
+    private GameObject target;
+    private Vector3 offset;
+
 
     // Start is called before the first frame update
     private void OnTriggerEnter(Collider other)
@@ -38,7 +44,9 @@ public class SensorGround : MonoBehaviour
             if (nbCollide == 0)
             {
                 Uncollide.Invoke();
+                target = null;
             }
+            
             //Debug.Log(transform.name);
         }
 
@@ -48,9 +56,20 @@ public class SensorGround : MonoBehaviour
     {
         if (other.CompareTag("Wall"))
         {
-            selfMovement.groundSpeed = other.GetComponent<BlockBehaviour>().speedPerframe;
+            target = other.gameObject;
+            offset = transform.position - target.transform.position;
+            
         }
 
     }
 
+    void LateUpdate()
+    {
+        if (target != null)
+        {
+            selfTransform.position = target.transform.position + offset;
+            Debug.Log(offset);
+        }
+
+    }
 }

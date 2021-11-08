@@ -17,12 +17,12 @@ public class PlayerMovement : MonoBehaviour
     private GameObject selfAttackCollider;
 
     private Vector3 moveDirection = new Vector3(0, 0, 0);
-    [HideInInspector]
-    public Vector3 groundSpeed = Vector3.zero;
 
     private Vector3 hspd;
     private Vector3 vspd;
     private Vector3 attackspd = new Vector3();
+
+    public Vector3 groundCorrection;
 
     private bool leftCollide, rightCollide, backCollide, frontTopCollide, frontBotCollide;
 
@@ -37,13 +37,16 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
+    private void FixedUpdate()
+    {
+        if (selfLogic.isGrounded)
+        {
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (selfLogic.isGrounded && groundSpeed != Vector3.zero)
-        {
-            transform.position += groundSpeed * Time.fixedDeltaTime;
-        }
 
         if (isClimbingMovement)
         {
@@ -57,20 +60,18 @@ public class PlayerMovement : MonoBehaviour
                 {
                     vspd.y = 0;
                     ApplyGravity();
-                    Debug.Log("Collide");
                 }
             }
 
             selfRbd.velocity = hspd + vspd + attackspd;
         }
-
     }
    
 
     #region HorizontalPhysics
     public void Move(Vector3 direction, float timeStamp)
     {
-        moveDirection += direction;
+        moveDirection += new Vector3(direction.x, 0, direction.z);
         moveDirection = moveDirection.normalized;
 
         hspd = moveDirection * selfParams.hspdForce * selfParams.hspdAcceleration.Evaluate(timeStamp);
@@ -110,22 +111,10 @@ public class PlayerMovement : MonoBehaviour
 
         for(int i = 0;i< selfParams.jumpNumberToApply; i++)
         {
-            /*if(IsFrontCollide() || leftCollide || rightCollide || backCollide)
+            if (isSomethingCollide())
             {
-                if (IsFrontCollide() || backCollide) 
-                {
-                    hspd.z = 0;
-                }
 
-                if (leftCollide || rightCollide)
-                {
-                    hspd.x = 0;
-                }
-
-                vspd = Vector3.zero;
-                Debug.Log("Break");
-                break;
-            }*/
+            }
 
             vspd += transform.up * selfParams.topForceJump*Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();

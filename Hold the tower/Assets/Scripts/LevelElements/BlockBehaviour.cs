@@ -38,12 +38,11 @@ public class BlockBehaviour : MonoBehaviour
 
 		Vector3 beforeMovement = transform.position;
 		transform.position = Vector3.Lerp(startPosition, targetPosition, Mathf.SmoothStep(0, 1, completion));
-		speedPerframe = transform.position - beforeMovement;
-
 		if(completion >= 1)
 		{
 			transform.position = targetPosition;
 			movingToTargetPos = false;
 		}
+		speedPerframe = transform.position - beforeMovement;
 	}
 }
