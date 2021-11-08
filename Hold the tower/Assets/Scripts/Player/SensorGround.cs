@@ -12,6 +12,8 @@ public class SensorGround : MonoBehaviour
 
     [SerializeField]
     private PlayerMovement selfMovement;
+    [SerializeField]
+    private PlayerLogic selfLogic;
 
     [SerializeField]
     private Transform selfTransform;
@@ -63,12 +65,11 @@ public class SensorGround : MonoBehaviour
 
     }
 
-    void LateUpdate()
+    void FixedUpdate()
     {
-        if (target != null)
+        if (target != null && selfMovement && selfLogic.isGrounded && !selfMovement.isClimbingMovement)
         {
             selfTransform.position = target.transform.position + offset;
-            Debug.Log(offset);
         }
 
     }

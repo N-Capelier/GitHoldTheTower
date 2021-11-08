@@ -41,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (selfLogic.isGrounded)
         {
+            NoGravity();
         }
     }
 

@@ -45,6 +45,8 @@ public class PlayerLogic : NetworkBehaviour
         }
     }
 
+    #region Movement Logic
+
     private void fpsView()
     {
         float mouseX = Input.GetAxis("Mouse X") * selfParams.mouseSensivity * Time.fixedDeltaTime;
@@ -144,4 +146,10 @@ public class PlayerLogic : NetworkBehaviour
         }
         
     }
+
+    #endregion
+
+    #region Network logic
+
+    #endregion
 }

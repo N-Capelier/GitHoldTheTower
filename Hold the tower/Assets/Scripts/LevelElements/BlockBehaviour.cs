@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 public class BlockBehaviour : MonoBehaviour
 {
@@ -12,8 +13,8 @@ public class BlockBehaviour : MonoBehaviour
 	float elapsedTime = 0f;
 	float completion;
 
-	[HideInInspector]
-	public Vector3 speedPerframe;
+	private double fixedTimeNetwork;
+
 
 	public void SetTargetPosition(Vector3 _position)
 	{
@@ -25,7 +26,8 @@ public class BlockBehaviour : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if(movingToTargetPos)
+		double beforeTimeNetwork = NetworkTime.time;
+		if (movingToTargetPos)
 		{
 			MoveToTargetPos();
 		}
@@ -33,16 +35,14 @@ public class BlockBehaviour : MonoBehaviour
 
 	void MoveToTargetPos()
 	{
-		elapsedTime += Time.fixedDeltaTime;
+		elapsedTime += Time.fixedDeltaTime; //Need to change
 		completion = elapsedTime / moveDuration;
 
-		Vector3 beforeMovement = transform.position;
 		transform.position = Vector3.Lerp(startPosition, targetPosition, Mathf.SmoothStep(0, 1, completion));
 		if(completion >= 1)
 		{
 			transform.position = targetPosition;
 			movingToTargetPos = false;
 		}
-		speedPerframe = transform.position - beforeMovement;
 	}
 }

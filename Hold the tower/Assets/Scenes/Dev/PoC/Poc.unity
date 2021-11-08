@@ -6723,6 +6723,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   ThemeObject: {fileID: 1798301981}
+  timerCHange: 5
 --- !u!114 &1950125892
 MonoBehaviour:
   m_ObjectHideFlags: 0
