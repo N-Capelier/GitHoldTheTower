@@ -56,7 +56,7 @@ MonoBehaviour:
   syncInterval: 0.1
   clientAuthority: 1
   sendInterval: 0
-  syncPosition: 1
+  syncPosition: 0
   syncRotation: 1
   syncScale: 0
   interpolatePosition: 1
@@ -167,6 +167,9 @@ MonoBehaviour:
   selfCamera: {fileID: 9175226997489984019}
   selfMovement: {fileID: 4205374861408034103}
   teamName: 
+  localX: 0
+  localY: 0
+  localZ: 0
   isGrounded: 0
   isJumping: 0
   isAttachToWall: 0

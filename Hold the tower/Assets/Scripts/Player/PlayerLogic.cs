@@ -15,6 +15,11 @@ public class PlayerLogic : NetworkBehaviour
     [SyncVar]
     public string teamName;
 
+    [SyncVar]
+    public Vector3 syncPosition;
+
+
+
     private float yRotation, xRotation;
 
     private float timeStampRunAccel, timeStampRunDecel;
@@ -30,7 +35,7 @@ public class PlayerLogic : NetworkBehaviour
         {
             selfCamera.gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
-            
+
         }
     }
 
@@ -42,7 +47,17 @@ public class PlayerLogic : NetworkBehaviour
             fpsView();
             VerticalMovement();
             HorizontalMovement();
+            CmdMove(transform.position);
         }
+    }
+
+    private void FixedUpdate()
+    {
+        if (hasAuthority)
+        {
+
+        }
+
     }
 
     #region Movement Logic
@@ -58,7 +73,7 @@ public class PlayerLogic : NetworkBehaviour
 
         selfCamera.Rotate(Vector3.up * mouseX);
         selfCamera.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
-        
+
     }
 
     private void HorizontalMovement()
@@ -124,7 +139,7 @@ public class PlayerLogic : NetworkBehaviour
                     selfMovement.ApplyGravity();
                     isAttachToWall = false;
                 }
-                
+
             }
             else
             {
@@ -144,12 +159,37 @@ public class PlayerLogic : NetworkBehaviour
                 }
             }
         }
-        
+
     }
 
     #endregion
 
     #region Network logic
+    [Command]
+    void CmdMove(Vector3 position)
+    {
+        // we trust the player :)
+        transform.position = position;
+        SetDirtyBit(1u);
+    }
 
+    public override bool OnSerialize(NetworkWriter writer, bool initialState)
+    {
+        writer.Write(transform.position);
+        return true;
+    }
+
+    public override void OnDeserialize(NetworkReader reader, bool initialState)
+    {
+        if (isLocalPlayer)
+        {
+            return;
+        }
+
+        transform.position = reader.ReadVector3();
+    }
     #endregion
 }
+
+
+
