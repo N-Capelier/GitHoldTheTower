@@ -69,12 +69,12 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   hspdForce: 8
-  gravity: 50
+  gravity: 30
   forwardForceJump: 4
   topForceJump: 300
   jumpNumberToApply: 4
-  climbHeight: 5
-  climbWidth: 5
-  climbPrecision: 5
+  climbHeight: 1.5
+  climbWidth: 1
+  timeToClimb: 0.3
   forceAttack: 1000
   forceAttackNumberToApply: 10

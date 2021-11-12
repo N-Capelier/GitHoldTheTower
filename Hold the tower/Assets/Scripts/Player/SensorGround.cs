@@ -17,6 +17,8 @@ public class SensorGround : MonoBehaviour
 
     [SerializeField]
     private Transform selfTransform;
+    [SerializeField]
+    private Rigidbody selfRbd;
 
     private GameObject target;
     private Vector3 offset;
@@ -67,9 +69,11 @@ public class SensorGround : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (target != null && selfMovement && selfLogic.isGrounded && !selfMovement.isClimbingMovement)
+        if (target != null  && selfLogic.isGrounded && !selfMovement.isClimbingMovement)
         {
             selfTransform.position = target.transform.position + offset;
+            /*selfRbd.velocity += target.GetComponent<BlockBehaviour>().ownVelo;
+            Debug.Log(target.GetComponent<BlockBehaviour>().ownVelo);*/
         }
 
     }

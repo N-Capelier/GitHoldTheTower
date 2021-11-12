@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7197732291947962497}
   - component: {fileID: 5204818065857996584}
   - component: {fileID: 4205374861408034103}
+  - component: {fileID: -8456490503507093031}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -118,9 +119,9 @@ MonoBehaviour:
   syncInterval: 0
   target: {fileID: 3467959007138746707}
   clientAuthority: 1
-  syncVelocity: 1
+  syncVelocity: 0
   clearVelocity: 0
-  velocitySensitivity: 0.01
+  velocitySensitivity: 0.001
   syncAngularVelocity: 1
   clearAngularVelocity: 0
   angularVelocitySensitivity: 0.1
@@ -167,9 +168,6 @@ MonoBehaviour:
   selfCamera: {fileID: 9175226997489984019}
   selfMovement: {fileID: 4205374861408034103}
   teamName: 
-  localX: 0
-  localY: 0
-  localZ: 0
   isGrounded: 0
   isJumping: 0
   isAttachToWall: 0
@@ -193,6 +191,20 @@ MonoBehaviour:
   groundCorrection: {x: 0, y: 0, z: 0}
   isClimbingMovement: 0
   isAttacking: 0
+--- !u!114 &-8456490503507093031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 334883179893610998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe8516dec8b446a4c8e7805e25617c7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0
 --- !u!1 &357448910990213783
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,6 +492,7 @@ MonoBehaviour:
   selfMovement: {fileID: 4205374861408034103}
   selfLogic: {fileID: 5204818065857996584}
   selfTransform: {fileID: 2771112604293887708}
+  selfRbd: {fileID: 3467959007138746707}
 --- !u!1 &1998580965231456933
 GameObject:
   m_ObjectHideFlags: 0

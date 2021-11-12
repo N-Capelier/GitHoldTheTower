@@ -13,8 +13,7 @@ public class BlockBehaviour : MonoBehaviour
 	float elapsedTime = 0f;
 	float completion;
 
-	private double fixedTimeNetwork;
-
+	public Vector3 ownVelo = Vector3.zero;
 
 	public void SetTargetPosition(Vector3 _position)
 	{
@@ -37,9 +36,12 @@ public class BlockBehaviour : MonoBehaviour
 	{
 		elapsedTime += Time.fixedDeltaTime; //Need to change
 		completion = elapsedTime / moveDuration;
-
+		Vector3 actualPos = transform.position;
 		transform.position = Vector3.Lerp(startPosition, targetPosition, Mathf.SmoothStep(0, 1, completion));
-		if(completion >= 1)
+		ownVelo = transform.position - actualPos;
+		ownVelo = new Vector3(0, ownVelo.y, 0);
+
+		if (completion >= 1)
 		{
 			transform.position = targetPosition;
 			movingToTargetPos = false;

@@ -102,8 +102,7 @@ public class PlayerMovement : MonoBehaviour
     //WIP need to adjust jump to interact with wall
     public void Jump()
     {
-        vspd = Vector3.zero;
-        StartCoroutine("JumpManage");
+        StartCoroutine(JumpManage());
     }
 
     public IEnumerator JumpManage()
@@ -160,15 +159,16 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 startPosition = transform.position;
         Vector3 endPosition = transform.position + (selfCamera.forward * selfParams.climbWidth) + transform.up * selfParams.climbHeight; // front and up
-        float time = Time.deltaTime;
+        float time = 0;
 
-        while ((endPosition - transform.position).magnitude > selfParams.climbPrecision)
+
+        while(time < selfParams.timeToClimb)
         {
-            //Debug.Log((endPosition - transform.position).magnitude);
-            transform.position = Vector3.Lerp(startPosition,endPosition, time);
+            transform.position = Vector3.Lerp(startPosition, endPosition, time/ selfParams.timeToClimb); // WIP
             time += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+
         vspd = Vector3.zero;
 
         selfRbd.isKinematic = false;

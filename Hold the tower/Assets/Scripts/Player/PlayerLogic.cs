@@ -15,11 +15,6 @@ public class PlayerLogic : NetworkBehaviour
     [SyncVar]
     public string teamName;
 
-    [SyncVar]
-    public Vector3 syncPosition;
-
-
-
     private float yRotation, xRotation;
 
     private float timeStampRunAccel, timeStampRunDecel;
@@ -47,7 +42,6 @@ public class PlayerLogic : NetworkBehaviour
             fpsView();
             VerticalMovement();
             HorizontalMovement();
-            CmdMove(transform.position);
         }
     }
 
@@ -145,7 +139,7 @@ public class PlayerLogic : NetworkBehaviour
             {
                 if (!isJumping)
                 {
-                    selfMovement.NoGravity();
+                    //selfMovement.NoGravity();
                 }
 
                 if (Input.GetKeyDown(selfParams.jump) && !isJumping)
@@ -165,29 +159,6 @@ public class PlayerLogic : NetworkBehaviour
     #endregion
 
     #region Network logic
-    [Command]
-    void CmdMove(Vector3 position)
-    {
-        // we trust the player :)
-        transform.position = position;
-        SetDirtyBit(1u);
-    }
-
-    public override bool OnSerialize(NetworkWriter writer, bool initialState)
-    {
-        writer.Write(transform.position);
-        return true;
-    }
-
-    public override void OnDeserialize(NetworkReader reader, bool initialState)
-    {
-        if (isLocalPlayer)
-        {
-            return;
-        }
-
-        transform.position = reader.ReadVector3();
-    }
     #endregion
 }
 
