@@ -9,6 +9,8 @@ public class ThemeManager : MonoBehaviour
 
 	public LevelTerrain activeTerrain;
 
+	public BlockBehaviour[][] areas = new BlockBehaviour[3][];
+
 #if UNITY_EDITOR
 
 	public void InitTerrainBlocks()

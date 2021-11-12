@@ -3,14 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+public enum OneTwoThree
+{
+	One = 0,
+	Two = 1,
+	Three = 2
+}
+
 public class LevelEditorWindow : EditorWindow
 {
-	static LevelEditorWindow themeCreator;
+	static LevelEditorWindow levelEditor;
 
 	[MenuItem("Tools/Level Editor", priority = 1)]
 	public static void Init()
 	{
-		themeCreator = GetWindow<LevelEditorWindow>("Level Editor");
+		levelEditor = GetWindow<LevelEditorWindow>("Level Editor");
 	}
 
 	GUIStyle textStyle;
@@ -55,11 +62,13 @@ public class LevelEditorWindow : EditorWindow
 
 	static int currentTab = 0;
 	static int registeredTab = 0;
-	string[] toolbarTabsNames = { "Theme Creator", "Terrain Creator", "Terrain Editor" };
+	string[] toolbarTabsNames = { "Theme Creator", "Terrain Creator", "Area Creator", "Terrain Editor" };
 
 	ThemeManager themeManager;
 	string newThemeName;
 	string newTerrainName;
+
+	OneTwoThree areaIndex = OneTwoThree.One;
 
 	private void OnGUI()
 	{
@@ -86,6 +95,9 @@ public class LevelEditorWindow : EditorWindow
 				DisplayTerrainCreatorWindow();
 				break;
 			case 2:
+				DisplayAreaCreatorWindow();
+				break;
+			case 3:
 				DisplayTerrainEditorWindow();
 				break;
 			default:
@@ -142,6 +154,28 @@ public class LevelEditorWindow : EditorWindow
 		else if (GUILayout.Button("Create Terrain", buttonStyle))
 		{
 			CreateTerrain();
+		}
+	}
+
+	void DisplayAreaCreatorWindow()
+	{
+		EditorGUILayout.LabelField("Theme Manager:", textStyle);
+		themeManager = (ThemeManager)EditorGUILayout.ObjectField(themeManager, typeof(ThemeManager), true);
+
+		EditorGUILayout.Space(10);
+
+		EditorGUILayout.LabelField("Area Index:", textStyle);
+		areaIndex = (OneTwoThree)EditorGUILayout.EnumPopup(areaIndex);
+
+		EditorGUILayout.Space(10);
+
+		EditorGUILayout.LabelField("Select all the blocks you wish to place in the area.", textStyle);
+
+		EditorGUILayout.Space(10);
+
+		if(GUILayout.Button("Create Area", buttonStyle))
+		{
+			CreateArea();
 		}
 	}
 
@@ -243,6 +277,25 @@ public class LevelEditorWindow : EditorWindow
 		Selection.activeObject = _newTerrain;
 
 		Debug.Log($"Created new terrain: {newTerrainName}.");
+	}
+
+	void CreateArea()
+	{
+		//Selection.gameObjects
+
+		List<BlockBehaviour> _blocksInArea = new List<BlockBehaviour>();
+
+		foreach (GameObject go in Selection.gameObjects)
+		{
+			if(go.GetComponent<BlockBehaviour>())
+			{
+				_blocksInArea.Add(go.GetComponent<BlockBehaviour>());
+			}
+		}
+
+		themeManager.areas[(int)areaIndex] = _blocksInArea.ToArray();
+
+		Debug.Log($"Created new area with {themeManager.areas[(int)areaIndex].Length} blocks.");
 	}
 
 	void LoadTerrain()
