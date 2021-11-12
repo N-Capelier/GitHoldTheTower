@@ -10,10 +10,8 @@ public class LevelTransition : NetworkBehaviour
     private double networkTime = 0;
     private int niveau = 0;
 
-    private struct LevelInformation : NetworkMessage
-    {
-        float niveau;
-    }
+    [SerializeField]
+    private double timerChange = 5d;
 
     // Start is called before the first frame update
     void Start()
@@ -30,16 +28,37 @@ public class LevelTransition : NetworkBehaviour
             niveau = 0;
 
         ThemeObject.GetComponent<ThemeManager>().LoadTerrain(ThemeObject.GetComponent<ThemeManager>().terrains[niveau]);
+    }
+
+    //Send to all client transition
+    [ClientRpc]
+    void RpcSendChange()
+    {
+        OnChangeTerrain();
+    }
+
+    void Update()
+    {
+        if (isServer && AllPlayerReaddy())
+        {
+            if (NetworkTime.time >= networkTime + timerChange)
+            {
+                RpcSendChange();
+                //OnChangeTerrain();
+            }
+        }
 
     }
 
-    // Update is called once per frame
-    void Update()
+    //Check if all player have load the game
+    private bool AllPlayerReaddy()
     {
-        
-        if(NetworkTime.time >= networkTime + 10d)
+        foreach (KeyValuePair<int,NetworkConnectionToClient> con in NetworkServer.connections)
         {
-            OnChangeTerrain();
+            if (!con.Value.isReady)
+                return false;
+
         }
+        return true;
     }
 }

@@ -22,6 +22,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 vspd;
     private Vector3 attackspd = new Vector3();
 
+    public Vector3 groundCorrection;
+
     private bool leftCollide, rightCollide, backCollide, frontTopCollide, frontBotCollide;
 
     [HideInInspector]
@@ -35,9 +37,18 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
+    private void FixedUpdate()
+    {
+        if (selfLogic.isGrounded)
+        {
+            NoGravity();
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
+
         if (isClimbingMovement)
         {
 
@@ -50,20 +61,18 @@ public class PlayerMovement : MonoBehaviour
                 {
                     vspd.y = 0;
                     ApplyGravity();
-                    Debug.Log("Collide");
                 }
             }
 
             selfRbd.velocity = hspd + vspd + attackspd;
         }
-
     }
    
 
     #region HorizontalPhysics
     public void Move(Vector3 direction, float timeStamp)
     {
-        moveDirection += direction;
+        moveDirection += new Vector3(direction.x, 0, direction.z);
         moveDirection = moveDirection.normalized;
 
         hspd = moveDirection * selfParams.hspdForce * selfParams.hspdAcceleration.Evaluate(timeStamp);
@@ -93,8 +102,7 @@ public class PlayerMovement : MonoBehaviour
     //WIP need to adjust jump to interact with wall
     public void Jump()
     {
-        vspd = Vector3.zero;
-        StartCoroutine("JumpManage");
+        StartCoroutine(JumpManage());
     }
 
     public IEnumerator JumpManage()
@@ -103,22 +111,10 @@ public class PlayerMovement : MonoBehaviour
 
         for(int i = 0;i< selfParams.jumpNumberToApply; i++)
         {
-            /*if(IsFrontCollide() || leftCollide || rightCollide || backCollide)
+            if (isSomethingCollide())
             {
-                if (IsFrontCollide() || backCollide) 
-                {
-                    hspd.z = 0;
-                }
 
-                if (leftCollide || rightCollide)
-                {
-                    hspd.x = 0;
-                }
-
-                vspd = Vector3.zero;
-                Debug.Log("Break");
-                break;
-            }*/
+            }
 
             vspd += transform.up * selfParams.topForceJump*Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
@@ -163,15 +159,16 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 startPosition = transform.position;
         Vector3 endPosition = transform.position + (selfCamera.forward * selfParams.climbWidth) + transform.up * selfParams.climbHeight; // front and up
-        float time = Time.deltaTime;
+        float time = 0;
 
-        while ((endPosition - transform.position).magnitude > selfParams.climbPrecision)
+
+        while(time < selfParams.timeToClimb)
         {
-            //Debug.Log((endPosition - transform.position).magnitude);
-            transform.position = Vector3.Lerp(startPosition,endPosition, time);
+            transform.position = Vector3.Lerp(startPosition, endPosition, time/ selfParams.timeToClimb); // WIP
             time += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+
         vspd = Vector3.zero;
 
         selfRbd.isKinematic = false;

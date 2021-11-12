@@ -297,7 +297,7 @@ public class MyNewNetworkManager : NetworkManager
     #endregion
 
 
-    #region Mes fonctions qui gère le network
+    #region Mes fonctions qui gèrent le network
     private void CreateClientFromServer(NetworkConnection conn, MyNewNetworkAuthenticator.ClientConnectionMessage msg)
     {
         if (conn.clientOwnedObjects.Count < 1) // Débug quand le joueur se connecte à un server qui n'existe pas, et ensuite host

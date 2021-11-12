@@ -30,7 +30,7 @@ public class PlayerLogic : NetworkBehaviour
         {
             selfCamera.gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
-            
+
         }
     }
 
@@ -45,6 +45,17 @@ public class PlayerLogic : NetworkBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (hasAuthority)
+        {
+
+        }
+
+    }
+
+    #region Movement Logic
+
     private void fpsView()
     {
         float mouseX = Input.GetAxis("Mouse X") * selfParams.mouseSensivity * Time.fixedDeltaTime;
@@ -56,7 +67,7 @@ public class PlayerLogic : NetworkBehaviour
 
         selfCamera.Rotate(Vector3.up * mouseX);
         selfCamera.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
-        
+
     }
 
     private void HorizontalMovement()
@@ -122,13 +133,13 @@ public class PlayerLogic : NetworkBehaviour
                     selfMovement.ApplyGravity();
                     isAttachToWall = false;
                 }
-                
+
             }
             else
             {
                 if (!isJumping)
                 {
-                    selfMovement.NoGravity();
+                    //selfMovement.NoGravity();
                 }
 
                 if (Input.GetKeyDown(selfParams.jump) && !isJumping)
@@ -142,6 +153,14 @@ public class PlayerLogic : NetworkBehaviour
                 }
             }
         }
-        
+
     }
+
+    #endregion
+
+    #region Network logic
+    #endregion
 }
+
+
+

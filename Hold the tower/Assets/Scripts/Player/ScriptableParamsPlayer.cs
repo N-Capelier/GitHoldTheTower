@@ -37,7 +37,7 @@ public class ScriptableParamsPlayer : ScriptableObject
     [Header("Climb")]
     public float climbHeight = 5f;
     public float climbWidth = 5f;
-    public float climbPrecision = 5f;
+    public float timeToClimb = 0.5f;
 
     [Header("Attack")]
     public float forceAttack = 20f;
