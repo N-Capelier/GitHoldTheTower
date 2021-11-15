@@ -12,8 +12,14 @@ public class LobbyPlayerLogic : NetworkBehaviour
     public string clientPseudo;
     [SyncVar(hook = nameof(ChangeTeam))]
     public int team;
-    [SyncVar]
-    public string nameOfTeam;
+
+
+    public enum nameOfTeam
+    {
+        red,blue
+    };
+
+    public nameOfTeam _nameOfTeam;
 
     [Header("Var")]
     [SerializeField]
@@ -118,15 +124,15 @@ public class LobbyPlayerLogic : NetworkBehaviour
         {
             case 0:
                 Team.color = Color.red;
-                nameOfTeam = "red";
+                _nameOfTeam = nameOfTeam.red;
                 break;
             case 1:
                 Team.color = Color.blue;
-                nameOfTeam = "blue";
+                _nameOfTeam = nameOfTeam.blue;
                 break;
         }
 
-        ServerManager.GetComponent<MyNewNetworkManager>().playerTeamName = nameOfTeam;
+        ServerManager.GetComponent<MyNewNetworkManager>().playerTeamName = _nameOfTeam;
     } //Syncronise l'ui
     #endregion
 }

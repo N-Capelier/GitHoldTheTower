@@ -61,8 +61,7 @@ public class SensorGround : MonoBehaviour
         if (other.CompareTag("Wall"))
         {
             target = other.gameObject;
-            offset = transform.position - target.transform.position;
-            
+   
         }
 
     }
@@ -70,10 +69,8 @@ public class SensorGround : MonoBehaviour
     void FixedUpdate()
     {
         if (target != null  && selfLogic.isGrounded && !selfMovement.isClimbingMovement)
-        {
-            selfTransform.position = target.transform.position + offset;
+        { 
             selfRbd.velocity += target.GetComponent<BlockBehaviour>().ownVelo;
-            
         }
 
     }

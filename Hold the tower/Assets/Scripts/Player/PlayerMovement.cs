@@ -64,6 +64,8 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
 
+            Debug.Log(" attackspd : "+attackspd);
+            Debug.Log("hspd : " + hspd);
             selfRbd.velocity = hspd + vspd + attackspd;
         }
     }
@@ -154,24 +156,39 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator ClimbManage()
     {
         selfRbd.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
-        selfRbd.isKinematic = true;
         isClimbingMovement = true;
 
-        Vector3 startPosition = transform.position;
-        Vector3 endPosition = transform.position + (selfCamera.forward * selfParams.climbWidth) + transform.up * selfParams.climbHeight; // front and up
+        //Vector3 startPosition = transform.position;
+        //Vector3 endPosition = transform.position + (selfCamera.forward * selfParams.climbWidth) + transform.up * selfParams.climbHeight; // front and up
+
+        //Vector3 startVelocity = Vector3.zero;
+        //Vector3 endVelocity = selfCamera.forward * selfParams.climbWidth + transform.up * selfParams.climbHeight;
+        
+        Vector3 startVelocityY = Vector3.zero;
+        Vector3 EndVelocityY = transform.up * selfParams.climbHeight;
+
+        Vector3 startVelocityX = Vector3.zero;
+        Vector3 EndVelocityX = selfCamera.forward * selfParams.climbWidth;
+
+        //Velocity for Y
         float time = 0;
-
-
-        while(time < selfParams.timeToClimb)
+        while (time < selfParams.timeToClimb/2)
         {
-            transform.position = Vector3.Lerp(startPosition, endPosition, time/ selfParams.timeToClimb); // WIP
+            selfRbd.velocity = Vector3.Lerp(startVelocityY, EndVelocityY, time / selfParams.timeToClimb/2); // WIP
             time += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+        //Reset timer
+        /* time = 0;
 
-        vspd = Vector3.zero;
+         //Velocity for X
+         while (time < selfParams.timeToClimb/2)
+         {
+             selfRbd.velocity = Vector3.Lerp(startVelocityX, EndVelocityX, time/ selfParams.timeToClimb/2); // WIP
+             time += Time.deltaTime;
+             yield return new WaitForEndOfFrame();
+         }*/
 
-        selfRbd.isKinematic = false;
         isClimbingMovement = false;
         selfRbd.collisionDetectionMode = CollisionDetectionMode.Continuous;
     }
@@ -202,27 +219,64 @@ public class PlayerMovement : MonoBehaviour
 
     #region Attack
 
-    public void Attack()
+    public float AttackLoad(float time)
     {
-        StartCoroutine("AttackManage");
+        float ratio = 0;
+        
+        //Slow player
+        attackspd = hspd * -1;
+        attackspd *= selfParams.slowMovementRatio;
+
+        if (!isAttacking) // Will create bugs
+        {
+            isAttacking = true;
+        }
+
+        //Si est en dessous du pickTime
+        if(time <= selfParams.timePerfectAttack)
+        {
+            ratio = time;
+        }
+
+        //Si est au pickTime
+        if(time <= selfParams.timePerfectAttack + selfParams.timeTreshold && time >= selfParams.timePerfectAttack)
+        {
+            ratio = 1;
+        }
+
+        //Si supérieur au pickTime + treshHold
+        if(time > selfParams.timePerfectAttack + selfParams.timeTreshold)
+        {
+            ratio = 0.8f;
+        }
+
+        Debug.Log(ratio);
+        return ratio;
     }
 
-    public IEnumerator AttackManage()
+    public void Attack(float time)
     {
-        isAttacking = true;
+        StartCoroutine(AttackManage(time));
+    }
+
+    public IEnumerator AttackManage(float ratio) //Coroutine gérant le mouvement d'attaque
+    {
         selfAttackCollider.SetActive(true);
 
         Vector3 directionAttack = selfCamera.forward;
 
-        for(int i =0; i< selfParams.forceAttackNumberToApply; i++)
+        attackspd = Vector3.zero; //init attackSpd Important
+
+        for (int i =0; i< selfParams.forceAttackNumberToApply; i++)
         {
-            attackspd = directionAttack * selfParams.forceAttack * Time.fixedDeltaTime;
+            attackspd += directionAttack * selfParams.forceAttack * Time.fixedDeltaTime* ratio;
             yield return new WaitForFixedUpdate();
         }
         float attackTimeStamp = Time.time;
 
+        isAttacking = false;
         //Decelerate attack speed
-        while(attackspd != Vector3.zero)
+        while (attackspd != Vector3.zero)
         {
             DecelerateAttack(Time.time - attackTimeStamp);
             yield return new WaitForFixedUpdate();
@@ -239,12 +293,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
-
     #endregion
 
     #region Sensor Event
 
+    //All sensors logic concerning Wall Collider
     public void onLeftCollide()
     {
         leftCollide = true;

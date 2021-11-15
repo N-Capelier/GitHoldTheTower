@@ -41,6 +41,9 @@ public class ScriptableParamsPlayer : ScriptableObject
 
     [Header("Attack")]
     public float forceAttack = 20f;
+    public float timePerfectAttack = 0.8f;
+    public float timeTreshold = 0.15f;
+    [Range(0f,1f)] public float slowMovementRatio = 0.5f;
 
     [Range(1, 100)] public int forceAttackNumberToApply;
 }

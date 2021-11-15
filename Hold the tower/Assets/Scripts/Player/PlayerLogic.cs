@@ -13,11 +13,12 @@ public class PlayerLogic : NetworkBehaviour
     private PlayerMovement selfMovement;
 
     [SyncVar]
-    public string teamName;
+    public LobbyPlayerLogic.nameOfTeam teamName;
 
     private float yRotation, xRotation;
 
     private float timeStampRunAccel, timeStampRunDecel;
+    private float timeAttack, ratioAttack;
 
     //State
     [HideInInspector]
@@ -106,9 +107,17 @@ public class PlayerLogic : NetworkBehaviour
                 timeStampRunAccel = Time.time;
             }
 
-            if (Input.GetMouseButtonDown(selfParams.attackMouseInput))
+            if (Input.GetMouseButton(selfParams.attackMouseInput))
             {
-                selfMovement.Attack();
+                timeAttack += Time.deltaTime;
+                ratioAttack = selfMovement.AttackLoad(timeAttack);
+            }
+
+            if (Input.GetMouseButtonUp(selfParams.attackMouseInput))
+            {
+                selfMovement.Attack(ratioAttack);
+                timeAttack = 0;
+                ratioAttack = 0;
             }
         }
         else
@@ -156,6 +165,18 @@ public class PlayerLogic : NetworkBehaviour
 
     }
 
+    #endregion
+
+    #region AttackLogic
+    public void getHit()
+    {
+
+    }
+
+    public void cantBeHit()
+    {
+
+    }
     #endregion
 
     #region Network logic
