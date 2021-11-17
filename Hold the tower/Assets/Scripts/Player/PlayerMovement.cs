@@ -21,10 +21,13 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 hspd;
     private Vector3 vspd;
     private Vector3 attackspd = new Vector3();
+    private Vector3 WallJumpspd;
 
     public Vector3 groundCorrection;
 
     private bool leftCollide, rightCollide, backCollide, frontTopCollide, frontBotCollide;
+
+    private bool canWallJump = true;
 
     [HideInInspector]
     public bool isClimbingMovement;
@@ -55,16 +58,31 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            if(vspd.y > 0 && hspd != Vector3.zero) //if apply positive force ( jump ...)
+            if(hspd != Vector3.zero && !selfLogic.isGrounded) //if apply positive force ( jump ...)
             {
-                if(isSomethingCollide())
+                if(IsSomethingCollide())
                 {
-                    vspd.y = 0;
-                    ApplyGravity();
+                    //WIP a changer
+                    if (Mathf.Sign(hspd.x) == Mathf.Sign(-selfLogic.normalWallJump.x))
+                    {
+                        hspd.x = 0;
+                    }
+
+                    if (Mathf.Sign(hspd.z) == Mathf.Sign(-selfLogic.normalWallJump.z))
+                    {
+                        hspd.z = 0;
+                    }
+
+                    if (Mathf.Sign(hspd.x) == Mathf.Sign(-selfLogic.normalWallJump.x) || Mathf.Sign(hspd.z) == Mathf.Sign(-selfLogic.normalWallJump.z))
+                    {
+                        attackspd = Vector3.zero;
+                        WallJumpspd = Vector3.zero;
+                    }
+                    
                 }
             }
 
-            selfRbd.velocity = hspd + vspd + attackspd;
+            selfRbd.velocity = hspd + vspd + attackspd + WallJumpspd;
         }
     }
    
@@ -85,6 +103,11 @@ public class PlayerMovement : MonoBehaviour
         {
             hspd = hspd * selfParams.hspdDeceleration.Evaluate(timeStamp);
         }
+    }
+
+    public void StopMovement()
+    {
+        hspd = Vector3.zero;
     }
     #endregion
 
@@ -111,11 +134,6 @@ public class PlayerMovement : MonoBehaviour
 
         for(int i = 0;i< selfParams.jumpNumberToApply; i++)
         {
-            if (isSomethingCollide())
-            {
-
-            }
-
             vspd += transform.up * selfParams.topForceJump*Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
@@ -123,14 +141,36 @@ public class PlayerMovement : MonoBehaviour
         selfLogic.isJumping = false;
     }
 
-    public void WallJump()
+    //start WallJump
+    public void WallJump(Vector3 direction)
     {
-
+        Debug.Log("WallJump");
+        if (canWallJump)
+        {
+            StartCoroutine(WallJumpManage(direction));
+            canWallJump = false;
+        }
+        
     }
 
-    public IEnumerator WallJumpManage()
+    //Manage walljump movement
+    public IEnumerator WallJumpManage(Vector3 direction)
     {
-        return null;
+        Vector3 adjustDirection = direction+new Vector3(0,0.5f,0);
+
+        float _timer = 0;
+        
+        //Add force
+        while (_timer < selfParams.forceToWallJumpCurve[selfParams.forceToWallJumpCurve.length-1].time)
+        {
+            vspd = Vector3.zero;
+            WallJumpspd = adjustDirection * (selfParams.forceToWallJumpCurve.Evaluate(_timer) * Time.fixedDeltaTime * selfParams.forceToWallJump);
+            Debug.Log(WallJumpspd);
+            _timer += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+       
+
     }
     //manage jump
     #endregion
@@ -154,24 +194,39 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator ClimbManage()
     {
         selfRbd.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
-        selfRbd.isKinematic = true;
         isClimbingMovement = true;
 
-        Vector3 startPosition = transform.position;
-        Vector3 endPosition = transform.position + (selfCamera.forward * selfParams.climbWidth) + transform.up * selfParams.climbHeight; // front and up
+        //Vector3 startPosition = transform.position;
+        //Vector3 endPosition = transform.position + (selfCamera.forward * selfParams.climbWidth) + transform.up * selfParams.climbHeight; // front and up
+
+        //Vector3 startVelocity = Vector3.zero;
+        //Vector3 endVelocity = selfCamera.forward * selfParams.climbWidth + transform.up * selfParams.climbHeight;
+        
+        Vector3 startVelocityY = Vector3.zero;
+        Vector3 EndVelocityY = transform.up * selfParams.climbHeight;
+
+        //Vector3 startVelocityX = Vector3.zero;
+        //Vector3 EndVelocityX = selfCamera.forward * selfParams.climbWidth;
+
+        //Velocity for Y
         float time = 0;
-
-
-        while(time < selfParams.timeToClimb)
+        while (time < selfParams.timeToClimb/2)
         {
-            transform.position = Vector3.Lerp(startPosition, endPosition, time/ selfParams.timeToClimb); // WIP
+            selfRbd.velocity = Vector3.Lerp(startVelocityY, EndVelocityY, time / selfParams.timeToClimb/2); // WIP
             time += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+        //Reset timer
+        /* time = 0;
 
-        vspd = Vector3.zero;
+         //Velocity for X
+         while (time < selfParams.timeToClimb/2)
+         {
+             selfRbd.velocity = Vector3.Lerp(startVelocityX, EndVelocityX, time/ selfParams.timeToClimb/2); // WIP
+             time += Time.deltaTime;
+             yield return new WaitForEndOfFrame();
+         }*/
 
-        selfRbd.isKinematic = false;
         isClimbingMovement = false;
         selfRbd.collisionDetectionMode = CollisionDetectionMode.Continuous;
     }
@@ -189,7 +244,7 @@ public class PlayerMovement : MonoBehaviour
         return false;
     }
 
-    public bool isSomethingCollide() //is there any wall collide
+    public bool IsSomethingCollide() //is there any wall collide
     {
         if(IsFrontCollide() || leftCollide || rightCollide || backCollide){
             return true;
@@ -202,33 +257,78 @@ public class PlayerMovement : MonoBehaviour
 
     #region Attack
 
-    public void Attack()
+    public float AttackLoad(float time)
     {
-        StartCoroutine("AttackManage");
+        float ratio = 0;
+        
+        //Slow player
+        attackspd = hspd * -1;
+        attackspd *= selfParams.slowMovementRatio;
+
+        //Si est en dessous du pickTime
+        if(time <= selfParams.timePerfectAttack)
+        {
+            ratio = time;
+        }
+
+        //Si est au pickTime
+        if(time <= selfParams.timePerfectAttack + selfParams.timeTreshold && time >= selfParams.timePerfectAttack)
+        {
+            ratio = 1;
+        }
+
+        //Si supérieur au pickTime + treshHold
+        if(time > selfParams.timePerfectAttack + selfParams.timeTreshold)
+        {
+            ratio = 0.8f;
+        }
+
+        Debug.Log(ratio);
+        return ratio;
     }
 
-    public IEnumerator AttackManage()
+    public void Attack(float time)
     {
-        isAttacking = true;
+        StartCoroutine(AttackManage(time));
+    }
+
+    public IEnumerator AttackManage(float ratio) //Coroutine gérant le mouvement d'attaque
+    {
         selfAttackCollider.SetActive(true);
 
         Vector3 directionAttack = selfCamera.forward;
+        attackspd = Vector3.zero; //init attackSpd Important
+        isAttacking = true;
 
-        for(int i =0; i< selfParams.forceAttackNumberToApply; i++)
+        float _time = 0;
+        while(_time <selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time)
         {
-            attackspd = directionAttack * selfParams.forceAttack * Time.fixedDeltaTime;
+            attackspd = directionAttack * selfParams.velocityCurve.Evaluate(_time) * Time.fixedDeltaTime * ratio * selfParams.forceAttack;
+            _time += Time.deltaTime;
             yield return new WaitForFixedUpdate();
         }
+
         float attackTimeStamp = Time.time;
 
+        //Start a timer to cooldown punch
+        StartCoroutine(timerAttack());
         //Decelerate attack speed
-        while(attackspd != Vector3.zero)
+        while (attackspd != Vector3.zero)
         {
             DecelerateAttack(Time.time - attackTimeStamp);
             yield return new WaitForFixedUpdate();
         }
 
         selfAttackCollider.SetActive(false);
+        
+        //active Wall Jump if player punch
+        canWallJump = true;
+    }
+
+    public IEnumerator timerAttack()
+    {
+        yield return new WaitForSeconds(selfParams.cooldownAttack);
+        isAttacking = false;
     }
 
     public void DecelerateAttack(float timeStamp)
@@ -239,12 +339,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
-
     #endregion
 
     #region Sensor Event
 
+    //All sensors logic concerning Wall Collider
     public void onLeftCollide()
     {
         leftCollide = true;
@@ -298,6 +397,7 @@ public class PlayerMovement : MonoBehaviour
     public void isGrounded()
     {
         selfLogic.isGrounded = true;
+        canWallJump = true;
     }
 
     public void isNotGrounded()

@@ -30,9 +30,12 @@ public class ScriptableParamsPlayer : ScriptableObject
     [Header("Vspd")]
     public float gravity;
 
+    [Header("Jump and WallJump")]
     public float forwardForceJump;
     public float topForceJump;
     [Range(1,100)] public int jumpNumberToApply;
+    public AnimationCurve forceToWallJumpCurve;
+    public float forceToWallJump;
 
     [Header("Climb")]
     public float climbHeight = 5f;
@@ -40,7 +43,11 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float timeToClimb = 0.5f;
 
     [Header("Attack")]
+    public AnimationCurve velocityCurve;
     public float forceAttack = 20f;
+    public float cooldownAttack = 0.5f; //en seconde
+    public float timePerfectAttack = 0.8f;
+    public float timeTreshold = 0.15f;
+    [Range(0f,1f)] public float slowMovementRatio = 0.5f;
 
-    [Range(1, 100)] public int forceAttackNumberToApply;
 }

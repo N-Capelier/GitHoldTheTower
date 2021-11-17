@@ -18,9 +18,11 @@ public class MyNewNetworkManager : NetworkManager
     public GameObject StartButton;
     public GameObject TextInputIp;
     public GameObject[] lobbyPlayerServer = new GameObject[4];
+    public GameObject[] SpawnPlayerPosition = new GameObject[4];
 
     [HideInInspector]
-    public string playerTeamName;
+    public LobbyPlayerLogic.nameOfTeam playerTeamName;
+    private int nbRedTeam, nbBlueTeam;
 
     [SerializeField]
     private string gameScene;
@@ -112,7 +114,12 @@ public class MyNewNetworkManager : NetworkManager
     /// Called on the server when a scene is completed loaded, when the scene load was initiated by the server with ServerChangeScene().
     /// </summary>
     /// <param name="sceneName">The name of the new scene.</param>
-    public override void OnServerSceneChanged(string sceneName) { }
+    public override void OnServerSceneChanged(string sceneName) { 
+        if(sceneName != "LobbyScene")
+        {
+            SpawnPlayerPosition = GameObject.FindGameObjectsWithTag("Spawner");
+        }
+    }
 
     /// <summary>
     /// Called from ClientChangeScene immediately before SceneManager.LoadSceneAsync is executed
@@ -134,6 +141,10 @@ public class MyNewNetworkManager : NetworkManager
 
         if(SceneManager.GetActiveScene().name != "LobbyScene")
         {
+            //Reset number
+            nbBlueTeam = 0;
+            nbRedTeam = 0;
+
             MyNewNetworkAuthenticator.CreateClientPlayer msg = new MyNewNetworkAuthenticator.CreateClientPlayer
             {
                 teamName = playerTeamName
@@ -315,6 +326,18 @@ public class MyNewNetworkManager : NetworkManager
     {
         GameObject obj = Instantiate(Player);
         obj.GetComponent<PlayerLogic>().teamName = msg.teamName;
+        if(msg.teamName == LobbyPlayerLogic.nameOfTeam.blue)
+        {
+            nbBlueTeam++;
+            obj.transform.position = SpawnPlayerPosition[nbBlueTeam].transform.position;
+        }
+
+        if (msg.teamName == LobbyPlayerLogic.nameOfTeam.red)
+        {
+            nbRedTeam++;
+            obj.transform.position = SpawnPlayerPosition[nbRedTeam+2].transform.position;
+        }
+
         NetworkServer.AddPlayerForConnection(conn, obj);
     }
 

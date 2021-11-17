@@ -884,7 +884,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2208199761679645263}
   - component: {fileID: 2673055447355818474}
-  - component: {fileID: 2636799941903365413}
+  - component: {fileID: 2300950262469118625}
   m_Layer: 0
   m_Name: CollisionAttack
   m_TagString: Untagged
@@ -919,7 +919,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.0077701, z: 0.8580128}
   m_Center: {x: 0, y: 0.07078731, z: 0.29461718}
---- !u!114 &2636799941903365413
+--- !u!114 &2300950262469118625
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -928,7 +928,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6498416899167114560}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e70285136fd19a94eacb9d7da52d51fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 92e492c575e01b44492bb060ed256731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collide:
@@ -937,9 +937,6 @@ MonoBehaviour:
   Uncollide:
     m_PersistentCalls:
       m_Calls: []
-  followTheCamera: 0
-  selfCamera: {fileID: 0}
-  selfCollision: {fileID: 0}
 --- !u!1 &7594858867248357536
 GameObject:
   m_ObjectHideFlags: 0

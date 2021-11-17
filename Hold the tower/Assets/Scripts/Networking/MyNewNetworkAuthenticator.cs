@@ -35,7 +35,7 @@ public class MyNewNetworkAuthenticator : NetworkAuthenticator
 
     public struct CreateClientPlayer : NetworkMessage
     {
-        public string teamName;
+        public LobbyPlayerLogic.nameOfTeam teamName;
     }
     #endregion
 
