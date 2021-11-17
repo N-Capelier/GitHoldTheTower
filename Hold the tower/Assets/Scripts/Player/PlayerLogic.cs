@@ -20,6 +20,9 @@ public class PlayerLogic : NetworkBehaviour
     private float timeStampRunAccel, timeStampRunDecel;
     private float timeAttack, ratioAttack;
 
+    [HideInInspector]
+    public Vector3 normalWallJump;
+
     //State
     [HideInInspector]
     public bool isGrounded, isJumping, isAttachToWall;
@@ -73,6 +76,7 @@ public class PlayerLogic : NetworkBehaviour
 
     private void HorizontalMovement()
     {
+        
         if (!selfMovement.isClimbingMovement && !isAttachToWall && !selfMovement.isAttacking)
         {
             if (Input.GetKey(selfParams.left) || Input.GetKey(selfParams.right) || Input.GetKey(selfParams.front) || Input.GetKey(selfParams.back))
@@ -81,7 +85,15 @@ public class PlayerLogic : NetworkBehaviour
 
                 if (Input.GetKey(selfParams.front))
                 {
-                    selfMovement.Move(selfCamera.forward, Time.time - timeStampRunAccel);
+                    if (isGrounded)
+                    {
+                        selfMovement.Move(selfCamera.forward, Time.time - timeStampRunAccel);
+                    }
+                    else
+                    {
+                        selfMovement.Move(selfCamera.forward, Time.time - timeStampRunAccel);
+                    }
+                    
                     selfMovement.CanClimb();
                 }
 
@@ -101,28 +113,22 @@ public class PlayerLogic : NetworkBehaviour
                 }
 
             }
-            else
+            else //Decelerate hspd
             {
                 selfMovement.Decelerate(Time.time - timeStampRunDecel);
                 timeStampRunAccel = Time.time;
             }
 
-            if (Input.GetMouseButton(selfParams.attackMouseInput))
-            {
-                timeAttack += Time.deltaTime;
-                ratioAttack = selfMovement.AttackLoad(timeAttack);
-            }
-
-            if (Input.GetMouseButtonUp(selfParams.attackMouseInput))
-            {
-                selfMovement.Attack(ratioAttack);
-                timeAttack = 0;
-                ratioAttack = 0;
-            }
         }
         else
         {
 
+        }
+
+        //Attack Logic
+        if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking)
+        {
+            AttackInput();
         }
     }
 
@@ -132,10 +138,15 @@ public class PlayerLogic : NetworkBehaviour
         {
             if (!isGrounded)
             {
-                if (selfMovement.isSomethingCollide() && Input.GetMouseButton(selfParams.wallMouseInput))
+                if (selfMovement.IsSomethingCollide() && Input.GetMouseButton(selfParams.wallMouseInput))
                 {
                     selfMovement.NoGravity();
                     isAttachToWall = true;
+                    if (Input.GetKeyDown(selfParams.jump))
+                    {
+                       selfMovement.StopMovement();
+                       selfMovement.WallJump(normalWallJump);
+                    }
                 }
                 else
                 {
@@ -167,6 +178,17 @@ public class PlayerLogic : NetworkBehaviour
 
     #endregion
 
+    #region Collision
+    public void OnCollisionEnter(Collision info)
+    {
+        Vector3 point = info.contacts[0].point;
+        normalWallJump = info.contacts[0].normal;
+
+        Debug.DrawRay(point, (normalWallJump + new Vector3(0,0.5f,0)) * 10,Color.red,2.5f);
+    }
+
+    #endregion
+
     #region AttackLogic
     public void getHit()
     {
@@ -176,6 +198,23 @@ public class PlayerLogic : NetworkBehaviour
     public void cantBeHit()
     {
 
+    }
+
+    public void AttackInput()
+    {
+        //Attack load
+        if (Input.GetMouseButton(selfParams.attackMouseInput))
+        {
+            timeAttack += Time.deltaTime;
+            ratioAttack = selfMovement.AttackLoad(timeAttack);
+        }
+        //Attack lauch
+        if (Input.GetMouseButtonUp(selfParams.attackMouseInput))
+        {
+            selfMovement.Attack(ratioAttack);
+            timeAttack = 0;
+            ratioAttack = 0;
+        }
     }
     #endregion
 

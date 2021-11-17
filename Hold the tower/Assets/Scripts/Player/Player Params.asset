@@ -73,10 +73,60 @@ MonoBehaviour:
   forwardForceJump: 4
   topForceJump: 300
   jumpNumberToApply: 4
+  forceToWallJumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.4
+      value: 0
+      inSlope: -0.40371746
+      outSlope: -0.40371746
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  forceToWallJump: 2000
   climbHeight: 60
   climbWidth: 10
   timeToClimb: 0.5
-  forceAttack: 250
+  velocityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.37191242
+      outSlope: 0.37191242
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.1749289
+    - serializedVersion: 3
+      time: 0.5
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  forceAttack: 1500
+  cooldownAttack: 0.5
   timePerfectAttack: 0.8
   timeTreshold: 0.3
-  forceAttackNumberToApply: 10
+  slowMovementRatio: 0.5
