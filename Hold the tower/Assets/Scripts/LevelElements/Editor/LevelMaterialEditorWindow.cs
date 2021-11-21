@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using System;
+using UnityEditor.SceneManagement;
 
 public class LevelMaterialEditorWindow : EditorWindow
 {
@@ -42,7 +40,8 @@ public class LevelMaterialEditorWindow : EditorWindow
 	}
 
 	ThemeManager themeManager;
-	Material materialToReplace, newMaterial;
+	string materialToReplace;
+	Material newMaterial;
 
 	private void OnGUI()
 	{
@@ -54,8 +53,8 @@ public class LevelMaterialEditorWindow : EditorWindow
 
 		GUILayout.Space(10);
 
-		EditorGUILayout.LabelField("Material to replace:", textStyle);
-		materialToReplace = (Material)EditorGUILayout.ObjectField(materialToReplace, typeof(Material), false);
+		EditorGUILayout.LabelField("Block to affect:", textStyle);
+		materialToReplace = EditorGUILayout.TextField(materialToReplace);
 
 		GUILayout.Space(10);
 
@@ -68,17 +67,44 @@ public class LevelMaterialEditorWindow : EditorWindow
 		{
 			Replace();
 		}
+
+		GUILayout.Space(10);
+
+		if(GUILayout.Button("SetRandomRotation", buttonStyle))
+		{
+			Rotate();
+		}
+	}
+
+	private void Rotate()
+	{
+		int rotation;
+		foreach (BlockBehaviour block in themeManager.blocks)
+		{
+			if (block.gameObject.GetComponent<MeshRenderer>().material.name.Contains(materialToReplace))
+			{
+				rotation = Random.Range(0, 4) * 90;
+				block.gameObject.transform.Rotate(new Vector3(0, rotation, 0));
+			}
+		}
+
+		EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+
+		Debug.Log("Rotated blocks");
 	}
 
 	private void Replace()
 	{
 		foreach(BlockBehaviour block in themeManager.blocks)
 		{
-			if(block.gameObject.GetComponent<MeshRenderer>().material.name.Contains("BaseB"))
+			if(block.gameObject.GetComponent<MeshRenderer>().material.name.Contains(materialToReplace))
 			{
 				block.gameObject.GetComponent<MeshRenderer>().material = newMaterial;
 			}
 		}
+
+		EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+
 		Debug.Log("Replaced materials");
 	}
 }
