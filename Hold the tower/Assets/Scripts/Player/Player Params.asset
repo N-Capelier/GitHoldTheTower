@@ -68,7 +68,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  hspdForce: 8
+  hspdForce: 12
   gravity: 30
   forwardForceJump: 4
   topForceJump: 300
