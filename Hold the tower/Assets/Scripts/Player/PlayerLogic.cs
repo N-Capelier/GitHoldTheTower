@@ -23,12 +23,15 @@ public class PlayerLogic : NetworkBehaviour
     [HideInInspector]
     public Vector3 normalWallJump;
 
+    private Vector3 spawnPos;
+
     //State
     [HideInInspector]
     public bool isGrounded, isJumping, isAttachToWall;
     // Start is called before the first frame update
     void Start()
     {
+        
         selfCamera.gameObject.SetActive(false);
         if (hasAuthority)
         {
@@ -36,6 +39,7 @@ public class PlayerLogic : NetworkBehaviour
             Cursor.lockState = CursorLockMode.Locked;
 
         }
+        spawnPos = transform.position;
     }
 
     // Update is called once per frame
@@ -140,6 +144,10 @@ public class PlayerLogic : NetworkBehaviour
                     selfMovement.Decelerate(Time.time - timeStampRunDecel);
                     timeStampRunAccel = Time.time;
                 }
+                else
+                {
+                    timeStampRunDecel = Time.time;
+                }
             }
 
         }
@@ -149,7 +157,7 @@ public class PlayerLogic : NetworkBehaviour
         }
 
         //Attack Logic
-        if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking)
+        if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking && selfMovement.isAttackReset && !selfMovement.isAttackInCooldown)
         {
             AttackInput();
         }
@@ -167,7 +175,6 @@ public class PlayerLogic : NetworkBehaviour
                     isAttachToWall = true;
                     if (Input.GetKeyDown(selfParams.jump))
                     {
-                        selfMovement.StopMovement();
                         selfMovement.WallJump(normalWallJump);
                     }
                 }
@@ -175,6 +182,12 @@ public class PlayerLogic : NetworkBehaviour
                 {
                     selfMovement.ApplyGravity();
                     isAttachToWall = false;
+                }
+
+                if(isAttachToWall)
+                {
+                    selfMovement.StopMovement();
+                    selfMovement.isAttackReset = true;
                 }
 
             }
@@ -190,9 +203,9 @@ public class PlayerLogic : NetworkBehaviour
                     selfMovement.Jump();
                 }
 
-                if (selfMovement.isAttacking) //Enable attack if on ground to change maybe a timer
+                if (isGrounded)
                 {
-                    selfMovement.isAttacking = false;
+                    selfMovement.isAttackReset = true;
                 }
             }
         }
@@ -240,6 +253,12 @@ public class PlayerLogic : NetworkBehaviour
         }
     }
     #endregion
+
+    public void Respawn()
+    {
+        transform.position = spawnPos;
+        selfMovement.StopMovement();
+    }
 
     #region Network logic
     #endregion

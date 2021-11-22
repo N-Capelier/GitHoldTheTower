@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 3467959007138746707}
   - component: {fileID: 5204818065857996584}
   - component: {fileID: 4205374861408034103}
-  - component: {fileID: -8456490503507093031}
   - component: {fileID: 3790924781881019435}
   m_Layer: 0
   m_Name: Player
@@ -89,7 +88,8 @@ MonoBehaviour:
   selfParams: {fileID: 11400000, guid: a24272e5804e7bd4891a2cf20f79574a, type: 2}
   selfCamera: {fileID: 9175226997489984019}
   selfMovement: {fileID: 4205374861408034103}
-  teamName: 
+  teamName: 0
+  normalWallJump: {x: 0, y: 0, z: 0}
   isGrounded: 0
   isJumping: 0
   isAttachToWall: 0
@@ -113,20 +113,8 @@ MonoBehaviour:
   groundCorrection: {x: 0, y: 0, z: 0}
   isClimbingMovement: 0
   isAttacking: 0
---- !u!114 &-8456490503507093031
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 334883179893610998}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe8516dec8b446a4c8e7805e25617c7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0
+  isAttackReset: 0
+  isAttackInCooldown: 0
 --- !u!114 &3790924781881019435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,7 +319,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 90
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -612,7 +600,7 @@ GameObject:
   - component: {fileID: 285773796116165314}
   m_Layer: 0
   m_Name: Capsule
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -687,7 +675,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3027051486749790198}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 2debad4ac21a6644faf4fc93bd5b5869, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -737,8 +725,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.804115, y: 0.8535101, z: 0.39203644}
-  m_Center: {x: 0.03764072, y: 0.27212128, z: -0.37538117}
+  m_Size: {x: 0.804115, y: 1.43, z: 0.39203644}
+  m_Center: {x: 0.03764072, y: 0.44, z: -0.37538117}
 --- !u!114 &2283582401440189527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -827,8 +815,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.804115, y: 0.71057737, z: 0.39203644}
-  m_Center: {x: 0.03764072, y: 0.43661708, z: -0.37538117}
+  m_Size: {x: 0.804115, y: 0.45, z: 0.39203644}
+  m_Center: {x: 0.03764072, y: 0.8, z: -0.37538117}
 --- !u!114 &1688659597601429249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -931,12 +919,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92e492c575e01b44492bb060ed256731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collide:
-    m_PersistentCalls:
-      m_Calls: []
-  Uncollide:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &7594858867248357536
 GameObject:
   m_ObjectHideFlags: 0

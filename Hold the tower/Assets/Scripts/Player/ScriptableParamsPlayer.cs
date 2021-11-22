@@ -41,6 +41,8 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float climbHeight = 5f;
     public float climbWidth = 5f;
     public float timeToClimb = 0.5f;
+    public AnimationCurve climbMovement;
+    public AnimationCurve climbSpeedOverTime;
 
     [Header("Attack")]
     public AnimationCurve velocityCurve;

@@ -8,13 +8,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Lobby/LobbyScene.unity
     guid: 0fcc151014fda6a49b10ef6b18532b97
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/DebugScene/Debug.unity
     guid: e0dfadef0eb3bdc4980974151edcff35
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Dev/PoC/Poc.unity
     guid: 032ad808471b6a14a9ce1945a3776fb0
   - enabled: 1
     path: Assets/Scenes/Dev/LevelDesign/FLATVOID01.unity
     guid: a15835692f14c2b43a1b9f865a3eb934
+  - enabled: 1
+    path: Assets/Scenes/Dev/AntoineTest.unity
+    guid: f5b1e1aa037bf254b82bba5884a3d5f9
   m_configObjects: {}
