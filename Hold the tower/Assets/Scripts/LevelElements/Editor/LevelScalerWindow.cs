@@ -8,10 +8,10 @@ public class LevelScalerWindow : EditorWindow
 {
 	static LevelScalerWindow levelScaler;
 
-	[MenuItem("Tools/Debug/Level Corrector", priority = 1)]
+	[MenuItem("Tools/Debug/Level Scaler", priority = 1)]
 	public static void Init()
 	{
-		levelScaler = GetWindow<LevelScalerWindow>("Level Corrector");
+		levelScaler = GetWindow<LevelScalerWindow>("Level Scaler");
 	}
 
 	GUIStyle textStyle;
