@@ -97,6 +97,18 @@ public class PlayerMovement : MonoBehaviour
         hspd = new Vector3(hspd.x, 0, hspd.z);
     }
 
+    public void AirMove(Vector3 direction)
+    {
+        moveDirection += new Vector3(direction.x, 0, direction.z);
+        moveDirection = moveDirection.normalized;
+
+        if(hspd.magnitude < selfParams.hspdForce)
+        {
+            hspd += moveDirection * selfParams.hspdForce * 3 * Time.deltaTime;
+        }
+        //hspd = new Vector3(hspd.x, 0, hspd.z);
+    }
+
     public void Decelerate(float timeStamp)
     {
         if(hspd != Vector3.zero)

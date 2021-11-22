@@ -76,7 +76,7 @@ public class PlayerLogic : NetworkBehaviour
 
     private void HorizontalMovement()
     {
-        
+
         if (!selfMovement.isClimbingMovement && !isAttachToWall && !selfMovement.isAttacking)
         {
             if (Input.GetKey(selfParams.left) || Input.GetKey(selfParams.right) || Input.GetKey(selfParams.front) || Input.GetKey(selfParams.back))
@@ -91,32 +91,55 @@ public class PlayerLogic : NetworkBehaviour
                     }
                     else
                     {
-                        selfMovement.Move(selfCamera.forward, Time.time - timeStampRunAccel);
+                        selfMovement.AirMove(selfCamera.forward);
                     }
-                    
+
                     selfMovement.CanClimb();
                 }
 
                 if (Input.GetKey(selfParams.back))
                 {
-                    selfMovement.Move(-selfCamera.forward, Time.time - timeStampRunAccel);
+                    if (isGrounded)
+                    {
+                        selfMovement.Move(-selfCamera.forward, Time.time - timeStampRunAccel);
+                    }
+                    else
+                    {
+                        selfMovement.AirMove(-selfCamera.forward);
+                    }
                 }
 
                 if (Input.GetKey(selfParams.left))
                 {
-                    selfMovement.Move(-selfCamera.right, Time.time - timeStampRunAccel);
+                    if (isGrounded)
+                    {
+                        selfMovement.Move(-selfCamera.right, Time.time - timeStampRunAccel);
+                    }
+                    else
+                    {
+                        selfMovement.AirMove(-selfCamera.right);
+                    }
                 }
-
                 if (Input.GetKey(selfParams.right))
                 {
-                    selfMovement.Move(selfCamera.right, Time.time - timeStampRunAccel);
+                    if (isGrounded)
+                    {
+                        selfMovement.Move(selfCamera.right, Time.time - timeStampRunAccel);
+                    }
+                    else
+                    {
+                        selfMovement.AirMove(selfCamera.right);
+                    }
                 }
 
             }
             else //Decelerate hspd
             {
-                selfMovement.Decelerate(Time.time - timeStampRunDecel);
-                timeStampRunAccel = Time.time;
+                if (isGrounded)
+                {
+                    selfMovement.Decelerate(Time.time - timeStampRunDecel);
+                    timeStampRunAccel = Time.time;
+                }
             }
 
         }
@@ -144,8 +167,8 @@ public class PlayerLogic : NetworkBehaviour
                     isAttachToWall = true;
                     if (Input.GetKeyDown(selfParams.jump))
                     {
-                       selfMovement.StopMovement();
-                       selfMovement.WallJump(normalWallJump);
+                        selfMovement.StopMovement();
+                        selfMovement.WallJump(normalWallJump);
                     }
                 }
                 else
@@ -184,7 +207,7 @@ public class PlayerLogic : NetworkBehaviour
         Vector3 point = info.contacts[0].point;
         normalWallJump = info.contacts[0].normal;
 
-        Debug.DrawRay(point, (normalWallJump + new Vector3(0,0.5f,0)) * 10,Color.red,2.5f);
+        Debug.DrawRay(point, (normalWallJump + new Vector3(0, 0.5f, 0)) * 10, Color.red, 2.5f);
     }
 
     #endregion
