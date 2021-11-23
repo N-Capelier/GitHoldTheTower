@@ -21,12 +21,11 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public List<int> IDs = new List<int>();
-
     public SoundEventList soundEventList;
 
     public AudioMixerGroup sfxMixer;
 
+    public GameObject emptyGameObject;
 
     void Start()
     {
@@ -44,7 +43,19 @@ public class SoundManager : MonoBehaviour
     }
 
 
+    public void TestSound()
+    {
+        //Une fonction qui permet de tester un son
 
+        PlaySoundEvent(0);
+    }
+
+    public void TestSpatialisedSound()
+    {
+        //Une fonction qui permet de tester un son
+
+        //SoundReference soundRef PlaySoundEvent(0, emptyGameObject);
+    }
 
     public SoundReference PlaySoundEvent(SoundEvent thisEvent)
     {

@@ -8,6 +8,15 @@ public class SoundEventList : ScriptableObject
 
     public SoundEvent[] soundEvents;
 
+
+
+    [ContextMenu("Initialise")]
+    public void Init()
+    {
+        InitialiseSoundIDs();
+        InitialiseEventIDs();
+    }
+
     public void InitialiseSoundIDs()
     {
         int ID = 0;
@@ -80,5 +89,7 @@ public class SoundEventList : ScriptableObject
         }
         return null;
     }
+
+
 
 }

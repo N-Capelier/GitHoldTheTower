@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class SoundReference : MonoBehaviour
+public class SoundReference
 {
     public string name;
 
