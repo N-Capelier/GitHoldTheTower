@@ -323,7 +323,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 climbEndGroundPos = transform.position;
         climbEndGroundPos += (selfParams.climbHeight * Vector3.up) + (selfCamera.forward * selfParams.climbWidth);
         RaycastHit endPosHit;
-        Physics.Raycast(climbEndGroundPos, Vector3.down,out endPosHit, 2f, LayerMask.GetMask("Wall"));
+        Physics.Raycast(climbEndGroundPos, Vector3.down,out endPosHit, 2f, LayerMask.GetMask("Outlined"));
         if (endPosHit.collider != null)
         {
             climbEndGroundPos = endPosHit.point + Vector3.up;

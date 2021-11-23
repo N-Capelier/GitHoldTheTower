@@ -229,11 +229,11 @@ public class PlayerLogic : NetworkBehaviour
     {
         Vector3 wallNormal = Vector3.zero;
 
-        Collider[] nearbyWalls = Physics.OverlapBox(transform.position, new Vector3(0.7f, 0.2f, 0.7f), Quaternion.Euler(xRotation, yRotation, 0f), LayerMask.GetMask("Wall"));
+        Collider[] nearbyWalls = Physics.OverlapBox(transform.position, new Vector3(0.7f, 0.2f, 0.7f), Quaternion.Euler(xRotation, yRotation, 0f), LayerMask.GetMask("Outlined"));
         if(nearbyWalls.Length > 0)
         {
             RaycastHit wallHit;
-            Physics.Raycast(transform.position, nearbyWalls[0].transform.position - transform.position, out wallHit, 20, LayerMask.GetMask("Wall"));
+            Physics.Raycast(transform.position, nearbyWalls[0].transform.position - transform.position, out wallHit, 20, LayerMask.GetMask("Outlined"));
 
             if (wallHit.collider != null)
             {
