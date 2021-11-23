@@ -23,9 +23,10 @@ public class ScriptableParamsPlayer : ScriptableObject
     #endregion
 
     [Header("Hspd")]
-    public AnimationCurve hspdAcceleration;
-    public AnimationCurve hspdDeceleration;
-    public float hspdForce;
+    public AnimationCurve runningAcceleration;
+    public AnimationCurve runningDeceleration;
+    public float maxRunningSpeed;
+    public float airControlForce;
 
     [Header("Vspd")]
     public float gravity;
@@ -36,6 +37,8 @@ public class ScriptableParamsPlayer : ScriptableObject
     [Range(1,100)] public int jumpNumberToApply;
     public AnimationCurve forceToWallJumpCurve;
     public float forceToWallJump;
+    public float upWardWallJumpForce;
+    public float maxWallJumpAngleDeviation;
 
     [Header("Climb")]
     public float climbHeight = 5f;

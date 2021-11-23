@@ -97,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
         moveDirection += new Vector3(direction.x, 0, direction.z);
         moveDirection = moveDirection.normalized;
 
-        hspd = moveDirection * selfParams.hspdForce * selfParams.hspdAcceleration.Evaluate(timeStamp);
+        hspd = moveDirection * selfParams.maxRunningSpeed * selfParams.runningAcceleration.Evaluate(timeStamp);
         hspd = new Vector3(hspd.x, 0, hspd.z);
     }
 
@@ -107,11 +107,11 @@ public class PlayerMovement : MonoBehaviour
         moveDirection = moveDirection.normalized;
 
         float hspdMagnitude = hspd.magnitude;
-        Vector3 newHspd = hspd + moveDirection * selfParams.hspdForce * 5 * Time.deltaTime;
+        Vector3 newHspd = hspd + moveDirection * selfParams.airControlForce * Time.deltaTime;
 
-        hspd += moveDirection * selfParams.hspdForce * 5 * Time.deltaTime;
+        hspd += moveDirection * selfParams.airControlForce * Time.deltaTime;
 
-        if (hspd.magnitude > selfParams.hspdForce)
+        if (hspd.magnitude > selfParams.maxRunningSpeed)
         {
             hspd = hspd.normalized * hspdMagnitude;
         }
@@ -121,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(hspd != Vector3.zero)
         {
-            hspd = hspd * selfParams.hspdDeceleration.Evaluate(timeStamp);
+            hspd = hspd * selfParams.runningDeceleration.Evaluate(timeStamp);
         }
     }
 
@@ -151,9 +151,10 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator JumpManage()
     {
         selfLogic.isJumping = true;
+        NoGravity();
         for(int i = 0;i< selfParams.jumpNumberToApply; i++)
         {
-            vspd += transform.up * selfParams.topForceJump*Time.fixedDeltaTime;
+            vspd += transform.up * selfParams.topForceJump * Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
         
@@ -172,9 +173,72 @@ public class PlayerMovement : MonoBehaviour
     }
 
     //Manage walljump movement
-    public IEnumerator WallJumpManage(Vector3 direction)
+    public IEnumerator WallJumpManage(Vector3 wallDirection)
     {
-        Vector3 adjustDirection = direction+new Vector3(0,0.5f,0);
+        Vector3 adjustDirection = wallDirection;
+
+        Vector3 moveKeyDirection = Vector3.zero;
+        Vector3 keyRelativeDirection;
+        if (Input.GetKey(selfParams.front))
+        {
+            keyRelativeDirection = selfCamera.forward;
+            keyRelativeDirection = new Vector3(keyRelativeDirection.x, 0, keyRelativeDirection.z);
+            keyRelativeDirection.Normalize();
+            moveKeyDirection += keyRelativeDirection;
+        }
+        if (Input.GetKey(selfParams.back))
+        {
+            keyRelativeDirection = -selfCamera.forward;
+            keyRelativeDirection = new Vector3(keyRelativeDirection.x, 0, keyRelativeDirection.z);
+            keyRelativeDirection.Normalize();
+            moveKeyDirection += keyRelativeDirection;
+        }
+        if (Input.GetKey(selfParams.right))
+        {
+            keyRelativeDirection = selfCamera.right;
+            keyRelativeDirection = new Vector3(keyRelativeDirection.x, 0, keyRelativeDirection.z);
+            keyRelativeDirection.Normalize();
+            moveKeyDirection += keyRelativeDirection;
+        }
+        if (Input.GetKey(selfParams.left))
+        {
+            keyRelativeDirection = -selfCamera.right;
+            keyRelativeDirection = new Vector3(keyRelativeDirection.x, 0, keyRelativeDirection.z);
+            keyRelativeDirection.Normalize();
+            moveKeyDirection += keyRelativeDirection;
+        }
+        float angleDist = 0;
+        if (moveKeyDirection != Vector3.zero)
+        {
+            moveKeyDirection.Normalize();
+            float jumpAngle = Vector3.SignedAngle(Vector3.right, moveKeyDirection, Vector3.up);
+            float wallAngle = Vector3.SignedAngle(Vector3.right, wallDirection, Vector3.up);
+
+            angleDist = jumpAngle - wallAngle;
+            if(angleDist > 180)
+            {
+                angleDist -= 360;
+            }
+            if (angleDist < -180)
+            {
+                angleDist += 360;
+            }
+
+            if(angleDist > selfParams.maxWallJumpAngleDeviation)
+            {
+                jumpAngle = wallAngle + selfParams.maxWallJumpAngleDeviation;
+            }
+
+            if (angleDist < -selfParams.maxWallJumpAngleDeviation)
+            {
+                jumpAngle = wallAngle - selfParams.maxWallJumpAngleDeviation;
+            }
+
+            adjustDirection = new Vector3(Mathf.Cos(Mathf.Deg2Rad * jumpAngle), 0, -Mathf.Sin(Mathf.Deg2Rad * jumpAngle));
+            adjustDirection.Normalize();
+        }
+
+        adjustDirection += new Vector3(0, selfParams.upWardWallJumpForce, 0);
 
         float _timer = 0;
         hspd = Vector3.zero;
@@ -282,7 +346,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsFrontCollide()
     {
-        if (frontTopCollide && frontBotCollide)
+        if (/*frontTopCollide && */frontBotCollide)
         {
             return true;
         }
@@ -397,7 +461,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (attackspd != Vector3.zero)
         {
-            attackspd = attackspd * selfParams.hspdDeceleration.Evaluate(timeStamp);
+            attackspd = attackspd * selfParams.runningDeceleration.Evaluate(timeStamp);
         }
     }
 
