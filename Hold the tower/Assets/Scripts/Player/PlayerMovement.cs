@@ -66,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if(IsSomethingCollide())
                 {
+                    /*
                     //WIP a changer
                     if (Mathf.Sign(hspd.x) == Mathf.Sign(-selfLogic.normalWallJump.x))
                     {
@@ -81,12 +82,12 @@ public class PlayerMovement : MonoBehaviour
                     {
                         attackspd = Vector3.zero;
                         WallJumpspd = Vector3.zero;
-                    }
+                    }*/
                     
                 }
             }
 
-            selfRbd.velocity = hspd + vspd + attackspd + WallJumpspd;
+            selfRbd.velocity = hspd + vspd + attackspd;
         }
     }
    
@@ -122,6 +123,10 @@ public class PlayerMovement : MonoBehaviour
         if(hspd != Vector3.zero)
         {
             hspd = hspd * selfParams.runningDeceleration.Evaluate(timeStamp);
+        }
+        else
+        {
+            moveDirection = Vector3.zero;
         }
     }
 
@@ -167,7 +172,7 @@ public class PlayerMovement : MonoBehaviour
         if (canWallJump)
         {
             StartCoroutine(WallJumpManage(direction));
-            canWallJump = false;
+            canWallJump = true;
         }
         
     }
@@ -175,6 +180,7 @@ public class PlayerMovement : MonoBehaviour
     //Manage walljump movement
     public IEnumerator WallJumpManage(Vector3 wallDirection)
     {
+        isAttackReset = true;
         Vector3 adjustDirection = wallDirection;
 
         Vector3 moveKeyDirection = Vector3.zero;
@@ -223,41 +229,54 @@ public class PlayerMovement : MonoBehaviour
             {
                 angleDist += 360;
             }
+            Debug.Log(angleDist);
 
-            if(angleDist > selfParams.maxWallJumpAngleDeviation)
+            if (Mathf.Abs(angleDist) > selfParams.wallJumpMinAngleToCancelDeviation)
             {
-                jumpAngle = wallAngle + selfParams.maxWallJumpAngleDeviation;
+                jumpAngle = wallAngle;
+                Debug.Log("LookingWall");
             }
-
-            if (angleDist < -selfParams.maxWallJumpAngleDeviation)
+            else
             {
-                jumpAngle = wallAngle - selfParams.maxWallJumpAngleDeviation;
+                if (angleDist > selfParams.maxWallJumpAngleDeviation)
+                {
+                    jumpAngle = wallAngle + selfParams.maxWallJumpAngleDeviation;
+                }
+
+                if (angleDist < -selfParams.maxWallJumpAngleDeviation)
+                {
+                    jumpAngle = wallAngle - selfParams.maxWallJumpAngleDeviation;
+                }
             }
 
             adjustDirection = new Vector3(Mathf.Cos(Mathf.Deg2Rad * jumpAngle), 0, -Mathf.Sin(Mathf.Deg2Rad * jumpAngle));
+
             adjustDirection.Normalize();
+            Debug.DrawRay(transform.position, adjustDirection * 3, Color.green, 2f);
         }
 
         adjustDirection += new Vector3(0, selfParams.upWardWallJumpForce, 0);
 
-        float _timer = 0;
-        hspd = Vector3.zero;
-        vspd = Vector3.zero;
 
         //Add force
+        /*
         while (_timer < selfParams.forceToWallJumpCurve[selfParams.forceToWallJumpCurve.length-1].time)
         {
-            vspd = Vector3.zero;
             WallJumpspd = adjustDirection * (selfParams.forceToWallJumpCurve.Evaluate(_timer) * Time.fixedDeltaTime * selfParams.forceToWallJump);
             _timer += Time.deltaTime;
             yield return new WaitForEndOfFrame();
-        }
+        }*/
 
+        WallJumpspd = adjustDirection * selfParams.forceToWallJump;
+
+        StopMovement();
+        NoGravity();
         canWallJump = true;
         hspd = new Vector3(WallJumpspd.x, 0, WallJumpspd.z);
         vspd = new Vector3(0, WallJumpspd.y, 0);
 
         WallJumpspd = Vector3.zero;
+        yield return new WaitForEndOfFrame();
     }
     //manage jump
     #endregion

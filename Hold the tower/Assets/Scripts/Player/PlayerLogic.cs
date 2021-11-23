@@ -28,7 +28,7 @@ public class PlayerLogic : NetworkBehaviour
 
     //State
     [HideInInspector]
-    public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround;
+    public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround, isTouchingWall;
     // Start is called before the first frame update
     void Start()
     {
@@ -88,54 +88,37 @@ public class PlayerLogic : NetworkBehaviour
             if (Input.GetKey(selfParams.left) || Input.GetKey(selfParams.right) || Input.GetKey(selfParams.front) || Input.GetKey(selfParams.back))
             {
                 timeStampRunDecel = Time.time;
+                Vector3 keyDirection = Vector3.zero;
 
                 if (Input.GetKey(selfParams.front))
                 {
-                    if (isGrounded)
-                    {
-                        selfMovement.Move(selfCamera.forward, Time.time - timeStampRunAccel);
-                    }
-                    else
-                    {
-                        selfMovement.AirMove(selfCamera.forward);
-                    }
-
+                    keyDirection += GetHorizontalVector(selfCamera.forward);
                     selfMovement.CanClimb();
                 }
 
                 if (Input.GetKey(selfParams.back))
                 {
-                    if (isGrounded)
-                    {
-                        selfMovement.Move(-selfCamera.forward, Time.time - timeStampRunAccel);
-                    }
-                    else
-                    {
-                        selfMovement.AirMove(-selfCamera.forward);
-                    }
+                    keyDirection += GetHorizontalVector(-selfCamera.forward);
                 }
 
                 if (Input.GetKey(selfParams.left))
                 {
-                    if (isGrounded)
-                    {
-                        selfMovement.Move(-selfCamera.right, Time.time - timeStampRunAccel);
-                    }
-                    else
-                    {
-                        selfMovement.AirMove(-selfCamera.right);
-                    }
+                    keyDirection += GetHorizontalVector(-selfCamera.right);
                 }
+
                 if (Input.GetKey(selfParams.right))
                 {
-                    if (isGrounded)
-                    {
-                        selfMovement.Move(selfCamera.right, Time.time - timeStampRunAccel);
-                    }
-                    else
-                    {
-                        selfMovement.AirMove(selfCamera.right);
-                    }
+                    keyDirection += GetHorizontalVector(selfCamera.right);
+                }
+                keyDirection.Normalize();
+
+                if (isGrounded)
+                {
+                    selfMovement.Move(keyDirection, Time.time - timeStampRunAccel);
+                }
+                else
+                {
+                    selfMovement.AirMove(keyDirection);
                 }
 
             }
@@ -165,33 +148,41 @@ public class PlayerLogic : NetworkBehaviour
         }
     }
 
+
+    private Vector3 GetHorizontalVector(Vector3 originVector)
+    {
+        Vector3 horizontalVector = new Vector3(originVector.x, 0, originVector.z);
+        return horizontalVector.normalized;
+    }
+
     private void VerticalMovement()
     {
         if (!selfMovement.isClimbingMovement)
         {
-            if (selfMovement.IsSomethingCollide() && Input.GetMouseButton(selfParams.wallMouseInput))
-            {
-                selfMovement.NoGravity();
-                isAttachToWall = true;
-                selfMovement.isAttackReset = true;
-                selfMovement.StopMovement();
-                if (Input.GetKey(selfParams.jump))
-                {
-                    if (GetNearbyWallNormal() != Vector3.zero)
-                    {
-                        selfMovement.WallJump(GetNearbyWallNormal());
-                    }
-                }
-            }
-            else
-            {
-                selfMovement.ApplyGravity();
-                isAttachToWall = false;
-            }
-
             if (!isGrounded)
             {
-
+                if (selfMovement.IsSomethingCollide()/* && Input.GetMouseButton(selfParams.wallMouseInput)*/)
+                {
+                    selfMovement.ApplyGravity();
+                    isTouchingWall = true;
+                    //selfMovement.NoGravity();
+                    //isAttachToWall = true;
+                    //selfMovement.isAttackReset = true;
+                    //selfMovement.StopMovement();
+                    if (Input.GetKey(selfParams.jump))
+                    {
+                        if (GetNearbyWallNormal() != Vector3.zero)
+                        {
+                            selfMovement.WallJump(GetNearbyWallNormal());
+                        }
+                    }
+                }
+                else
+                {
+                    selfMovement.ApplyGravity();
+                    //isAttachToWall = false;
+                    isTouchingWall = false;
+                }
             }
             else
             {
@@ -233,6 +224,7 @@ public class PlayerLogic : NetworkBehaviour
         if(nearbyWalls.Length > 0)
         {
             RaycastHit wallHit;
+            ////////////// changerrrrrrrrrrrrrrrrrrrrrrrrrr
             Physics.Raycast(transform.position, nearbyWalls[0].transform.position - transform.position, out wallHit, 20, LayerMask.GetMask("Outlined"));
 
             if (wallHit.collider != null)

@@ -35,10 +35,10 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float forwardForceJump;
     public float topForceJump;
     [Range(1,100)] public int jumpNumberToApply;
-    public AnimationCurve forceToWallJumpCurve;
     public float forceToWallJump;
     public float upWardWallJumpForce;
     public float maxWallJumpAngleDeviation;
+    public float wallJumpMinAngleToCancelDeviation;
 
     [Header("Climb")]
     public float climbHeight = 5f;

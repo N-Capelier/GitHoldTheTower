@@ -68,39 +68,16 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  maxRunningSpeed: 9
-  airControlForce: 25
+  maxRunningSpeed: 10
+  airControlForce: 40
   gravity: 30
   forwardForceJump: 4
   topForceJump: 300
   jumpNumberToApply: 4
-  forceToWallJumpCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.1
-      value: 0.9
-      inSlope: -1.8396217
-      outSlope: -1.8396217
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.0666666
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  forceToWallJump: 700
+  forceToWallJump: 12
   upWardWallJumpForce: 0.6
   maxWallJumpAngleDeviation: 40
+  wallJumpMinAngleToCancelDeviation: 150
   climbHeight: 1.5
   climbWidth: 2
   timeToClimb: 0.15
