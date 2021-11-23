@@ -598,7 +598,7 @@ PrefabInstance:
       objectReference: {fileID: 64166114}
     - target: {fileID: 5132679588279635202, guid: 0a2b2a72e900b1e499a707e306b71362, type: 3}
       propertyPath: timerChange
-      value: 20
+      value: 99999
       objectReference: {fileID: 0}
     - target: {fileID: 5132679588279635203, guid: 0a2b2a72e900b1e499a707e306b71362, type: 3}
       propertyPath: m_Name
