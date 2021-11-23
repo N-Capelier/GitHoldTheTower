@@ -26,17 +26,17 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 5
-      outSlope: 5
+      inSlope: 3.3333333
+      outSlope: 3.3333333
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.2
+      time: 0.3
       value: 1
-      inSlope: 5
-      outSlope: 5
+      inSlope: 3.3333333
+      outSlope: 3.3333333
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -50,17 +50,17 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -5
-      outSlope: -5
+      inSlope: -2.5
+      outSlope: -2.5
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.2
+      time: 0.4
       value: 0
-      inSlope: -5
-      outSlope: -5
+      inSlope: -2.5
+      outSlope: -2.5
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -86,36 +86,36 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.4
-      value: 0
-      inSlope: -0.40371746
-      outSlope: -0.40371746
+      time: 0.1
+      value: 0.9
+      inSlope: -1.8396217
+      outSlope: -1.8396217
       tangentMode: 0
       weightedMode: 0
-      inWeight: 1
+      inWeight: 0.0666666
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  forceToWallJump: 2000
-  climbHeight: 60
-  climbWidth: 10
-  timeToClimb: 0.5
-  velocityCurve:
+  forceToWallJump: 800
+  climbHeight: 1.5
+  climbWidth: 2
+  timeToClimb: 0.15
+  climbMovement:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
-      inSlope: 0.37191242
-      outSlope: 0.37191242
+      value: 0
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.1749289
+      outWeight: 0
     - serializedVersion: 3
-      time: 0.5
-      value: 0
+      time: 1
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -125,8 +125,65 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  forceAttack: 1500
+  climbSpeedOverTime:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.36388147
+      outSlope: 0.36388147
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.23333335
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  velocityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.03329632
+      outSlope: -0.03329632
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33258957
+    - serializedVersion: 3
+      time: 0.17417811
+      value: 0.9414927
+      inSlope: -1.484275
+      outSlope: -1.484275
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.18885615
+      outWeight: 0.40522707
+    - serializedVersion: 3
+      time: 0.23
+      value: 0.2
+      inSlope: -22.500013
+      outSlope: -22.500013
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.11883199
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  forceAttack: 2000
   cooldownAttack: 0.5
   timePerfectAttack: 0.8
   timeTreshold: 0.3
-  slowMovementRatio: 0.5
+  slowMovementRatio: 0.7

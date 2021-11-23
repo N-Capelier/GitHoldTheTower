@@ -23,12 +23,15 @@ public class PlayerLogic : NetworkBehaviour
     [HideInInspector]
     public Vector3 normalWallJump;
 
+    private Vector3 spawnPos;
+
     //State
     [HideInInspector]
-    public bool isGrounded, isJumping, isAttachToWall;
+    public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround;
     // Start is called before the first frame update
     void Start()
     {
+        
         selfCamera.gameObject.SetActive(false);
         if (hasAuthority)
         {
@@ -36,6 +39,7 @@ public class PlayerLogic : NetworkBehaviour
             Cursor.lockState = CursorLockMode.Locked;
 
         }
+        spawnPos = transform.position;
     }
 
     // Update is called once per frame
@@ -76,7 +80,8 @@ public class PlayerLogic : NetworkBehaviour
 
     private void HorizontalMovement()
     {
-        
+        isGrounded = isTouchingTheGround && !selfMovement.isAttacking;
+
         if (!selfMovement.isClimbingMovement && !isAttachToWall && !selfMovement.isAttacking)
         {
             if (Input.GetKey(selfParams.left) || Input.GetKey(selfParams.right) || Input.GetKey(selfParams.front) || Input.GetKey(selfParams.back))
@@ -91,32 +96,59 @@ public class PlayerLogic : NetworkBehaviour
                     }
                     else
                     {
-                        selfMovement.Move(selfCamera.forward, Time.time - timeStampRunAccel);
+                        selfMovement.AirMove(selfCamera.forward);
                     }
-                    
+
                     selfMovement.CanClimb();
                 }
 
                 if (Input.GetKey(selfParams.back))
                 {
-                    selfMovement.Move(-selfCamera.forward, Time.time - timeStampRunAccel);
+                    if (isGrounded)
+                    {
+                        selfMovement.Move(-selfCamera.forward, Time.time - timeStampRunAccel);
+                    }
+                    else
+                    {
+                        selfMovement.AirMove(-selfCamera.forward);
+                    }
                 }
 
                 if (Input.GetKey(selfParams.left))
                 {
-                    selfMovement.Move(-selfCamera.right, Time.time - timeStampRunAccel);
+                    if (isGrounded)
+                    {
+                        selfMovement.Move(-selfCamera.right, Time.time - timeStampRunAccel);
+                    }
+                    else
+                    {
+                        selfMovement.AirMove(-selfCamera.right);
+                    }
                 }
-
                 if (Input.GetKey(selfParams.right))
                 {
-                    selfMovement.Move(selfCamera.right, Time.time - timeStampRunAccel);
+                    if (isGrounded)
+                    {
+                        selfMovement.Move(selfCamera.right, Time.time - timeStampRunAccel);
+                    }
+                    else
+                    {
+                        selfMovement.AirMove(selfCamera.right);
+                    }
                 }
 
             }
             else //Decelerate hspd
             {
-                selfMovement.Decelerate(Time.time - timeStampRunDecel);
-                timeStampRunAccel = Time.time;
+                if (isGrounded)
+                {
+                    selfMovement.Decelerate(Time.time - timeStampRunDecel);
+                    timeStampRunAccel = Time.time;
+                }
+                else
+                {
+                    timeStampRunDecel = Time.time;
+                }
             }
 
         }
@@ -126,7 +158,7 @@ public class PlayerLogic : NetworkBehaviour
         }
 
         //Attack Logic
-        if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking)
+        if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking && selfMovement.isAttackReset && !selfMovement.isAttackInCooldown)
         {
             AttackInput();
         }
@@ -144,14 +176,19 @@ public class PlayerLogic : NetworkBehaviour
                     isAttachToWall = true;
                     if (Input.GetKeyDown(selfParams.jump))
                     {
-                       selfMovement.StopMovement();
-                       selfMovement.WallJump(normalWallJump);
+                        selfMovement.WallJump(normalWallJump);
                     }
                 }
                 else
                 {
                     selfMovement.ApplyGravity();
                     isAttachToWall = false;
+                }
+
+                if(isAttachToWall)
+                {
+                    selfMovement.StopMovement();
+                    selfMovement.isAttackReset = true;
                 }
 
             }
@@ -167,9 +204,9 @@ public class PlayerLogic : NetworkBehaviour
                     selfMovement.Jump();
                 }
 
-                if (selfMovement.isAttacking) //Enable attack if on ground to change maybe a timer
+                if (isGrounded)
                 {
-                    selfMovement.isAttacking = false;
+                    selfMovement.isAttackReset = true;
                 }
             }
         }
@@ -184,7 +221,7 @@ public class PlayerLogic : NetworkBehaviour
         Vector3 point = info.contacts[0].point;
         normalWallJump = info.contacts[0].normal;
 
-        Debug.DrawRay(point, (normalWallJump + new Vector3(0,0.5f,0)) * 10,Color.red,2.5f);
+        Debug.DrawRay(point, (normalWallJump + new Vector3(0, 0.5f, 0)) * 10, Color.red, 2.5f);
     }
 
     #endregion
@@ -217,6 +254,12 @@ public class PlayerLogic : NetworkBehaviour
         }
     }
     #endregion
+
+    public void Respawn()
+    {
+        transform.position = spawnPos;
+        selfMovement.StopMovement();
+    }
 
     #region Network logic
     #endregion
