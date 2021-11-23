@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private Transform selfCamera;
     [SerializeField]
-    private GameObject selfAttackCollider;
+    public GameObject selfAttackCollider;
 
     private Vector3 moveDirection = new Vector3(0, 0, 0);
 
@@ -283,7 +283,6 @@ public class PlayerMovement : MonoBehaviour
             ratio = 0.8f;
         }
 
-        Debug.Log(ratio);
         return ratio;
     }
 
@@ -295,6 +294,7 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator AttackManage(float ratio) //Coroutine gérant le mouvement d'attaque
     {
         selfAttackCollider.SetActive(true);
+        selfLogic.CmdAttackCollider(true);
 
         Vector3 directionAttack = selfCamera.forward;
         attackspd = Vector3.zero; //init attackSpd Important
@@ -320,7 +320,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         selfAttackCollider.SetActive(false);
-        
+        selfLogic.CmdAttackCollider(false);
         //active Wall Jump if player punch
         canWallJump = true;
     }
@@ -403,6 +403,11 @@ public class PlayerMovement : MonoBehaviour
     public void isNotGrounded()
     {
         selfLogic.isGrounded = false;
+    }
+
+    public void takeFlag()
+    {
+        selfLogic.hasFlag = true;
     }
 
     #endregion

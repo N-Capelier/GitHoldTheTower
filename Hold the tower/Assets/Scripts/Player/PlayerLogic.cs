@@ -11,6 +11,10 @@ public class PlayerLogic : NetworkBehaviour
     private Transform selfCamera;
     [SerializeField]
     private PlayerMovement selfMovement;
+    [SerializeField]
+    private GameObject flagRenderer;
+    [SerializeField]
+    private GameObject selfCollisionParent;
 
     [SyncVar]
     public LobbyPlayerLogic.nameOfTeam teamName;
@@ -20,12 +24,17 @@ public class PlayerLogic : NetworkBehaviour
     private float timeStampRunAccel, timeStampRunDecel;
     private float timeAttack, ratioAttack;
 
+
     [HideInInspector]
     public Vector3 normalWallJump;
 
     //State
     [HideInInspector]
     public bool isGrounded, isJumping, isAttachToWall;
+
+    [SyncVar]
+    public bool hasFlag;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +55,7 @@ public class PlayerLogic : NetworkBehaviour
             fpsView();
             VerticalMovement();
             HorizontalMovement();
+            showFlagToPlayer();
         }
     }
 
@@ -71,6 +81,7 @@ public class PlayerLogic : NetworkBehaviour
 
         selfCamera.Rotate(Vector3.up * mouseX);
         selfCamera.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+        selfCollisionParent.transform.localRotation = Quaternion.Euler(new Vector3(0, selfCamera.rotation.eulerAngles.y, 0));
 
     }
 
@@ -190,14 +201,14 @@ public class PlayerLogic : NetworkBehaviour
     #endregion
 
     #region AttackLogic
-    public void getHit()
+
+    public void getHit(Transform playerThatPunch)
     {
-
-    }
-
-    public void cantBeHit()
-    {
-
+        if (hasFlag && hasAuthority)
+        {
+            Debug.Log("Hit");
+            CmdDropFlag(playerThatPunch.GetComponent<NetworkIdentity>());
+        }
     }
 
     public void AttackInput()
@@ -207,6 +218,7 @@ public class PlayerLogic : NetworkBehaviour
         {
             timeAttack += Time.deltaTime;
             ratioAttack = selfMovement.AttackLoad(timeAttack);
+            
         }
         //Attack lauch
         if (Input.GetMouseButtonUp(selfParams.attackMouseInput))
@@ -216,9 +228,62 @@ public class PlayerLogic : NetworkBehaviour
             ratioAttack = 0;
         }
     }
+
     #endregion
 
     #region Network logic
+
+    [Command]
+    public void CmdAttackCollider(bool isActive)
+    {
+        selfMovement.selfAttackCollider.SetActive(isActive);
+        RpcAttackCollider(isActive);
+    }
+
+    [ClientRpc]
+    public void RpcAttackCollider(bool isActive)
+    {
+        selfMovement.selfAttackCollider.SetActive(isActive);
+    }
+
+    [Command]
+    public void CmdDropFlag(NetworkIdentity id)
+    {
+        hasFlag = false;
+        RpcHasFlag();
+    }
+
+    [ClientRpc]
+    public void RpcHasFlag()
+    {
+        CmdGetFlag();
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdGetFlag()
+    {
+        hasFlag = true;
+        Debug.Log("rpchas");
+    }
+
+
+    #endregion
+
+    #region Flag Logic
+
+    private void showFlagToPlayer()
+    {
+        if (hasFlag && !flagRenderer.activeSelf)
+        {
+            flagRenderer.SetActive(true);
+        }
+
+        if (!hasFlag && flagRenderer.activeSelf)
+        {
+            flagRenderer.SetActive(false);
+        }
+    }
+
     #endregion
 }
 
