@@ -27,7 +27,7 @@ public class PlayerLogic : NetworkBehaviour
 
     //State
     [HideInInspector]
-    public bool isGrounded, isJumping, isAttachToWall;
+    public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround;
     // Start is called before the first frame update
     void Start()
     {
@@ -80,6 +80,7 @@ public class PlayerLogic : NetworkBehaviour
 
     private void HorizontalMovement()
     {
+        isGrounded = isTouchingTheGround && !selfMovement.isAttacking;
 
         if (!selfMovement.isClimbingMovement && !isAttachToWall && !selfMovement.isAttacking)
         {

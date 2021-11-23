@@ -379,6 +379,8 @@ public class PlayerMovement : MonoBehaviour
         
         //active Wall Jump if player punch
         canWallJump = true;
+        attackspd = directionAttack * selfParams.velocityCurve.Evaluate(selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time) * Time.fixedDeltaTime * ratio * selfParams.forceAttack;
+
         hspd = new Vector3(attackspd.x, 0, attackspd.z);
         vspd = new Vector3(0, attackspd.y, 0);
         attackspd = Vector3.zero;
@@ -456,13 +458,13 @@ public class PlayerMovement : MonoBehaviour
 
     public void isGrounded()
     {
-        selfLogic.isGrounded = true;
+        selfLogic.isTouchingTheGround = true;
         canWallJump = true;
     }
 
     public void isNotGrounded()
     {
-        selfLogic.isGrounded = false;
+        selfLogic.isTouchingTheGround = false;
     }
 
     #endregion
