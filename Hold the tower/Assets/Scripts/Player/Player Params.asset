@@ -20,7 +20,7 @@ MonoBehaviour:
   wallMouseInput: 1
   attackMouseInput: 0
   mouseSensivity: 150
-  hspdAcceleration:
+  runningAcceleration:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -44,7 +44,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  hspdDeceleration:
+  runningDeceleration:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -68,7 +68,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  hspdForce: 12
+  maxRunningSpeed: 9
+  airControlForce: 25
   gravity: 30
   forwardForceJump: 4
   topForceJump: 300
@@ -97,7 +98,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  forceToWallJump: 800
+  forceToWallJump: 700
+  upWardWallJumpForce: 0.6
+  maxWallJumpAngleDeviation: 40
   climbHeight: 1.5
   climbWidth: 2
   timeToClimb: 0.15
