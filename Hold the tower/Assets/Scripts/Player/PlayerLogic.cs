@@ -5,6 +5,7 @@ using Mirror;
 
 public class PlayerLogic : NetworkBehaviour
 {
+    public List<Collider> sidesColliders;
     [SerializeField]
     private ScriptableParamsPlayer selfParams;
     [SerializeField]
@@ -168,28 +169,28 @@ public class PlayerLogic : NetworkBehaviour
     {
         if (!selfMovement.isClimbingMovement)
         {
-            if (!isGrounded)
+            if (selfMovement.IsSomethingCollide() && Input.GetMouseButton(selfParams.wallMouseInput))
             {
-                if (selfMovement.IsSomethingCollide() && Input.GetMouseButton(selfParams.wallMouseInput))
+                selfMovement.NoGravity();
+                isAttachToWall = true;
+                selfMovement.isAttackReset = true;
+                selfMovement.StopMovement();
+                if (Input.GetKey(selfParams.jump))
                 {
-                    selfMovement.NoGravity();
-                    isAttachToWall = true;
-                    if (Input.GetKeyDown(selfParams.jump))
+                    if (GetNearbyWallNormal() != Vector3.zero)
                     {
-                        selfMovement.WallJump(normalWallJump);
+                        selfMovement.WallJump(GetNearbyWallNormal());
                     }
                 }
-                else
-                {
-                    selfMovement.ApplyGravity();
-                    isAttachToWall = false;
-                }
+            }
+            else
+            {
+                selfMovement.ApplyGravity();
+                isAttachToWall = false;
+            }
 
-                if(isAttachToWall)
-                {
-                    selfMovement.StopMovement();
-                    selfMovement.isAttackReset = true;
-                }
+            if (!isGrounded)
+            {
 
             }
             else
@@ -199,7 +200,7 @@ public class PlayerLogic : NetworkBehaviour
                     //selfMovement.NoGravity();
                 }
 
-                if (Input.GetKeyDown(selfParams.jump) && !isJumping)
+                if (Input.GetKey(selfParams.jump) && !isJumping && !isAttachToWall)
                 {
                     selfMovement.Jump();
                 }
@@ -221,7 +222,26 @@ public class PlayerLogic : NetworkBehaviour
         Vector3 point = info.contacts[0].point;
         normalWallJump = info.contacts[0].normal;
 
-        Debug.DrawRay(point, (normalWallJump + new Vector3(0, 0.5f, 0)) * 10, Color.red, 2.5f);
+        //Debug.DrawRay(point, (normalWallJump + new Vector3(0, 0.5f, 0)) * 10, Color.red, 2.5f);
+    }
+
+    public Vector3 GetNearbyWallNormal()
+    {
+        Vector3 wallNormal = Vector3.zero;
+
+        Collider[] nearbyWalls = Physics.OverlapBox(transform.position, new Vector3(0.7f, 0.2f, 0.7f), Quaternion.Euler(xRotation, yRotation, 0f), LayerMask.GetMask("Wall"));
+        if(nearbyWalls.Length > 0)
+        {
+            RaycastHit wallHit;
+            Physics.Raycast(transform.position, nearbyWalls[0].transform.position - transform.position, out wallHit, 20, LayerMask.GetMask("Wall"));
+
+            if (wallHit.collider != null)
+            {
+                wallNormal = wallHit.normal;
+            }
+        }
+
+        return wallNormal;
     }
 
     #endregion

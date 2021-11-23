@@ -85,6 +85,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0
+  sidesColliders: []
   selfParams: {fileID: 11400000, guid: a24272e5804e7bd4891a2cf20f79574a, type: 2}
   selfCamera: {fileID: 9175226997489984019}
   selfMovement: {fileID: 4205374861408034103}
@@ -93,6 +94,7 @@ MonoBehaviour:
   isGrounded: 0
   isJumping: 0
   isAttachToWall: 0
+  isTouchingTheGround: 0
 --- !u!114 &4205374861408034103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -725,8 +727,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.804115, y: 1.43, z: 0.39203644}
-  m_Center: {x: 0.03764072, y: 0.44, z: -0.37538117}
+  m_Size: {x: 0.804115, y: 1.7, z: 0.39203644}
+  m_Center: {x: 0.03764072, y: 0.59, z: -0.37538117}
 --- !u!114 &2283582401440189527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -815,8 +817,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.804115, y: 0.45, z: 0.39203644}
-  m_Center: {x: 0.03764072, y: 0.8, z: -0.37538117}
+  m_Size: {x: 0.804115, y: 0.27, z: 0.39203644}
+  m_Center: {x: 0.03764072, y: 0.89, z: -0.37538117}
 --- !u!114 &1688659597601429249
 MonoBehaviour:
   m_ObjectHideFlags: 0
