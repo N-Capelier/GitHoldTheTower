@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Dev/LightTests.unity
     guid: d20a08e4f7c61464ab3004e66254712e
+  - enabled: 1
+    path: Assets/Scenes/Dev/LevelDesign/3CTESTING01.unity
+    guid: 6a169e431f54b8c4688bf66a269b0ff1
   m_configObjects: {}

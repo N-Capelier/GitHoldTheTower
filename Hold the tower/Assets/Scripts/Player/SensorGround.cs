@@ -69,8 +69,19 @@ public class SensorGround : MonoBehaviour
     void FixedUpdate()
     {
         if (target != null  && selfLogic.isGrounded && !selfMovement.isClimbingMovement)
-        { 
-            selfRbd.velocity += target.GetComponent<BlockBehaviour>().ownVelo;
+        {
+            if (selfLogic.hasAuthority)
+            {
+                
+            }
+            else
+            {
+                
+            }
+
+            selfTransform.position += target.GetComponent<BlockBehaviour>().ownVelo;
+            //selfRbd.velocity += target.GetComponent<BlockBehaviour>().ownVelo;
+            //Debug.Log(target.GetComponent<BlockBehaviour>().ownVelo);
         }
 
     }
