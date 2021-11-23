@@ -138,8 +138,7 @@ public class MyNewNetworkManager : NetworkManager
     public override void OnClientSceneChanged(NetworkConnection conn)
     {
         base.OnClientSceneChanged(conn);
-
-        if(SceneManager.GetActiveScene().name != "LobbyScene")
+        if (SceneManager.GetActiveScene().name != "LobbyScene")
         {
             //Reset number
             nbBlueTeam = 0;
@@ -149,7 +148,7 @@ public class MyNewNetworkManager : NetworkManager
             {
                 teamName = playerTeamName
             };
-
+            
             conn.Send(msg);
         }
        
@@ -325,21 +324,25 @@ public class MyNewNetworkManager : NetworkManager
     private void CreatePlayer(NetworkConnection conn, MyNewNetworkAuthenticator.CreateClientPlayer msg)
     {
         GameObject obj = Instantiate(Player);
+        
         obj.GetComponent<PlayerLogic>().teamName = msg.teamName;
         if(msg.teamName == LobbyPlayerLogic.nameOfTeam.blue)
         {
-            nbBlueTeam++;
             obj.transform.position = SpawnPlayerPosition[nbBlueTeam].transform.position;
+            nbBlueTeam++;
         }
 
         if (msg.teamName == LobbyPlayerLogic.nameOfTeam.red)
         {
-            nbRedTeam++;
             obj.transform.position = SpawnPlayerPosition[nbRedTeam+2].transform.position;
+            nbRedTeam++;
         }
 
+        Debug.Log(obj.name);
         NetworkServer.AddPlayerForConnection(conn, obj);
     }
+
+    
 
     public void StartGame()
     {

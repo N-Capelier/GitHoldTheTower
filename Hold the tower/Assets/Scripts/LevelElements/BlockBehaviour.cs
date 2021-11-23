@@ -36,10 +36,13 @@ public class BlockBehaviour : MonoBehaviour
 	{
 		elapsedTime += Time.fixedDeltaTime; //Need to change
 		completion = elapsedTime / moveDuration;
-		Vector3 actualPos = transform.position;
+		Vector3 previousPos = transform.position;
 		transform.position = Vector3.Lerp(startPosition, targetPosition, Mathf.SmoothStep(0, 1, completion));
-		ownVelo = transform.position - actualPos;
-		ownVelo = new Vector3(0, ownVelo.y, 0);
+
+		//Calculate velocity of each block (give this velo to player)
+		ownVelo = ((transform.position - previousPos));
+		//ownVelo = -Vector3.Lerp(ownVelo, currentFrameVel, 0.1f);
+		//ownVelo = new Vector3(0, ownVelo.y, 0);
 
 		if (completion >= 1)
 		{
