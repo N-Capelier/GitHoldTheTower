@@ -169,7 +169,7 @@ public class PlayerLogic : NetworkBehaviour
                     //isAttachToWall = true;
                     //selfMovement.isAttackReset = true;
                     //selfMovement.StopMovement();
-                    if (Input.GetKey(selfParams.jump))
+                    if (Input.GetKeyDown(selfParams.jump))
                     {
                         if (GetNearbyWallNormal() != Vector3.zero)
                         {
@@ -224,8 +224,10 @@ public class PlayerLogic : NetworkBehaviour
         if(nearbyWalls.Length > 0)
         {
             RaycastHit wallHit;
-            ////////////// changerrrrrrrrrrrrrrrrrrrrrrrrrr
-            Physics.Raycast(transform.position, nearbyWalls[0].transform.position - transform.position, out wallHit, 20, LayerMask.GetMask("Outlined"));
+            Vector3 wallPosDir = nearbyWalls[0].transform.position - transform.position;
+            wallPosDir = new Vector3(wallPosDir.x, 0, wallPosDir.z);
+            wallPosDir.Normalize();
+            Physics.Raycast(transform.position, wallPosDir, out wallHit, 20, LayerMask.GetMask("Outlined"));
 
             if (wallHit.collider != null)
             {

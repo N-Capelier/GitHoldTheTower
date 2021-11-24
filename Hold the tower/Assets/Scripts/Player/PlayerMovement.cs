@@ -184,7 +184,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 adjustDirection = wallDirection;
 
         Vector3 moveKeyDirection = Vector3.zero;
-        Vector3 keyRelativeDirection;
+        /*Vector3 keyRelativeDirection;
         if (Input.GetKey(selfParams.front))
         {
             keyRelativeDirection = selfCamera.forward;
@@ -212,8 +212,13 @@ public class PlayerMovement : MonoBehaviour
             keyRelativeDirection = new Vector3(keyRelativeDirection.x, 0, keyRelativeDirection.z);
             keyRelativeDirection.Normalize();
             moveKeyDirection += keyRelativeDirection;
-        }
+        }*/
         float angleDist = 0;
+
+        moveKeyDirection = selfCamera.forward;
+        moveKeyDirection = new Vector3(moveKeyDirection.x, 0, moveKeyDirection.z);
+        moveKeyDirection.Normalize();
+
         if (moveKeyDirection != Vector3.zero)
         {
             moveKeyDirection.Normalize();
@@ -225,11 +230,10 @@ public class PlayerMovement : MonoBehaviour
             {
                 angleDist -= 360;
             }
-            if (angleDist < -180)
+            else if (angleDist < -180)
             {
                 angleDist += 360;
             }
-            Debug.Log(angleDist);
 
             if (Mathf.Abs(angleDist) > selfParams.wallJumpMinAngleToCancelDeviation)
             {
@@ -252,7 +256,6 @@ public class PlayerMovement : MonoBehaviour
             adjustDirection = new Vector3(Mathf.Cos(Mathf.Deg2Rad * jumpAngle), 0, -Mathf.Sin(Mathf.Deg2Rad * jumpAngle));
 
             adjustDirection.Normalize();
-            Debug.DrawRay(transform.position, adjustDirection * 3, Color.green, 2f);
         }
 
         adjustDirection += new Vector3(0, selfParams.upWardWallJumpForce, 0);
