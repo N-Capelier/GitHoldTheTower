@@ -66,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if(IsSomethingCollide())
                 {
+                    /*
                     //WIP a changer
                     if (Mathf.Sign(hspd.x) == Mathf.Sign(-selfLogic.normalWallJump.x))
                     {
@@ -81,12 +82,12 @@ public class PlayerMovement : MonoBehaviour
                     {
                         attackspd = Vector3.zero;
                         WallJumpspd = Vector3.zero;
-                    }
+                    }*/
                     
                 }
             }
 
-            selfRbd.velocity = hspd + vspd + attackspd + WallJumpspd;
+            selfRbd.velocity = hspd + vspd + attackspd;
         }
     }
    
@@ -122,6 +123,10 @@ public class PlayerMovement : MonoBehaviour
         if(hspd != Vector3.zero)
         {
             hspd = hspd * selfParams.runningDeceleration.Evaluate(timeStamp);
+        }
+        else
+        {
+            moveDirection = Vector3.zero;
         }
     }
 
@@ -167,7 +172,7 @@ public class PlayerMovement : MonoBehaviour
         if (canWallJump)
         {
             StartCoroutine(WallJumpManage(direction));
-            canWallJump = false;
+            canWallJump = true;
         }
         
     }
@@ -175,10 +180,11 @@ public class PlayerMovement : MonoBehaviour
     //Manage walljump movement
     public IEnumerator WallJumpManage(Vector3 wallDirection)
     {
+        isAttackReset = true;
         Vector3 adjustDirection = wallDirection;
 
         Vector3 moveKeyDirection = Vector3.zero;
-        Vector3 keyRelativeDirection;
+        /*Vector3 keyRelativeDirection;
         if (Input.GetKey(selfParams.front))
         {
             keyRelativeDirection = selfCamera.forward;
@@ -206,8 +212,13 @@ public class PlayerMovement : MonoBehaviour
             keyRelativeDirection = new Vector3(keyRelativeDirection.x, 0, keyRelativeDirection.z);
             keyRelativeDirection.Normalize();
             moveKeyDirection += keyRelativeDirection;
-        }
+        }*/
         float angleDist = 0;
+
+        moveKeyDirection = selfCamera.forward;
+        moveKeyDirection = new Vector3(moveKeyDirection.x, 0, moveKeyDirection.z);
+        moveKeyDirection.Normalize();
+
         if (moveKeyDirection != Vector3.zero)
         {
             moveKeyDirection.Normalize();
@@ -219,45 +230,55 @@ public class PlayerMovement : MonoBehaviour
             {
                 angleDist -= 360;
             }
-            if (angleDist < -180)
+            else if (angleDist < -180)
             {
                 angleDist += 360;
             }
 
-            if(angleDist > selfParams.maxWallJumpAngleDeviation)
+            if (Mathf.Abs(angleDist) > selfParams.wallJumpMinAngleToCancelDeviation)
             {
-                jumpAngle = wallAngle + selfParams.maxWallJumpAngleDeviation;
+                jumpAngle = wallAngle;
             }
-
-            if (angleDist < -selfParams.maxWallJumpAngleDeviation)
+            else
             {
-                jumpAngle = wallAngle - selfParams.maxWallJumpAngleDeviation;
+                if (angleDist > selfParams.maxWallJumpAngleDeviation)
+                {
+                    jumpAngle = wallAngle + selfParams.maxWallJumpAngleDeviation;
+                }
+
+                if (angleDist < -selfParams.maxWallJumpAngleDeviation)
+                {
+                    jumpAngle = wallAngle - selfParams.maxWallJumpAngleDeviation;
+                }
             }
 
             adjustDirection = new Vector3(Mathf.Cos(Mathf.Deg2Rad * jumpAngle), 0, -Mathf.Sin(Mathf.Deg2Rad * jumpAngle));
+
             adjustDirection.Normalize();
         }
 
         adjustDirection += new Vector3(0, selfParams.upWardWallJumpForce, 0);
 
-        float _timer = 0;
-        hspd = Vector3.zero;
-        vspd = Vector3.zero;
 
         //Add force
+        /*
         while (_timer < selfParams.forceToWallJumpCurve[selfParams.forceToWallJumpCurve.length-1].time)
         {
-            vspd = Vector3.zero;
             WallJumpspd = adjustDirection * (selfParams.forceToWallJumpCurve.Evaluate(_timer) * Time.fixedDeltaTime * selfParams.forceToWallJump);
             _timer += Time.deltaTime;
             yield return new WaitForEndOfFrame();
-        }
+        }*/
 
+        WallJumpspd = adjustDirection * selfParams.forceToWallJump;
+
+        StopMovement();
+        NoGravity();
         canWallJump = true;
         hspd = new Vector3(WallJumpspd.x, 0, WallJumpspd.z);
         vspd = new Vector3(0, WallJumpspd.y, 0);
 
         WallJumpspd = Vector3.zero;
+        yield return new WaitForEndOfFrame();
     }
     //manage jump
     #endregion
@@ -321,7 +342,7 @@ public class PlayerMovement : MonoBehaviour
 
         isClimbingMovement = true;
         Vector3 climbEndGroundPos = transform.position;
-        climbEndGroundPos += (selfParams.climbHeight * Vector3.up) + (selfCamera.forward * selfParams.climbWidth);
+        climbEndGroundPos += (selfParams.climbHeight * Vector3.up) + (selfLogic.GetHorizontalVector(selfCamera.forward) * selfParams.climbWidth);
         RaycastHit endPosHit;
         Physics.Raycast(climbEndGroundPos, Vector3.down,out endPosHit, 2f, LayerMask.GetMask("Outlined"));
         if (endPosHit.collider != null)
@@ -329,15 +350,25 @@ public class PlayerMovement : MonoBehaviour
             climbEndGroundPos = endPosHit.point + Vector3.up;
             float timer = selfParams.timeToClimb;
             Vector3 startClimbPos = transform.position;
+            Vector3 currentPos = startClimbPos;
+            Vector3 lastPos = startClimbPos;
+            Vector3 currentVelocity = Vector3.zero;
             while (timer > 0)
             {
-                StopMovement();
-                transform.position = Vector3.Lerp(startClimbPos, climbEndGroundPos, selfParams.climbSpeedOverTime.Evaluate(1 - (timer / selfParams.timeToClimb)));
+                lastPos = currentPos;
+                currentPos = Vector3.Lerp(startClimbPos, climbEndGroundPos, selfParams.climbSpeedOverTime.Evaluate(1 - (timer / selfParams.timeToClimb)));
+                currentVelocity = (currentPos - lastPos)/Time.fixedDeltaTime;
+                selfRbd.velocity = currentVelocity;
+                transform.GetChild(1).GetComponent<Collider>().isTrigger = true;
+
                 timer -= Time.fixedDeltaTime;
                 yield return new WaitForFixedUpdate();
             }
             //transform.position = climbEndGroundPos;
         }
+        hspd = new Vector3(selfRbd.velocity.x, 0, selfRbd.velocity.z);
+        moveDirection = selfLogic.GetHorizontalVector(hspd);
+        transform.GetChild(1).GetComponent<Collider>().isTrigger = false;
         isClimbingMovement = false;
     }
     #endregion
