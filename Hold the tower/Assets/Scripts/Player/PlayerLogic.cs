@@ -149,7 +149,7 @@ public class PlayerLogic : NetworkBehaviour
     }
 
 
-    private Vector3 GetHorizontalVector(Vector3 originVector)
+    public Vector3 GetHorizontalVector(Vector3 originVector)
     {
         Vector3 horizontalVector = new Vector3(originVector.x, 0, originVector.z);
         return horizontalVector.normalized;

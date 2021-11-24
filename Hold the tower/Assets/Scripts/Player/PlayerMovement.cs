@@ -238,7 +238,6 @@ public class PlayerMovement : MonoBehaviour
             if (Mathf.Abs(angleDist) > selfParams.wallJumpMinAngleToCancelDeviation)
             {
                 jumpAngle = wallAngle;
-                Debug.Log("LookingWall");
             }
             else
             {
@@ -343,7 +342,7 @@ public class PlayerMovement : MonoBehaviour
 
         isClimbingMovement = true;
         Vector3 climbEndGroundPos = transform.position;
-        climbEndGroundPos += (selfParams.climbHeight * Vector3.up) + (selfCamera.forward * selfParams.climbWidth);
+        climbEndGroundPos += (selfParams.climbHeight * Vector3.up) + (selfLogic.GetHorizontalVector(selfCamera.forward) * selfParams.climbWidth);
         RaycastHit endPosHit;
         Physics.Raycast(climbEndGroundPos, Vector3.down,out endPosHit, 2f, LayerMask.GetMask("Outlined"));
         if (endPosHit.collider != null)
@@ -351,15 +350,25 @@ public class PlayerMovement : MonoBehaviour
             climbEndGroundPos = endPosHit.point + Vector3.up;
             float timer = selfParams.timeToClimb;
             Vector3 startClimbPos = transform.position;
+            Vector3 currentPos = startClimbPos;
+            Vector3 lastPos = startClimbPos;
+            Vector3 currentVelocity = Vector3.zero;
             while (timer > 0)
             {
-                StopMovement();
-                transform.position = Vector3.Lerp(startClimbPos, climbEndGroundPos, selfParams.climbSpeedOverTime.Evaluate(1 - (timer / selfParams.timeToClimb)));
+                lastPos = currentPos;
+                currentPos = Vector3.Lerp(startClimbPos, climbEndGroundPos, selfParams.climbSpeedOverTime.Evaluate(1 - (timer / selfParams.timeToClimb)));
+                currentVelocity = (currentPos - lastPos)/Time.fixedDeltaTime;
+                selfRbd.velocity = currentVelocity;
+                transform.GetChild(1).GetComponent<Collider>().isTrigger = true;
+
                 timer -= Time.fixedDeltaTime;
                 yield return new WaitForFixedUpdate();
             }
             //transform.position = climbEndGroundPos;
         }
+        hspd = new Vector3(selfRbd.velocity.x, 0, selfRbd.velocity.z);
+        moveDirection = selfLogic.GetHorizontalVector(hspd);
+        transform.GetChild(1).GetComponent<Collider>().isTrigger = false;
         isClimbingMovement = false;
     }
     #endregion
