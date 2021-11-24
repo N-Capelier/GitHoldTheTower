@@ -23,3 +23,53 @@ MonoBehaviour:
     isLocalized: 1
     isRandom: 0
     isLoop: 0
+  - name: PlayerFootstep
+    ID: 0
+    sounds:
+    - name: NullSound
+      ID: 0
+      clip: {fileID: 8300000, guid: ec60d5946c7a6eb4886183169a450268, type: 3}
+      volume: 1
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 0
+  - name: PlayerJump
+    ID: 0
+    sounds:
+    - name: NullSound
+      ID: 0
+      clip: {fileID: 8300000, guid: ec60d5946c7a6eb4886183169a450268, type: 3}
+      volume: 1
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 0
+  - name: PlayerJumpOff
+    ID: 0
+    sounds:
+    - name: NullSound
+      ID: 0
+      clip: {fileID: 8300000, guid: ec60d5946c7a6eb4886183169a450268, type: 3}
+      volume: 1
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 0
+  - name: PlayerPunchCharge
+    ID: 0
+    sounds:
+    - name: NullSound
+      ID: 0
+      clip: {fileID: 8300000, guid: ec60d5946c7a6eb4886183169a450268, type: 3}
+      volume: 1
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 0
+  - name: PlayerPunch
+    ID: 0
+    sounds:
+    - name: NullSound
+      ID: 0
+      clip: {fileID: 8300000, guid: ec60d5946c7a6eb4886183169a450268, type: 3}
+      volume: 1
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 0
