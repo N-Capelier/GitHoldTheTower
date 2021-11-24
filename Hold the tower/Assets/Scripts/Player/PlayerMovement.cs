@@ -38,12 +38,6 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector]
     public bool isAttackInCooldown;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     private void FixedUpdate()
     {
         if (selfLogic.isGrounded)
@@ -441,6 +435,7 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator AttackManage(float ratio) //Coroutine g�rant le mouvement d'attaque
     {
         selfAttackCollider.SetActive(true);
+        //StopMovement(); ////////////////////////////////////////////////////////////////////////////// Check merge conflict ///////////////////////////////////////////////////
         selfLogic.CmdAttackCollider(true);
 
         Vector3 directionAttack = selfCamera.forward;
