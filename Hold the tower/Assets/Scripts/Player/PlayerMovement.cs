@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private Transform selfCamera;
     [SerializeField]
-    private GameObject selfAttackCollider;
+    public GameObject selfAttackCollider;
 
     private Vector3 moveDirection = new Vector3(0, 0, 0);
 
@@ -421,7 +421,7 @@ public class PlayerMovement : MonoBehaviour
             ratio = 1.5f;
         }
 
-        //Si supérieur au pickTime + treshHold
+        //Si supï¿½rieur au pickTime + treshHold
         if(time > selfParams.timePerfectAttack + selfParams.timeTreshold)
         {
             ratio = 1;
@@ -438,10 +438,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public IEnumerator AttackManage(float ratio) //Coroutine gérant le mouvement d'attaque
+    public IEnumerator AttackManage(float ratio) //Coroutine gï¿½rant le mouvement d'attaque
     {
         selfAttackCollider.SetActive(true);
-        StopMovement();
+        selfLogic.CmdAttackCollider(true);
 
         Vector3 directionAttack = selfCamera.forward;
         attackspd = Vector3.zero; //init attackSpd Important
@@ -471,7 +471,7 @@ public class PlayerMovement : MonoBehaviour
 
         isAttackInCooldown = true;
         selfAttackCollider.SetActive(false);
-        
+        selfLogic.CmdAttackCollider(false);
         //active Wall Jump if player punch
         canWallJump = true;
         attackspd = directionAttack * selfParams.velocityCurve.Evaluate(selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time) * Time.fixedDeltaTime * ratio * selfParams.forceAttack;
@@ -560,6 +560,11 @@ public class PlayerMovement : MonoBehaviour
     public void isNotGrounded()
     {
         selfLogic.isTouchingTheGround = false;
+    }
+
+    public void takeFlag()
+    {
+        selfLogic.hasFlag = true;
     }
 
     #endregion

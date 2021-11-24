@@ -76,7 +76,7 @@ public class SensorGround : MonoBehaviour
             }
             else
             {
-                
+                selfRbd.velocity += target.GetComponent<BlockBehaviour>().ownVelo;
             }
 
             selfTransform.position += target.GetComponent<BlockBehaviour>().ownVelo;
