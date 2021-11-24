@@ -79,6 +79,11 @@ public class SoundManager : MonoBehaviour
             soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, sfxMixer);
         }
 
+        if (soundRef.sound.clip == null)
+        {
+            soundRef.sound = soundEventList.FindEvent(0).sounds[0];
+        }
+
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
 
@@ -106,6 +111,11 @@ public class SoundManager : MonoBehaviour
         {
             soundRef.sound = thisEvent.sounds[0];
             soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, sfxMixer);
+        }
+
+        if (soundRef.sound.clip == null)
+        {
+            soundRef.sound = soundEventList.FindEvent(0).sounds[0];
         }
 
         //On joue le son !
@@ -140,6 +150,11 @@ public class SoundManager : MonoBehaviour
             soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, sfxMixer);
         }
 
+        if (soundRef.sound.clip == null)
+        {
+            soundRef.sound = soundEventList.FindEvent(0).sounds[0];
+        }
+
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
 
@@ -170,6 +185,11 @@ public class SoundManager : MonoBehaviour
         {
             soundRef.sound = thisEvent.sounds[0];
             soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, sfxMixer);
+        }
+
+        if (soundRef.sound.clip == null)
+        {
+            soundRef.sound = soundEventList.FindEvent(0).sounds[0];
         }
 
         //On joue le son !
@@ -204,6 +224,11 @@ public class SoundManager : MonoBehaviour
             soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, sfxMixer);
         }
 
+        if (soundRef.sound.clip == null)
+        {
+            soundRef.sound = soundEventList.FindEvent(0).sounds[0];
+        }
+
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
 
@@ -234,6 +259,11 @@ public class SoundManager : MonoBehaviour
         {
             soundRef.sound = thisEvent.sounds[0];
             soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, sfxMixer);
+        }
+
+        if (soundRef.sound.clip == null)
+        {
+            soundRef.sound = soundEventList.FindEvent(0).sounds[0];
         }
 
         //On joue le son !
