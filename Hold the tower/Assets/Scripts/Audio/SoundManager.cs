@@ -272,6 +272,42 @@ public class SoundManager : MonoBehaviour
         //On retourne la référence du son pour qu'il soit modifiable pas la suite la ou on l'appel.
         return soundRef;
     }
+    public SoundReference PlaySoundEvent(string thisEventName, AudioSource source)
+    {
+        //Joue un son écoutable par tous et localisé dans l'espace.
+
+        //On commence par créer la référence puis créer l'audioSource qui va jouer le son.
+        SoundReference soundRef = new SoundReference();
+        soundRef.audioSource = source;
+
+        //On va chercher l'event avec l'ID correspondant;
+        SoundEvent thisEvent = soundEventList.FindEvent(thisEventName);
+
+        //On appliques les infos du son dans l'audiosource
+        if (thisEvent.isRandom)
+        {
+            int temp = UnityEngine.Random.Range(0, thisEvent.sounds.Length - 1);
+
+            soundRef.sound = thisEvent.sounds[temp];
+            soundRef.ApplySoundToAudioSource(thisEvent.sounds[temp], thisEvent.isLoop, sfxMixer);
+        }
+        else
+        {
+            soundRef.sound = thisEvent.sounds[0];
+            soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, sfxMixer);
+        }
+
+        if (soundRef.sound.clip == null)
+        {
+            soundRef.sound = soundEventList.FindEvent(0).sounds[0];
+        }
+
+        //On joue le son !
+        soundRef.audioSource.Play();
+
+        //On retourne la référence du son pour qu'il soit modifiable pas la suite la ou on l'appel.
+        return soundRef;
+    }
 
     public IEnumerator PlaySFX(SoundReference soundRef)
     {
@@ -287,40 +323,47 @@ public class SoundManager : MonoBehaviour
         Destroy(soundRef.audioSource);
 
     }
+    public IEnumerator StopSoundWithDelay(AudioSource source, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        source.Stop();
+
+    }
 
 
 
 
-      //Fontion pour jouer un son simplement.
-       /*       public void PlaySoundEffect(SoundEvent playedEvent)
-       {
+    //Fontion pour jouer un son simplement.
+    /*       public void PlaySoundEffect(SoundEvent playedEvent)
+    {
 
-           //On cherche le son que l'on va jouer dans la liste de son.
+        //On cherche le son que l'on va jouer dans la liste de son.
 
-               if (source.audioSource.isPlaying == false)
-               {
-                   Sound sound = new Sound();
+            if (source.audioSource.isPlaying == false)
+            {
+                Sound sound = new Sound();
 
-                   sound.clip = s.clip;
-                   sound.volume = s.volume * SoundEffectsVolume;
+                sound.clip = s.clip;
+                sound.volume = s.volume * SoundEffectsVolume;
 
-                   sound.source = source.audioSource;
+                sound.source = source.audioSource;
 
-                   sounds.Add(sound);
+                sounds.Add(sound);
 
-                   source.audioSource.clip = s.clip;
-                   source.audioSource.volume = s.volume * SoundEffectsVolume;
+                source.audioSource.clip = s.clip;
+                source.audioSource.volume = s.volume * SoundEffectsVolume;
 
-                   source.audioSource.loop = false;
+                source.audioSource.loop = false;
 
-                   source.audioSource.outputAudioMixerGroup = sfxMixer;
+                source.audioSource.outputAudioMixerGroup = sfxMixer;
 
-                   source.audioSource.Play();
+                source.audioSource.Play();
 
-                   break;
-               }
-           
-       }*/
+                break;
+            }
+
+    }*/
 
 
 

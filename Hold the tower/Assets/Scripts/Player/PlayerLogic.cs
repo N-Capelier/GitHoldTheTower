@@ -12,6 +12,10 @@ public class PlayerLogic : NetworkBehaviour
     private Transform selfCamera;
     [SerializeField]
     private PlayerMovement selfMovement;
+    [SerializeField]
+    private AudioSource playerSource;
+    [SerializeField]
+    private AudioSource playerFootstepSource;
 
     [SyncVar]
     public LobbyPlayerLogic.nameOfTeam teamName;
@@ -25,6 +29,8 @@ public class PlayerLogic : NetworkBehaviour
     public Vector3 normalWallJump;
 
     private Vector3 spawnPos;
+    private bool footStepFlag;
+    private bool touchingGroundFlag;
 
     //State
     [HideInInspector]
@@ -82,6 +88,37 @@ public class PlayerLogic : NetworkBehaviour
     private void HorizontalMovement()
     {
         isGrounded = isTouchingTheGround && !selfMovement.isAttacking;
+
+        if(isGrounded && Time.time - timeStampRunAccel > 0.2f)
+        {
+            if(footStepFlag)
+            {
+                SoundManager.instance.PlaySoundEvent("PlayerFootstep", playerFootstepSource);
+                footStepFlag = false;
+            }
+        }
+        else
+        {
+            if(!footStepFlag)
+            {
+                playerFootstepSource.Stop();
+                footStepFlag = true;
+            }
+        }
+
+        if(isTouchingTheGround)
+        {
+            if(touchingGroundFlag)
+            {
+                SoundManager.instance.PlaySoundEvent("PlayerJumpOff", playerSource);
+                touchingGroundFlag = false;
+                footStepFlag = false;
+            }
+        }
+        else
+        {
+            touchingGroundFlag = true;
+        }
 
         if (!selfMovement.isClimbingMovement && !isAttachToWall && !selfMovement.isAttacking)
         {
@@ -193,6 +230,7 @@ public class PlayerLogic : NetworkBehaviour
 
                 if (Input.GetKey(selfParams.jump) && !isJumping && !isAttachToWall)
                 {
+                    SoundManager.instance.PlaySoundEvent("PlayerJump", playerSource);
                     selfMovement.Jump();
                 }
 
@@ -253,6 +291,10 @@ public class PlayerLogic : NetworkBehaviour
 
     public void AttackInput()
     {
+        if (Input.GetMouseButtonDown(selfParams.attackMouseInput))
+        {
+            SoundManager.instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
+        }
         //Attack load
         if (Input.GetMouseButton(selfParams.attackMouseInput))
         {
@@ -262,6 +304,8 @@ public class PlayerLogic : NetworkBehaviour
         //Attack lauch
         if (Input.GetMouseButtonUp(selfParams.attackMouseInput))
         {
+            SoundManager.instance.PlaySoundEvent("PlayerPunch", playerSource);
+            SoundManager.instance.StopSoundWithDelay(playerSource, 0.2f);
             selfMovement.Attack(ratioAttack);
             timeAttack = 0;
             ratioAttack = 0;
