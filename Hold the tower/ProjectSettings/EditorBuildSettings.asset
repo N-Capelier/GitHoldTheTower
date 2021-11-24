@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Dev/LevelDesign/ControllerTests.unity
     guid: 064151576c54127498a841d41fd47dc4
+  - enabled: 1
+    path: Assets/Scenes/Dev/LevelDesign/LDPaternsTesting.unity
+    guid: dea5e52a687c0d5409c8aedf406ed2ce
   m_configObjects: {}
