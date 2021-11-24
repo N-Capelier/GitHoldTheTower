@@ -250,22 +250,8 @@ public class PlayerLogic : NetworkBehaviour
     public void CmdDropFlag(NetworkIdentity id)
     {
         hasFlag = false;
-        RpcHasFlag();
+        
     }
-
-    [ClientRpc]
-    public void RpcHasFlag()
-    {
-        CmdGetFlag();
-    }
-
-    [Command(requiresAuthority = false)]
-    public void CmdGetFlag()
-    {
-        hasFlag = true;
-        Debug.Log("rpchas");
-    }
-
 
     #endregion
 

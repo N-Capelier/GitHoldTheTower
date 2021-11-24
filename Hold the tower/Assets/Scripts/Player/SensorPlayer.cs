@@ -20,6 +20,7 @@ public class SensorPlayer : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             other.transform.parent.GetComponent<PlayerLogic>().getHit(transform.parent.transform.parent);
+            selfLogic.hasFlag = true;
         }
     }
 
