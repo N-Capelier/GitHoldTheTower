@@ -29,11 +29,9 @@ public class PlayerLogic : NetworkBehaviour
     private float timeStampRunAccel, timeStampRunDecel;
     private float timeAttack, ratioAttack;
 
-
     [HideInInspector]
     public Vector3 normalWallJump;
 
-    private Vector3 spawnPos;
     private bool footStepFlag;
     private bool touchingGroundFlag;
 
@@ -43,6 +41,16 @@ public class PlayerLogic : NetworkBehaviour
 
     [SyncVar]
     public bool hasFlag;
+
+    //Give the transform of spawn
+    public Transform selfSpawnPlayer;
+
+    //timer to start a round
+    private double timerToStart;
+    private double timerMaxToStart = 3d;
+
+    //Move if the round is start
+    public bool roundStarted = false;
 
     // Start is called before the first frame update
     void Start()
@@ -55,13 +63,12 @@ public class PlayerLogic : NetworkBehaviour
             Cursor.lockState = CursorLockMode.Locked;
 
         }
-        spawnPos = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (hasAuthority)
+        if (hasAuthority && roundStarted)
         {
             fpsView();
             VerticalMovement();
@@ -328,9 +335,30 @@ public class PlayerLogic : NetworkBehaviour
 
     public void Respawn()
     {
-        transform.position = spawnPos;
+        transform.position = selfSpawnPlayer.position;
         selfMovement.StopMovement();
     }
+    public void Respawn(float maxTimer)
+    {
+        timerToStart = NetworkTime.time;
+        transform.position = selfSpawnPlayer.position;
+        StartCoroutine(RespawnManager());
+        selfMovement.StopMovement();
+    }
+
+    public IEnumerator RespawnManager()
+    {
+
+        while(NetworkTime.time - timerToStart <= timerMaxToStart)
+        {
+            yield return new WaitForEndOfFrame();
+
+        }
+        Debug.Log("activate");
+        roundStarted = true;
+
+    }
+
 
     #region Network logic
 

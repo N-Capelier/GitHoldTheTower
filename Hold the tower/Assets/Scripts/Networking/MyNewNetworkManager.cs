@@ -326,15 +326,18 @@ public class MyNewNetworkManager : NetworkManager
         GameObject obj = Instantiate(Player);
         
         obj.GetComponent<PlayerLogic>().teamName = msg.teamName;
+        
         if(msg.teamName == LobbyPlayerLogic.nameOfTeam.blue)
         {
             obj.transform.position = SpawnPlayerPosition[nbBlueTeam].transform.position;
+            obj.GetComponent<PlayerLogic>().selfSpawnPlayer = SpawnPlayerPosition[nbBlueTeam].transform;
             nbBlueTeam++;
         }
 
         if (msg.teamName == LobbyPlayerLogic.nameOfTeam.red)
         {
             obj.transform.position = SpawnPlayerPosition[nbRedTeam+2].transform.position;
+            obj.GetComponent<PlayerLogic>().selfSpawnPlayer = SpawnPlayerPosition[nbRedTeam + 2].transform;
             nbRedTeam++;
         }
 

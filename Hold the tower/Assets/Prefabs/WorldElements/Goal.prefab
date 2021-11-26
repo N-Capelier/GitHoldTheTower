@@ -62,6 +62,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ec0aef1001ed0043b6cf9df4483f627, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  goalTeam: 0
+  matchManager: {fileID: 0}
+  maxScore: 3
+  redScore: 0
+  blueScore: 0
 --- !u!65 &-5971272096243198551
 BoxCollider:
   m_ObjectHideFlags: 0
