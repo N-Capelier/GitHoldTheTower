@@ -104,7 +104,7 @@ public class PlayerLogic : NetworkBehaviour
         {
             if(footStepFlag)
             {
-                SoundManager.instance.PlaySoundEvent("PlayerFootstep", playerFootstepSource);
+                SoundManager.Instance.PlaySoundEvent("PlayerFootstep", playerFootstepSource);
                 footStepFlag = false;
             }
         }
@@ -121,7 +121,7 @@ public class PlayerLogic : NetworkBehaviour
         {
             if(touchingGroundFlag)
             {
-                SoundManager.instance.PlaySoundEvent("PlayerJumpOff", playerSource);
+                SoundManager.Instance.PlaySoundEvent("PlayerJumpOff", playerSource);
                 touchingGroundFlag = false;
                 footStepFlag = false;
             }
@@ -241,7 +241,7 @@ public class PlayerLogic : NetworkBehaviour
 
                 if (Input.GetKey(selfParams.jump) && !isJumping && !isAttachToWall)
                 {
-                    SoundManager.instance.PlaySoundEvent("PlayerJump", playerSource);
+                    SoundManager.Instance.PlaySoundEvent("PlayerJump", playerSource);
                     selfMovement.Jump();
                 }
 
@@ -291,7 +291,7 @@ public class PlayerLogic : NetworkBehaviour
 
     #region AttackLogic
 
-    public void getHit(Transform playerThatPunch)
+    public void GetHit(Transform playerThatPunch)
     {
         if (hasFlag && hasAuthority)
         {
@@ -304,7 +304,7 @@ public class PlayerLogic : NetworkBehaviour
     {
         if (Input.GetMouseButtonDown(selfParams.attackMouseInput))
         {
-            SoundManager.instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
+            SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
         }
         //Attack load
         if (Input.GetMouseButton(selfParams.attackMouseInput))
@@ -316,8 +316,8 @@ public class PlayerLogic : NetworkBehaviour
         //Attack lauch
         if (Input.GetMouseButtonUp(selfParams.attackMouseInput))
         {
-            SoundManager.instance.PlaySoundEvent("PlayerPunch", playerSource);
-            SoundManager.instance.StopSoundWithDelay(playerSource, 0.2f);
+            SoundManager.Instance.PlaySoundEvent("PlayerPunch", playerSource);
+            SoundManager.Instance.StopSoundWithDelay(playerSource, 0.2f);
             selfMovement.Attack(ratioAttack);
             timeAttack = 0;
             ratioAttack = 0;
