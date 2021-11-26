@@ -353,13 +353,13 @@ public class PlayerMovement : MonoBehaviour
             Vector3 currentPos = startClimbPos;
             Vector3 lastPos = startClimbPos;
             Vector3 currentVelocity = Vector3.zero;
+            selfLogic.SwitchCollider(true);
             while (timer > 0)
             {
                 lastPos = currentPos;
                 currentPos = Vector3.Lerp(startClimbPos, climbEndGroundPos, selfParams.climbSpeedOverTime.Evaluate(1 - (timer / selfParams.timeToClimb)));
                 currentVelocity = (currentPos - lastPos)/Time.fixedDeltaTime;
                 selfRbd.velocity = currentVelocity;
-                transform.GetChild(1).GetComponent<Collider>().isTrigger = true;
 
                 timer -= Time.fixedDeltaTime;
                 yield return new WaitForFixedUpdate();
@@ -368,9 +368,10 @@ public class PlayerMovement : MonoBehaviour
         }
         hspd = new Vector3(selfRbd.velocity.x, 0, selfRbd.velocity.z);
         moveDirection = selfLogic.GetHorizontalVector(hspd);
-        transform.GetChild(1).GetComponent<Collider>().isTrigger = false;
+        selfLogic.SwitchCollider(false);
         isClimbingMovement = false;
     }
+
     #endregion
 
     #region WallDetection

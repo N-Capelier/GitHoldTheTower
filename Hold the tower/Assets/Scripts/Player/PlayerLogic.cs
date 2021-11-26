@@ -16,6 +16,8 @@ public class PlayerLogic : NetworkBehaviour
     private AudioSource playerSource;
     [SerializeField]
     private AudioSource playerFootstepSource;
+    [SerializeField]
+    private Collider playerCollider;
 
     [SyncVar]
     public LobbyPlayerLogic.nameOfTeam teamName;
@@ -320,6 +322,11 @@ public class PlayerLogic : NetworkBehaviour
     }
 
     #region Network logic
+    [Command]
+    public void SwitchCollider(bool isTrigger)
+    {
+        playerCollider.isTrigger = isTrigger;
+    }
     #endregion
 }
 

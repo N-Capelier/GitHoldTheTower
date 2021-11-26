@@ -93,6 +93,7 @@ MonoBehaviour:
   selfMovement: {fileID: 4205374861408034103}
   playerSource: {fileID: 5225992696232464197}
   playerFootstepSource: {fileID: 1615605924058730031}
+  playerCollider: {fileID: 285773796116165314}
   teamName: 0
   normalWallJump: {x: 0, y: 0, z: 0}
   isGrounded: 0
