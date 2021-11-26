@@ -5,21 +5,8 @@ using System.Collections;
 using UnityEngine.Audio;
 
 
-public class SoundManager : MonoBehaviour
+public class SoundManager : Singleton<SoundManager>
 {
-    public static SoundManager instance; 
-
-    private void Awake()
-    {
-        if(instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-    }
 
     public SoundEventList soundEventList;
 
@@ -27,21 +14,19 @@ public class SoundManager : MonoBehaviour
 
     public GameObject emptyGameObject;
 
-    void Start()
+	private void Awake()
+	{
+        CreateSingleton(true);
+	}
+
+	void Start()
     {
         if (soundEventList != null)
         {
             soundEventList.InitialiseSoundIDs();
             soundEventList.InitialiseEventIDs();
         }
-
     }
-
-    private void Update()
-    {
-
-    }
-
 
     public void TestSound()
     {

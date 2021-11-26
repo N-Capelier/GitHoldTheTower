@@ -338,7 +338,6 @@ public class MyNewNetworkManager : NetworkManager
             nbRedTeam++;
         }
 
-        Debug.Log(obj.name);
         NetworkServer.AddPlayerForConnection(conn, obj);
     }
 

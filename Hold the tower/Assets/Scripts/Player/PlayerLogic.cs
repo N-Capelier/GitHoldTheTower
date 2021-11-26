@@ -18,6 +18,10 @@ public class PlayerLogic : NetworkBehaviour
     private AudioSource playerFootstepSource;
     [SerializeField]
     private Collider playerCollider;
+    [SerializeField]
+    private GameObject flagRenderer;
+    [SerializeField]
+    private GameObject selfCollisionParent;
 
     [SyncVar]
     public LobbyPlayerLogic.nameOfTeam teamName;
@@ -26,6 +30,7 @@ public class PlayerLogic : NetworkBehaviour
 
     private float timeStampRunAccel, timeStampRunDecel;
     private float timeAttack, ratioAttack;
+
 
     [HideInInspector]
     public Vector3 normalWallJump;
@@ -37,6 +42,10 @@ public class PlayerLogic : NetworkBehaviour
     //State
     [HideInInspector]
     public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround, isTouchingWall;
+
+    [SyncVar]
+    public bool hasFlag;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,6 +68,7 @@ public class PlayerLogic : NetworkBehaviour
             fpsView();
             VerticalMovement();
             HorizontalMovement();
+            showFlagToPlayer();
         }
     }
 
@@ -84,6 +94,7 @@ public class PlayerLogic : NetworkBehaviour
 
         selfCamera.Rotate(Vector3.up * mouseX);
         selfCamera.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+        selfCollisionParent.transform.localRotation = Quaternion.Euler(new Vector3(0, selfCamera.rotation.eulerAngles.y, 0));
 
     }
 
@@ -95,7 +106,7 @@ public class PlayerLogic : NetworkBehaviour
         {
             if(footStepFlag)
             {
-                SoundManager.instance.PlaySoundEvent("PlayerFootstep", playerFootstepSource);
+                SoundManager.Instance.PlaySoundEvent("PlayerFootstep", playerFootstepSource);
                 footStepFlag = false;
             }
         }
@@ -112,7 +123,7 @@ public class PlayerLogic : NetworkBehaviour
         {
             if(touchingGroundFlag)
             {
-                SoundManager.instance.PlaySoundEvent("PlayerJumpOff", playerSource);
+                SoundManager.Instance.PlaySoundEvent("PlayerJumpOff", playerSource);
                 touchingGroundFlag = false;
                 footStepFlag = false;
             }
@@ -232,7 +243,7 @@ public class PlayerLogic : NetworkBehaviour
 
                 if (Input.GetKey(selfParams.jump) && !isJumping && !isAttachToWall)
                 {
-                    SoundManager.instance.PlaySoundEvent("PlayerJump", playerSource);
+                    SoundManager.Instance.PlaySoundEvent("PlayerJump", playerSource);
                     selfMovement.Jump();
                 }
 
@@ -281,38 +292,40 @@ public class PlayerLogic : NetworkBehaviour
     #endregion
 
     #region AttackLogic
-    public void getHit()
+
+    public void GetHit(Transform playerThatPunch)
     {
-
-    }
-
-    public void cantBeHit()
-    {
-
+        if (hasFlag && hasAuthority)
+        {
+            Debug.Log("Hit");
+            CmdDropFlag(playerThatPunch.GetComponent<NetworkIdentity>());
+        }
     }
 
     public void AttackInput()
     {
         if (Input.GetMouseButtonDown(selfParams.attackMouseInput))
         {
-            SoundManager.instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
+            SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
         }
         //Attack load
         if (Input.GetMouseButton(selfParams.attackMouseInput))
         {
             timeAttack += Time.deltaTime;
             ratioAttack = selfMovement.AttackLoad(timeAttack);
+            
         }
         //Attack lauch
         if (Input.GetMouseButtonUp(selfParams.attackMouseInput))
         {
-            SoundManager.instance.PlaySoundEvent("PlayerPunch", playerSource);
-            SoundManager.instance.StopSoundWithDelay(playerSource, 0.2f);
+            SoundManager.Instance.PlaySoundEvent("PlayerPunch", playerSource);
+            SoundManager.Instance.StopSoundWithDelay(playerSource, 0.2f);
             selfMovement.Attack(ratioAttack);
             timeAttack = 0;
             ratioAttack = 0;
         }
     }
+
     #endregion
 
     public void Respawn()
@@ -327,6 +340,44 @@ public class PlayerLogic : NetworkBehaviour
     {
         playerCollider.isTrigger = isTrigger;
     }
+
+    [Command]
+    public void CmdAttackCollider(bool isActive)
+    {
+        selfMovement.selfAttackCollider.SetActive(isActive);
+        RpcAttackCollider(isActive);
+    }
+
+    [ClientRpc]
+    public void RpcAttackCollider(bool isActive)
+    {
+        selfMovement.selfAttackCollider.SetActive(isActive);
+    }
+
+    [Command]
+    public void CmdDropFlag(NetworkIdentity id)
+    {
+        hasFlag = false;
+        
+    }
+
+    #endregion
+
+    #region Flag Logic
+
+    private void showFlagToPlayer()
+    {
+        if (hasFlag && !flagRenderer.activeSelf)
+        {
+            flagRenderer.SetActive(true);
+        }
+
+        if (!hasFlag && flagRenderer.activeSelf)
+        {
+            flagRenderer.SetActive(false);
+        }
+    }
+
     #endregion
 }
 

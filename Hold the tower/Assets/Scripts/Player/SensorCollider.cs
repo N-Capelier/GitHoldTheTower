@@ -8,16 +8,12 @@ public class SensorCollider : MonoBehaviour
     public UnityEvent collide;
     public UnityEvent Uncollide;
 
-    public bool followTheCamera = false;
-    public Transform selfCamera;
-    public Transform selfCollision;
 
     private int nbCollide = 0;
 
     public void Update()
     {
-        if (followTheCamera)
-            selfCollision.localRotation = Quaternion.Euler(new Vector3(0, selfCamera.rotation.eulerAngles.y,0));
+ 
     }
 
     // Start is called before the first frame update
@@ -33,6 +29,11 @@ public class SensorCollider : MonoBehaviour
             
             //Debug.Log(transform.name);
         }
+
+        if(other.name == "Flag") // A voir
+        {
+            
+        }
             
     }
 
@@ -46,7 +47,12 @@ public class SensorCollider : MonoBehaviour
             }
             //Debug.Log(transform.name);
         }
+
+        if (other.name == "Flag")
+        {
             
+        }
+
     }
 
 }
