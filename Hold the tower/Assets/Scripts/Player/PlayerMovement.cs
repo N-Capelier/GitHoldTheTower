@@ -178,35 +178,6 @@ public class PlayerMovement : MonoBehaviour
         Vector3 adjustDirection = wallDirection;
 
         Vector3 moveKeyDirection = Vector3.zero;
-        /*Vector3 keyRelativeDirection;
-        if (Input.GetKey(selfParams.front))
-        {
-            keyRelativeDirection = selfCamera.forward;
-            keyRelativeDirection = new Vector3(keyRelativeDirection.x, 0, keyRelativeDirection.z);
-            keyRelativeDirection.Normalize();
-            moveKeyDirection += keyRelativeDirection;
-        }
-        if (Input.GetKey(selfParams.back))
-        {
-            keyRelativeDirection = -selfCamera.forward;
-            keyRelativeDirection = new Vector3(keyRelativeDirection.x, 0, keyRelativeDirection.z);
-            keyRelativeDirection.Normalize();
-            moveKeyDirection += keyRelativeDirection;
-        }
-        if (Input.GetKey(selfParams.right))
-        {
-            keyRelativeDirection = selfCamera.right;
-            keyRelativeDirection = new Vector3(keyRelativeDirection.x, 0, keyRelativeDirection.z);
-            keyRelativeDirection.Normalize();
-            moveKeyDirection += keyRelativeDirection;
-        }
-        if (Input.GetKey(selfParams.left))
-        {
-            keyRelativeDirection = -selfCamera.right;
-            keyRelativeDirection = new Vector3(keyRelativeDirection.x, 0, keyRelativeDirection.z);
-            keyRelativeDirection.Normalize();
-            moveKeyDirection += keyRelativeDirection;
-        }*/
         float angleDist = 0;
 
         moveKeyDirection = selfCamera.forward;
@@ -295,45 +266,6 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator ClimbManage()
     {
-        /*
-        selfRbd.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
-        isClimbingMovement = true;
-
-        //Vector3 startPosition = transform.position;
-        //Vector3 endPosition = transform.position + (selfCamera.forward * selfParams.climbWidth) + transform.up * selfParams.climbHeight; // front and up
-
-        //Vector3 startVelocity = Vector3.zero;
-        //Vector3 endVelocity = selfCamera.forward * selfParams.climbWidth + transform.up * selfParams.climbHeight;
-        
-        Vector3 startVelocityY = Vector3.zero;
-        Vector3 EndVelocityY = transform.up * selfParams.climbHeight;
-
-        //Vector3 startVelocityX = Vector3.zero;
-        //Vector3 EndVelocityX = selfCamera.forward * selfParams.climbWidth;
-
-        //Velocity for Y
-        float time = 0;
-        while (time < selfParams.timeToClimb/2)
-        {
-            selfRbd.velocity = Vector3.Lerp(startVelocityY, EndVelocityY, time / selfParams.timeToClimb/2); // WIP
-            time += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
-        //Reset timer
-         time = 0;
-
-         //Velocity for X
-         while (time < selfParams.timeToClimb/2)
-         {
-             selfRbd.velocity = Vector3.Lerp(startVelocityX, EndVelocityX, time/ selfParams.timeToClimb/2); // WIP
-             time += Time.deltaTime;
-             yield return new WaitForEndOfFrame();
-         }
-
-        isClimbingMovement = false;
-        selfRbd.collisionDetectionMode = CollisionDetectionMode.Continuous;
-        */
-
         isClimbingMovement = true;
         Vector3 climbEndGroundPos = transform.position;
         climbEndGroundPos += (selfParams.climbHeight * Vector3.up) + (selfLogic.GetHorizontalVector(selfCamera.forward) * selfParams.climbWidth);
@@ -347,7 +279,7 @@ public class PlayerMovement : MonoBehaviour
             Vector3 currentPos = startClimbPos;
             Vector3 lastPos = startClimbPos;
             Vector3 currentVelocity = Vector3.zero;
-            selfLogic.SwitchCollider(true);
+            selfLogic.CmdSwitchCollider(true);
             while (timer > 0)
             {
                 lastPos = currentPos;
@@ -362,7 +294,7 @@ public class PlayerMovement : MonoBehaviour
         }
         hspd = new Vector3(selfRbd.velocity.x, 0, selfRbd.velocity.z);
         moveDirection = selfLogic.GetHorizontalVector(hspd);
-        selfLogic.SwitchCollider(false);
+        selfLogic.CmdSwitchCollider(false);
         isClimbingMovement = false;
     }
 
@@ -401,23 +333,23 @@ public class PlayerMovement : MonoBehaviour
         if(selfLogic.isGrounded)
         {
             attackspd = hspd * -1;
-            attackspd *= selfParams.slowMovementRatio;
+            attackspd *= selfParams.chargeSlowMovementRatio;
         }
 
         //Si est en dessous du pickTime
-        if(time <= selfParams.timePerfectAttack)
+        if(time <= selfParams.punchPerfectTiming)
         {
-            ratio = 1;
+            ratio = selfParams.punchSpeedByCharge.Evaluate(time/selfParams.punchMaxChargeTime);
         }
 
         //Si est au pickTime
-        if(time <= selfParams.timePerfectAttack + selfParams.timeTreshold && time >= selfParams.timePerfectAttack)
+        if(time <= selfParams.punchPerfectTiming + selfParams.punchPerfectTimingTreshold && time >= selfParams.punchPerfectTiming)
         {
-            ratio = 1.5f;
+            ratio = selfParams.punchPerfectTimingSpeedMultiplier;
         }
 
         //Si sup�rieur au pickTime + treshHold
-        if(time > selfParams.timePerfectAttack + selfParams.timeTreshold)
+        if(time > selfParams.punchPerfectTiming + selfParams.punchPerfectTimingTreshold)
         {
             ratio = 1;
         }
@@ -447,7 +379,7 @@ public class PlayerMovement : MonoBehaviour
         float _time = 0;
         while(_time <selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time)
         {
-            attackspd = directionAttack * selfParams.velocityCurve.Evaluate(_time) * Time.fixedDeltaTime * ratio * selfParams.forceAttack;
+            attackspd = directionAttack * selfParams.velocityCurve.Evaluate(_time) * Time.fixedDeltaTime * ratio * selfParams.punchBaseSpeed;
             _time += Time.deltaTime;
             NoGravity();
             yield return new WaitForFixedUpdate();
@@ -455,22 +387,15 @@ public class PlayerMovement : MonoBehaviour
 
         float attackTimeStamp = Time.time;
 
-        //Start a timer to cooldown punch
         StartCoroutine(timerAttack());
-        //Decelerate attack speed
-        /*
-        while (attackspd != Vector3.zero)
-        {
-            DecelerateAttack(Time.time - attackTimeStamp);
-            yield return new WaitForFixedUpdate();
-        }*/
 
         isAttackInCooldown = true;
         selfAttackCollider.SetActive(false);
         selfLogic.CmdAttackCollider(false);
+
         //active Wall Jump if player punch
         canWallJump = true;
-        attackspd = directionAttack * selfParams.velocityCurve.Evaluate(selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time) * Time.fixedDeltaTime * ratio * selfParams.forceAttack;
+        attackspd = directionAttack * selfParams.velocityCurve.Evaluate(selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time) * Time.fixedDeltaTime * ratio * selfParams.punchBaseSpeed;
 
         hspd = new Vector3(attackspd.x, 0, attackspd.z);
         vspd = new Vector3(0, attackspd.y, 0);
@@ -480,7 +405,7 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator timerAttack()
     {
-        yield return new WaitForSeconds(selfParams.cooldownAttack);
+        yield return new WaitForSeconds(selfParams.punchCooldown);
         isAttackInCooldown = false;
     }
 

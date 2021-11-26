@@ -69,7 +69,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxRunningSpeed: 10
-  airControlForce: 40
+  airControlForce: 55
   gravity: 30
   forwardForceJump: 4
   topForceJump: 300
@@ -171,8 +171,34 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  forceAttack: 2600
-  cooldownAttack: 0.5
-  timePerfectAttack: 0.8
-  timeTreshold: 0.3
-  slowMovementRatio: 0.7
+  punchBaseSpeed: 2600
+  punchSpeedByCharge:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.6
+      inSlope: 0.39999998
+      outSlope: 0.39999998
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.39999998
+      outSlope: 0.39999998
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  punchPerfectTimingSpeedMultiplier: 1.5
+  punchCooldown: 0.5
+  punchPerfectTiming: 0.8
+  punchPerfectTimingTreshold: 0.15
+  punchMaxChargeTime: 1
+  chargeSlowMovementRatio: 0.5

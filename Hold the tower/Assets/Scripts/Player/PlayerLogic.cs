@@ -23,6 +23,17 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     private GameObject selfCollisionParent;
 
+    [SerializeField]
+    public RectTransform punchChargeDisplay;
+    [SerializeField]
+    public RectTransform punchChargeSlider1;
+    [SerializeField]
+    public RectTransform punchChargeSlider2;
+    [SerializeField]
+    public float punchSliderStartOffset;
+    [SerializeField]
+    public float punchSliderEndOffset;
+
     [SyncVar]
     public LobbyPlayerLogic.nameOfTeam teamName;
 
@@ -38,6 +49,7 @@ public class PlayerLogic : NetworkBehaviour
     private Vector3 spawnPos;
     private bool footStepFlag;
     private bool touchingGroundFlag;
+    private bool hasStartedCharge;
 
     //State
     [HideInInspector]
@@ -215,10 +227,6 @@ public class PlayerLogic : NetworkBehaviour
                 {
                     selfMovement.ApplyGravity();
                     isTouchingWall = true;
-                    //selfMovement.NoGravity();
-                    //isAttachToWall = true;
-                    //selfMovement.isAttackReset = true;
-                    //selfMovement.StopMovement();
                     if (Input.GetKeyDown(selfParams.jump))
                     {
                         if (GetNearbyWallNormal() != Vector3.zero)
@@ -230,24 +238,18 @@ public class PlayerLogic : NetworkBehaviour
                 else
                 {
                     selfMovement.ApplyGravity();
-                    //isAttachToWall = false;
                     isTouchingWall = false;
                 }
             }
             else
             {
-                if (!isJumping)
-                {
-                    //selfMovement.NoGravity();
-                }
-
                 if (Input.GetKey(selfParams.jump) && !isJumping && !isAttachToWall)
                 {
                     SoundManager.Instance.PlaySoundEvent("PlayerJump", playerSource);
                     selfMovement.Jump();
                 }
 
-                if (isGrounded)
+                if (isGrounded && !selfMovement.isAttacking)
                 {
                     selfMovement.isAttackReset = true;
                 }
@@ -271,7 +273,7 @@ public class PlayerLogic : NetworkBehaviour
     {
         Vector3 wallNormal = Vector3.zero;
 
-        Collider[] nearbyWalls = Physics.OverlapBox(transform.position, new Vector3(0.7f, 0.2f, 0.7f), Quaternion.Euler(xRotation, yRotation, 0f), LayerMask.GetMask("Outlined"));
+        Collider[] nearbyWalls = Physics.OverlapBox(transform.position, new Vector3(0.7f, 0.2f, 0.7f), Quaternion.identity, LayerMask.GetMask("Outlined"));
         if(nearbyWalls.Length > 0)
         {
             RaycastHit wallHit;
@@ -304,20 +306,26 @@ public class PlayerLogic : NetworkBehaviour
 
     public void AttackInput()
     {
-        if (Input.GetMouseButtonDown(selfParams.attackMouseInput))
+        if (Input.GetMouseButtonDown(selfParams.attackMouseInput) && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown)
         {
             SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
+            punchChargeDisplay.gameObject.SetActive(true);
+            hasStartedCharge = true;
         }
         //Attack load
-        if (Input.GetMouseButton(selfParams.attackMouseInput))
+        if (Input.GetMouseButton(selfParams.attackMouseInput) && hasStartedCharge)
         {
             timeAttack += Time.deltaTime;
             ratioAttack = selfMovement.AttackLoad(timeAttack);
-            
+            punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
+            punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
+
         }
         //Attack lauch
-        if (Input.GetMouseButtonUp(selfParams.attackMouseInput))
+        if (Input.GetMouseButtonUp(selfParams.attackMouseInput) && hasStartedCharge)
         {
+            hasStartedCharge = false;
+            punchChargeDisplay.gameObject.SetActive(false);
             SoundManager.Instance.PlaySoundEvent("PlayerPunch", playerSource);
             SoundManager.Instance.StopSoundWithDelay(playerSource, 0.2f);
             selfMovement.Attack(ratioAttack);
@@ -325,6 +333,8 @@ public class PlayerLogic : NetworkBehaviour
             ratioAttack = 0;
         }
     }
+
+    // faire fonction de délai d'affichage de la charge du punch
 
     #endregion
 
@@ -336,7 +346,14 @@ public class PlayerLogic : NetworkBehaviour
 
     #region Network logic
     [Command]
-    public void SwitchCollider(bool isTrigger)
+    public void CmdSwitchCollider(bool isTrigger)
+    {
+        playerCollider.isTrigger = isTrigger;
+        RpcSwitchCollider(isTrigger);
+    }
+
+    [ClientRpc]
+    public void RpcSwitchCollider(bool isTrigger)
     {
         playerCollider.isTrigger = isTrigger;
     }
