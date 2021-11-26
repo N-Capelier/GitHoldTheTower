@@ -5,23 +5,23 @@ using Mirror;
 
 public class BlockBehaviour : MonoBehaviour
 {
+	[Header("Components")]
+	[SerializeField] BoxCollider boxCollider;
+
+	[Header("Params")]
+	//Movement
+	[SerializeField] [Range(0.1f, 15f)] float moveDuration = 1.2f;
 	Vector3 startPosition;
 	Vector3 targetPosition;
 	bool movingToTargetPos;
-
-	[SerializeField] float moveDuration = 1.2f;
 	float elapsedTime = 0f;
 	float completion;
+	[HideInInspector] public Vector3 ownVelo = Vector3.zero; //networking update
 
-	public Vector3 ownVelo = Vector3.zero;
-
-	public void SetTargetPosition(Vector3 _position)
-	{
-		startPosition = transform.position;
-		targetPosition = _position;
-		movingToTargetPos = true;
-		elapsedTime = 0f;
-	}
+	//Explosion
+	[SerializeField] [Range(0f, 5f)] float timeBeforeExplosion = 2f;
+	[SerializeField] float deathZoneY = -100f;
+	[HideInInspector] public bool isAlive;
 
 	private void FixedUpdate()
 	{
@@ -30,6 +30,14 @@ public class BlockBehaviour : MonoBehaviour
 		{
 			MoveToTargetPos();
 		}
+	}
+
+	public void SetTargetPosition(Vector3 _position)
+	{
+		startPosition = transform.position;
+		targetPosition = _position;
+		movingToTargetPos = true;
+		elapsedTime = 0f;
 	}
 
 	void MoveToTargetPos()
@@ -49,5 +57,25 @@ public class BlockBehaviour : MonoBehaviour
 			transform.position = targetPosition;
 			movingToTargetPos = false;
 		}
+	}
+
+	public IEnumerator WaitAndExplode()
+	{
+		yield return new WaitForSeconds(timeBeforeExplosion);
+
+		//Start crumble vfx
+
+
+		Explode();
+	}
+
+	public void Explode()
+	{
+		isAlive = false;
+		boxCollider.enabled = false;
+
+		//start explosion vfx
+
+		transform.position = new Vector3(transform.position.x, deathZoneY, transform.position.z);
 	}
 }

@@ -108,5 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e95681282847c4081751e33cfee29d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boxCollider: {fileID: 4468554095973789624}
   moveDuration: 7.5
   ownVelo: {x: 0, y: 0, z: 0}
+  timeBeforeExplosion: 2
