@@ -2,7 +2,7 @@ using Mirror;
 
 public class ThemeInteration : NetworkBehaviour
 {
-	[Command]
+	[Command(requiresAuthority = false)]
 	public void CmdExplode(int _index)
 	{
 		print("CmdExplode");
@@ -16,7 +16,7 @@ public class ThemeInteration : NetworkBehaviour
 		ThemeManager.Instance.blocks[_index].StartCoroutine(ThemeManager.Instance.blocks[_index].ExplodeCoroutine());
 	}
 
-	[Command]
+	[Command(requiresAuthority = false)]
 	public void CmdWaitAndExplode(int _index)
 	{
 		print("CmdWaitAndExplode");
