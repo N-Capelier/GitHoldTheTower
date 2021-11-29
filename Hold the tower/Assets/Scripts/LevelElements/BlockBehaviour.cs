@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using System.Linq;
 
 public class BlockBehaviour : MonoBehaviour
 {
@@ -20,8 +21,17 @@ public class BlockBehaviour : MonoBehaviour
 
 	//Explosion
 	[SerializeField] [Range(0f, 5f)] float timeBeforeExplosion = 2f;
+	[SerializeField] [Range(0f, 5f)] float explosionTime = 2f;
 	[SerializeField] float deathZoneY = -100f;
 	[HideInInspector] public bool isAlive;
+	WaitForSeconds beforeExplosionTimeWait;
+	WaitForSeconds explosionTimeWait;
+
+	private void Start()
+	{
+		beforeExplosionTimeWait = new WaitForSeconds(timeBeforeExplosion);
+		explosionTimeWait = new WaitForSeconds(explosionTime);
+	}
 
 	private void FixedUpdate()
 	{
@@ -61,21 +71,27 @@ public class BlockBehaviour : MonoBehaviour
 
 	public IEnumerator WaitAndExplode()
 	{
-		yield return new WaitForSeconds(timeBeforeExplosion);
-
 		//Start crumble vfx
 
+		yield return beforeExplosionTimeWait;
 
-		Explode();
+		if (gameObject.name.Contains("("))
+			GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdExplode(int.Parse(new string(gameObject.name.Where(char.IsDigit).ToArray())));
+		else
+			GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdExplode(0);
 	}
 
-	public void Explode()
+	public IEnumerator ExplodeCoroutine()
 	{
 		isAlive = false;
 		boxCollider.enabled = false;
 
 		//start explosion vfx
 
+
+		yield return explosionTimeWait;
 		transform.position = new Vector3(transform.position.x, deathZoneY, transform.position.z);
 	}
+
+
 }

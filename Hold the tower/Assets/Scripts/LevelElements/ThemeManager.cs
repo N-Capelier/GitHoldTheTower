@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Mirror;
 
-public class ThemeManager : MonoBehaviour
+public class ThemeManager : Singleton<ThemeManager>
 {
 	[HideInInspector] public BlockBehaviour[] blocks;
 
@@ -19,6 +20,12 @@ public class ThemeManager : MonoBehaviour
 	}
 
 #endif
+
+	private void Awake()
+	{
+		CreateSingleton();
+	}
+
 	public void LoadTerrain(LevelTerrain _terrain)
 	{
 		activeTerrain = _terrain;
