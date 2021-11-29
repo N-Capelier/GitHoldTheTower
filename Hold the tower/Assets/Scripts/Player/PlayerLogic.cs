@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Mirror;
+
+//smoothnetworktransform a des bugs, ils faut les corrigers pour lancer le client en éditeur windows
 
 public class PlayerLogic : NetworkBehaviour
 {
@@ -20,6 +24,11 @@ public class PlayerLogic : NetworkBehaviour
     private GameObject flagRenderer;
     [SerializeField]
     private GameObject selfCollisionParent;
+    [SerializeField]
+    private Text hudTextPlayer;
+
+    [SerializeField]
+    private GameObject FlagObject;
 
     [SyncVar]
     public LobbyPlayerLogic.nameOfTeam teamName;
@@ -43,10 +52,12 @@ public class PlayerLogic : NetworkBehaviour
     public bool hasFlag;
 
     //Give the transform of spawn
-    public Transform selfSpawnPlayer;
+    public Vector3 selfSpawnPlayer;
 
     //timer to start a round
     private double timerToStart;
+
+    [SerializeField]
     private double timerMaxToStart = 3d;
 
     //Move if the round is start
@@ -55,13 +66,17 @@ public class PlayerLogic : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(FlagObject != null)
+        {
+            FlagObject = GameObject.Find("Flag");
+        }
         
         selfCamera.gameObject.SetActive(false);
         if (hasAuthority)
         {
             selfCamera.gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
-
+            selfSpawnPlayer = transform.position;
         }
     }
 
@@ -75,15 +90,13 @@ public class PlayerLogic : NetworkBehaviour
             HorizontalMovement();
             showFlagToPlayer();
         }
-    }
-
-    private void FixedUpdate()
-    {
-        if (hasAuthority)
+        else
         {
+            if (roundStarted)
+            {
 
+            }
         }
-
     }
 
     #region Movement Logic
@@ -303,7 +316,7 @@ public class PlayerLogic : NetworkBehaviour
         if (hasFlag && hasAuthority)
         {
             Debug.Log("Hit");
-            CmdDropFlag(playerThatPunch.GetComponent<NetworkIdentity>());
+            CmdDropFlag();
         }
     }
 
@@ -335,32 +348,106 @@ public class PlayerLogic : NetworkBehaviour
 
     public void Respawn()
     {
-        transform.position = selfSpawnPlayer.position;
+        transform.position = selfSpawnPlayer;
         selfMovement.StopMovement();
     }
-    public void Respawn(float maxTimer)
+
+    #region Network logic
+
+    [TargetRpc]
+    public void Respawn(NetworkConnection conn, float maxTimer)
     {
+        roundStarted = false;
         timerToStart = NetworkTime.time;
-        transform.position = selfSpawnPlayer.position;
         StartCoroutine(RespawnManager());
-        selfMovement.StopMovement();
     }
 
     public IEnumerator RespawnManager()
     {
-
-        while(NetworkTime.time - timerToStart <= timerMaxToStart)
+        GetComponentInChildren<CapsuleCollider>().isTrigger = true;
+        transform.position = selfSpawnPlayer;
+        GetComponentInChildren<CapsuleCollider>().isTrigger = false;
+        hudTextPlayer.gameObject.SetActive(true);
+        while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
+            selfMovement.StopPlayer();
+            if (System.Math.Round(NetworkTime.time - timerToStart).ToString() != hudTextPlayer.text)
+                hudTextPlayer.text = System.Math.Round(NetworkTime.time - timerToStart).ToString();
             yield return new WaitForEndOfFrame();
 
         }
-        Debug.Log("activate");
         roundStarted = true;
+        hudTextPlayer.gameObject.SetActive(false);
+    }
+
+    [Command]
+    private void CmdSetPositionSpawn()
+    {
+        RpcSetPositionSpawn();
+    }
+
+    [ClientRpc]
+    private void RpcSetPositionSpawn()
+    {
+        GetComponentInChildren<CapsuleCollider>().isTrigger = true;
+        transform.position = selfSpawnPlayer;
+        GetComponentInChildren<CapsuleCollider>().isTrigger = false;
+    }
+
+    [TargetRpc]
+    public void RpcShowGoal(NetworkConnection conn,string text)
+    {
+        timerToStart = NetworkTime.time;
+        StartCoroutine(GoalMessageManager(text));
+    }
+
+    public IEnumerator GoalMessageManager(string text)
+    {
+        hudTextPlayer.gameObject.SetActive(true);
+        while (NetworkTime.time - timerToStart <= timerMaxToStart)
+        {
+            if (text != hudTextPlayer.text)
+                hudTextPlayer.text = text;
+            yield return new WaitForEndOfFrame();
+
+        }
+        selfMovement.StopMovement();
+        roundStarted = false;
+        timerToStart = NetworkTime.time;
+        StartCoroutine(RespawnManager());
+        FlagObject.SetActive(true);
 
     }
 
+    [TargetRpc]
+    public void RpcEndGame(NetworkConnection conn,string text)
+    {
+        timerToStart = NetworkTime.time;
+        StartCoroutine(EndGameManager(text));
+    }
 
-    #region Network logic
+    public IEnumerator EndGameManager(string text)
+    {
+        hudTextPlayer.gameObject.SetActive(true);
+        while (NetworkTime.time - timerToStart <= timerMaxToStart)
+        {
+            if (text != hudTextPlayer.text)
+                hudTextPlayer.text = text;
+            yield return new WaitForEndOfFrame();
+
+        }
+
+        if (isServer)
+        {
+            NetworkManager.singleton.StopHost();
+        }
+        else
+        {
+            NetworkManager.singleton.StopClient();
+        }
+        MyNewNetworkManager.singleton.ServerChangeScene("LobbyScene"); // Need to be rework
+    }
+
 
     [Command]
     public void CmdAttackCollider(bool isActive)
@@ -376,11 +463,12 @@ public class PlayerLogic : NetworkBehaviour
     }
 
     [Command]
-    public void CmdDropFlag(NetworkIdentity id)
+    public void CmdDropFlag()
     {
         hasFlag = false;
-        
     }
+
+
 
     #endregion
 

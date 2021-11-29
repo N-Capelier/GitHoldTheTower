@@ -13,6 +13,8 @@ public class MenuManager : MonoBehaviour
 
     void Start()
     {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         menuObject.SetActive(true);
         lobbyObject.SetActive(false);
         serverManager = GameObject.Find("ServerManager");

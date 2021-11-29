@@ -7,12 +7,8 @@ public class MatchManager : NetworkBehaviour
 {
     [SyncVar]
     public bool matchCanStart = false;
-    [SyncVar]
     public bool startGame = false;
-
-    public float timerStartRound;
-
-
+    
     void Start()
     {
         
@@ -20,7 +16,7 @@ public class MatchManager : NetworkBehaviour
 
     void Update()
     {
-        if(AllClientAreReady() && !startGame)
+        if(AllClientAreReady() && !startGame && isServer)
         {
             startGame = true;
             ActivatePlayer();
@@ -29,14 +25,16 @@ public class MatchManager : NetworkBehaviour
         
     }
 
-    public void NewRound()
+    [Command(requiresAuthority = false)]
+    public void CmdNewRound(string text)
     {
         if (AllClientAreReady())
         {
-            ActivatePlayer();
+            ChangeUiPlayer(text);
         }
     }
 
+    [ServerCallback]
     private bool AllClientAreReady()
     {
         foreach( NetworkConnectionToClient conn in NetworkServer.connections.Values)
@@ -49,6 +47,7 @@ public class MatchManager : NetworkBehaviour
         return true;
     }
 
+    [Server]
     private void ActivatePlayer()
     {
         foreach (NetworkConnectionToClient conn in NetworkServer.connections.Values)
@@ -57,8 +56,37 @@ public class MatchManager : NetworkBehaviour
             {
                 if (idOwnedByClient.gameObject.GetComponent<PlayerLogic>() != null)
                 {
-                    Debug.Log("test");
-                    idOwnedByClient.gameObject.GetComponent<PlayerLogic>().Respawn(3f);
+                    idOwnedByClient.gameObject.GetComponent<PlayerLogic>().Respawn(conn,3f);
+                }
+            }
+        }
+    }
+
+    [Server]
+    private void ChangeUiPlayer(string text)
+    {
+        foreach (NetworkConnectionToClient conn in NetworkServer.connections.Values)
+        {
+            foreach (NetworkIdentity idOwnedByClient in conn.clientOwnedObjects)
+            {
+                if (idOwnedByClient.gameObject.GetComponent<PlayerLogic>() != null)
+                {
+                    idOwnedByClient.gameObject.GetComponent<PlayerLogic>().RpcShowGoal(conn,text);
+                }
+            }
+        }
+    }
+
+    [Server]
+    public void RpcEndGame(string text)
+    {
+        foreach (NetworkConnectionToClient conn in NetworkServer.connections.Values)
+        {
+            foreach (NetworkIdentity idOwnedByClient in conn.clientOwnedObjects)
+            {
+                if (idOwnedByClient.gameObject.GetComponent<PlayerLogic>() != null)
+                {
+                    idOwnedByClient.gameObject.GetComponent<PlayerLogic>().RpcEndGame(conn, text);
                 }
             }
         }
