@@ -65,7 +65,6 @@ public class GoalBehavior : NetworkBehaviour
     {
         if (redScore == maxScore)
         {
-            Debug.Log("win for red");
             matchManager.RpcEndGame(redTeamTextWin);
             return;
         }

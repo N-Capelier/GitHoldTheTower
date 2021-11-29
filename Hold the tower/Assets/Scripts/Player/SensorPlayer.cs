@@ -17,9 +17,12 @@ public class SensorPlayer : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
         {
-            other.transform.parent.GetComponent<PlayerLogic>().GetHit(transform.parent.transform.parent);
+            //Change var hasflag of player that been tuch in false
+            other.transform.parent.GetComponent<PlayerLogic>().hasFlag = false;
+
+            //Change var of player that punch to true
             selfLogic.hasFlag = true;
         }
     }

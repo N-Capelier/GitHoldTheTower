@@ -311,9 +311,9 @@ public class PlayerLogic : NetworkBehaviour
 
     #region AttackLogic
 
-    public void GetHit(Transform playerThatPunch)
+    public void GetHit()
     {
-        if (hasFlag && hasAuthority)
+        if (hasFlag)
         {
             Debug.Log("Hit");
             CmdDropFlag();
@@ -465,9 +465,15 @@ public class PlayerLogic : NetworkBehaviour
     [Command]
     public void CmdDropFlag()
     {
+        RpcDropFlaf();
         hasFlag = false;
     }
 
+    [ClientRpc]
+    public void RpcDropFlaf()
+    {
+        hasFlag = false;
+    }
 
 
     #endregion
