@@ -49,7 +49,7 @@ public class PlayerLogic : NetworkBehaviour
     public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround, isTouchingWall;
 
     [SyncVar]
-    public bool hasFlag;
+    [SerializeField] public bool hasFlag;
 
     //Give the transform of spawn
     public Vector3 selfSpawnPlayer;
@@ -311,15 +311,6 @@ public class PlayerLogic : NetworkBehaviour
 
     #region AttackLogic
 
-    public void GetHit()
-    {
-        if (hasFlag)
-        {
-            Debug.Log("Hit");
-            CmdDropFlag();
-        }
-    }
-
     public void AttackInput()
     {
         if (Input.GetMouseButtonDown(selfParams.attackMouseInput))
@@ -355,18 +346,24 @@ public class PlayerLogic : NetworkBehaviour
     #region Network logic
 
     [TargetRpc]
-    public void Respawn(NetworkConnection conn, float maxTimer)
+    public void RpcRespawn(NetworkConnection conn, float maxTimer)
     {
         roundStarted = false;
         timerToStart = NetworkTime.time;
+
+        MyNewNetworkAuthenticator.CreateClientPlayer msg = new MyNewNetworkAuthenticator.CreateClientPlayer
+        {
+            teamName = teamName
+        };
+
+        //NetworkClient.Send<MyNewNetworkAuthenticator.CreateClientPlayer>(msg);
         StartCoroutine(RespawnManager());
+        //Destroy(this.gameObject)
     }
+
 
     public IEnumerator RespawnManager()
     {
-        GetComponentInChildren<CapsuleCollider>().isTrigger = true;
-        transform.position = selfSpawnPlayer;
-        GetComponentInChildren<CapsuleCollider>().isTrigger = false;
         hudTextPlayer.gameObject.SetActive(true);
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
@@ -463,18 +460,16 @@ public class PlayerLogic : NetworkBehaviour
     }
 
     [Command]
+    public void CmdGetFlag()
+    {
+        hasFlag = true;
+    }
+
+    [Command(requiresAuthority = false)]
     public void CmdDropFlag()
     {
-        RpcDropFlaf();
         hasFlag = false;
     }
-
-    [ClientRpc]
-    public void RpcDropFlaf()
-    {
-        hasFlag = false;
-    }
-
 
     #endregion
 

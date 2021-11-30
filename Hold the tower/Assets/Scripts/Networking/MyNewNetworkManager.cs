@@ -323,10 +323,9 @@ public class MyNewNetworkManager : NetworkManager
         
     } //Spawn l'objet lobbyPlayer et configure le server
 
-    private void CreatePlayer(NetworkConnection conn, MyNewNetworkAuthenticator.CreateClientPlayer msg)
+    public void CreatePlayer(NetworkConnection conn, MyNewNetworkAuthenticator.CreateClientPlayer msg)
     {
-        GameObject obj = Instantiate(Player);
-        
+        GameObject obj = Instantiate(Player); 
         obj.GetComponent<PlayerLogic>().teamName = msg.teamName;
         
         if(msg.teamName == LobbyPlayerLogic.nameOfTeam.blue)
@@ -343,8 +342,6 @@ public class MyNewNetworkManager : NetworkManager
 
         NetworkServer.AddPlayerForConnection(conn, obj);
     }
-
-    
 
     public void StartGame()
     {

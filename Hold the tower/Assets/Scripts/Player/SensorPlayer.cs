@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[System.Serializable]
-public class CollidEvent : UnityEvent<GameObject>
-{
-
-}
 
 public class SensorPlayer : MonoBehaviour
 {
+
+    [SerializeField]
+    private UnityEvent collidePlayer;
 
     [SerializeField]
     private PlayerLogic selfLogic;
@@ -19,11 +17,8 @@ public class SensorPlayer : MonoBehaviour
     {
         if (other.CompareTag("Player") && other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
         {
-            //Change var hasflag of player that been tuch in false
-            other.transform.parent.GetComponent<PlayerLogic>().hasFlag = false;
-
-            //Change var of player that punch to true
-            selfLogic.hasFlag = true;
+            collidePlayer.Invoke();
+            other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
         }
     }
 

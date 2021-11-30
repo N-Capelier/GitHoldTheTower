@@ -56,7 +56,7 @@ public class MatchManager : NetworkBehaviour
             {
                 if (idOwnedByClient.gameObject.GetComponent<PlayerLogic>() != null)
                 {
-                    idOwnedByClient.gameObject.GetComponent<PlayerLogic>().Respawn(conn,3f);
+                    idOwnedByClient.gameObject.GetComponent<PlayerLogic>().RpcRespawn(conn,3f);
                 }
             }
         }
