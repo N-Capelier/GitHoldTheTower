@@ -26,10 +26,19 @@ public class SensorPlayer : MonoBehaviour
         else if(other.CompareTag("Wall"))
 		{
             BlockBehaviour block = other.GetComponent<BlockBehaviour>();
-            if (block.gameObject.name.Contains("("))
-                GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(int.Parse(new string(block.gameObject.name.Where(char.IsDigit).ToArray())));
+
+            if(!block.isButton)
+			{
+                GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(BlockHelper.GetBlockID(block.gameObject.name));
+            }
             else
-                GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(0);
+			{
+                int[] _indexes = new int[block.switchables.Length];
+				for (int i = 0; i < _indexes.Length; i++)
+				{
+                    _indexes[i] = BlockHelper.GetBlockID(block.switchables[i].gameObject.name);
+				}
+			}
 		}
     }
 

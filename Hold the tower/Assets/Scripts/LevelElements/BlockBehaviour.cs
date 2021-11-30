@@ -27,6 +27,11 @@ public class BlockBehaviour : MonoBehaviour
 	WaitForSeconds beforeExplosionTimeWait;
 	WaitForSeconds explosionTimeWait;
 
+	//Button switch
+	public bool isButton;
+	public BlockBehaviour[] switchables;
+	[HideInInspector] public bool isSwitched;
+
 	private void Start()
 	{
 		beforeExplosionTimeWait = new WaitForSeconds(timeBeforeExplosion);
@@ -75,10 +80,7 @@ public class BlockBehaviour : MonoBehaviour
 
 		yield return beforeExplosionTimeWait;
 
-		if (gameObject.name.Contains("("))
-			GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdExplode(int.Parse(new string(gameObject.name.Where(char.IsDigit).ToArray())));
-		else
-			GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdExplode(0);
+		GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(BlockHelper.GetBlockID(gameObject.gameObject.name));
 	}
 
 	public IEnumerator ExplodeCoroutine()
