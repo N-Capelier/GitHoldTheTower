@@ -38,7 +38,9 @@ public class SensorPlayer : MonoBehaviour
 				{
                     _indexes[i] = BlockHelper.GetBlockID(block.switchables[i].gameObject.name);
 				}
-			}
+                GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdSwitchArea(_indexes);
+
+            }
 		}
     }
 
