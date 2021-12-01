@@ -114,10 +114,11 @@ public class MyNewNetworkManager : NetworkManager
     /// Called on the server when a scene is completed loaded, when the scene load was initiated by the server with ServerChangeScene().
     /// </summary>
     /// <param name="sceneName">The name of the new scene.</param>
-    public override void OnServerSceneChanged(string sceneName) { 
-        if(sceneName != "LobbyScene")
+    public override void OnServerSceneChanged(string sceneName) {
+        if (sceneName != "LobbyScene")
         {
             SpawnPlayerPosition = GameObject.FindGameObjectsWithTag("Spawner");
+
         }
     }
 
@@ -278,6 +279,7 @@ public class MyNewNetworkManager : NetworkManager
     /// </summary>
     public override void OnStartClient() {
         StartButton.SetActive(false);
+        //NetworkClient.RegisterHandler(46251, HandleRandomId);
     }
 
     /// <summary>
@@ -321,11 +323,11 @@ public class MyNewNetworkManager : NetworkManager
         
     } //Spawn l'objet lobbyPlayer et configure le server
 
-    private void CreatePlayer(NetworkConnection conn, MyNewNetworkAuthenticator.CreateClientPlayer msg)
+    public void CreatePlayer(NetworkConnection conn, MyNewNetworkAuthenticator.CreateClientPlayer msg)
     {
-        GameObject obj = Instantiate(Player);
-        
+        GameObject obj = Instantiate(Player); 
         obj.GetComponent<PlayerLogic>().teamName = msg.teamName;
+        
         if(msg.teamName == LobbyPlayerLogic.nameOfTeam.blue)
         {
             obj.transform.position = SpawnPlayerPosition[nbBlueTeam].transform.position;
@@ -340,8 +342,6 @@ public class MyNewNetworkManager : NetworkManager
 
         NetworkServer.AddPlayerForConnection(conn, obj);
     }
-
-    
 
     public void StartGame()
     {

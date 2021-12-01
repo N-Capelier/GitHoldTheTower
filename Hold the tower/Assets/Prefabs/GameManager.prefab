@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5132679588279635204}
   - component: {fileID: 5132679588279635205}
   - component: {fileID: 5132679588279635202}
-  - component: {fileID: 7119223363917169811}
+  - component: {fileID: 4063080022727842472}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -66,7 +66,7 @@ MonoBehaviour:
   syncInterval: 0.1
   ThemeObject: {fileID: 0}
   timerChange: 5
---- !u!114 &7119223363917169811
+--- !u!114 &4063080022727842472
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -75,8 +75,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 5132679588279635203}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a6539b81022fd345aa414e6b1e2d8de, type: 3}
+  m_Script: {fileID: 11500000, guid: 7168061b34e7c26418381198db85374a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1

@@ -8,6 +8,16 @@ public class GoalBehavior : NetworkBehaviour
     public MatchManager matchManager;
     public int maxScore;
 
+    [SerializeField]
+    private string redTeamTextScore = "Red Team Score";
+    [SerializeField]
+    private string blueTeamTextScore = "Blue Team Score";
+
+    [SerializeField]
+    private string redTeamTextWin = "Red team win the game";
+    [SerializeField]
+    private string blueTeamTextWin = "Blue team win the game";
+
     [SyncVar]
     public int redScore;
     [SyncVar]
@@ -15,42 +25,56 @@ public class GoalBehavior : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other) //Add a point to the team
     {
-        if (other.GetComponent<PlayerLogic>().teamName != goalTeam && other.GetComponent<PlayerLogic>().hasFlag)
+        if(other.tag == "Player")
         {
-            if(goalTeam == LobbyPlayerLogic.nameOfTeam.blue)
+            if (other.transform.parent.GetComponent<PlayerLogic>().teamName != goalTeam && other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
             {
-                blueScore++;
-            }
+                string textToShow = "";
+                if (goalTeam == LobbyPlayerLogic.nameOfTeam.blue)
+                {
+                    textToShow = redTeamTextScore;
+                    CmdRedTeamScore();
+                }
 
-            if(goalTeam == LobbyPlayerLogic.nameOfTeam.red)
-            {
-                redScore++;
+                if (goalTeam == LobbyPlayerLogic.nameOfTeam.red)
+                {
+                    textToShow = blueTeamTextScore;
+                    CmdBlueTeamScore();
+                }
+                other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
+                CmdTeamWin(textToShow);
+                
             }
-            TeamWin();
-            matchManager.NewRound();
         }
+        
     }
 
-    private void TeamWin()
+    [Command(requiresAuthority = false)]
+    private void CmdRedTeamScore()
     {
-        if(redScore == maxScore)
+        redScore++;
+    }
+    [Command(requiresAuthority = false)]
+    private void CmdBlueTeamScore()
+    {
+        blueScore++;
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdTeamWin(string text)
+    {
+        if (redScore == maxScore)
         {
-            TeamRedWin();
+            matchManager.RpcEndGame(redTeamTextWin);
+            return;
         }
         if(blueScore == maxScore)
         {
-            TeamBlueWin();
+            matchManager.RpcEndGame(blueTeamTextWin);
+            return;
         }
+        matchManager.CmdNewRound(text);
 
     }
 
-    private void TeamRedWin()
-    {
-
-    }
-
-    private void TeamBlueWin()
-    {
-
-    }
 }

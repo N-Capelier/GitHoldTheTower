@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Mirror;
+
+//smoothnetworktransform a des bugs, ils faut les corrigers pour lancer le client en ï¿½diteur windows
 
 public class PlayerLogic : NetworkBehaviour
 {
@@ -33,6 +37,12 @@ public class PlayerLogic : NetworkBehaviour
     public float punchSliderStartOffset;
     [SerializeField]
     public float punchSliderEndOffset;
+    private GameObject selfCollisionParent;
+    [SerializeField]
+    private Text hudTextPlayer;
+
+    [SerializeField]
+    private GameObject FlagObject;
 
     [SyncVar]
     public LobbyPlayerLogic.nameOfTeam teamName;
@@ -42,11 +52,9 @@ public class PlayerLogic : NetworkBehaviour
     private float timeStampRunAccel, timeStampRunDecel;
     private float timeAttack, ratioAttack;
 
-
     [HideInInspector]
     public Vector3 normalWallJump;
 
-    private Vector3 spawnPos;
     private bool footStepFlag;
     private bool touchingGroundFlag;
     private bool hasStartedCharge;
@@ -56,41 +64,54 @@ public class PlayerLogic : NetworkBehaviour
     public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround, isTouchingWall;
 
     [SyncVar]
-    public bool hasFlag;
+    [SerializeField] public bool hasFlag;
+
+    //Give the transform of spawn
+    public Vector3 selfSpawnPlayer;
+
+    //timer to start a round
+    private double timerToStart;
+
+    [SerializeField]
+    private double timerMaxToStart = 3d;
+
+    //Move if the round is start
+    public bool roundStarted = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        if(FlagObject != null)
+        {
+            FlagObject = GameObject.Find("Flag");
+        }
         
         selfCamera.gameObject.SetActive(false);
         if (hasAuthority)
         {
             selfCamera.gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
-
+            selfSpawnPlayer = transform.position;
         }
-        spawnPos = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (hasAuthority)
+        if (hasAuthority && roundStarted)
         {
             fpsView();
             VerticalMovement();
             HorizontalMovement();
             showFlagToPlayer();
         }
-    }
-
-    private void FixedUpdate()
-    {
-        if (hasAuthority)
+        else
         {
+            if (roundStarted)
+            {
 
+            }
         }
-
     }
 
     #region Movement Logic
@@ -295,15 +316,6 @@ public class PlayerLogic : NetworkBehaviour
 
     #region AttackLogic
 
-    public void GetHit(Transform playerThatPunch)
-    {
-        if (hasFlag && hasAuthority)
-        {
-            Debug.Log("Hit");
-            CmdDropFlag(playerThatPunch.GetComponent<NetworkIdentity>());
-        }
-    }
-
     public void AttackInput()
     {
         if (Input.GetMouseButtonDown(selfParams.attackMouseInput) && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown)
@@ -334,13 +346,13 @@ public class PlayerLogic : NetworkBehaviour
         }
     }
 
-    // faire fonction de délai d'affichage de la charge du punch
+    // faire fonction de dï¿½lai d'affichage de la charge du punch
 
     #endregion
 
     public void Respawn()
     {
-        transform.position = spawnPos;
+        transform.position = selfSpawnPlayer;
         selfMovement.StopMovement();
     }
 
@@ -358,6 +370,107 @@ public class PlayerLogic : NetworkBehaviour
         playerCollider.isTrigger = isTrigger;
     }
 
+    [TargetRpc]
+    public void RpcRespawn(NetworkConnection conn, float maxTimer)
+    {
+        roundStarted = false;
+        timerToStart = NetworkTime.time;
+
+        MyNewNetworkAuthenticator.CreateClientPlayer msg = new MyNewNetworkAuthenticator.CreateClientPlayer
+        {
+            teamName = teamName
+        };
+
+        //NetworkClient.Send<MyNewNetworkAuthenticator.CreateClientPlayer>(msg);
+        StartCoroutine(RespawnManager());
+        //Destroy(this.gameObject)
+    }
+
+
+    public IEnumerator RespawnManager()
+    {
+        hudTextPlayer.gameObject.SetActive(true);
+        while (NetworkTime.time - timerToStart <= timerMaxToStart)
+        {
+            selfMovement.StopPlayer();
+            if (System.Math.Round(NetworkTime.time - timerToStart).ToString() != hudTextPlayer.text)
+                hudTextPlayer.text = System.Math.Round(NetworkTime.time - timerToStart).ToString();
+            yield return new WaitForEndOfFrame();
+
+        }
+        roundStarted = true;
+        hudTextPlayer.gameObject.SetActive(false);
+    }
+
+    [Command]
+    private void CmdSetPositionSpawn()
+    {
+        RpcSetPositionSpawn();
+    }
+
+    [ClientRpc]
+    private void RpcSetPositionSpawn()
+    {
+        GetComponentInChildren<CapsuleCollider>().isTrigger = true;
+        transform.position = selfSpawnPlayer;
+        GetComponentInChildren<CapsuleCollider>().isTrigger = false;
+    }
+
+    [TargetRpc]
+    public void RpcShowGoal(NetworkConnection conn,string text)
+    {
+        timerToStart = NetworkTime.time;
+        StartCoroutine(GoalMessageManager(text));
+    }
+
+    public IEnumerator GoalMessageManager(string text)
+    {
+        hudTextPlayer.gameObject.SetActive(true);
+        while (NetworkTime.time - timerToStart <= timerMaxToStart)
+        {
+            if (text != hudTextPlayer.text)
+                hudTextPlayer.text = text;
+            yield return new WaitForEndOfFrame();
+
+        }
+        selfMovement.StopMovement();
+        roundStarted = false;
+        timerToStart = NetworkTime.time;
+        StartCoroutine(RespawnManager());
+        FlagObject.SetActive(true);
+
+    }
+
+    [TargetRpc]
+    public void RpcEndGame(NetworkConnection conn,string text)
+    {
+        timerToStart = NetworkTime.time;
+        StartCoroutine(EndGameManager(text));
+    }
+
+    public IEnumerator EndGameManager(string text)
+    {
+        hudTextPlayer.gameObject.SetActive(true);
+        while (NetworkTime.time - timerToStart <= timerMaxToStart)
+        {
+            if (text != hudTextPlayer.text)
+                hudTextPlayer.text = text;
+            yield return new WaitForEndOfFrame();
+
+        }
+
+        if (isServer)
+        {
+            NetworkManager.singleton.StopHost();
+        }
+        else
+        {
+            NetworkManager.singleton.StopClient();
+        }
+        MyNewNetworkManager.singleton.ServerChangeScene("LobbyScene"); // Need to be rework
+    }
+
+
     [Command]
     public void CmdAttackCollider(bool isActive)
     {
@@ -372,10 +485,15 @@ public class PlayerLogic : NetworkBehaviour
     }
 
     [Command]
-    public void CmdDropFlag(NetworkIdentity id)
+    public void CmdGetFlag()
+    {
+        hasFlag = true;
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdDropFlag()
     {
         hasFlag = false;
-        
     }
 
     #endregion

@@ -4,24 +4,22 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
 
-[System.Serializable]
-public class CollidEvent : UnityEvent<GameObject>
-{
-
-}
 
 public class SensorPlayer : MonoBehaviour
 {
+
+    [SerializeField]
+    private UnityEvent collidePlayer;
 
     [SerializeField]
     private PlayerLogic selfLogic;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
         {
-            other.transform.parent.GetComponent<PlayerLogic>().GetHit(transform.parent.transform.parent);
-            selfLogic.hasFlag = true;
+            collidePlayer.Invoke();
+            other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
         }
         else if(other.CompareTag("Wall"))
 		{

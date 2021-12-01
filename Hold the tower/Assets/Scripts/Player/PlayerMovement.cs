@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
         if (isClimbingMovement)
         {
 
@@ -127,6 +127,11 @@ public class PlayerMovement : MonoBehaviour
     public void StopMovement()
     {
         hspd = Vector3.zero;
+    }
+
+    public void StopPlayer()
+    {
+        selfRbd.velocity = Vector3.zero;
     }
     #endregion
 
