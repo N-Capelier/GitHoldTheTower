@@ -8,7 +8,7 @@ public class MatchManager : NetworkBehaviour
     [SyncVar]
     public bool matchCanStart = false;
     public bool startGame = false;
-    
+
     void Start()
     {
         

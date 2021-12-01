@@ -37,7 +37,6 @@ public class PlayerLogic : NetworkBehaviour
     public float punchSliderStartOffset;
     [SerializeField]
     public float punchSliderEndOffset;
-    private GameObject selfCollisionParent;
     [SerializeField]
     private Text hudTextPlayer;
 
@@ -393,6 +392,8 @@ public class PlayerLogic : NetworkBehaviour
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
             selfMovement.StopPlayer();
+            selfMovement.StopMovement();
+            selfMovement.NoGravity();
             if (System.Math.Round(NetworkTime.time - timerToStart).ToString() != hudTextPlayer.text)
                 hudTextPlayer.text = System.Math.Round(NetworkTime.time - timerToStart).ToString();
             yield return new WaitForEndOfFrame();

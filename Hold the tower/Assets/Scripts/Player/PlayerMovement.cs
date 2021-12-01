@@ -82,6 +82,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             selfRbd.velocity = hspd + vspd + attackspd;
+            Debug.Log(vspd);
         }
     }
    
