@@ -2,25 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using System.Linq;
 
 public class BlockBehaviour : MonoBehaviour
 {
+	[Header("Components")]
+	[SerializeField] BoxCollider boxCollider;
+
+	[Header("Params")]
+	//Movement
+	[SerializeField] [Range(0.1f, 15f)] float moveDuration = 1.2f;
 	Vector3 startPosition;
 	Vector3 targetPosition;
 	bool movingToTargetPos;
-
-	[SerializeField] float moveDuration = 1.2f;
 	float elapsedTime = 0f;
 	float completion;
+	[HideInInspector] public Vector3 ownVelo = Vector3.zero; //networking update
 
-	public Vector3 ownVelo = Vector3.zero;
+	//Explosion
+	[SerializeField] [Range(0f, 5f)] float timeBeforeExplosion = 2f;
+	[SerializeField] [Range(0f, 5f)] float explosionTime = 2f;
+	[SerializeField] float deathZoneY = -100f;
+	[HideInInspector] public bool isAlive;
+	WaitForSeconds beforeExplosionTimeWait;
+	WaitForSeconds explosionTimeWait;
 
-	public void SetTargetPosition(Vector3 _position)
+	//Button switch
+	public bool isButton;
+	public BlockBehaviour[] switchables;
+	[HideInInspector] public bool isSwitched;
+
+	private void Start()
 	{
-		startPosition = transform.position;
-		targetPosition = _position;
-		movingToTargetPos = true;
-		elapsedTime = 0f;
+		beforeExplosionTimeWait = new WaitForSeconds(timeBeforeExplosion);
+		explosionTimeWait = new WaitForSeconds(explosionTime);
 	}
 
 	private void FixedUpdate()
@@ -30,6 +45,14 @@ public class BlockBehaviour : MonoBehaviour
 		{
 			MoveToTargetPos();
 		}
+	}
+
+	public void SetTargetPosition(Vector3 _position)
+	{
+		startPosition = transform.position;
+		targetPosition = _position;
+		movingToTargetPos = true;
+		elapsedTime = 0f;
 	}
 
 	void MoveToTargetPos()
@@ -50,4 +73,27 @@ public class BlockBehaviour : MonoBehaviour
 			movingToTargetPos = false;
 		}
 	}
+
+	public IEnumerator WaitAndExplode()
+	{
+		//Start crumble vfx
+
+		yield return beforeExplosionTimeWait;
+
+		GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(BlockHelper.GetBlockID(gameObject.gameObject.name));
+	}
+
+	public IEnumerator ExplodeCoroutine()
+	{
+		isAlive = false;
+		boxCollider.enabled = false;
+
+		//start explosion vfx
+
+
+		yield return explosionTimeWait;
+		transform.position = new Vector3(transform.position.x, deathZoneY, transform.position.z);
+	}
+
+
 }
