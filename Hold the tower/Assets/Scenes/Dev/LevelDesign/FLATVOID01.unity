@@ -324,6 +324,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6049121351473583684, guid: 4ee136692f6ac474c8445f27326326a7, type: 3}
+      propertyPath: goalTeam
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6049121351473583684, guid: 4ee136692f6ac474c8445f27326326a7, type: 3}
       propertyPath: maxScore
       value: 3
       objectReference: {fileID: 0}
@@ -485,7 +489,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &506362325
 GameObject:
@@ -4138,7 +4142,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6049121351473583684, guid: 4ee136692f6ac474c8445f27326326a7, type: 3}
       propertyPath: goalTeam
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6049121351473583684, guid: 4ee136692f6ac474c8445f27326326a7, type: 3}
       propertyPath: maxScore

@@ -82,7 +82,6 @@ public class PlayerMovement : MonoBehaviour
             }
 
             selfRbd.velocity = hspd + vspd + attackspd;
-            Debug.Log(vspd);
         }
     }
    
@@ -159,6 +158,10 @@ public class PlayerMovement : MonoBehaviour
         NoGravity();
         for(int i = 0;i< selfParams.jumpNumberToApply; i++)
         {
+            if(isClimbingMovement)
+            {
+                break;
+            }
             vspd += transform.up * selfParams.topForceJump * Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
@@ -279,6 +282,8 @@ public class PlayerMovement : MonoBehaviour
         Physics.Raycast(climbEndGroundPos, Vector3.down,out endPosHit, 2f, LayerMask.GetMask("Outlined"));
         if (endPosHit.collider != null)
         {
+            NoGravity();
+            StopMovement();
             climbEndGroundPos = endPosHit.point + Vector3.up;
             float timer = selfParams.timeToClimb;
             Vector3 startClimbPos = transform.position;
@@ -298,7 +303,7 @@ public class PlayerMovement : MonoBehaviour
             }
             //transform.position = climbEndGroundPos;
         }
-        hspd = new Vector3(selfRbd.velocity.x, 0, selfRbd.velocity.z);
+        //hspd = new Vector3(selfRbd.velocity.x, 0, selfRbd.velocity.z);
         moveDirection = selfLogic.GetHorizontalVector(hspd);
         selfLogic.CmdSwitchCollider(false);
         isClimbingMovement = false;
