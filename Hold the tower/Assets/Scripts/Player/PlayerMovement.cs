@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
 
     public Vector3 groundCorrection;
 
+
     private bool leftCollide, rightCollide, backCollide, frontTopCollide, frontBotCollide;
 
     private bool canWallJump = true;

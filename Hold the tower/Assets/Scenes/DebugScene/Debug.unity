@@ -300,6 +300,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 302151054}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &302151058 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6049121351473583684, guid: 4ee136692f6ac474c8445f27326326a7, type: 3}
+  m_PrefabInstance: {fileID: 302151053}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302151054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ec0aef1001ed0043b6cf9df4483f627, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &479227954
 GameObject:
   m_ObjectHideFlags: 0
@@ -566,6 +577,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 573811038}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &573811042 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6049121351473583684, guid: 4ee136692f6ac474c8445f27326326a7, type: 3}
+  m_PrefabInstance: {fileID: 573811037}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 573811038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ec0aef1001ed0043b6cf9df4483f627, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &791985208
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,8 +696,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e95681282847c4081751e33cfee29d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boxCollider: {fileID: 0}
   moveDuration: 1.2
   ownVelo: {x: 0, y: 0, z: 0}
+  timeBeforeExplosion: 2
+  explosionTime: 2
+  deathZoneY: -100
+  isAlive: 0
+  isButton: 0
+  switchables: []
+  isSwitched: 0
 --- !u!1 &798659895
 GameObject:
   m_ObjectHideFlags: 0
@@ -784,8 +814,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e95681282847c4081751e33cfee29d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boxCollider: {fileID: 0}
   moveDuration: 1.2
   ownVelo: {x: 0, y: 0, z: 0}
+  timeBeforeExplosion: 2
+  explosionTime: 2
+  deathZoneY: -100
+  isAlive: 0
+  isButton: 0
+  switchables: []
+  isSwitched: 0
 --- !u!1 &1077466307
 GameObject:
   m_ObjectHideFlags: 0
@@ -894,8 +932,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e95681282847c4081751e33cfee29d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boxCollider: {fileID: 0}
   moveDuration: 1.2
   ownVelo: {x: 0, y: 0, z: 0}
+  timeBeforeExplosion: 2
+  explosionTime: 2
+  deathZoneY: -100
+  isAlive: 0
+  isButton: 0
+  switchables: []
+  isSwitched: 0
 --- !u!1001 &1102917227
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -907,6 +953,14 @@ PrefabInstance:
       propertyPath: flag
       value: 
       objectReference: {fileID: 1790398022}
+    - target: {fileID: 4063080022727842472, guid: 0a2b2a72e900b1e499a707e306b71362, type: 3}
+      propertyPath: redGoal
+      value: 
+      objectReference: {fileID: 573811042}
+    - target: {fileID: 4063080022727842472, guid: 0a2b2a72e900b1e499a707e306b71362, type: 3}
+      propertyPath: blueGoal
+      value: 
+      objectReference: {fileID: 302151058}
     - target: {fileID: 5132679588279635203, guid: 0a2b2a72e900b1e499a707e306b71362, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -1147,8 +1201,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e95681282847c4081751e33cfee29d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boxCollider: {fileID: 0}
   moveDuration: 1.2
   ownVelo: {x: 0, y: 0, z: 0}
+  timeBeforeExplosion: 2
+  explosionTime: 2
+  deathZoneY: -100
+  isAlive: 0
+  isButton: 0
+  switchables: []
+  isSwitched: 0
 --- !u!1001 &7034093892603718544
 PrefabInstance:
   m_ObjectHideFlags: 0

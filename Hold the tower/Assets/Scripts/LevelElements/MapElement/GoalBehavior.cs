@@ -4,24 +4,10 @@ using UnityEngine;
 using Mirror;
 public class GoalBehavior : NetworkBehaviour
 {
+    [HideInInspector]
     public LobbyPlayerLogic.nameOfTeam goalTeam;
     public MatchManager matchManager;
-    public int maxScore;
-
-    [SerializeField]
-    private string redTeamTextScore = "Red Team Score";
-    [SerializeField]
-    private string blueTeamTextScore = "Blue Team Score";
-
-    [SerializeField]
-    private string redTeamTextWin = "Red team win the game";
-    [SerializeField]
-    private string blueTeamTextWin = "Blue team win the game";
-
-    [SyncVar]
-    public int redScore;
-    [SyncVar]
-    public int blueScore;
+    
 
     private void OnTriggerEnter(Collider other) //Add a point to the team
     {
@@ -32,13 +18,13 @@ public class GoalBehavior : NetworkBehaviour
                 string textToShow = "";
                 if (goalTeam == LobbyPlayerLogic.nameOfTeam.blue)
                 {
-                    textToShow = redTeamTextScore;
+                    textToShow = matchManager.redTeamTextScore;
                     CmdRedTeamScore();
                 }
 
                 if (goalTeam == LobbyPlayerLogic.nameOfTeam.red)
                 {
-                    textToShow = blueTeamTextScore;
+                    textToShow = matchManager.blueTeamTextScore;
                     CmdBlueTeamScore();
                 }
                 other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
@@ -52,25 +38,25 @@ public class GoalBehavior : NetworkBehaviour
     [Command(requiresAuthority = false)]
     private void CmdRedTeamScore()
     {
-        redScore++;
+        matchManager.redScore++;
     }
     [Command(requiresAuthority = false)]
     private void CmdBlueTeamScore()
     {
-        blueScore++;
+        matchManager.blueScore++;
     }
 
     [Command(requiresAuthority = false)]
     private void CmdTeamWin(string text)
     {
-        if (redScore == maxScore)
+        if (matchManager.redScore == matchManager.maxScore)
         {
-            matchManager.RpcEndGame(redTeamTextWin);
+            matchManager.RpcEndGame(matchManager.redTeamTextWin);
             return;
         }
-        if(blueScore == maxScore)
+        if(matchManager.blueScore == matchManager.maxScore)
         {
-            matchManager.RpcEndGame(blueTeamTextWin);
+            matchManager.RpcEndGame(matchManager.blueTeamTextWin);
             return;
         }
         matchManager.CmdNewRound(text);

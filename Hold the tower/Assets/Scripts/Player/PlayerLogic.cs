@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Mirror;
+using Smooth;
 
 //smoothnetworktransform a des bugs, ils faut les corrigers pour lancer le client en �diteur windows
 
@@ -26,6 +27,10 @@ public class PlayerLogic : NetworkBehaviour
     private GameObject flagRenderer;
     [SerializeField]
     private GameObject selfCollisionParent;
+    [SerializeField]
+    private SmoothSyncMirror selfSmoothSync;
+
+    private MatchManager matchManager;
 
     [SerializeField]
     public RectTransform punchChargeDisplay;
@@ -39,6 +44,8 @@ public class PlayerLogic : NetworkBehaviour
     public float punchSliderEndOffset;
     [SerializeField]
     private Text hudTextPlayer;
+    [SerializeField]
+    private Text scoreText;
 
     [SerializeField]
     private GameObject FlagObject;
@@ -88,9 +95,11 @@ public class PlayerLogic : NetworkBehaviour
         selfCamera.gameObject.SetActive(false);
         if (hasAuthority)
         {
+            matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>();
             selfCamera.gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
             selfSpawnPlayer = transform.position;
+            ShowScoreHud();
         }
     }
 
@@ -374,20 +383,15 @@ public class PlayerLogic : NetworkBehaviour
     {
         roundStarted = false;
         timerToStart = NetworkTime.time;
-
-        MyNewNetworkAuthenticator.CreateClientPlayer msg = new MyNewNetworkAuthenticator.CreateClientPlayer
-        {
-            teamName = teamName
-        };
-
-        //NetworkClient.Send<MyNewNetworkAuthenticator.CreateClientPlayer>(msg);
         StartCoroutine(RespawnManager());
-        //Destroy(this.gameObject)
+
     }
 
 
     public IEnumerator RespawnManager()
     {
+        transform.position = selfSpawnPlayer;
+        selfSmoothSync.teleportOwnedObjectFromOwner();
         hudTextPlayer.gameObject.SetActive(true);
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
@@ -426,6 +430,7 @@ public class PlayerLogic : NetworkBehaviour
 
     public IEnumerator GoalMessageManager(string text)
     {
+        ShowScoreHud();
         hudTextPlayer.gameObject.SetActive(true);
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
@@ -451,6 +456,7 @@ public class PlayerLogic : NetworkBehaviour
 
     public IEnumerator EndGameManager(string text)
     {
+        ShowScoreHud();
         hudTextPlayer.gameObject.SetActive(true);
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
@@ -514,6 +520,15 @@ public class PlayerLogic : NetworkBehaviour
         }
     }
 
+    #endregion
+
+    #region matchLogic
+    private void ShowScoreHud()
+    {
+        string textScore = matchManager.redScore.ToString() + " | " + matchManager.blueScore.ToString();
+        scoreText.text = textScore;
+
+    }
     #endregion
 }
 
