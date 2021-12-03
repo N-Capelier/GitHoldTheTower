@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
 
     public Vector3 groundCorrection;
 
+
     private bool leftCollide, rightCollide, backCollide, frontTopCollide, frontBotCollide;
 
     private bool canWallJump = true;
@@ -158,9 +159,9 @@ public class PlayerMovement : MonoBehaviour
         NoGravity();
         for(int i = 0;i< selfParams.jumpNumberToApply; i++)
         {
-            if(isClimbingMovement)
-            {
-                break;
+            if(isClimbingMovement)
+            {
+                break;
             }
             vspd += transform.up * selfParams.topForceJump * Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
@@ -281,8 +282,8 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit endPosHit;
         Physics.Raycast(climbEndGroundPos, Vector3.down,out endPosHit, 2f, LayerMask.GetMask("Outlined"));
         if (endPosHit.collider != null)
-        {
-            NoGravity();
+        {
+            NoGravity();
             StopMovement();
             climbEndGroundPos = endPosHit.point + Vector3.up;
             float timer = selfParams.timeToClimb;

@@ -99,12 +99,14 @@ MonoBehaviour:
   playerCollider: {fileID: 285773796116165314}
   flagRenderer: {fileID: 9122566769478347446}
   selfCollisionParent: {fileID: 2362469801121640098}
+  selfSmoothSync: {fileID: 3790924781881019435}
   punchChargeDisplay: {fileID: 6154896342665932412}
   punchChargeSlider1: {fileID: 3386380725545907309}
   punchChargeSlider2: {fileID: 1061213044051480655}
   punchSliderStartOffset: 235
   punchSliderEndOffset: 5
   hudTextPlayer: {fileID: 5169459364437788771}
+  scoreText: {fileID: 4093699372612799923}
   FlagObject: {fileID: 9122566769478347446}
   teamName: 0
   normalWallJump: {x: 0, y: 0, z: 0}

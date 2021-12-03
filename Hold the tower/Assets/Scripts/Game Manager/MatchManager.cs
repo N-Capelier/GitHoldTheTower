@@ -9,9 +9,31 @@ public class MatchManager : NetworkBehaviour
     public bool matchCanStart = false;
     public bool startGame = false;
 
+    public int maxScore;
+
+    [SyncVar]
+    [HideInInspector]  public int redScore;
+    [SyncVar]
+    [HideInInspector]  public int blueScore;
+
+    public GoalBehavior redGoal;
+    public GoalBehavior blueGoal;
+
+    [Header("Text à afficher")]
+    [SerializeField]
+    public string redTeamTextScore = "Red Team Score";
+    [SerializeField]
+    public string blueTeamTextScore = "Blue Team Score";
+
+    [SerializeField]
+    public string redTeamTextWin = "Red team win the game";
+    [SerializeField]
+    public string blueTeamTextWin = "Blue team win the game";
+
     void Start()
     {
-        
+        redGoal.goalTeam = LobbyPlayerLogic.nameOfTeam.red;
+        blueGoal.goalTeam = LobbyPlayerLogic.nameOfTeam.blue;
     }
 
     void Update()
