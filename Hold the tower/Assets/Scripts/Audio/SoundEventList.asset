@@ -28,7 +28,7 @@ MonoBehaviour:
     sounds:
     - name: NullSound
       ID: 1
-      clip: {fileID: 8300000, guid: 428f26249a438044e8dc6cb0cfac8616, type: 3}
+      clip: {fileID: 8300000, guid: 0bf928ec4e4f3ec4388aa58573d003fa, type: 3}
       volume: 1
     isLocalized: 1
     isRandom: 0
@@ -38,7 +38,7 @@ MonoBehaviour:
     sounds:
     - name: NullSound
       ID: 2
-      clip: {fileID: 8300000, guid: 428f26249a438044e8dc6cb0cfac8616, type: 3}
+      clip: {fileID: 8300000, guid: 314a1e6d149339042bb1f86585a2ee18, type: 3}
       volume: 1
     isLocalized: 1
     isRandom: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
     sounds:
     - name: NullSound
       ID: 3
-      clip: {fileID: 8300000, guid: 428f26249a438044e8dc6cb0cfac8616, type: 3}
+      clip: {fileID: 8300000, guid: 42ef11a620b659342a084a82da0e06d0, type: 3}
       volume: 1
     isLocalized: 1
     isRandom: 0
@@ -58,7 +58,7 @@ MonoBehaviour:
     sounds:
     - name: NullSound
       ID: 4
-      clip: {fileID: 8300000, guid: 428f26249a438044e8dc6cb0cfac8616, type: 3}
+      clip: {fileID: 8300000, guid: 10f36f00e21dca8468235a72777a1b66, type: 3}
       volume: 1
     isLocalized: 1
     isRandom: 0
@@ -68,7 +68,7 @@ MonoBehaviour:
     sounds:
     - name: NullSound
       ID: 5
-      clip: {fileID: 8300000, guid: 428f26249a438044e8dc6cb0cfac8616, type: 3}
+      clip: {fileID: 8300000, guid: 80342c7cfcaffe640ba6dabfa35f7836, type: 3}
       volume: 1
     isLocalized: 1
     isRandom: 0

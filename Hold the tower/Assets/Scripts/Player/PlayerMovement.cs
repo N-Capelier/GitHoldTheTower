@@ -431,6 +431,17 @@ public class PlayerMovement : MonoBehaviour
 
     #endregion
 
+    #region Punched
+    public void Propulse(Vector3 directedForce)
+    {
+        NoGravity();
+        StopMovement();
+        hspd = new Vector3(directedForce.x, 0, directedForce.z);
+        vspd = new Vector3(0, directedForce.y, 0);
+        Debug.Log("Propulse");
+    }
+    #endregion
+
     #region Sensor Event
 
     //All sensors logic concerning Wall Collider

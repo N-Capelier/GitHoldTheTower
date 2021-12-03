@@ -10,7 +10,6 @@ using Smooth;
 
 public class PlayerLogic : NetworkBehaviour
 {
-    public List<Collider> sidesColliders;
     [SerializeField]
     private ScriptableParamsPlayer selfParams;
     [SerializeField]
@@ -45,7 +44,9 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     private Text hudTextPlayer;
     [SerializeField]
-    private Text scoreText;
+    private Text scoreTextBlue;
+    [SerializeField]
+    private Text scoreTextRed;
 
     [SerializeField]
     private GameObject FlagObject;
@@ -525,8 +526,8 @@ public class PlayerLogic : NetworkBehaviour
     #region matchLogic
     private void ShowScoreHud()
     {
-        string textScore = matchManager.redScore.ToString() + " | " + matchManager.blueScore.ToString();
-        scoreText.text = textScore;
+        scoreTextRed.text = matchManager.redScore.ToString();
+        scoreTextBlue.text = matchManager.blueScore.ToString();
 
     }
     #endregion

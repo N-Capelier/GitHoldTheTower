@@ -13,13 +13,21 @@ public class SensorPlayer : MonoBehaviour
 
     [SerializeField]
     private PlayerLogic selfLogic;
+    [SerializeField]
+    private Transform selfCameraTransform;
+    [SerializeField]
+    private ScriptableParamsPlayer selfParams;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
+        if (other.CompareTag("Player"))
         {
-            collidePlayer.Invoke();
-            other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
+            other.transform.parent.GetComponent<PlayerMovement>().Propulse(selfCameraTransform.forward * selfParams.punchBasePropulsionForce);
+            if (other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
+            {
+                collidePlayer.Invoke();
+                other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
+            }
         }
         else if(other.CompareTag("Wall"))
 		{
@@ -27,7 +35,7 @@ public class SensorPlayer : MonoBehaviour
 
             if(!block.isButton)
 			{
-                GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(BlockHelper.GetBlockID(block.gameObject.name));
+                //GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(BlockHelper.GetBlockID(block.gameObject.name));
             }
             else
 			{

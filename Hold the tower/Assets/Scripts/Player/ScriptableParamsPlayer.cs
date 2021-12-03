@@ -57,5 +57,7 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float punchPerfectTimingTreshold = 0.15f;
     public float punchMaxChargeTime = 1f;
     [Range(0f,1f)] public float chargeSlowMovementRatio = 0.5f;
+    public float punchBasePropulsionForce = 5f;
+    public AnimationCurve punchPropulsionForceByCharge;
 
 }
