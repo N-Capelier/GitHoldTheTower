@@ -115,6 +115,7 @@ MonoBehaviour:
   isAttachToWall: 0
   isTouchingTheGround: 0
   isTouchingWall: 0
+  isInControl: 0
   hasFlag: 0
   selfSpawnPlayer: {x: 0, y: 0, z: 0}
   timerMaxToStart: 3
@@ -141,6 +142,7 @@ MonoBehaviour:
   isAttacking: 0
   isAttackReset: 0
   isAttackInCooldown: 0
+  directionAttack: {x: 0, y: 0, z: 0}
 --- !u!114 &3790924781881019435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1631,7 +1633,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2208199761679645263
 Transform:
   m_ObjectHideFlags: 0
@@ -1686,6 +1688,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  selfMovement: {fileID: 4205374861408034103}
   selfLogic: {fileID: 5204818065857996584}
   selfCameraTransform: {fileID: 9175226997489984019}
   selfParams: {fileID: 11400000, guid: a24272e5804e7bd4891a2cf20f79574a, type: 2}
