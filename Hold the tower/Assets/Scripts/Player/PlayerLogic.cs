@@ -492,11 +492,11 @@ public class PlayerLogic : NetworkBehaviour
         selfMovement.selfAttackCollider.SetActive(isActive);
     }
 
-    [Command]
+    /*[Command]
     public void CmdGetFlag()
     {
         hasFlag = true;
-    }
+    }*/
 
     [Command(requiresAuthority = false)]
     public void CmdDropFlag()
@@ -504,6 +504,33 @@ public class PlayerLogic : NetworkBehaviour
         hasFlag = false;
     }
 
+    [Command(requiresAuthority = false)]
+    public void CmdGetPunch(NetworkIdentity netid,Vector3 directedForce,float force)
+    {
+        if(netid.connectionToClient != null)
+        {
+            RpcGetPunch(netid.connectionToClient, directedForce, force);
+        }
+        else
+        {
+            Debug.Log(directedForce + new Vector3(0, 0.5f, 0));
+            GetPunch(directedForce+ new Vector3(0,0.5f,0), force); //For debugging
+        }
+        
+    }
+
+    [TargetRpc]
+    public void RpcGetPunch(NetworkConnection conn,Vector3 directedForce, float force)
+    {
+        Debug.Log("Recoit le punch");
+        selfMovement.Propulse(directedForce, force);
+    }
+
+    public void GetPunch( Vector3 directedForce, float force)
+    {
+        Debug.Log("Recoit le punch");
+        selfMovement.Propulse(directedForce, force);
+    }
     #endregion
 
     #region Flag Logic

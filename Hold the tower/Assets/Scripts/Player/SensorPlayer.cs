@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
-
+using Mirror;
 
 public class SensorPlayer : MonoBehaviour
 {
@@ -18,11 +18,19 @@ public class SensorPlayer : MonoBehaviour
     [SerializeField]
     private ScriptableParamsPlayer selfParams;
 
+    private Transform selfTransform;
+
+    public void Start()
+    {
+        selfTransform = transform.parent.transform.parent;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            other.transform.parent.GetComponent<PlayerMovement>().Propulse(selfCameraTransform.forward * selfParams.punchBasePropulsionForce);
+            selfTransform.GetComponent<PlayerMovement>().StopPunch();
+            other.transform.parent.GetComponent<PlayerLogic>().CmdGetPunch(other.transform.parent.GetComponent<NetworkIdentity>(), selfCameraTransform.forward * selfParams.punchBasePropulsionForce, selfTransform.GetComponent<Rigidbody>().velocity.magnitude);
             if (other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
             {
                 collidePlayer.Invoke();

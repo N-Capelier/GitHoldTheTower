@@ -432,14 +432,53 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Punched
-    public void Propulse(Vector3 directedForce)
+    //Propulse opposite direction with player velocity that punch(feature that could be cool)
+    public void Propulse(Vector3 directedForce, float force)
     {
         NoGravity();
         StopMovement();
-        hspd = new Vector3(directedForce.x, 0, directedForce.z);
-        vspd = new Vector3(0, directedForce.y, 0);
-        Debug.Log("Propulse");
+        //hspd = new Vector3(directedForce.x, 0, directedForce.z);
+        //vspd = new Vector3(0, directedForce.y, 0);
+        //Debug.Log("Propulse");
+        StartCoroutine(PropulseManager(directedForce,force));
     }
+
+    public IEnumerator PropulseManager(Vector3 directedForce, float force)
+    {
+        float _time = 0;
+        Vector3 hspdBeg = new Vector3(directedForce.x, 0, directedForce.z);
+        Vector3 vspdBeg = new Vector3(0, directedForce.y, 0);
+        while (_time < selfParams.getHitPunchPropulsion[selfParams.getHitPunchPropulsion.length - 1].time)
+        {
+            _time += Time.deltaTime;
+            hspd = selfParams.getHitPunchPropulsion.Evaluate(_time) * hspdBeg * (force / 10);
+            vspd = selfParams.getHitPunchPropulsion.Evaluate(_time) * vspdBeg * (force / 10);
+            yield return new WaitForEndOfFrame();
+        }
+
+
+    }
+
+    public void StopPunch()
+    {
+        StartCoroutine(StopPunchManage());
+    }
+
+    private IEnumerator StopPunchManage()
+    {
+        float _time = 0;
+        Vector3 attackspdbefore = attackspd;
+        while (_time < selfParams.punchDecelerateHit[selfParams.punchDecelerateHit.length-1].time)
+        {
+            _time += Time.deltaTime;
+            attackspd = selfParams.punchDecelerateHit.Evaluate(_time) * attackspdbefore;
+            hspd = Vector3.zero;
+            vspd = Vector3.zero;
+            yield return new WaitForEndOfFrame();
+        }
+
+    }
+
     #endregion
 
     #region Sensor Event
@@ -511,5 +550,12 @@ public class PlayerMovement : MonoBehaviour
         selfLogic.hasFlag = true;
     }
 
+    #endregion
+
+    #region Getter/Setter
+    public Vector3 GetVelocity()
+    {
+        return selfRbd.velocity;
+    }
     #endregion
 }
