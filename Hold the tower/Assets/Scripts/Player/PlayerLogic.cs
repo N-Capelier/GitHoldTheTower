@@ -526,7 +526,7 @@ public class PlayerLogic : NetworkBehaviour
 
             }
             Debug.Log(directedForce);
-            GetPunch(directedForce, force); //For debugging
+            GetPunch(directedForce); //For debugging
         }
         
     }
