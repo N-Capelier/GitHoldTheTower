@@ -12,7 +12,6 @@ public class SensorFlag : MonoBehaviour
         if(other.name == "Flag")
         {
             collide.Invoke();
-            other.gameObject.SetActive(false);
         }
     }
 

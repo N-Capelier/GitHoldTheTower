@@ -55,6 +55,8 @@ public class PlayerLogic : NetworkBehaviour
 
     [SyncVar]
     public LobbyPlayerLogic.nameOfTeam teamName;
+    [SyncVar]
+    public int spawnPosition;
 
     private float yRotation, xRotation;
 
@@ -73,10 +75,7 @@ public class PlayerLogic : NetworkBehaviour
     public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround, isTouchingWall, isInControl;
 
     [SyncVar]
-    [SerializeField] public bool hasFlag;
-
-    //Give the transform of spawn
-    public Vector3 selfSpawnPlayer;
+    public bool hasFlag;
 
     //timer to start a round
     private double timerToStart;
@@ -87,10 +86,17 @@ public class PlayerLogic : NetworkBehaviour
     //Move if the round is start
     public bool roundStarted = false;
 
-    // Start is called before the first frame update
+
+    private void Awake()
+    {
+
+    }
+
+
     void Start()
     {
-        if(FlagObject != null)
+       
+        if (FlagObject != null)
         {
             FlagObject = GameObject.Find("Flag");
         }
@@ -99,10 +105,10 @@ public class PlayerLogic : NetworkBehaviour
         selfCamera.gameObject.SetActive(false);
         if (hasAuthority)
         {
+           
             matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>();
             selfCamera.gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
-            selfSpawnPlayer = transform.position;
             ShowScoreHud();
         }
     }
@@ -115,7 +121,7 @@ public class PlayerLogic : NetworkBehaviour
             fpsView();
             VerticalMovement();
             HorizontalMovement();
-            showFlagToPlayer();
+            
         }
         else
         {
@@ -124,7 +130,7 @@ public class PlayerLogic : NetworkBehaviour
                 
             }
         }
-        showFlagToAllPlayer();
+        ShowFlagToAllPlayer();
     }
 
     #region Movement Logic
@@ -362,11 +368,6 @@ public class PlayerLogic : NetworkBehaviour
 
     #endregion
 
-    public void Respawn()
-    {
-        transform.position = selfSpawnPlayer;
-        selfMovement.StopMovement();
-    }
 
     #region Network logic
     [Command]
@@ -387,14 +388,21 @@ public class PlayerLogic : NetworkBehaviour
     {
         roundStarted = false;
         timerToStart = NetworkTime.time;
-        StartCoroutine(RespawnManager());
 
+        if (hasFlag)
+        {
+            CmdDropFlag();
+            CmdHideFlagInGame();
+        }
+
+        StartCoroutine(RespawnManager());
+        
     }
 
 
     public IEnumerator RespawnManager()
     {
-        transform.position = selfSpawnPlayer;
+        transform.position = GameObject.FindWithTag("Spawner").transform.GetChild(spawnPosition).position; //Obligatoire, sinon ne trouve pas le spawner à la premirèe frame
         selfSmoothSync.teleportOwnedObjectFromOwner();
         hudTextPlayer.gameObject.SetActive(true);
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
@@ -409,20 +417,6 @@ public class PlayerLogic : NetworkBehaviour
         }
         roundStarted = true;
         hudTextPlayer.gameObject.SetActive(false);
-    }
-
-    [Command]
-    private void CmdSetPositionSpawn()
-    {
-        RpcSetPositionSpawn();
-    }
-
-    [ClientRpc]
-    private void RpcSetPositionSpawn()
-    {
-        GetComponentInChildren<CapsuleCollider>().isTrigger = true;
-        transform.position = selfSpawnPlayer;
-        GetComponentInChildren<CapsuleCollider>().isTrigger = false;
     }
 
     [TargetRpc]
@@ -495,11 +489,11 @@ public class PlayerLogic : NetworkBehaviour
         selfMovement.selfAttackCollider.SetActive(isActive);
     }
 
-    /*[Command]
+    [Command(requiresAuthority = false)]
     public void CmdGetFlag()
     {
         hasFlag = true;
-    }*/
+    }
 
     [Command(requiresAuthority = false)]
     public void CmdDropFlag()
@@ -510,6 +504,11 @@ public class PlayerLogic : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdGetPunch(NetworkIdentity netid,Vector3 directedForce)
     {
+        if (hasFlag)
+        {
+            hasFlag = false;
+        }
+
         if(netid.connectionToClient != null)
         {
             RpcGetPunch(netid.connectionToClient, directedForce);
@@ -556,31 +555,44 @@ public class PlayerLogic : NetworkBehaviour
 
     #region Flag Logic
 
-    private void showFlagToPlayer()
-    {
-        if (hasFlag && !flagRenderer.activeSelf)
-        {
-            flagRenderer.SetActive(true);
-            
-        }
-
-        if (!hasFlag && flagRenderer.activeSelf)
-        {
-            flagRenderer.SetActive(false);
-            
-        }
-    }
-
-    private void showFlagToAllPlayer()
+    private void ShowFlagToAllPlayer()
     {
         if (hasFlag)
         {
+            if (hasAuthority)
+            {
+                flagRenderer.SetActive(true);
+            }
             FlagInGame.SetActive(true);
         }
         else
         {
+            flagRenderer.SetActive(false);
             FlagInGame.SetActive(false);
         }
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdHideFlagInGame()
+    {
+        RpcHideFlagInGame();
+    }
+    [ClientRpc]
+    public void RpcHideFlagInGame()
+    {
+        FlagObject.SetActive(false);
+    }
+
+    [Command]
+    private void CmdShowFlagInGame()
+    {
+        RpcShowFlagInGame();
+    }
+
+    [ClientRpc]
+    private void RpcShowFlagInGame()
+    {
+        FlagObject.SetActive(true);
     }
 
     #endregion

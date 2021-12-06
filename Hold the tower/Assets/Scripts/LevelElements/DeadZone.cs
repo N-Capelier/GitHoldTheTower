@@ -25,12 +25,9 @@ public class DeadZone : MonoBehaviour
         }
     }
 
-    [Server]
     private void RespawnAPlayer(GameObject player)
     {
-        foreach (NetworkConnectionToClient conn in NetworkServer.connections.Values)
-        {
-            player.GetComponentInParent<PlayerLogic>().RpcRespawn(conn, 3f);
-        }
+        Debug.Log(player.transform.parent);
+        player.transform.parent.GetComponentInParent<PlayerLogic>().RpcRespawn(player.transform.parent.GetComponent<NetworkIdentity>().connectionToClient, 3f);
     }
 }

@@ -31,13 +31,14 @@ public class SensorPlayer : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            selfTransform.GetComponent<PlayerMovement>().StopPunch();
-            other.transform.parent.GetComponent<PlayerLogic>().CmdGetPunch(other.transform.parent.GetComponent<NetworkIdentity>(), selfMovement.directionAttack * selfParams.punchBasePropulsionForce);
             if (other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
             {
-                collidePlayer.Invoke();
-                other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
+                other.transform.parent.GetComponent<PlayerLogic>().CmdGetFlag();
             }
+
+            selfTransform.GetComponent<PlayerMovement>().StopPunch();
+            other.transform.parent.GetComponent<PlayerLogic>().CmdGetPunch(other.transform.parent.GetComponent<NetworkIdentity>(), selfMovement.directionAttack * selfParams.punchBasePropulsionForce);
+            selfTransform.GetComponent<PlayerLogic>().CmdDropFlag();
         }
         else if(other.CompareTag("Wall"))
 		{

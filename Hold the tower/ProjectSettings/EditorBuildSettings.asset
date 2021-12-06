@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Lobby/LobbyScene.unity
     guid: 0fcc151014fda6a49b10ef6b18532b97
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/DebugScene/Debug.unity
     guid: e0dfadef0eb3bdc4980974151edcff35
   - enabled: 0
