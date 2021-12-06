@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 public class DeadZone : MonoBehaviour
 {
@@ -20,7 +21,16 @@ public class DeadZone : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            other.GetComponentInParent<PlayerLogic>().Respawn();
+            RespawnAPlayer(other.gameObject);
+        }
+    }
+
+    [Server]
+    private void RespawnAPlayer(GameObject player)
+    {
+        foreach (NetworkConnectionToClient conn in NetworkServer.connections.Values)
+        {
+            player.GetComponentInParent<PlayerLogic>().RpcRespawn(conn, 3f);
         }
     }
 }
