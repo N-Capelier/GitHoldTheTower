@@ -50,6 +50,8 @@ public class PlayerLogic : NetworkBehaviour
 
     [SerializeField]
     private GameObject FlagObject;
+    [SerializeField]
+    private GameObject FlagInGame;
 
     [SyncVar]
     public LobbyPlayerLogic.nameOfTeam teamName;
@@ -118,9 +120,10 @@ public class PlayerLogic : NetworkBehaviour
         {
             if (roundStarted)
             {
-
+                
             }
         }
+        showFlagToAllPlayer();
     }
 
     #region Movement Logic
@@ -513,8 +516,17 @@ public class PlayerLogic : NetworkBehaviour
         }
         else
         {
-            Debug.Log(directedForce + new Vector3(0, 0.5f, 0));
-            GetPunch(directedForce+ new Vector3(0,0.5f,0), force); //For debugging
+            Vector3 correctingDirectedForce;
+            if(directedForce.y >= 0)
+            {
+
+            }
+            else
+            {
+
+            }
+            Debug.Log(directedForce);
+            GetPunch(directedForce, force); //For debugging
         }
         
     }
@@ -540,11 +552,25 @@ public class PlayerLogic : NetworkBehaviour
         if (hasFlag && !flagRenderer.activeSelf)
         {
             flagRenderer.SetActive(true);
+            
         }
 
         if (!hasFlag && flagRenderer.activeSelf)
         {
             flagRenderer.SetActive(false);
+            
+        }
+    }
+
+    private void showFlagToAllPlayer()
+    {
+        if (hasFlag)
+        {
+            FlagInGame.SetActive(true);
+        }
+        else
+        {
+            FlagInGame.SetActive(false);
         }
     }
 
