@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Mirror;
+using Smooth;
+
+//smoothnetworktransform a des bugs, ils faut les corrigers pour lancer le client en �diteur windows
 
 public class PlayerLogic : NetworkBehaviour
 {
-    public List<Collider> sidesColliders;
     [SerializeField]
     private ScriptableParamsPlayer selfParams;
     [SerializeField]
@@ -17,9 +21,37 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     private AudioSource playerFootstepSource;
     [SerializeField]
+    private Collider playerCollider;
+    [SerializeField]
     private GameObject flagRenderer;
     [SerializeField]
     private GameObject selfCollisionParent;
+    [SerializeField]
+    private SmoothSyncMirror selfSmoothSync;
+
+    private MatchManager matchManager;
+
+    [SerializeField]
+    public RectTransform punchChargeDisplay;
+    [SerializeField]
+    public RectTransform punchChargeSlider1;
+    [SerializeField]
+    public RectTransform punchChargeSlider2;
+    [SerializeField]
+    public float punchSliderStartOffset;
+    [SerializeField]
+    public float punchSliderEndOffset;
+    [SerializeField]
+    private Text hudTextPlayer;
+    [SerializeField]
+    private Text scoreTextBlue;
+    [SerializeField]
+    private Text scoreTextRed;
+
+    [SerializeField]
+    private GameObject FlagObject;
+    [SerializeField]
+    private GameObject FlagInGame;
 
     [SyncVar]
     public LobbyPlayerLogic.nameOfTeam teamName;
@@ -29,54 +61,69 @@ public class PlayerLogic : NetworkBehaviour
     private float timeStampRunAccel, timeStampRunDecel;
     private float timeAttack, ratioAttack;
 
-
     [HideInInspector]
     public Vector3 normalWallJump;
 
-    private Vector3 spawnPos;
     private bool footStepFlag;
     private bool touchingGroundFlag;
+    private bool hasStartedCharge;
 
     //State
     [HideInInspector]
     public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround, isTouchingWall;
 
     [SyncVar]
-    public bool hasFlag;
+    [SerializeField] public bool hasFlag;
+
+    //Give the transform of spawn
+    public Vector3 selfSpawnPlayer;
+
+    //timer to start a round
+    private double timerToStart;
+
+    [SerializeField]
+    private double timerMaxToStart = 3d;
+
+    //Move if the round is start
+    public bool roundStarted = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        if(FlagObject != null)
+        {
+            FlagObject = GameObject.Find("Flag");
+        }
         
         selfCamera.gameObject.SetActive(false);
         if (hasAuthority)
         {
+            matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>();
             selfCamera.gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
-
+            selfSpawnPlayer = transform.position;
+            ShowScoreHud();
         }
-        spawnPos = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (hasAuthority)
+        if (hasAuthority && roundStarted)
         {
             fpsView();
             VerticalMovement();
             HorizontalMovement();
             showFlagToPlayer();
         }
-    }
-
-    private void FixedUpdate()
-    {
-        if (hasAuthority)
+        else
         {
-
+            if (roundStarted)
+            {
+                
+            }
         }
-
+        showFlagToAllPlayer();
     }
 
     #region Movement Logic
@@ -213,10 +260,6 @@ public class PlayerLogic : NetworkBehaviour
                 {
                     selfMovement.ApplyGravity();
                     isTouchingWall = true;
-                    //selfMovement.NoGravity();
-                    //isAttachToWall = true;
-                    //selfMovement.isAttackReset = true;
-                    //selfMovement.StopMovement();
                     if (Input.GetKeyDown(selfParams.jump))
                     {
                         if (GetNearbyWallNormal() != Vector3.zero)
@@ -228,24 +271,18 @@ public class PlayerLogic : NetworkBehaviour
                 else
                 {
                     selfMovement.ApplyGravity();
-                    //isAttachToWall = false;
                     isTouchingWall = false;
                 }
             }
             else
             {
-                if (!isJumping)
-                {
-                    //selfMovement.NoGravity();
-                }
-
                 if (Input.GetKey(selfParams.jump) && !isJumping && !isAttachToWall)
                 {
                     SoundManager.Instance.PlaySoundEvent("PlayerJump", playerSource);
                     selfMovement.Jump();
                 }
 
-                if (isGrounded)
+                if (isGrounded && !selfMovement.isAttacking)
                 {
                     selfMovement.isAttackReset = true;
                 }
@@ -269,7 +306,7 @@ public class PlayerLogic : NetworkBehaviour
     {
         Vector3 wallNormal = Vector3.zero;
 
-        Collider[] nearbyWalls = Physics.OverlapBox(transform.position, new Vector3(0.7f, 0.2f, 0.7f), Quaternion.Euler(xRotation, yRotation, 0f), LayerMask.GetMask("Outlined"));
+        Collider[] nearbyWalls = Physics.OverlapBox(transform.position, new Vector3(0.7f, 0.2f, 0.7f), Quaternion.identity, LayerMask.GetMask("Outlined"));
         if(nearbyWalls.Length > 0)
         {
             RaycastHit wallHit;
@@ -291,31 +328,28 @@ public class PlayerLogic : NetworkBehaviour
 
     #region AttackLogic
 
-    public void GetHit(Transform playerThatPunch)
-    {
-        if (hasFlag && hasAuthority)
-        {
-            Debug.Log("Hit");
-            CmdDropFlag(playerThatPunch.GetComponent<NetworkIdentity>());
-        }
-    }
-
     public void AttackInput()
     {
-        if (Input.GetMouseButtonDown(selfParams.attackMouseInput))
+        if (Input.GetMouseButtonDown(selfParams.attackMouseInput) && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown)
         {
             SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
+            punchChargeDisplay.gameObject.SetActive(true);
+            hasStartedCharge = true;
         }
         //Attack load
-        if (Input.GetMouseButton(selfParams.attackMouseInput))
+        if (Input.GetMouseButton(selfParams.attackMouseInput) && hasStartedCharge)
         {
             timeAttack += Time.deltaTime;
             ratioAttack = selfMovement.AttackLoad(timeAttack);
-            
+            punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
+            punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
+
         }
         //Attack lauch
-        if (Input.GetMouseButtonUp(selfParams.attackMouseInput))
+        if (Input.GetMouseButtonUp(selfParams.attackMouseInput) && hasStartedCharge)
         {
+            hasStartedCharge = false;
+            punchChargeDisplay.gameObject.SetActive(false);
             SoundManager.Instance.PlaySoundEvent("PlayerPunch", playerSource);
             SoundManager.Instance.StopSoundWithDelay(playerSource, 0.2f);
             selfMovement.Attack(ratioAttack);
@@ -324,15 +358,129 @@ public class PlayerLogic : NetworkBehaviour
         }
     }
 
+    // faire fonction de d�lai d'affichage de la charge du punch
+
     #endregion
 
     public void Respawn()
     {
-        transform.position = spawnPos;
+        transform.position = selfSpawnPlayer;
         selfMovement.StopMovement();
     }
 
     #region Network logic
+    [Command]
+    public void CmdSwitchCollider(bool isTrigger)
+    {
+        playerCollider.isTrigger = isTrigger;
+        RpcSwitchCollider(isTrigger);
+    }
+
+    [ClientRpc]
+    public void RpcSwitchCollider(bool isTrigger)
+    {
+        playerCollider.isTrigger = isTrigger;
+    }
+
+    [TargetRpc]
+    public void RpcRespawn(NetworkConnection conn, float maxTimer)
+    {
+        roundStarted = false;
+        timerToStart = NetworkTime.time;
+        StartCoroutine(RespawnManager());
+
+    }
+
+
+    public IEnumerator RespawnManager()
+    {
+        transform.position = selfSpawnPlayer;
+        selfSmoothSync.teleportOwnedObjectFromOwner();
+        hudTextPlayer.gameObject.SetActive(true);
+        while (NetworkTime.time - timerToStart <= timerMaxToStart)
+        {
+            selfMovement.StopPlayer();
+            selfMovement.StopMovement();
+            selfMovement.NoGravity();
+            if (System.Math.Round(NetworkTime.time - timerToStart).ToString() != hudTextPlayer.text)
+                hudTextPlayer.text = System.Math.Round(NetworkTime.time - timerToStart).ToString();
+            yield return new WaitForEndOfFrame();
+
+        }
+        roundStarted = true;
+        hudTextPlayer.gameObject.SetActive(false);
+    }
+
+    [Command]
+    private void CmdSetPositionSpawn()
+    {
+        RpcSetPositionSpawn();
+    }
+
+    [ClientRpc]
+    private void RpcSetPositionSpawn()
+    {
+        GetComponentInChildren<CapsuleCollider>().isTrigger = true;
+        transform.position = selfSpawnPlayer;
+        GetComponentInChildren<CapsuleCollider>().isTrigger = false;
+    }
+
+    [TargetRpc]
+    public void RpcShowGoal(NetworkConnection conn,string text)
+    {
+        timerToStart = NetworkTime.time;
+        StartCoroutine(GoalMessageManager(text));
+    }
+
+    public IEnumerator GoalMessageManager(string text)
+    {
+        ShowScoreHud();
+        hudTextPlayer.gameObject.SetActive(true);
+        while (NetworkTime.time - timerToStart <= timerMaxToStart)
+        {
+            if (text != hudTextPlayer.text)
+                hudTextPlayer.text = text;
+            yield return new WaitForEndOfFrame();
+
+        }
+        selfMovement.StopMovement();
+        roundStarted = false;
+        timerToStart = NetworkTime.time;
+        StartCoroutine(RespawnManager());
+        FlagObject.SetActive(true);
+
+    }
+
+    [TargetRpc]
+    public void RpcEndGame(NetworkConnection conn,string text)
+    {
+        timerToStart = NetworkTime.time;
+        StartCoroutine(EndGameManager(text));
+    }
+
+    public IEnumerator EndGameManager(string text)
+    {
+        ShowScoreHud();
+        hudTextPlayer.gameObject.SetActive(true);
+        while (NetworkTime.time - timerToStart <= timerMaxToStart)
+        {
+            if (text != hudTextPlayer.text)
+                hudTextPlayer.text = text;
+            yield return new WaitForEndOfFrame();
+
+        }
+
+        if (isServer)
+        {
+            NetworkManager.singleton.StopHost();
+        }
+        else
+        {
+            NetworkManager.singleton.StopClient();
+        }
+        MyNewNetworkManager.singleton.ServerChangeScene("LobbyScene"); // Need to be rework
+    }
+
 
     [Command]
     public void CmdAttackCollider(bool isActive)
@@ -347,13 +495,54 @@ public class PlayerLogic : NetworkBehaviour
         selfMovement.selfAttackCollider.SetActive(isActive);
     }
 
-    [Command]
-    public void CmdDropFlag(NetworkIdentity id)
+    /*[Command]
+    public void CmdGetFlag()
+    {
+        hasFlag = true;
+    }*/
+
+    [Command(requiresAuthority = false)]
+    public void CmdDropFlag()
     {
         hasFlag = false;
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdGetPunch(NetworkIdentity netid,Vector3 directedForce,float force)
+    {
+        if(netid.connectionToClient != null)
+        {
+            RpcGetPunch(netid.connectionToClient, directedForce, force);
+        }
+        else
+        {
+            Vector3 correctingDirectedForce;
+            if(directedForce.y >= 0)
+            {
+
+            }
+            else
+            {
+
+            }
+            Debug.Log(directedForce);
+            GetPunch(directedForce, force); //For debugging
+        }
         
     }
 
+    [TargetRpc]
+    public void RpcGetPunch(NetworkConnection conn,Vector3 directedForce, float force)
+    {
+        Debug.Log("Recoit le punch");
+        selfMovement.Propulse(directedForce, force);
+    }
+
+    public void GetPunch( Vector3 directedForce, float force)
+    {
+        Debug.Log("Recoit le punch");
+        selfMovement.Propulse(directedForce, force);
+    }
     #endregion
 
     #region Flag Logic
@@ -363,14 +552,37 @@ public class PlayerLogic : NetworkBehaviour
         if (hasFlag && !flagRenderer.activeSelf)
         {
             flagRenderer.SetActive(true);
+            
         }
 
         if (!hasFlag && flagRenderer.activeSelf)
         {
             flagRenderer.SetActive(false);
+            
         }
     }
 
+    private void showFlagToAllPlayer()
+    {
+        if (hasFlag)
+        {
+            FlagInGame.SetActive(true);
+        }
+        else
+        {
+            FlagInGame.SetActive(false);
+        }
+    }
+
+    #endregion
+
+    #region matchLogic
+    private void ShowScoreHud()
+    {
+        scoreTextRed.text = matchManager.redScore.ToString();
+        scoreTextBlue.text = matchManager.blueScore.ToString();
+
+    }
     #endregion
 }
 

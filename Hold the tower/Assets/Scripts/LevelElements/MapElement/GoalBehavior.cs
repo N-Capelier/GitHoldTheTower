@@ -4,53 +4,63 @@ using UnityEngine;
 using Mirror;
 public class GoalBehavior : NetworkBehaviour
 {
+    [HideInInspector]
     public LobbyPlayerLogic.nameOfTeam goalTeam;
     public MatchManager matchManager;
-    public int maxScore;
-
-    [SyncVar]
-    public int redScore;
-    [SyncVar]
-    public int blueScore;
+    
 
     private void OnTriggerEnter(Collider other) //Add a point to the team
     {
-        if (other.GetComponent<PlayerLogic>().teamName != goalTeam && other.GetComponent<PlayerLogic>().hasFlag)
+        if(other.tag == "Player")
         {
-            if(goalTeam == LobbyPlayerLogic.nameOfTeam.blue)
+            if (other.transform.parent.GetComponent<PlayerLogic>().teamName != goalTeam && other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
             {
-                blueScore++;
+                string textToShow = "";
+                if (goalTeam == LobbyPlayerLogic.nameOfTeam.blue)
+                {
+                    textToShow = matchManager.redTeamTextScore;
+                    CmdRedTeamScore();
+                }
+
+                if (goalTeam == LobbyPlayerLogic.nameOfTeam.red)
+                {
+                    textToShow = matchManager.blueTeamTextScore;
+                    CmdBlueTeamScore();
+                }
+                other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
+                CmdTeamWin(textToShow);
+                
             }
-
-            if(goalTeam == LobbyPlayerLogic.nameOfTeam.red)
-            {
-                redScore++;
-            }
-            TeamWin();
-            matchManager.NewRound();
         }
+        
     }
 
-    private void TeamWin()
+    [Command(requiresAuthority = false)]
+    private void CmdRedTeamScore()
     {
-        if(redScore == maxScore)
+        matchManager.redScore++;
+    }
+    [Command(requiresAuthority = false)]
+    private void CmdBlueTeamScore()
+    {
+        matchManager.blueScore++;
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdTeamWin(string text)
+    {
+        if (matchManager.redScore == matchManager.maxScore)
         {
-            TeamRedWin();
+            matchManager.RpcEndGame(matchManager.redTeamTextWin);
+            return;
         }
-        if(blueScore == maxScore)
+        if(matchManager.blueScore == matchManager.maxScore)
         {
-            TeamBlueWin();
+            matchManager.RpcEndGame(matchManager.blueTeamTextWin);
+            return;
         }
+        matchManager.CmdNewRound(text);
 
     }
 
-    private void TeamRedWin()
-    {
-
-    }
-
-    private void TeamBlueWin()
-    {
-
-    }
 }

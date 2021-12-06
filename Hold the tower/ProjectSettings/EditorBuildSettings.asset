@@ -14,13 +14,13 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Dev/PoC/Poc.unity
     guid: 032ad808471b6a14a9ce1945a3776fb0
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Dev/LevelDesign/FLATVOID01.unity
     guid: a15835692f14c2b43a1b9f865a3eb934
   - enabled: 0
     path: Assets/Scenes/Dev/LightTests.unity
     guid: d20a08e4f7c61464ab3004e66254712e
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Dev/LevelDesign/3CTESTING01.unity
     guid: 6a169e431f54b8c4688bf66a269b0ff1
   - enabled: 0

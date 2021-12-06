@@ -34,7 +34,6 @@ public class LobbyPlayerLogic : NetworkBehaviour
     [SerializeField]
     private GameObject[] lobbyPositions;
 
-
     private GameObject ServerManager;
 
     public void Start()

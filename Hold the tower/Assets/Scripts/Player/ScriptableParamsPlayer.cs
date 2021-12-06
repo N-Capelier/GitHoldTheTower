@@ -47,12 +47,21 @@ public class ScriptableParamsPlayer : ScriptableObject
     public AnimationCurve climbMovement;
     public AnimationCurve climbSpeedOverTime;
 
-    [Header("Attack")]
+    [Header("Punch")]
     public AnimationCurve velocityCurve;
-    public float forceAttack = 20f;
-    public float cooldownAttack = 0.5f; //en seconde
-    public float timePerfectAttack = 0.8f;
-    public float timeTreshold = 0.15f;
-    [Range(0f,1f)] public float slowMovementRatio = 0.5f;
+    public float punchBaseSpeed = 2600f;
+    public AnimationCurve punchSpeedByCharge;
+    public float punchPerfectTimingSpeedMultiplier;
+    public float punchCooldown = 0.5f;
+    public float punchPerfectTiming = 0.8f;
+    public float punchPerfectTimingTreshold = 0.15f;
+    public float punchMaxChargeTime = 1f;
+    [Range(0f,1f)] public float chargeSlowMovementRatio = 0.5f;
+    public float punchBasePropulsionForce = 5f;
+    public AnimationCurve punchPropulsionForceByCharge;
+    public AnimationCurve punchDecelerateHit;
+
+    [Header("GetPunch")]
+    public AnimationCurve getHitPunchPropulsion;
 
 }
