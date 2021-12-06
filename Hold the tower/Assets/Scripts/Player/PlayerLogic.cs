@@ -392,7 +392,7 @@ public class PlayerLogic : NetworkBehaviour
         if (hasFlag)
         {
             CmdDropFlag();
-            CmdHideFlagInGame();
+            CmdShowFlagInGame();
         }
 
         StartCoroutine(RespawnManager());
