@@ -58,10 +58,8 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float punchMaxChargeTime = 1f;
     [Range(0f,1f)] public float chargeSlowMovementRatio = 0.5f;
     public float punchBasePropulsionForce = 5f;
+    public float punchBaseUpwardPropulsionForce = 1f;
+    public float punchedNoControlTime;
     public AnimationCurve punchPropulsionForceByCharge;
-    public AnimationCurve punchDecelerateHit;
-
-    [Header("GetPunch")]
-    public AnimationCurve getHitPunchPropulsion;
 
 }

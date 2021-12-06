@@ -70,7 +70,7 @@ public class PlayerLogic : NetworkBehaviour
 
     //State
     [HideInInspector]
-    public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround, isTouchingWall;
+    public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround, isTouchingWall, isInControl;
 
     [SyncVar]
     [SerializeField] public bool hasFlag;
@@ -94,6 +94,7 @@ public class PlayerLogic : NetworkBehaviour
         {
             FlagObject = GameObject.Find("Flag");
         }
+        isInControl = true;
         
         selfCamera.gameObject.SetActive(false);
         if (hasAuthority)
@@ -178,7 +179,7 @@ public class PlayerLogic : NetworkBehaviour
             touchingGroundFlag = true;
         }
 
-        if (!selfMovement.isClimbingMovement && !isAttachToWall && !selfMovement.isAttacking)
+        if (!selfMovement.isClimbingMovement && !isAttachToWall && !selfMovement.isAttacking && isInControl)
         {
             if (Input.GetKey(selfParams.left) || Input.GetKey(selfParams.right) || Input.GetKey(selfParams.front) || Input.GetKey(selfParams.back))
             {
@@ -256,9 +257,9 @@ public class PlayerLogic : NetworkBehaviour
         {
             if (!isGrounded)
             {
-                if (selfMovement.IsSomethingCollide()/* && Input.GetMouseButton(selfParams.wallMouseInput)*/)
+                selfMovement.ApplyGravity();
+                if (selfMovement.IsSomethingCollide())
                 {
-                    selfMovement.ApplyGravity();
                     isTouchingWall = true;
                     if (Input.GetKeyDown(selfParams.jump))
                     {
@@ -270,7 +271,6 @@ public class PlayerLogic : NetworkBehaviour
                 }
                 else
                 {
-                    selfMovement.ApplyGravity();
                     isTouchingWall = false;
                 }
             }
@@ -508,11 +508,11 @@ public class PlayerLogic : NetworkBehaviour
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdGetPunch(NetworkIdentity netid,Vector3 directedForce,float force)
+    public void CmdGetPunch(NetworkIdentity netid,Vector3 directedForce)
     {
         if(netid.connectionToClient != null)
         {
-            RpcGetPunch(netid.connectionToClient, directedForce, force);
+            RpcGetPunch(netid.connectionToClient, directedForce);
         }
         else
         {
@@ -532,16 +532,25 @@ public class PlayerLogic : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void RpcGetPunch(NetworkConnection conn,Vector3 directedForce, float force)
+    public void RpcGetPunch(NetworkConnection conn,Vector3 directedForce)
     {
         Debug.Log("Recoit le punch");
-        selfMovement.Propulse(directedForce, force);
+        StartCoroutine(NoControl(selfParams.punchedNoControlTime));
+        selfMovement.Propulse(directedForce);
     }
 
-    public void GetPunch( Vector3 directedForce, float force)
+    public void GetPunch(Vector3 directedForce)
     {
         Debug.Log("Recoit le punch");
-        selfMovement.Propulse(directedForce, force);
+        StartCoroutine(NoControl(selfParams.punchedNoControlTime));
+        selfMovement.Propulse(directedForce);
+    }
+
+    public IEnumerator NoControl(float time)
+    {
+        isInControl = false;
+        yield return new WaitForSeconds(time);
+        isInControl = true;
     }
     #endregion
 

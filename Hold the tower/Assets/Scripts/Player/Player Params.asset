@@ -202,7 +202,9 @@ MonoBehaviour:
   punchPerfectTimingTreshold: 0.15
   punchMaxChargeTime: 1
   chargeSlowMovementRatio: 0.5
-  punchBasePropulsionForce: 15
+  punchBasePropulsionForce: 40
+  punchBaseUpwardPropulsionForce: 10
+  punchedNoControlTime: 0.2
   punchPropulsionForceByCharge:
     serializedVersion: 2
     m_Curve:
@@ -223,54 +225,6 @@ MonoBehaviour:
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  punchDecelerateHit:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: -5
-      outSlope: -5
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.2
-      value: 0
-      inSlope: -5
-      outSlope: -5
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  getHitPunchPropulsion:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: -0.36823547
-      outSlope: -0.36823547
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.71666664
-    - serializedVersion: 3
-      time: 0.5
-      value: 0
-      inSlope: -5.5042415
-      outSlope: -5.5042415
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.050000012
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

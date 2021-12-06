@@ -12,6 +12,8 @@ public class SensorPlayer : MonoBehaviour
     private UnityEvent collidePlayer;
 
     [SerializeField]
+    private PlayerMovement selfMovement;
+    [SerializeField]
     private PlayerLogic selfLogic;
     [SerializeField]
     private Transform selfCameraTransform;
@@ -30,7 +32,7 @@ public class SensorPlayer : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             selfTransform.GetComponent<PlayerMovement>().StopPunch();
-            other.transform.parent.GetComponent<PlayerLogic>().CmdGetPunch(other.transform.parent.GetComponent<NetworkIdentity>(), selfCameraTransform.forward * selfParams.punchBasePropulsionForce, selfTransform.GetComponent<Rigidbody>().velocity.magnitude);
+            other.transform.parent.GetComponent<PlayerLogic>().CmdGetPunch(other.transform.parent.GetComponent<NetworkIdentity>(), selfMovement.directionAttack * selfParams.punchBasePropulsionForce);
             if (other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
             {
                 collidePlayer.Invoke();

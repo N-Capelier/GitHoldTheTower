@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     private bool leftCollide, rightCollide, backCollide, frontTopCollide, frontBotCollide;
 
     private bool canWallJump = true;
+    private bool stopPunchFlag;
 
     [HideInInspector]
     public bool isClimbingMovement;
@@ -38,6 +39,8 @@ public class PlayerMovement : MonoBehaviour
     public bool isAttackReset;
     [HideInInspector]
     public bool isAttackInCooldown;
+    [HideInInspector]
+    public Vector3 directionAttack;
 
     private void FixedUpdate()
     {
@@ -383,20 +386,20 @@ public class PlayerMovement : MonoBehaviour
         //StopMovement(); ////////////////////////////////////////////////////////////////////////////// Check merge conflict ///////////////////////////////////////////////////
         selfLogic.CmdAttackCollider(true);
 
-        Vector3 directionAttack = selfCamera.forward;
+        directionAttack = selfCamera.forward;
         attackspd = Vector3.zero; //init attackSpd Important
         isAttacking = true;
         isAttackReset = false;
 
         float _time = 0;
-        while(_time <selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time)
+        while(_time <selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time && !stopPunchFlag)
         {
             attackspd = directionAttack * selfParams.velocityCurve.Evaluate(_time) * Time.fixedDeltaTime * ratio * selfParams.punchBaseSpeed;
             _time += Time.deltaTime;
             NoGravity();
             yield return new WaitForFixedUpdate();
         }
-
+        stopPunchFlag = false;
         float attackTimeStamp = Time.time;
 
         StartCoroutine(timerAttack());
@@ -433,37 +436,28 @@ public class PlayerMovement : MonoBehaviour
 
     #region Punched
     //Propulse opposite direction with player velocity that punch(feature that could be cool)
-    public void Propulse(Vector3 directedForce, float force)
+    public void Propulse(Vector3 directedForce)
     {
         NoGravity();
         StopMovement();
         //hspd = new Vector3(directedForce.x, 0, directedForce.z);
         //vspd = new Vector3(0, directedForce.y, 0);
         //Debug.Log("Propulse");
-        StartCoroutine(PropulseManager(directedForce,force));
+        PropulseManager(directedForce);
     }
 
-    public IEnumerator PropulseManager(Vector3 directedForce, float force)
+    public void PropulseManager(Vector3 directedForce)
     {
-        float _time = 0;
-        Vector3 hspdBeg = new Vector3(directedForce.x, 0, directedForce.z);
-        Vector3 vspdBeg = new Vector3(0, directedForce.y, 0);
-        while (_time < selfParams.getHitPunchPropulsion[selfParams.getHitPunchPropulsion.length - 1].time)
-        {
-            _time += Time.deltaTime;
-            hspd = selfParams.getHitPunchPropulsion.Evaluate(_time) * hspdBeg * (force / 10);
-            vspd = selfParams.getHitPunchPropulsion.Evaluate(_time) * vspdBeg * (force / 10);
-            yield return new WaitForEndOfFrame();
-        }
-
-
+        hspd = new Vector3(directedForce.x, 0, directedForce.z);
+        vspd = new Vector3(0, directedForce.y + selfParams.punchBaseUpwardPropulsionForce, 0);
     }
 
     public void StopPunch()
     {
-        StartCoroutine(StopPunchManage());
+        stopPunchFlag = true;
+        //StartCoroutine(StopPunchManage());
     }
-
+    /*
     private IEnumerator StopPunchManage()
     {
         float _time = 0;
@@ -476,9 +470,8 @@ public class PlayerMovement : MonoBehaviour
             vspd = Vector3.zero;
             yield return new WaitForEndOfFrame();
         }
-
     }
-
+    */
     #endregion
 
     #region Sensor Event
