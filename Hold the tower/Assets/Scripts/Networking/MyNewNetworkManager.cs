@@ -17,6 +17,7 @@ public class MyNewNetworkManager : NetworkManager
     public GameObject MenuManagerObject;
     public GameObject StartButton;
     public GameObject TextInputIp;
+    public GameObject textInputSceneName;
     public GameObject[] lobbyPlayerServer = new GameObject[4];
     public GameObject[] SpawnPlayerPosition = new GameObject[4];
 
@@ -351,6 +352,12 @@ public class MyNewNetworkManager : NetworkManager
     public void ChangeNetworkAdress(string n)
     {
         networkAddress = TextInputIp.GetComponent<Text>().text;
+    }
+
+    public void ChangeGameScene(string n)
+	{
+        print("update");
+        gameScene = textInputSceneName.GetComponent<Text>().text;
     }
     #endregion
 
