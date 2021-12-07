@@ -330,13 +330,13 @@ public class MyNewNetworkManager : NetworkManager
         
         if(msg.teamName == LobbyPlayerLogic.nameOfTeam.blue)
         {
-            obj.transform.position = SpawnPlayerPosition[nbBlueTeam].transform.position;
+            obj.GetComponent<PlayerLogic>().spawnPosition = nbBlueTeam;
             nbBlueTeam++;
         }
 
         if (msg.teamName == LobbyPlayerLogic.nameOfTeam.red)
         {
-            obj.transform.position = SpawnPlayerPosition[nbRedTeam+2].transform.position;
+            obj.GetComponent<PlayerLogic>().spawnPosition = nbRedTeam + 2;
             nbRedTeam++;
         }
 

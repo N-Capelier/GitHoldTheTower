@@ -540,7 +540,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void takeFlag()
     {
-        selfLogic.hasFlag = true;
+        selfLogic.CmdGetFlag();
+        selfLogic.CmdHideFlagInGame();
     }
 
     #endregion
