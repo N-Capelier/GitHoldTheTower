@@ -37,7 +37,7 @@ public class SensorPlayer : MonoBehaviour
             }
 
             selfTransform.GetComponent<PlayerMovement>().StopPunch();
-            other.transform.parent.GetComponent<PlayerLogic>().CmdGetPunch(other.transform.parent.GetComponent<NetworkIdentity>(), selfMovement.directionAttack * selfParams.punchBasePropulsionForce);
+            other.transform.parent.GetComponent<PlayerLogic>().CmdGetPunch(other.transform.parent.GetComponent<NetworkIdentity>(), selfMovement.directionAttack * selfParams.punchBasePropulsionForce * selfLogic.ratioAttack);
         }
         else if(other.CompareTag("Wall"))
 		{

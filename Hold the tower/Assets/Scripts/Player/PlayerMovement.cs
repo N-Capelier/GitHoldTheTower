@@ -167,6 +167,10 @@ public class PlayerMovement : MonoBehaviour
                 break;
             }
             vspd += transform.up * selfParams.topForceJump * Time.fixedDeltaTime;
+            if(Input.GetKey(selfParams.front))
+            {
+                hspd += selfLogic.GetHorizontalVector(selfCamera.forward) * selfParams.forwardForceJump * Time.fixedDeltaTime;
+            }
             yield return new WaitForFixedUpdate();
         }
         
@@ -360,7 +364,7 @@ public class PlayerMovement : MonoBehaviour
         //Si est au pickTime
         if(time <= selfParams.punchPerfectTiming + selfParams.punchPerfectTimingTreshold && time >= selfParams.punchPerfectTiming)
         {
-            ratio = selfParams.punchPerfectTimingSpeedMultiplier;
+            ratio = selfParams.punchPerfectTimingPropulsionMultiplier;
         }
 
         //Si sup�rieur au pickTime + treshHold
