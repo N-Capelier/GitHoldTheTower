@@ -195,23 +195,23 @@ public class PlayerLogic : NetworkBehaviour
 
                 if (Input.GetKey(selfParams.front))
                 {
-                    keyDirection += GetHorizontalVector(selfCamera.forward);//a changer ici
+                    keyDirection += GetHorizontalVector(selfCollisionParent.transform.forward);//a changer ici
                     selfMovement.CanClimb();
                 }
 
                 if (Input.GetKey(selfParams.back))
                 {
-                    keyDirection += GetHorizontalVector(-selfCamera.forward);
+                    keyDirection += GetHorizontalVector(-selfCollisionParent.transform.forward);
                 }
 
                 if (Input.GetKey(selfParams.left))
                 {
-                    keyDirection += GetHorizontalVector(-selfCamera.right);
+                    keyDirection += GetHorizontalVector(-selfCollisionParent.transform.right);
                 }
 
                 if (Input.GetKey(selfParams.right))
                 {
-                    keyDirection += GetHorizontalVector(selfCamera.right);
+                    keyDirection += GetHorizontalVector(selfCollisionParent.transform.right);
                 }
                 keyDirection.Normalize();
 
@@ -419,8 +419,16 @@ public class PlayerLogic : NetworkBehaviour
 
     public IEnumerator RespawnManager()
     {
-        transform.position = GameObject.FindWithTag("Spawner").transform.GetChild(spawnPosition).position; //Obligatoire, sinon ne trouve pas le spawner à la premirèe frame
+        //Find respawn and set spawn
+        Transform spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(spawnPosition);
+        transform.position = spawnPoint.position; //Obligatoire, sinon ne trouve pas le spawner à la premirèe frame
+        selfCollisionParent.transform.localRotation = spawnPoint.rotation;
+        selfCamera.localRotation = spawnPoint.rotation;
+        
+        //Tp player to the spwan point
         selfSmoothSync.teleportOwnedObjectFromOwner();
+
+        //Create timer before restart player
         hudTextPlayer.gameObject.SetActive(true);
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
