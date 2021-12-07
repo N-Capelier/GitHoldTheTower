@@ -123,7 +123,6 @@ public class PlayerLogic : NetworkBehaviour
             fpsView();
             VerticalMovement();
             HorizontalMovement();
-            
         }
         else
         {
@@ -265,22 +264,34 @@ public class PlayerLogic : NetworkBehaviour
         {
             if (!isGrounded)
             {
-                selfMovement.ApplyGravity();
                 if (selfMovement.IsSomethingCollide())
                 {
                     isTouchingWall = true;
-                    if (Input.GetKeyDown(selfParams.jump))
+                    if (Input.GetKey(selfParams.jump))
+                    {
+                        isAttachToWall = true;
+                        selfMovement.ApplyWallSlideForces();
+                    }
+                    else if (Input.GetKeyUp(selfParams.jump))
                     {
                         if (GetNearbyWallNormal() != Vector3.zero)
                         {
                             selfMovement.WallJump(GetNearbyWallNormal());
                         }
                     }
+                    else
+                    {
+                        isAttachToWall = false;
+                        selfMovement.ApplyGravity();
+                    }
                 }
                 else
                 {
+                    isAttachToWall = false;
+                    selfMovement.ApplyGravity();
                     isTouchingWall = false;
                 }
+
             }
             else
             {
@@ -294,6 +305,7 @@ public class PlayerLogic : NetworkBehaviour
                 {
                     selfMovement.isAttackReset = true;
                 }
+                isAttachToWall = false;
             }
         }
 

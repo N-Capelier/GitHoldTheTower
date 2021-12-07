@@ -74,10 +74,13 @@ MonoBehaviour:
   forwardForceJump: 50
   topForceJump: 300
   jumpNumberToApply: 4
-  forceToWallJump: 12
-  upWardWallJumpForce: 0.6
-  maxWallJumpAngleDeviation: 40
+  forceToWallJump: 14
+  upWardWallJumpForce: 0.7
+  maxWallJumpAngleDeviation: 30
   wallJumpMinAngleToCancelDeviation: 140
+  wallSlideGravity: 30
+  wallSlideMaxGravitySpeed: 3
+  wallSlideSpeedDampening: 5
   climbHeight: 1.5
   climbWidth: 1.3
   timeToClimb: 0.1
@@ -197,7 +200,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   punchPerfectTimingPropulsionMultiplier: 2
-  punchCooldown: 3
+  punchCooldown: 2
   punchPerfectTiming: 0.8
   punchPerfectTimingTreshold: 0.15
   punchMaxChargeTime: 1
