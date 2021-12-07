@@ -51,7 +51,7 @@ public class ScriptableParamsPlayer : ScriptableObject
     public AnimationCurve velocityCurve;
     public float punchBaseSpeed = 2600f;
     public AnimationCurve punchSpeedByCharge;
-    public float punchPerfectTimingSpeedMultiplier;
+    public float punchPerfectTimingPropulsionMultiplier;
     public float punchCooldown = 0.5f;
     public float punchPerfectTiming = 0.8f;
     public float punchPerfectTimingTreshold = 0.15f;

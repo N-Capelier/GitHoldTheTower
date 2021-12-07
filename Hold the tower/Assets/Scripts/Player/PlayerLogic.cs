@@ -61,7 +61,9 @@ public class PlayerLogic : NetworkBehaviour
     private float yRotation, xRotation;
 
     private float timeStampRunAccel, timeStampRunDecel;
-    private float timeAttack, ratioAttack;
+    private float timeAttack;
+    [HideInInspector]
+    public float ratioAttack;
 
     [HideInInspector]
     public Vector3 normalWallJump;
@@ -282,7 +284,7 @@ public class PlayerLogic : NetworkBehaviour
             }
             else
             {
-                if (Input.GetKey(selfParams.jump) && !isJumping && !isAttachToWall)
+                if (Input.GetKeyDown(selfParams.jump) && !isJumping && !isAttachToWall)
                 {
                     SoundManager.Instance.PlaySoundEvent("PlayerJump", playerSource);
                     selfMovement.Jump();
@@ -339,13 +341,16 @@ public class PlayerLogic : NetworkBehaviour
         if (Input.GetMouseButtonDown(selfParams.attackMouseInput) && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown)
         {
             SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
-            punchChargeDisplay.gameObject.SetActive(true);
             hasStartedCharge = true;
         }
         //Attack load
         if (Input.GetMouseButton(selfParams.attackMouseInput) && hasStartedCharge)
         {
             timeAttack += Time.deltaTime;
+            if(timeAttack > 0.2f)
+            {
+                punchChargeDisplay.gameObject.SetActive(true);
+            }
             ratioAttack = selfMovement.AttackLoad(timeAttack);
             punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
             punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
