@@ -45,6 +45,7 @@ public class SensorPlayer : MonoBehaviour
 
             if(!block.isButton)
 			{
+                //Problème ici
                 //GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(BlockHelper.GetBlockID(block.gameObject.name));
             }
             else
@@ -54,7 +55,8 @@ public class SensorPlayer : MonoBehaviour
 				{
                     _indexes[i] = BlockHelper.GetBlockID(block.switchables[i].gameObject.name);
 				}
-                GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdSwitchArea(_indexes);
+                //et ici
+                //GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdSwitchArea(_indexes);
 
             }
 		}

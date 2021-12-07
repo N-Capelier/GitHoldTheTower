@@ -195,7 +195,7 @@ public class PlayerLogic : NetworkBehaviour
 
                 if (Input.GetKey(selfParams.front))
                 {
-                    keyDirection += GetHorizontalVector(selfCamera.forward);
+                    keyDirection += GetHorizontalVector(selfCamera.forward);//a changer ici
                     selfMovement.CanClimb();
                 }
 

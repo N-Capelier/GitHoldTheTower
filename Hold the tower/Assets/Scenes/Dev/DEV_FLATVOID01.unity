@@ -3805,10 +3805,6 @@ PrefabInstance:
       propertyPath: ThemeObject
       value: 
       objectReference: {fileID: 1173212969}
-    - target: {fileID: 5132679588279635202, guid: 0a2b2a72e900b1e499a707e306b71362, type: 3}
-      propertyPath: timerChange
-      value: 30
-      objectReference: {fileID: 0}
     - target: {fileID: 5132679588279635203, guid: 0a2b2a72e900b1e499a707e306b71362, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -3859,7 +3855,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5132679588279635205, guid: 0a2b2a72e900b1e499a707e306b71362, type: 3}
       propertyPath: sceneId
-      value: 1545755849
+      value: 4212548775
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a2b2a72e900b1e499a707e306b71362, type: 3}
