@@ -145,6 +145,15 @@ public class PlayerMovement : MonoBehaviour
     {
         vspd += new Vector3(0, -selfParams.gravity, 0) * Time.deltaTime;
     }
+    public void ApplyWallSlideForces()
+    {
+        vspd += new Vector3(0, -selfParams.wallSlideGravity, 0) * Time.deltaTime;
+        if(vspd.y < -selfParams.wallSlideMaxGravitySpeed)
+        {
+            vspd = new Vector3(0, -selfParams.wallSlideMaxGravitySpeed, 0);
+        }
+        hspd -= hspd * selfParams.wallSlideSpeedDampening * Time.deltaTime;
+    }
 
     public void NoGravity()
     {
@@ -323,7 +332,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsFrontCollide()
     {
-        if (/*frontTopCollide && */frontBotCollide)
+        if (frontTopCollide/* && frontBotCollide*/)
         {
             return true;
         }

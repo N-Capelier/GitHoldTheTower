@@ -111,6 +111,8 @@ MonoBehaviour:
   FlagObject: {fileID: 9122566769478347446}
   FlagInGame: {fileID: 6498996468193615644}
   teamName: 0
+  spawnPosition: 0
+  ratioAttack: 0
   normalWallJump: {x: 0, y: 0, z: 0}
   isGrounded: 0
   isJumping: 0
@@ -119,7 +121,6 @@ MonoBehaviour:
   isTouchingWall: 0
   isInControl: 0
   hasFlag: 0
-  selfSpawnPlayer: {x: 0, y: 0, z: 0}
   timerMaxToStart: 3
   roundStarted: 0
 --- !u!114 &4205374861408034103
@@ -494,8 +495,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.17701942, y: 1, z: 0.78878284}
-  m_Center: {x: 0.2243785, y: 0, z: -0.0062122345}
+  m_Size: {x: 0.17701942, y: 0.41, z: 0.78878284}
+  m_Center: {x: 0.2243785, y: 0.65, z: -0.0062122345}
 --- !u!114 &1137900181429196578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1009,8 +1010,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.76818866, y: 1.289413, z: 0.34169602}
-  m_Center: {x: 0.01448825, y: -0.0315001, z: 0.08878189}
+  m_Size: {x: 0.76818866, y: 0.41, z: 0.34169602}
+  m_Center: {x: 0.01448825, y: 0.65, z: 0.08878189}
 --- !u!114 &2064538322180446752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1304,8 +1305,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.804115, y: 0.8535101, z: 0.39203644}
-  m_Center: {x: 0.03764072, y: 0.27212128, z: -0.37538117}
+  m_Size: {x: 0.804115, y: 1.27, z: 0.39203644}
+  m_Center: {x: 0.03764072, y: 0.49, z: -0.37538117}
 --- !u!114 &2283582401440189527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1493,8 +1494,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.804115, y: 0.71057737, z: 0.39203644}
-  m_Center: {x: 0.03764072, y: 0.43661708, z: -0.37538117}
+  m_Size: {x: 0.804115, y: 0.41, z: 0.39203644}
+  m_Center: {x: 0.03764072, y: 0.65, z: -0.37538117}
 --- !u!114 &1688659597601429249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2220,8 +2221,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.25410646, y: 1, z: 0.8092096}
-  m_Center: {x: 0.033725232, y: 0, z: -0.01642561}
+  m_Size: {x: 0.25410646, y: 0.41, z: 0.8092096}
+  m_Center: {x: 0.033725232, y: 0.65, z: -0.01642561}
 --- !u!114 &4880545688806089832
 MonoBehaviour:
   m_ObjectHideFlags: 0
