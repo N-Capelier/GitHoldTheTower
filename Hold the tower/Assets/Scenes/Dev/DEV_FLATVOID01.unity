@@ -1287,6 +1287,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FlatVoidTemplate
       objectReference: {fileID: 0}
+    - target: {fileID: 6999395384846053277, guid: 1d0624719597b214c8d5227ad69232e8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6999395384846053279, guid: 1d0624719597b214c8d5227ad69232e8, type: 3}
       propertyPath: activeTerrain
       value: 

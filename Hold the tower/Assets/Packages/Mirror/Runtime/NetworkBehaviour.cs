@@ -120,7 +120,8 @@ namespace Mirror
             // now we check .ready separately and use .connection instead.
             if (!NetworkClient.ready)
             {
-                Debug.LogError("Send command attempted while NetworkClient is not ready.");
+                //Debug.LogError($"{cmdName}");
+                Debug.Log("Send command attempted while NetworkClient is not ready.");
                 return;
             }
 
@@ -132,6 +133,7 @@ namespace Mirror
             if (NetworkClient.connection == null)
             {
                 Debug.LogError("Send command attempted with no client running.");
+                
                 return;
             }
 

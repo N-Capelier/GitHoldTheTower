@@ -89,15 +89,12 @@ public class PlayerLogic : NetworkBehaviour
     public bool roundStarted = false;
 
 
-    private void Awake()
-    {
-
-    }
-
 
     void Start()
     {
-       
+        Transform spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(spawnPosition);
+        transform.position = spawnPoint.position;
+
         if (FlagObject != null)
         {
             FlagObject = GameObject.Find("Flag");
@@ -424,6 +421,9 @@ public class PlayerLogic : NetworkBehaviour
         transform.position = spawnPoint.position; //Obligatoire, sinon ne trouve pas le spawner à la premirèe frame
         selfCollisionParent.transform.localRotation = spawnPoint.rotation;
         selfCamera.localRotation = spawnPoint.rotation;
+
+        Debug.Log(spawnPoint.position);
+        Debug.Log("Spawn");
         
         //Tp player to the spwan point
         selfSmoothSync.teleportOwnedObjectFromOwner();
@@ -441,6 +441,7 @@ public class PlayerLogic : NetworkBehaviour
 
         }
         roundStarted = true;
+        Debug.Log(roundStarted);
         hudTextPlayer.gameObject.SetActive(false);
     }
 
@@ -558,14 +559,12 @@ public class PlayerLogic : NetworkBehaviour
     [TargetRpc]
     public void RpcGetPunch(NetworkConnection conn,Vector3 directedForce)
     {
-        Debug.Log("Recoit le punch");
         StartCoroutine(NoControl(selfParams.punchedNoControlTime));
         selfMovement.Propulse(directedForce);
     }
 
     public void GetPunch(Vector3 directedForce)
     {
-        Debug.Log("Recoit le punch");
         StartCoroutine(NoControl(selfParams.punchedNoControlTime));
         selfMovement.Propulse(directedForce);
     }
