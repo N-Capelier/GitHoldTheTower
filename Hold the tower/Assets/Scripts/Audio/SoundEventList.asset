@@ -29,7 +29,7 @@ MonoBehaviour:
     - name: NullSound
       ID: 1
       clip: {fileID: 8300000, guid: 0bf928ec4e4f3ec4388aa58573d003fa, type: 3}
-      volume: 1
+      volume: 0.2
     isLocalized: 1
     isRandom: 0
     isLoop: 1
@@ -39,7 +39,7 @@ MonoBehaviour:
     - name: NullSound
       ID: 2
       clip: {fileID: 8300000, guid: 314a1e6d149339042bb1f86585a2ee18, type: 3}
-      volume: 1
+      volume: 0
     isLocalized: 1
     isRandom: 0
     isLoop: 0
@@ -49,7 +49,7 @@ MonoBehaviour:
     - name: NullSound
       ID: 3
       clip: {fileID: 8300000, guid: 42ef11a620b659342a084a82da0e06d0, type: 3}
-      volume: 1
+      volume: 0.2
     isLocalized: 1
     isRandom: 0
     isLoop: 0
@@ -68,7 +68,85 @@ MonoBehaviour:
     sounds:
     - name: NullSound
       ID: 5
-      clip: {fileID: 8300000, guid: 80342c7cfcaffe640ba6dabfa35f7836, type: 3}
+      clip: {fileID: 8300000, guid: ecc60e6ac6344b043820e1118d68a4ac, type: 3}
+      volume: 1
+    - name: NullSound
+      ID: 5
+      clip: {fileID: 8300000, guid: ae5dd80791347654e9f492666f4ec23e, type: 3}
+      volume: 1
+    - name: NullSound
+      ID: 5
+      clip: {fileID: 8300000, guid: 090ddad5feb75fb4b9cba035e0b78923, type: 3}
+      volume: 1
+    isLocalized: 1
+    isRandom: 1
+    isLoop: 0
+  - name: PlayerOverdriveTaken
+    ID: 6
+    sounds:
+    - name: NullSound
+      ID: 7
+      clip: {fileID: 8300000, guid: ec60d5946c7a6eb4886183169a450268, type: 3}
+      volume: 1
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 0
+  - name: PlayerOverdriveLoop
+    ID: 7
+    sounds:
+    - name: NullSound
+      ID: 7
+      clip: {fileID: 8300000, guid: ec60d5946c7a6eb4886183169a450268, type: 3}
+      volume: 1
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 0
+  - name: LevelOverdriveTaken
+    ID: 8
+    sounds:
+    - name: NullSound
+      ID: 7
+      clip: {fileID: 8300000, guid: ec60d5946c7a6eb4886183169a450268, type: 3}
+      volume: 1
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 0
+  - name: LevelOverdriveDroped
+    ID: 9
+    sounds:
+    - name: NullSound
+      ID: 7
+      clip: {fileID: 8300000, guid: ec60d5946c7a6eb4886183169a450268, type: 3}
+      volume: 1
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 0
+  - name: LevelEvolvingAnoucement
+    ID: 10
+    sounds:
+    - name: NullSound
+      ID: 7
+      clip: {fileID: 8300000, guid: ec60d5946c7a6eb4886183169a450268, type: 3}
+      volume: 1
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 0
+  - name: LevelEvolvingAlarm
+    ID: 11
+    sounds:
+    - name: NullSound
+      ID: 7
+      clip: {fileID: 8300000, guid: ec60d5946c7a6eb4886183169a450268, type: 3}
+      volume: 1
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 0
+  - name: LevelEvolvingSound
+    ID: 12
+    sounds:
+    - name: NullSound
+      ID: 7
+      clip: {fileID: 8300000, guid: ec60d5946c7a6eb4886183169a450268, type: 3}
       volume: 1
     isLocalized: 1
     isRandom: 0
