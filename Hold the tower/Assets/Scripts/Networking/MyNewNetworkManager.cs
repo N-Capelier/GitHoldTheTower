@@ -3,12 +3,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Mirror;
+using System.Collections;
 
 /*
 	Documentation: https://mirror-networking.gitbook.io/docs/components/network-manager
 	API Reference: https://mirror-networking.com/docs/api/Mirror.NetworkManager.html
 */
-
 public class MyNewNetworkManager : NetworkManager
 {
     [Header("A remplir")]
@@ -326,10 +326,36 @@ public class MyNewNetworkManager : NetworkManager
 
     public void CreatePlayer(NetworkConnection conn, MyNewNetworkAuthenticator.CreateClientPlayer msg)
     {
-        GameObject obj = Instantiate(Player); 
+
+        /*GameObject obj = Instantiate(Player);
+
         obj.GetComponent<PlayerLogic>().teamName = msg.teamName;
-        
-        if(msg.teamName == LobbyPlayerLogic.nameOfTeam.blue)
+
+        if (msg.teamName == LobbyPlayerLogic.nameOfTeam.blue)
+        {
+            obj.GetComponent<PlayerLogic>().spawnPosition = nbBlueTeam;
+            nbBlueTeam++;
+        }
+
+        if (msg.teamName == LobbyPlayerLogic.nameOfTeam.red)
+        {
+            obj.GetComponent<PlayerLogic>().spawnPosition = nbRedTeam + 2;
+            nbRedTeam++;
+        }
+
+        NetworkServer.AddPlayerForConnection(conn, obj);*/
+        StartCoroutine(CreateDelayPlayer(conn, msg));
+
+    }
+
+    public IEnumerator CreateDelayPlayer(NetworkConnection conn, MyNewNetworkAuthenticator.CreateClientPlayer msg)
+    {
+        //yield return new WaitForSeconds(0.1f);
+        GameObject obj = Instantiate(Player);
+
+        obj.GetComponent<PlayerLogic>().teamName = msg.teamName;
+
+        if (msg.teamName == LobbyPlayerLogic.nameOfTeam.blue)
         {
             obj.GetComponent<PlayerLogic>().spawnPosition = nbBlueTeam;
             nbBlueTeam++;
@@ -342,6 +368,7 @@ public class MyNewNetworkManager : NetworkManager
         }
 
         NetworkServer.AddPlayerForConnection(conn, obj);
+        yield return null;
     }
 
     public void StartGame()
