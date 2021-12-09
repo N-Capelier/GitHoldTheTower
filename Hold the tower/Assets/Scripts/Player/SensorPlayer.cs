@@ -46,17 +46,17 @@ public class SensorPlayer : MonoBehaviour
             if(!block.isButton)
 			{
                 //Problème ici
-                //GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(BlockHelper.GetBlockID(block.gameObject.name));
+                GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(block.blockID);
             }
             else
 			{
                 int[] _indexes = new int[block.switchables.Length];
 				for (int i = 0; i < _indexes.Length; i++)
 				{
-                    _indexes[i] = BlockHelper.GetBlockID(block.switchables[i].gameObject.name);
-				}
+                    _indexes[i] = block.switchables[i].blockID;
+                }
                 //et ici
-                //GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdSwitchArea(_indexes);
+                GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdSwitchArea(_indexes);
 
             }
 		}

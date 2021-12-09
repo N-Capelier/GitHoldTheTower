@@ -13,12 +13,10 @@ GameObject:
   - component: {fileID: 3467959007138746707}
   - component: {fileID: 5204818065857996584}
   - component: {fileID: 4205374861408034103}
-  - component: {fileID: 3790924781881019435}
-  - component: {fileID: 5051891587114645846}
   - component: {fileID: 5834154788554956417}
   - component: {fileID: 6370884886166374265}
   m_Layer: 0
-  m_Name: Player
+  m_Name: PlayerLDTesting
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +57,7 @@ MonoBehaviour:
   sceneId: 0
   serverOnly: 0
   visible: 0
-  m_AssetId: 3eb076c26c5ff9b438317d5832fb1db5
+  m_AssetId: c6564d9730dec1f4882200f744ed2e8b
   hasSpawned: 0
 --- !u!54 &3467959007138746707
 Rigidbody:
@@ -99,7 +97,7 @@ MonoBehaviour:
   playerCollider: {fileID: 285773796116165314}
   flagRenderer: {fileID: 9122566769478347446}
   selfCollisionParent: {fileID: 2362469801121640098}
-  selfSmoothSync: {fileID: 3790924781881019435}
+  selfSmoothSync: {fileID: 0}
   punchChargeDisplay: {fileID: 6154896342665932412}
   punchChargeSlider1: {fileID: 3386380725545907309}
   punchChargeSlider2: {fileID: 1061213044051480655}
@@ -146,120 +144,6 @@ MonoBehaviour:
   isAttackReset: 0
   isAttackInCooldown: 0
   directionAttack: {x: 0, y: 0, z: 0}
---- !u!114 &3790924781881019435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 334883179893610998}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad225009ad414e1428332cab226f38fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  interpolationBackTime: 0.1
-  extrapolationMode: 1
-  useExtrapolationTimeLimit: 1
-  extrapolationTimeLimit: 5
-  useExtrapolationDistanceLimit: 0
-  extrapolationDistanceLimit: 20
-  sendPositionThreshold: 0
-  sendRotationThreshold: 0
-  sendScaleThreshold: 0
-  sendVelocityThreshold: 0
-  sendAngularVelocityThreshold: 0
-  receivedPositionThreshold: 0
-  receivedRotationThreshold: 0
-  snapPositionThreshold: 0
-  snapRotationThreshold: 0
-  snapScaleThreshold: 0
-  positionLerpSpeed: 0.1
-  rotationLerpSpeed: 0.85
-  scaleLerpSpeed: 0.85
-  timeCorrectionSpeed: 0.1
-  snapTimeThreshold: 0.3
-  syncPosition: 0
-  syncRotation: 0
-  syncScale: 0
-  syncVelocity: 0
-  syncAngularVelocity: 0
-  isPositionCompressed: 0
-  isRotationCompressed: 0
-  isScaleCompressed: 0
-  isVelocityCompressed: 0
-  isAngularVelocityCompressed: 0
-  automaticallyResetTime: 1
-  isSmoothingAuthorityChanges: 0
-  transformSource: 0
-  whenToUpdateTransform: 0
-  sendRate: 60
-  networkChannel: 1
-  childObjectToSync: {fileID: 0}
-  setVelocityInsteadOfPositionOnNonOwners: 1
-  maxPositionDifferenceForVelocitySyncing: 10
-  useLocalTransformOnly: 0
-  ownerChangeIndicator: 1
-  receivedStatesCounter: 0
---- !u!114 &5051891587114645846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 334883179893610998}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad225009ad414e1428332cab226f38fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  interpolationBackTime: 0.1
-  extrapolationMode: 1
-  useExtrapolationTimeLimit: 1
-  extrapolationTimeLimit: 5
-  useExtrapolationDistanceLimit: 0
-  extrapolationDistanceLimit: 20
-  sendPositionThreshold: 0
-  sendRotationThreshold: 0
-  sendScaleThreshold: 0
-  sendVelocityThreshold: 0
-  sendAngularVelocityThreshold: 0
-  receivedPositionThreshold: 0
-  receivedRotationThreshold: 0
-  snapPositionThreshold: 0
-  snapRotationThreshold: 0
-  snapScaleThreshold: 0
-  positionLerpSpeed: 0.85
-  rotationLerpSpeed: 0.85
-  scaleLerpSpeed: 0.85
-  timeCorrectionSpeed: 0.1
-  snapTimeThreshold: 0.3
-  syncPosition: 0
-  syncRotation: 0
-  syncScale: 0
-  syncVelocity: 0
-  syncAngularVelocity: 0
-  isPositionCompressed: 0
-  isRotationCompressed: 0
-  isScaleCompressed: 0
-  isVelocityCompressed: 0
-  isAngularVelocityCompressed: 0
-  automaticallyResetTime: 1
-  isSmoothingAuthorityChanges: 0
-  transformSource: 0
-  whenToUpdateTransform: 0
-  sendRate: 30
-  networkChannel: 1
-  childObjectToSync: {fileID: 2362469801121640098}
-  setVelocityInsteadOfPositionOnNonOwners: 0
-  maxPositionDifferenceForVelocitySyncing: 10
-  useLocalTransformOnly: 0
-  ownerChangeIndicator: 1
-  receivedStatesCounter: 0
 --- !u!82 &5834154788554956417
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1662,8 +1546,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.36, y: 1.0077701, z: 1.71}
-  m_Center: {x: 0, y: 0.07078731, z: 0.56}
+  m_Size: {x: 1, y: 1.0077701, z: 0.8580128}
+  m_Center: {x: 0, y: 0.07078731, z: 0.29461718}
 --- !u!114 &2300950262469118625
 MonoBehaviour:
   m_ObjectHideFlags: 0
