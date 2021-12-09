@@ -32,6 +32,9 @@ public class BlockBehaviour : MonoBehaviour
 	public BlockBehaviour[] switchables;
 	[HideInInspector] public bool isSwitched;
 
+	[HideInInspector]
+	public int blockID;
+
 	private void Start()
 	{
 		beforeExplosionTimeWait = new WaitForSeconds(timeBeforeExplosion);
@@ -53,6 +56,10 @@ public class BlockBehaviour : MonoBehaviour
 		targetPosition = _position;
 		movingToTargetPos = true;
 		elapsedTime = 0f;
+		if (isButton)
+		{
+			Debug.Log("movingStart");
+		}
 	}
 
 	void MoveToTargetPos()

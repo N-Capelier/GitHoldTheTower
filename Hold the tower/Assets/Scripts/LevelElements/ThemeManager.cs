@@ -24,6 +24,11 @@ public class ThemeManager : Singleton<ThemeManager>
 	private void Awake()
 	{
 		CreateSingleton();
+
+		for (int i = 0; i < blocks.Length; i++)
+        {
+			blocks[i].blockID = i;
+        }
 	}
 
 	public void LoadTerrain(LevelTerrain _terrain)
