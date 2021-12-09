@@ -92,7 +92,7 @@ public class PlayerLogic : NetworkBehaviour
 
     void Start()
     {
-        Transform spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(spawnPosition);
+        Transform spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(0);
         transform.position = spawnPoint.position;
 
         if (FlagObject != null)
@@ -417,7 +417,7 @@ public class PlayerLogic : NetworkBehaviour
     public IEnumerator RespawnManager()
     {
         //Find respawn and set spawn
-        Transform spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(spawnPosition);
+        Transform spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(0);
         transform.position = spawnPoint.position; //Obligatoire, sinon ne trouve pas le spawner à la premirèe frame
         selfCollisionParent.transform.localRotation = spawnPoint.rotation;
         selfCamera.localRotation = spawnPoint.rotation;
