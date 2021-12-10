@@ -54,7 +54,7 @@ public class PlayerLogic : NetworkBehaviour
     private GameObject FlagInGame;
 
     [SyncVar]
-    public LobbyPlayerLogic.nameOfTeam teamName;
+    public LobbyPlayerLogic.TeamName teamName;
     [SyncVar]
     public int spawnPosition;
 
@@ -421,6 +421,9 @@ public class PlayerLogic : NetworkBehaviour
         transform.position = spawnPoint.position; //Obligatoire, sinon ne trouve pas le spawner à la premirèe frame
         selfCollisionParent.transform.localRotation = spawnPoint.rotation;
         selfCamera.localRotation = spawnPoint.rotation;
+
+        //Debug.Log(spawnPoint.position);
+        //Debug.Log("Spawn");
         
         //Tp player to the spwan point
         selfSmoothSync.teleportOwnedObjectFromOwner();

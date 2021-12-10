@@ -5,7 +5,7 @@ using Mirror;
 public class GoalBehavior : NetworkBehaviour
 {
     [HideInInspector]
-    public LobbyPlayerLogic.nameOfTeam goalTeam;
+    public LobbyPlayerLogic.TeamName goalTeam;
     public MatchManager matchManager;
     
 
@@ -16,13 +16,13 @@ public class GoalBehavior : NetworkBehaviour
             if (other.transform.parent.GetComponent<PlayerLogic>().teamName != goalTeam && other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
             {
                 string textToShow = "";
-                if (goalTeam == LobbyPlayerLogic.nameOfTeam.blue)
+                if (goalTeam == LobbyPlayerLogic.TeamName.Blue)
                 {
                     textToShow = matchManager.redTeamTextScore;
                     CmdRedTeamScore();
                 }
 
-                if (goalTeam == LobbyPlayerLogic.nameOfTeam.red)
+                if (goalTeam == LobbyPlayerLogic.TeamName.Red)
                 {
                     textToShow = matchManager.blueTeamTextScore;
                     CmdBlueTeamScore();
