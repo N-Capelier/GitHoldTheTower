@@ -136,11 +136,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 12373011527264494, guid: 3fa46faea8664cc418165f148de7bbf8, type: 3}
       propertyPath: m_Name
-      value: Flag (1)
+      value: Flag
       objectReference: {fileID: 0}
     - target: {fileID: 2257173167969993439, guid: 3fa46faea8664cc418165f148de7bbf8, type: 3}
       propertyPath: m_IsTrigger
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6613400858888509313, guid: 3fa46faea8664cc418165f148de7bbf8, type: 3}
       propertyPath: m_RootOrder
@@ -152,7 +152,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6613400858888509313, guid: 3fa46faea8664cc418165f148de7bbf8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.88
+      value: 25.4
       objectReference: {fileID: 0}
     - target: {fileID: 6613400858888509313, guid: 3fa46faea8664cc418165f148de7bbf8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3859,7 +3859,7 @@ PrefabInstance:
       objectReference: {fileID: 837173381}
     - target: {fileID: 5132679588279635202, guid: 0a2b2a72e900b1e499a707e306b71362, type: 3}
       propertyPath: timerChange
-      value: 15
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5132679588279635203, guid: 0a2b2a72e900b1e499a707e306b71362, type: 3}
       propertyPath: m_Name
@@ -4023,7 +4023,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7034093892660908202, guid: 10df442408045e94aa64ddb7bf614edb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -16.5
+      value: -56
       objectReference: {fileID: 0}
     - target: {fileID: 7034093892660908202, guid: 10df442408045e94aa64ddb7bf614edb, type: 3}
       propertyPath: m_LocalPosition.y

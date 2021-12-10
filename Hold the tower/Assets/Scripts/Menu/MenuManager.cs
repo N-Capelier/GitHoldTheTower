@@ -1,65 +1,75 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class MenuManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+	// Start is called before the first frame update
 
-    public GameObject menuObject, lobbyObject;
+	public GameObject menuObject, lobbyObject;
 
-    private GameObject serverManager;
-    private bool isHost = false;
+	public TextMeshProUGUI ipInputText, usernameInputText, passwordInputText;
 
-    void Start()
-    {
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        menuObject.SetActive(true);
-        lobbyObject.SetActive(false);
-        serverManager = GameObject.Find("ServerManager");
-    }
+	private GameObject serverManager;
+	MyNewNetworkManager networkManager;
+	MyNewNetworkAuthenticator networkAuthenticator;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	private bool isHost = false;
 
-    #region Button
-    public void onPressedHost()
-    {
-        changeMenu();
-        isHost = true;
-        serverManager.GetComponent<MyNewNetworkManager>().StartHost();
-    }
+	void Start()
+	{
+		Cursor.visible = true;
+		Cursor.lockState = CursorLockMode.None;
+		menuObject.SetActive(true);
+		lobbyObject.SetActive(false);
+		serverManager = GameObject.Find("ServerManager");
+		networkManager = serverManager.GetComponent<MyNewNetworkManager>();
+		networkAuthenticator = serverManager.GetComponent<MyNewNetworkAuthenticator>();
+	}
 
-    public void onPressedJoin()
-    {
-        changeMenu();
-        serverManager.GetComponent<MyNewNetworkManager>().StartClient();
-    }
+#region Button
 
-    public void onPressedLeave()
-    {
-        changeMenu();
-        if (isHost)
-        {
-            serverManager.GetComponent<MyNewNetworkManager>().StopHost();
-            isHost = false;
-        }
-        else
-        {
-            serverManager.GetComponent<MyNewNetworkManager>().StopClient();
-        }
-        
-    }
+	public void OnPressedHost()
+	{
+		networkAuthenticator.lobbyPseudo = usernameInputText.text;
+		networkAuthenticator.lobbyPassword = passwordInputText.text;
 
-    #endregion
+		changeMenu();
+		isHost = true;
+		networkManager.StartHost();
+	}
 
-    public void changeMenu()
-    {
-        menuObject.SetActive(!menuObject.activeSelf);
-        lobbyObject.SetActive(!lobbyObject.activeSelf);
-    }
+	public void OnPressedJoin()
+	{
+		networkManager.networkAddress = ipInputText.text;
+		networkAuthenticator.lobbyPseudo = usernameInputText.text;
+		networkAuthenticator.lobbyPassword = passwordInputText.text;
+
+		changeMenu();
+		networkManager.StartClient();
+	}
+
+	public void OnPressedLeave()
+	{
+		changeMenu();
+		if (isHost)
+		{
+			networkManager.StopHost();
+			isHost = false;
+		}
+		else
+		{
+			networkManager.StopClient();
+		}
+
+	}
+
+	#endregion
+
+	public void changeMenu()
+	{
+		menuObject.SetActive(!menuObject.activeSelf);
+		lobbyObject.SetActive(!lobbyObject.activeSelf);
+	}
 }
