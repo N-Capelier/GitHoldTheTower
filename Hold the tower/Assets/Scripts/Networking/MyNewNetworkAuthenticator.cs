@@ -127,15 +127,6 @@ public class MyNewNetworkAuthenticator : NetworkAuthenticator
             ClientReject();
     }
 
-    #endregion
+	#endregion
 
-    //public void ChangeNetworkAdress(string n)
-    //{
-    //    networkAddress = TextInputIp.GetComponent<Text>().text;
-    //}
-
-    public void inputPseudo(string n) //met à jour le pseudo en fonction de l'input
-    {
-        lobbyPseudo = PseudoTextInput.GetComponent<Text>().text;
-    }
 }

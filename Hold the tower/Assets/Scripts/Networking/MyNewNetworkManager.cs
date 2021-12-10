@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using Mirror;
 using System.Collections;
 
@@ -11,7 +10,7 @@ using System.Collections;
 */
 public class MyNewNetworkManager : NetworkManager
 {
-    [Header("A remplir")]
+    [Header("Params")]
     public GameObject lobbyPlayer;
     public GameObject Player;
     public GameObject MenuManagerObject;
@@ -376,16 +375,6 @@ public class MyNewNetworkManager : NetworkManager
         ServerChangeScene(gameScene);
     }
 
-    public void ChangeNetworkAdress(string n)
-    {
-        networkAddress = TextInputIp.GetComponent<Text>().text;
-    }
-
-    public void ChangeGameScene(string n)
-	{
-        print("update");
-        gameScene = textInputSceneName.GetComponent<Text>().text;
-    }
     #endregion
 
     #region Gestion du tableau contenant les objets des clients coté server
