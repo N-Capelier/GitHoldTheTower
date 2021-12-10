@@ -32,8 +32,8 @@ public class MatchManager : NetworkBehaviour
 
     void Start()
     {
-        redGoal.goalTeam = LobbyPlayerLogic.nameOfTeam.red;
-        blueGoal.goalTeam = LobbyPlayerLogic.nameOfTeam.blue;
+        redGoal.goalTeam = LobbyPlayerLogic.TeamName.Red;
+        blueGoal.goalTeam = LobbyPlayerLogic.TeamName.Blue;
     }
 
     void Update()

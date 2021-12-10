@@ -21,7 +21,7 @@ public class MyNewNetworkManager : NetworkManager
     public GameObject[] SpawnPlayerPosition = new GameObject[4];
 
     [HideInInspector]
-    public LobbyPlayerLogic.nameOfTeam playerTeamName;
+    public LobbyPlayerLogic.TeamName playerTeamName;
     private int nbRedTeam, nbBlueTeam;
 
     [SerializeField]
@@ -354,13 +354,13 @@ public class MyNewNetworkManager : NetworkManager
 
         obj.GetComponent<PlayerLogic>().teamName = msg.teamName;
 
-        if (msg.teamName == LobbyPlayerLogic.nameOfTeam.blue)
+        if (msg.teamName == LobbyPlayerLogic.TeamName.Blue)
         {
             obj.GetComponent<PlayerLogic>().spawnPosition = nbBlueTeam;
             nbBlueTeam++;
         }
 
-        if (msg.teamName == LobbyPlayerLogic.nameOfTeam.red)
+        if (msg.teamName == LobbyPlayerLogic.TeamName.Red)
         {
             obj.GetComponent<PlayerLogic>().spawnPosition = nbRedTeam + 2;
             nbRedTeam++;
@@ -369,6 +369,11 @@ public class MyNewNetworkManager : NetworkManager
         NetworkServer.AddPlayerForConnection(conn, obj);
         yield return null;
     }
+
+    public void SetGameScene(string _sceneName)
+	{
+        gameScene = _sceneName;
+	}
 
     public void StartGame()
     {

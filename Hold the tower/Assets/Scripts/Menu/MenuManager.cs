@@ -28,12 +28,13 @@ public class MenuManager : MonoBehaviour
 		networkAuthenticator = serverManager.GetComponent<MyNewNetworkAuthenticator>();
 	}
 
-#region Button
+	#region Button
 
-	public void OnPressedHost()
+	public void OnPressedHost(string _sceneName)
 	{
 		networkAuthenticator.lobbyPseudo = usernameInputText.text;
 		networkAuthenticator.lobbyPassword = passwordInputText.text;
+		networkManager.SetGameScene(_sceneName);
 
 		changeMenu();
 		isHost = true;

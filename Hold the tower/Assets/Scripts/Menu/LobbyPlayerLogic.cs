@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
+using TMPro;
+
 public class LobbyPlayerLogic : NetworkBehaviour
 {
     [Header("SyncVar")]
@@ -14,33 +16,33 @@ public class LobbyPlayerLogic : NetworkBehaviour
     public int team;
 
 
-    public enum nameOfTeam
+    public enum TeamName
     {
-        red,blue
+        Red,Blue
     };
 
-    public nameOfTeam _nameOfTeam;
+    public TeamName teamName;
 
     [Header("Var")]
     [SerializeField]
-    private GameObject text;
+    private TextMeshProUGUI usernameText;
     [SerializeField]
-    private GameObject ReadyUi;
+    private GameObject readyUi;
     [SerializeField]
-    private GameObject ReadyButton;
+    private GameObject readyButton;
     [SerializeField]
-    private Image Team;
+    private Image teamImage;
     
     [SerializeField]
     private GameObject[] lobbyPositions;
 
-    private GameObject ServerManager;
+    private GameObject serverManager;
 
     public void Start()
     {
-        ServerManager = GameObject.Find("ServerManager"); //Gère l'ui des lobbys personnages
-        ReadyUi.SetActive(false);
-        ReadyButton.SetActive(false);
+        serverManager = GameObject.Find("ServerManager"); //Gère l'ui des lobbys personnages
+        readyUi.SetActive(false);
+        readyButton.SetActive(false);
         transform.Find("Left").gameObject.SetActive(false);
         transform.Find("Right").gameObject.SetActive(false);
 
@@ -49,14 +51,14 @@ public class LobbyPlayerLogic : NetworkBehaviour
         setReadyUI(false, false); //sync UI on every client
         if (isLocalPlayer)
         {
-            ReadyButton.SetActive(true);
+            readyButton.SetActive(true);
             transform.Find("Left").gameObject.SetActive(true);
             transform.Find("Right").gameObject.SetActive(true);
         }
 
         if (isServer)
         {
-            ServerManager.GetComponent<MyNewNetworkManager>().CheckIsReady(); //Quand un client se connecte mettre a jour le bouton lancer
+            serverManager.GetComponent<MyNewNetworkManager>().CheckIsReady(); //Quand un client se connecte mettre a jour le bouton lancer
         }
 
     }
@@ -95,7 +97,7 @@ public class LobbyPlayerLogic : NetworkBehaviour
     #region Syncro Logic
     public void updatePseudo(string oldValue, string newValue)
     {
-        text.GetComponent<Text>().text = newValue;
+        usernameText.text = newValue;
         gameObject.name = newValue;
     }
 
@@ -109,12 +111,12 @@ public class LobbyPlayerLogic : NetworkBehaviour
     public void CmdSetReady()
     {
         isReady = !isReady;
-        ServerManager.GetComponent<MyNewNetworkManager>().CheckIsReady();
+        serverManager.GetComponent<MyNewNetworkManager>().CheckIsReady();
     }
 
     public void setReadyUI(bool oldValue,bool newValue)
     {
-        ReadyUi.SetActive(isReady);
+        readyUi.SetActive(isReady);
     } //Syncronise l'ui 
 
     public void ChangeTeam(int oldValue,int newValue)
@@ -122,16 +124,16 @@ public class LobbyPlayerLogic : NetworkBehaviour
         switch (newValue)
         {
             case 0:
-                Team.color = Color.red;
-                _nameOfTeam = nameOfTeam.red;
+                teamImage.color = Color.red;
+                teamName = TeamName.Red;
                 break;
             case 1:
-                Team.color = Color.blue;
-                _nameOfTeam = nameOfTeam.blue;
+                teamImage.color = Color.blue;
+                teamName = TeamName.Blue;
                 break;
         }
 
-        ServerManager.GetComponent<MyNewNetworkManager>().playerTeamName = _nameOfTeam;
+        serverManager.GetComponent<MyNewNetworkManager>().playerTeamName = teamName;
     } //Syncronise l'ui
     #endregion
 }
