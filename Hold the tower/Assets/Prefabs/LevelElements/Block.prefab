@@ -109,6 +109,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 4468554095973789624}
-  moveDuration: 7.5
+  moveDuration: 1
   ownVelo: {x: 0, y: 0, z: 0}
   timeBeforeExplosion: 2
+  explosionTime: 2
+  deathZoneY: -100
+  isAlive: 0
+  isButton: 0
+  switchables: []
+  isSwitched: 0
+  blockID: 0
