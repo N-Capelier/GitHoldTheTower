@@ -29,6 +29,7 @@ public class BlockBehaviour : MonoBehaviour
 	[Header("Buttons")]
 	//Button switch
 	public bool isButton;
+	public int buttonActiveTerrainIndex;
 	public ButtonManager buttonManager;
 
 	[HideInInspector]
