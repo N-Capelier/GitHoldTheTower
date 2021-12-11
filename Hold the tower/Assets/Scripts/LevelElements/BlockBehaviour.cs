@@ -1,15 +1,13 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-using System.Linq;
 
 public class BlockBehaviour : MonoBehaviour
 {
 	[Header("Components")]
 	[SerializeField] BoxCollider boxCollider;
 
-	[Header("Params")]
+	[Header("Movement")]
 	//Movement
 	[SerializeField] [Range(0.1f, 15f)] float moveDuration = 1.2f;
 	Vector3 startPosition;
@@ -19,6 +17,7 @@ public class BlockBehaviour : MonoBehaviour
 	float completion;
 	[HideInInspector] public Vector3 ownVelo = Vector3.zero; //networking update
 
+	[Header("Destruction")]
 	//Explosion
 	[SerializeField] [Range(0f, 5f)] float timeBeforeExplosion = 2f;
 	[SerializeField] [Range(0f, 5f)] float explosionTime = 2f;
@@ -27,13 +26,15 @@ public class BlockBehaviour : MonoBehaviour
 	WaitForSeconds beforeExplosionTimeWait;
 	WaitForSeconds explosionTimeWait;
 
+	[Header("Buttons")]
 	//Button switch
 	public bool isButton;
-	public BlockBehaviour[] switchables;
-	[HideInInspector] public bool isSwitched;
+	public ButtonManager buttonManager;
 
 	[HideInInspector]
 	public int blockID;
+	[HideInInspector]
+	public int loadedTerrainID = 0;
 
 	private void Start()
 	{
@@ -50,10 +51,13 @@ public class BlockBehaviour : MonoBehaviour
 		}
 	}
 
-	public void SetTargetPosition(Vector3 _position)
+	public void SetNextTerrainPosition()
 	{
 		startPosition = transform.position;
-		targetPosition = _position;
+		loadedTerrainID++;
+		if(loadedTerrainID >= ThemeManager.Instance.terrains.Count)
+			loadedTerrainID = 0;
+		targetPosition = ThemeManager.Instance.terrains[loadedTerrainID].positions[blockID];
 		movingToTargetPos = true;
 		elapsedTime = 0f;
 		if (isButton)

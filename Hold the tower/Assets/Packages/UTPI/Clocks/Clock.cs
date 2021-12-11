@@ -50,9 +50,9 @@ public class Clock
     {
         if (time < 0f)
         {
-            Debug.LogError("Can not create a clock with a negative time");
-            return;
+            throw new System.ArgumentException("Can not create a clock with a negative time");
         }
+        finished = true;
         SubscribeToUpdate();
     }
 
