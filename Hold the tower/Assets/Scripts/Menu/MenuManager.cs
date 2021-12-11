@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class MenuManager : MonoBehaviour
@@ -9,7 +10,9 @@ public class MenuManager : MonoBehaviour
 
 	public GameObject menuObject, lobbyObject;
 
-	public TextMeshProUGUI ipInputText, usernameInputText, passwordInputText;
+	public TextMeshProUGUI usernameInputText, passwordInputText;
+
+	public Text ipInputText;
 
 	private GameObject serverManager;
 	MyNewNetworkManager networkManager;
@@ -43,12 +46,13 @@ public class MenuManager : MonoBehaviour
 
 	public void OnPressedJoin()
 	{
-		networkManager.networkAddress = ipInputText.text;
+		networkManager.networkAddress = ipInputText.text; // ipText;//ipInputText.text;
 		networkAuthenticator.lobbyPseudo = usernameInputText.text;
 		networkAuthenticator.lobbyPassword = passwordInputText.text;
 
 		changeMenu();
 		networkManager.StartClient();
+		
 	}
 
 	public void OnPressedLeave()

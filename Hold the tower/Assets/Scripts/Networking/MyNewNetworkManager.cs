@@ -22,7 +22,8 @@ public class MyNewNetworkManager : NetworkManager
 
     [HideInInspector]
     public LobbyPlayerLogic.TeamName playerTeamName;
-    private int nbRedTeam, nbBlueTeam;
+    private int nbRedTeam = 0;
+    private int nbBlueTeam = 0;
 
     [SerializeField]
     private string gameScene;
@@ -217,7 +218,9 @@ public class MyNewNetworkManager : NetworkManager
     /// <param name="conn">Connection to the server.</param>
     public override void OnClientConnect(NetworkConnection conn)//Quand le client se connecte envoit un message contenant le pseudo
     {
+        Debug.Log("test");
         base.OnClientConnect(conn);
+        Debug.Log(GetComponent<MyNewNetworkAuthenticator>().lobbyPseudo);
         MyNewNetworkAuthenticator.ClientConnectionMessage clientMsg = new MyNewNetworkAuthenticator.ClientConnectionMessage 
         {
             pseudo = GetComponent<MyNewNetworkAuthenticator>().lobbyPseudo
@@ -233,7 +236,6 @@ public class MyNewNetworkManager : NetworkManager
     public override void OnClientDisconnect(NetworkConnection conn)
     {
         base.OnClientDisconnect(conn);
-        
     }
 
     /// <summary>
@@ -279,7 +281,7 @@ public class MyNewNetworkManager : NetworkManager
     /// </summary>
     public override void OnStartClient() {
         StartButton.SetActive(false);
-        //NetworkClient.RegisterHandler(46251, HandleRandomId);
+
     }
 
     /// <summary>

@@ -1726,6 +1726,7 @@ MonoBehaviour:
   selfLogic: {fileID: 5204818065857996584}
   selfCameraTransform: {fileID: 9175226997489984019}
   selfParams: {fileID: 11400000, guid: a24272e5804e7bd4891a2cf20f79574a, type: 2}
+  selfTransform: {fileID: 2771112604293887708}
 --- !u!1 &6498996468193615644
 GameObject:
   m_ObjectHideFlags: 0

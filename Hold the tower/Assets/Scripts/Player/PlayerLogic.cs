@@ -90,25 +90,21 @@ public class PlayerLogic : NetworkBehaviour
 
 
 
+
     void Start()
     {
-        Transform spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(0);
-        transform.position = spawnPoint.position;
+        matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>(); //Ne pas bouger
 
         if (FlagObject != null)
         {
             FlagObject = GameObject.Find("Flag");
         }
         isInControl = true;
-        
         selfCamera.gameObject.SetActive(false);
         if (hasAuthority)
         {
-           
-            matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>();
             selfCamera.gameObject.SetActive(true);
-            Cursor.lockState = CursorLockMode.Locked;
-            ShowScoreHud();
+            //Cursor.lockState = CursorLockMode.Locked;
         }
     }
 
@@ -417,7 +413,8 @@ public class PlayerLogic : NetworkBehaviour
     public IEnumerator RespawnManager()
     {
         //Find respawn and set spawn
-        Transform spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(0);
+        Debug.Log(spawnPosition);
+        Transform spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(spawnPosition);
         transform.position = spawnPoint.position; //Obligatoire, sinon ne trouve pas le spawner à la premirèe frame
         selfCollisionParent.transform.localRotation = spawnPoint.rotation;
         selfCamera.localRotation = spawnPoint.rotation;
@@ -449,11 +446,12 @@ public class PlayerLogic : NetworkBehaviour
     {
         timerToStart = NetworkTime.time;
         StartCoroutine(GoalMessageManager(text));
+        CmdShowScoreHud();
     }
 
     public IEnumerator GoalMessageManager(string text)
     {
-        ShowScoreHud();
+        
         hudTextPlayer.gameObject.SetActive(true);
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
@@ -479,7 +477,7 @@ public class PlayerLogic : NetworkBehaviour
 
     public IEnumerator EndGameManager(string text)
     {
-        ShowScoreHud();
+        CmdShowScoreHud();
         hudTextPlayer.gameObject.SetActive(true);
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
@@ -621,7 +619,14 @@ public class PlayerLogic : NetworkBehaviour
     #endregion
 
     #region matchLogic
-    private void ShowScoreHud()
+    [Command]
+    private void CmdShowScoreHud()
+    {
+        RpcShowScoreHud();
+    }
+
+    [ClientRpc]
+    public void RpcShowScoreHud()
     {
         scoreTextRed.text = matchManager.redScore.ToString();
         scoreTextBlue.text = matchManager.blueScore.ToString();

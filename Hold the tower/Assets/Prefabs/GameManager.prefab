@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5132679588279635205}
   - component: {fileID: 5132679588279635202}
   - component: {fileID: 4063080022727842472}
+  - component: {fileID: 1363016482}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -91,3 +92,17 @@ MonoBehaviour:
   blueTeamTextScore: Blue Team Score
   redTeamTextWin: Red team win the game
   blueTeamTextWin: Blue team win the game
+--- !u!114 &1363016482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5132679588279635203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a6539b81022fd345aa414e6b1e2d8de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
