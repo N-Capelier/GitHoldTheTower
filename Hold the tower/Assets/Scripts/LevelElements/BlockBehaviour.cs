@@ -61,10 +61,6 @@ public class BlockBehaviour : MonoBehaviour
 		targetPosition = ThemeManager.Instance.terrains[loadedTerrainID].positions[blockID];
 		movingToTargetPos = true;
 		elapsedTime = 0f;
-		if (isButton)
-		{
-			Debug.Log("movingStart");
-		}
 	}
 
 	void MoveToTargetPos()
