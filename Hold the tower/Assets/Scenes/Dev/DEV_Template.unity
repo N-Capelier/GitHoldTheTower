@@ -2506,7 +2506,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2613847895115978197, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2613847895123165730, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2864,6 +2864,10 @@ PrefabInstance:
       propertyPath: buttonManager
       value: 
       objectReference: {fileID: 1459830710}
+    - target: {fileID: 5132574316043196437, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
+      propertyPath: buttonActiveTerrainIndex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5132574316370049858, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
       propertyPath: isButton
       value: 1
@@ -2872,6 +2876,10 @@ PrefabInstance:
       propertyPath: buttonManager
       value: 
       objectReference: {fileID: 264288054}
+    - target: {fileID: 5132574316370049858, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
+      propertyPath: buttonActiveTerrainIndex
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5132574316683098339, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
       propertyPath: isButton
       value: 1
@@ -2884,6 +2892,10 @@ PrefabInstance:
       propertyPath: buttonManager
       value: 
       objectReference: {fileID: 1580581}
+    - target: {fileID: 5132574316741096615, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
+      propertyPath: buttonActiveTerrainIndex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5132574316752273875, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
       propertyPath: isButton
       value: 1
@@ -2900,6 +2912,10 @@ PrefabInstance:
       propertyPath: buttonManager
       value: 
       objectReference: {fileID: 264288054}
+    - target: {fileID: 5132574316832963596, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
+      propertyPath: buttonActiveTerrainIndex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5132574316849657558, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
       propertyPath: buttonManager
       value: 
@@ -2912,6 +2928,10 @@ PrefabInstance:
       propertyPath: buttonManager
       value: 
       objectReference: {fileID: 1480820381}
+    - target: {fileID: 5132574316917409223, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
+      propertyPath: buttonActiveTerrainIndex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5132574316987157409, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
       propertyPath: isButton
       value: 1
@@ -2928,6 +2948,10 @@ PrefabInstance:
       propertyPath: buttonManager
       value: 
       objectReference: {fileID: 49634134}
+    - target: {fileID: 5132574317137020664, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
+      propertyPath: buttonActiveTerrainIndex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5132574317709882503, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
       propertyPath: isButton
       value: 1
@@ -2936,6 +2960,10 @@ PrefabInstance:
       propertyPath: buttonManager
       value: 
       objectReference: {fileID: 1480820381}
+    - target: {fileID: 5132574317709882503, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
+      propertyPath: buttonActiveTerrainIndex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5239903420162769811, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
