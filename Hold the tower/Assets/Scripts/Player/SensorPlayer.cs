@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using System.Linq;
 using Mirror;
 
 public class SensorPlayer : MonoBehaviour
@@ -50,10 +49,10 @@ public class SensorPlayer : MonoBehaviour
             }
             else
 			{
-                int[] _indexes = new int[block.switchables.Length];
+                int[] _indexes = new int[block.buttonManager.switchables.Length];
 				for (int i = 0; i < _indexes.Length; i++)
 				{
-                    _indexes[i] = block.switchables[i].blockID;
+                    _indexes[i] = block.buttonManager.switchables[i].blockID;
                 }
                 //et ici
                 GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdSwitchArea(_indexes);
@@ -62,12 +61,12 @@ public class SensorPlayer : MonoBehaviour
 		}
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            //other.GetComponent<PlayerLogic>().cantBeHit();
-        }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        //other.GetComponent<PlayerLogic>().cantBeHit();
+    //    }
 
-    }
+    //}
 }
