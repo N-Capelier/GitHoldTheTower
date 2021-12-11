@@ -47,7 +47,7 @@ public class SensorPlayer : MonoBehaviour
                 //Problème ici
                 GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(block.blockID);
             }
-            else
+            else if(block.buttonActiveTerrainIndex == block.loadedTerrainID)
 			{
                 int[] _indexes = new int[block.buttonManager.switchables.Length];
 				for (int i = 0; i < _indexes.Length; i++)
