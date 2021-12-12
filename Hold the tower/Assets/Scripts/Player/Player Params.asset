@@ -20,15 +20,15 @@ MonoBehaviour:
   wallMouseInput: 1
   attackMouseInput: 0
   mouseSensivity: 150
-  runningForce: 60
+  runningForce: 100
   maxRunningSpeed: 9
   airControlForce: 55
-  groundFriction: 60
+  groundFriction: 200
   gravityForce: 30
   jumpForwardForce: 2
   jumpForce: 12
   wallJumpNormalForce: 14
-  wallJumpUpwardForce: 0.8
+  wallJumpUpwardForce: 0.7
   maxWallJumpAngleDeviation: 30
   wallJumpMinAngleToCancelDeviation: 140
   wallSlideGravity: 30
