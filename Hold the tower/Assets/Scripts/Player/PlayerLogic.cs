@@ -140,7 +140,7 @@ public class PlayerLogic : NetworkBehaviour
 
         selfCamera.Rotate(Vector3.up * mouseX);
         selfCamera.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
-        selfCollisionParent.transform.localRotation = Quaternion.Euler(new Vector3(0, selfCamera.rotation.eulerAngles.y, 0));
+        selfCollisionParent.transform.localRotation = Quaternion.Euler(0, selfCamera.rotation.eulerAngles.y, 0);
 
     }
 
@@ -253,7 +253,7 @@ public class PlayerLogic : NetworkBehaviour
 
     private void VerticalMovement()
     {
-        if (!selfMovement.isClimbingMovement)
+        if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking)
         {
             if (!isGrounded)
             {
@@ -288,6 +288,7 @@ public class PlayerLogic : NetworkBehaviour
             }
             else
             {
+                selfMovement.ApplyGravity();
                 if (Input.GetKeyDown(selfParams.jump) && !isJumping && !isAttachToWall)
                 {
                     SoundManager.Instance.PlaySoundEvent("PlayerJump", playerSource);
@@ -429,9 +430,8 @@ public class PlayerLogic : NetworkBehaviour
         hudTextPlayer.gameObject.SetActive(true);
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
-            selfMovement.StopPlayer();
-            selfMovement.StopMovement();
-            selfMovement.NoGravity();
+            selfMovement.ResetVelocity();
+            selfMovement.ResetVerticalVelocity();
             if (System.Math.Round(NetworkTime.time - timerToStart).ToString() != hudTextPlayer.text)
                 hudTextPlayer.text = System.Math.Round(NetworkTime.time - timerToStart).ToString();
             yield return new WaitForEndOfFrame();
@@ -460,7 +460,7 @@ public class PlayerLogic : NetworkBehaviour
             yield return new WaitForEndOfFrame();
 
         }
-        selfMovement.StopMovement();
+        selfMovement.ResetVelocity();
         roundStarted = false;
         timerToStart = NetworkTime.time;
         StartCoroutine(RespawnManager());
