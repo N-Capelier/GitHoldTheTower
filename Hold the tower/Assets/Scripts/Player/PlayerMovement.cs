@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -18,10 +17,9 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 moveDirection = new Vector3(0, 0, 0);
 
-    private Vector3 hspd;
-    private Vector3 vspd;
-    private Vector3 attackspd = new Vector3();
-    private Vector3 WallJumpspd;
+    //private Vector3 hspd;
+    //private Vector3 vspd;
+    //private Vector3 attackspd = new Vector3();
 
     public Vector3 groundCorrection;
 
@@ -44,48 +42,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (selfLogic.isGrounded)
+        if (!isClimbingMovement)
         {
-            NoGravity();
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-        if (isClimbingMovement)
-        {
-
-        }
-        else
-        {
-            if(hspd != Vector3.zero && !selfLogic.isGrounded) //if apply positive force ( jump ...)
-            {
-                if(IsSomethingCollide())
-                {
-                    /*
-                    //WIP a changer
-                    if (Mathf.Sign(hspd.x) == Mathf.Sign(-selfLogic.normalWallJump.x))
-                    {
-                        hspd.x = 0;
-                    }
-
-                    if (Mathf.Sign(hspd.z) == Mathf.Sign(-selfLogic.normalWallJump.z))
-                    {
-                        hspd.z = 0;
-                    }
-
-                    if (Mathf.Sign(hspd.x) == Mathf.Sign(-selfLogic.normalWallJump.x) || Mathf.Sign(hspd.z) == Mathf.Sign(-selfLogic.normalWallJump.z))
-                    {
-                        attackspd = Vector3.zero;
-                        WallJumpspd = Vector3.zero;
-                    }*/
-                    
-                }
-            }
-
-            selfRbd.velocity = hspd + vspd + attackspd;
+            //selfRbd.velocity += hspd + vspd + attackspd;
         }
     }
    
@@ -93,49 +52,62 @@ public class PlayerMovement : MonoBehaviour
     #region HorizontalPhysics
     public void Move(Vector3 direction, float timeStamp)
     {
-        moveDirection += new Vector3(direction.x, 0, direction.z);
-        moveDirection = moveDirection.normalized;
+        moveDirection = direction;
 
-        hspd = moveDirection * selfParams.maxRunningSpeed * selfParams.runningAcceleration.Evaluate(timeStamp);
-        hspd = new Vector3(hspd.x, 0, hspd.z);
+        selfRbd.velocity += direction * selfParams.runningForce * Time.deltaTime;
+
+        if (GetHorizontalVelocity().magnitude > selfParams.maxRunningSpeed)
+        {
+            SetHorizontalVelocity(selfRbd.velocity.normalized * selfParams.maxRunningSpeed);
+        }
     }
 
     public void AirMove(Vector3 direction)
     {
-        moveDirection += new Vector3(direction.x, 0, direction.z);
-        moveDirection = moveDirection.normalized;
+        moveDirection = direction;
 
-        float hspdMagnitude = hspd.magnitude;
-        Vector3 newHspd = hspd + moveDirection * selfParams.airControlForce * Time.deltaTime;
+        float hSpeed = GetHorizontalVelocity().magnitude;
 
-        hspd += moveDirection * selfParams.airControlForce * Time.deltaTime;
+        selfRbd.velocity += direction * selfParams.airControlForce * Time.deltaTime;
 
-        if (hspd.magnitude > selfParams.maxRunningSpeed)
+        if(hSpeed > selfParams.maxRunningSpeed)
         {
-            hspd = hspd.normalized * hspdMagnitude;
+            SetHorizontalVelocity(selfLogic.GetHorizontalVector(selfRbd.velocity) * hSpeed);
+        }
+        else
+        {
+            if (GetHorizontalVelocity().magnitude > selfParams.maxRunningSpeed)
+            {
+                SetHorizontalVelocity(selfLogic.GetHorizontalVector(selfRbd.velocity) * selfParams.maxRunningSpeed);
+            }
         }
     }
 
     public void Decelerate(float timeStamp)
     {
-        if(hspd != Vector3.zero)
+        if(GetHorizontalVelocity().magnitude > 0.2f)
         {
-            hspd = hspd * selfParams.runningDeceleration.Evaluate(timeStamp);
+            selfRbd.velocity -= selfLogic.GetHorizontalVector(selfRbd.velocity) * selfParams.groundFriction * Time.deltaTime;
         }
         else
         {
+            SetHorizontalVelocity(Vector3.zero);
             moveDirection = Vector3.zero;
         }
     }
 
-    public void StopMovement()
-    {
-        hspd = Vector3.zero;
-    }
-
-    public void StopPlayer()
+    public void ResetVelocity()
     {
         selfRbd.velocity = Vector3.zero;
+    }
+
+    public void SetHorizontalVelocity(Vector3 hVel)
+    {
+        selfRbd.velocity = new Vector3(hVel.x, selfRbd.velocity.y, hVel.z);
+    }
+    public Vector3 GetHorizontalVelocity()
+    {
+        return new Vector3(selfRbd.velocity.x, 0, selfRbd.velocity.z);
     }
     #endregion
 
@@ -143,48 +115,61 @@ public class PlayerMovement : MonoBehaviour
 
     public void ApplyGravity()
     {
-        vspd += new Vector3(0, -selfParams.gravity, 0) * Time.deltaTime;
+        //vspd += new Vector3(0, -selfParams.gravity, 0) * Time.deltaTime;
+        selfRbd.velocity -= new Vector3(0, selfParams.gravityForce, 0) * Time.deltaTime;
     }
     public void ApplyWallSlideForces()
     {
-        vspd += new Vector3(0, -selfParams.wallSlideGravity, 0) * Time.deltaTime;
-        if(vspd.y < -selfParams.wallSlideMaxGravitySpeed)
+        selfRbd.velocity -= new Vector3(0, selfParams.wallSlideGravity, 0) * Time.deltaTime;
+        //vspd += new Vector3(0, -selfParams.wallSlideGravity, 0) * Time.deltaTime;
+        if(selfRbd.velocity.y < -selfParams.wallSlideMaxGravitySpeed)
         {
-            vspd = new Vector3(0, -selfParams.wallSlideMaxGravitySpeed, 0);
+            selfRbd.velocity = new Vector3(0, -selfParams.wallSlideMaxGravitySpeed, 0);
         }
-        hspd -= hspd * selfParams.wallSlideSpeedDampening * Time.deltaTime;
+        float verticalVelocity = selfRbd.velocity.y;
+        selfRbd.velocity -= selfRbd.velocity * selfParams.wallSlideSpeedDampening * Time.deltaTime;
+        selfRbd.velocity = new Vector3(selfRbd.velocity.x, verticalVelocity, selfRbd.velocity.z);
     }
 
-    public void NoGravity()
+    public void ResetVerticalVelocity()
     {
-        vspd = Vector3.zero;
+        selfRbd.velocity = new Vector3(selfRbd.velocity.x, 0, selfRbd.velocity.z);
     }
-    //WIP need to adjust jump to interact with wall
+
     public void Jump()
     {
-        StartCoroutine(JumpManage());
+        ResetVerticalVelocity();
+        selfRbd.velocity += Vector3.up * selfParams.jumpForce;
+        if (Input.GetKey(selfParams.front))
+        {
+            selfRbd.velocity += selfLogic.GetHorizontalVector(selfCamera.forward) * selfParams.jumpForwardForce * Time.fixedDeltaTime;
+        }
+        //StartCoroutine(JumpManage());
     }
 
-    public IEnumerator JumpManage()
+    /*public IEnumerator JumpManage()
     {
         selfLogic.isJumping = true;
-        NoGravity();
+        ResetVerticalVelocity();
         for(int i = 0;i< selfParams.jumpNumberToApply; i++)
         {
-            if(isClimbingMovement)
-            {
-                break;
+            if(isClimbingMovement)
+            {
+                break;
             }
-            vspd += transform.up * selfParams.topForceJump * Time.fixedDeltaTime;
+            selfRbd.velocity += Vector3.up * selfParams.jumpForce * Time.fixedDeltaTime;
+
+            //vspd += transform.up * selfParams.topForceJump * Time.fixedDeltaTime;
             if(Input.GetKey(selfParams.front))
             {
-                hspd += selfLogic.GetHorizontalVector(selfCamera.forward) * selfParams.forwardForceJump * Time.fixedDeltaTime;
+                selfRbd.velocity += selfLogic.GetHorizontalVector(selfCamera.forward) * selfParams.jumpForwardForce * Time.fixedDeltaTime;
+                //hspd += selfLogic.GetHorizontalVector(selfCamera.forward) * selfParams.forwardForceJump * Time.fixedDeltaTime;
             }
             yield return new WaitForFixedUpdate();
         }
         
         selfLogic.isJumping = false;
-    }
+    }*/
 
     //start WallJump
     public void WallJump(Vector3 direction)
@@ -248,27 +233,16 @@ public class PlayerMovement : MonoBehaviour
             adjustDirection.Normalize();
         }
 
-        adjustDirection += new Vector3(0, selfParams.upWardWallJumpForce, 0);
+        adjustDirection += new Vector3(0, selfParams.wallJumpUpwardForce, 0);
 
+        ResetVelocity();
+        ResetVerticalVelocity();
+        selfRbd.velocity += adjustDirection * selfParams.wallJumpNormalForce;
 
-        //Add force
-        /*
-        while (_timer < selfParams.forceToWallJumpCurve[selfParams.forceToWallJumpCurve.length-1].time)
-        {
-            WallJumpspd = adjustDirection * (selfParams.forceToWallJumpCurve.Evaluate(_timer) * Time.fixedDeltaTime * selfParams.forceToWallJump);
-            _timer += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }*/
-
-        WallJumpspd = adjustDirection * selfParams.forceToWallJump;
-
-        StopMovement();
-        NoGravity();
         canWallJump = true;
+        /*
         hspd = new Vector3(WallJumpspd.x, 0, WallJumpspd.z);
-        vspd = new Vector3(0, WallJumpspd.y, 0);
-
-        WallJumpspd = Vector3.zero;
+        vspd = new Vector3(0, WallJumpspd.y, 0);*/
         yield return new WaitForEndOfFrame();
     }
     //manage jump
@@ -299,8 +273,8 @@ public class PlayerMovement : MonoBehaviour
         Physics.Raycast(climbEndGroundPos, Vector3.down,out endPosHit, 2f, LayerMask.GetMask("Outlined"));
         if (endPosHit.collider != null)
         {
-            NoGravity();
-            StopMovement();
+            ResetVerticalVelocity();
+            ResetVelocity();
             climbEndGroundPos = endPosHit.point + Vector3.up;
             float timer = selfParams.timeToClimb;
             Vector3 startClimbPos = transform.position;
@@ -321,7 +295,7 @@ public class PlayerMovement : MonoBehaviour
             //transform.position = climbEndGroundPos;
         }
         //hspd = new Vector3(selfRbd.velocity.x, 0, selfRbd.velocity.z);
-        moveDirection = selfLogic.GetHorizontalVector(hspd);
+        moveDirection = selfLogic.GetHorizontalVector(selfRbd.velocity);
         selfLogic.CmdSwitchCollider(false);
         isClimbingMovement = false;
     }
@@ -360,8 +334,8 @@ public class PlayerMovement : MonoBehaviour
         //Slow player
         if(selfLogic.isGrounded)
         {
-            attackspd = hspd * -1;
-            attackspd *= selfParams.chargeSlowMovementRatio;
+            //attackspd = hspd * -1;
+            //attackspd *= selfParams.chargeSlowMovementRatio;
         }
 
         //Si est en dessous du pickTime
@@ -400,22 +374,21 @@ public class PlayerMovement : MonoBehaviour
         selfLogic.CmdAttackCollider(true);
 
         directionAttack = selfCamera.forward;
-        attackspd = Vector3.zero; //init attackSpd Important
         isAttacking = true;
         isAttackReset = false;
 
         float _time = 0;
         while(_time <selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time && !stopPunchFlag)
         {
-            attackspd = directionAttack * selfParams.velocityCurve.Evaluate(_time) * Time.fixedDeltaTime * ratio * selfParams.punchBaseSpeed;
+            selfRbd.velocity = directionAttack * selfParams.velocityCurve.Evaluate(_time) * Time.fixedDeltaTime * ratio * selfParams.punchBaseSpeed;
             _time += Time.deltaTime;
-            NoGravity();
+            //ResetVerticalVelocity();
             yield return new WaitForFixedUpdate();
         }
         stopPunchFlag = false;
         float attackTimeStamp = Time.time;
 
-        StartCoroutine(timerAttack());
+        StartCoroutine(TimerAttack());
 
         isAttackInCooldown = true;
         selfAttackCollider.SetActive(false);
@@ -423,26 +396,14 @@ public class PlayerMovement : MonoBehaviour
 
         //active Wall Jump if player punch
         canWallJump = true;
-        attackspd = directionAttack * selfParams.velocityCurve.Evaluate(selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time) * Time.fixedDeltaTime * ratio * selfParams.punchBaseSpeed;
-
-        hspd = new Vector3(attackspd.x, 0, attackspd.z);
-        vspd = new Vector3(0, attackspd.y, 0);
-        attackspd = Vector3.zero;
+        selfRbd.velocity = directionAttack * selfParams.velocityCurve.Evaluate(selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time) * Time.fixedDeltaTime * ratio * selfParams.punchBaseSpeed;
         isAttacking = false;
     }
 
-    public IEnumerator timerAttack()
+    public IEnumerator TimerAttack()
     {
         yield return new WaitForSeconds(selfParams.punchCooldown);
         isAttackInCooldown = false;
-    }
-
-    public void DecelerateAttack(float timeStamp)
-    {
-        if (attackspd != Vector3.zero)
-        {
-            attackspd = attackspd * selfParams.runningDeceleration.Evaluate(timeStamp);
-        }
     }
 
     #endregion
@@ -451,8 +412,8 @@ public class PlayerMovement : MonoBehaviour
     //Propulse opposite direction with player velocity that punch(feature that could be cool)
     public void Propulse(Vector3 directedForce)
     {
-        NoGravity();
-        StopMovement();
+        ResetVerticalVelocity();
+        ResetVelocity();
         //hspd = new Vector3(directedForce.x, 0, directedForce.z);
         //vspd = new Vector3(0, directedForce.y, 0);
         //Debug.Log("Propulse");
@@ -461,8 +422,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void PropulseManager(Vector3 directedForce)
     {
-        hspd = new Vector3(directedForce.x, 0, directedForce.z);
-        vspd = new Vector3(0, directedForce.y + selfParams.punchBaseUpwardPropulsionForce, 0);
+        selfRbd.velocity += directedForce;
     }
 
     public void StopPunch()

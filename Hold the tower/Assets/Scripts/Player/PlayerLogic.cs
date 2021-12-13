@@ -90,25 +90,21 @@ public class PlayerLogic : NetworkBehaviour
 
 
 
+
     void Start()
     {
-        Transform spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(0);
-        transform.position = spawnPoint.position;
+        matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>(); //Ne pas bouger
 
         if (FlagObject != null)
         {
             FlagObject = GameObject.Find("Flag");
         }
         isInControl = true;
-        
         selfCamera.gameObject.SetActive(false);
         if (hasAuthority)
         {
-           
-            matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>();
             selfCamera.gameObject.SetActive(true);
-            Cursor.lockState = CursorLockMode.Locked;
-            ShowScoreHud();
+            //Cursor.lockState = CursorLockMode.Locked;
         }
     }
 
@@ -144,7 +140,7 @@ public class PlayerLogic : NetworkBehaviour
 
         selfCamera.Rotate(Vector3.up * mouseX);
         selfCamera.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
-        selfCollisionParent.transform.localRotation = Quaternion.Euler(new Vector3(0, selfCamera.rotation.eulerAngles.y, 0));
+        selfCollisionParent.transform.localRotation = Quaternion.Euler(0, selfCamera.rotation.eulerAngles.y, 0);
 
     }
 
@@ -257,7 +253,7 @@ public class PlayerLogic : NetworkBehaviour
 
     private void VerticalMovement()
     {
-        if (!selfMovement.isClimbingMovement)
+        if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking)
         {
             if (!isGrounded)
             {
@@ -292,6 +288,7 @@ public class PlayerLogic : NetworkBehaviour
             }
             else
             {
+                selfMovement.ApplyGravity();
                 if (Input.GetKeyDown(selfParams.jump) && !isJumping && !isAttachToWall)
                 {
                     SoundManager.Instance.PlaySoundEvent("PlayerJump", playerSource);
@@ -417,7 +414,8 @@ public class PlayerLogic : NetworkBehaviour
     public IEnumerator RespawnManager()
     {
         //Find respawn and set spawn
-        Transform spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(0);
+        Debug.Log(spawnPosition);
+        Transform spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(spawnPosition);
         transform.position = spawnPoint.position; //Obligatoire, sinon ne trouve pas le spawner à la premirèe frame
         selfCollisionParent.transform.localRotation = spawnPoint.rotation;
         selfCamera.localRotation = spawnPoint.rotation;
@@ -432,9 +430,8 @@ public class PlayerLogic : NetworkBehaviour
         hudTextPlayer.gameObject.SetActive(true);
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
-            selfMovement.StopPlayer();
-            selfMovement.StopMovement();
-            selfMovement.NoGravity();
+            selfMovement.ResetVelocity();
+            selfMovement.ResetVerticalVelocity();
             if (System.Math.Round(NetworkTime.time - timerToStart).ToString() != hudTextPlayer.text)
                 hudTextPlayer.text = System.Math.Round(NetworkTime.time - timerToStart).ToString();
             yield return new WaitForEndOfFrame();
@@ -449,11 +446,12 @@ public class PlayerLogic : NetworkBehaviour
     {
         timerToStart = NetworkTime.time;
         StartCoroutine(GoalMessageManager(text));
+        CmdShowScoreHud();
     }
 
     public IEnumerator GoalMessageManager(string text)
     {
-        ShowScoreHud();
+        
         hudTextPlayer.gameObject.SetActive(true);
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
@@ -462,7 +460,7 @@ public class PlayerLogic : NetworkBehaviour
             yield return new WaitForEndOfFrame();
 
         }
-        selfMovement.StopMovement();
+        selfMovement.ResetVelocity();
         roundStarted = false;
         timerToStart = NetworkTime.time;
         StartCoroutine(RespawnManager());
@@ -479,7 +477,7 @@ public class PlayerLogic : NetworkBehaviour
 
     public IEnumerator EndGameManager(string text)
     {
-        ShowScoreHud();
+        CmdShowScoreHud();
         hudTextPlayer.gameObject.SetActive(true);
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
@@ -621,7 +619,14 @@ public class PlayerLogic : NetworkBehaviour
     #endregion
 
     #region matchLogic
-    private void ShowScoreHud()
+    [Command]
+    private void CmdShowScoreHud()
+    {
+        RpcShowScoreHud();
+    }
+
+    [ClientRpc]
+    public void RpcShowScoreHud()
     {
         scoreTextRed.text = matchManager.redScore.ToString();
         scoreTextBlue.text = matchManager.blueScore.ToString();

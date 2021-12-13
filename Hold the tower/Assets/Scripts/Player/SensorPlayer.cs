@@ -19,12 +19,7 @@ public class SensorPlayer : MonoBehaviour
     [SerializeField]
     private ScriptableParamsPlayer selfParams;
 
-    private Transform selfTransform;
-
-    public void Start()
-    {
-        selfTransform = transform.parent.transform.parent;
-    }
+    public Transform selfTransform;
 
     private void OnTriggerEnter(Collider other)
     {

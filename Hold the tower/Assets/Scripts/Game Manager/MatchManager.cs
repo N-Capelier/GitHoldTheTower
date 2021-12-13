@@ -12,9 +12,9 @@ public class MatchManager : NetworkBehaviour
     public int maxScore;
 
     [SyncVar]
-    [HideInInspector]  public int redScore;
+    public int redScore;
     [SyncVar]
-    [HideInInspector]  public int blueScore;
+    public int blueScore;
 
     public GoalBehavior redGoal;
     public GoalBehavior blueGoal;

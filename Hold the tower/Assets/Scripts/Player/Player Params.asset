@@ -20,62 +20,15 @@ MonoBehaviour:
   wallMouseInput: 1
   attackMouseInput: 0
   mouseSensivity: 150
-  runningAcceleration:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 3.3333333
-      outSlope: 3.3333333
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.3
-      value: 1
-      inSlope: 3.3333333
-      outSlope: 3.3333333
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  runningDeceleration:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: -2.5
-      outSlope: -2.5
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.4
-      value: 0
-      inSlope: -2.5
-      outSlope: -2.5
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  runningForce: 100
   maxRunningSpeed: 9
   airControlForce: 55
-  gravity: 30
-  forwardForceJump: 50
-  topForceJump: 300
-  jumpNumberToApply: 4
-  forceToWallJump: 14
-  upWardWallJumpForce: 0.7
+  groundFriction: 200
+  gravityForce: 30
+  jumpForwardForce: 2
+  jumpForce: 12
+  wallJumpNormalForce: 14
+  wallJumpUpwardForce: 0.7
   maxWallJumpAngleDeviation: 30
   wallJumpMinAngleToCancelDeviation: 140
   wallSlideGravity: 30

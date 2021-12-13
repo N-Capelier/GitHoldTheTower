@@ -13,8 +13,6 @@ public class MyNewNetworkAuthenticator : NetworkAuthenticator
     public string lobbyPseudo;
     public string lobbyPassword;
 
-    [SerializeField]
-    private GameObject PseudoTextInput;
 
     #region Messages
 

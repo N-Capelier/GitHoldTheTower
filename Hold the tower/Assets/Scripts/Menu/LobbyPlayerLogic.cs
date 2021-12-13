@@ -51,6 +51,7 @@ public class LobbyPlayerLogic : NetworkBehaviour
         setReadyUI(false, false); //sync UI on every client
         if (isLocalPlayer)
         {
+            transform.localScale = new Vector3(2, 2, 2);
             readyButton.SetActive(true);
             transform.Find("Left").gameObject.SetActive(true);
             transform.Find("Right").gameObject.SetActive(true);
@@ -132,8 +133,11 @@ public class LobbyPlayerLogic : NetworkBehaviour
                 teamName = TeamName.Blue;
                 break;
         }
-
-        serverManager.GetComponent<MyNewNetworkManager>().playerTeamName = teamName;
+        if (hasAuthority)
+        {
+            serverManager.GetComponent<MyNewNetworkManager>().playerTeamName = teamName;
+        }
+        
     } //Syncronise l'ui
     #endregion
 }

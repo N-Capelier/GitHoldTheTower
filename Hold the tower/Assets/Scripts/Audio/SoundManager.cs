@@ -267,28 +267,30 @@ public class SoundManager : Singleton<SoundManager>
 
         //On va chercher l'event avec l'ID correspondant;
         SoundEvent thisEvent = soundEventList.FindEvent(thisEventName);
-
-        //On appliques les infos du son dans l'audiosource
-        if (thisEvent.isRandom)
+        if(thisEvent != null)
         {
-            int temp = UnityEngine.Random.Range(0, thisEvent.sounds.Length - 1);
+            //On appliques les infos du son dans l'audiosource
+            if (thisEvent.isRandom)
+            {
+                int temp = UnityEngine.Random.Range(0, thisEvent.sounds.Length - 1);
 
-            soundRef.sound = thisEvent.sounds[temp];
-            soundRef.ApplySoundToAudioSource(thisEvent.sounds[temp], thisEvent.isLoop, sfxMixer);
-        }
-        else
-        {
-            soundRef.sound = thisEvent.sounds[0];
-            soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, sfxMixer);
-        }
+                soundRef.sound = thisEvent.sounds[temp];
+                soundRef.ApplySoundToAudioSource(thisEvent.sounds[temp], thisEvent.isLoop, sfxMixer);
+            }
+            else
+            {
+                soundRef.sound = thisEvent.sounds[0];
+                soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, sfxMixer);
+            }
 
-        if (soundRef.sound.clip == null)
-        {
-            soundRef.sound = soundEventList.FindEvent(0).sounds[0];
-        }
+            if (soundRef.sound.clip == null)
+            {
+                soundRef.sound = soundEventList.FindEvent(0).sounds[0];
+            }
 
-        //On joue le son !
-        soundRef.audioSource.Play();
+            //On joue le son !
+            soundRef.audioSource.Play();
+        }
 
         //On retourne la référence du son pour qu'il soit modifiable pas la suite la ou on l'appel.
         return soundRef;

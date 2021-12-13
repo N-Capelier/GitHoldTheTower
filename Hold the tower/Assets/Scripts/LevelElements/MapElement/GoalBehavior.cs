@@ -29,7 +29,6 @@ public class GoalBehavior : NetworkBehaviour
                 }
                 other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
                 CmdTeamWin(textToShow);
-                
             }
         }
         

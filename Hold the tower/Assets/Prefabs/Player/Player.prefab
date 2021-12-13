@@ -76,7 +76,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 3
+  m_CollisionDetection: 1
 --- !u!114 &5204818065857996584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1726,6 +1726,7 @@ MonoBehaviour:
   selfLogic: {fileID: 5204818065857996584}
   selfCameraTransform: {fileID: 9175226997489984019}
   selfParams: {fileID: 11400000, guid: a24272e5804e7bd4891a2cf20f79574a, type: 2}
+  selfTransform: {fileID: 2771112604293887708}
 --- !u!1 &6498996468193615644
 GameObject:
   m_ObjectHideFlags: 0
