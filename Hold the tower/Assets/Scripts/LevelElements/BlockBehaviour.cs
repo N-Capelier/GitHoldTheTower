@@ -54,6 +54,8 @@ public class BlockBehaviour : MonoBehaviour
 
 	public void SetNextTerrainPosition()
 	{
+		isAlive = true;
+		boxCollider.enabled = true;
 		startPosition = transform.position;
 		loadedTerrainID++;
 		if(loadedTerrainID >= ThemeManager.Instance.terrains.Count)
@@ -88,7 +90,7 @@ public class BlockBehaviour : MonoBehaviour
 
 		yield return beforeExplosionTimeWait;
 
-		GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(BlockHelper.GetBlockID(gameObject.gameObject.name));
+		StartCoroutine(ExplodeCoroutine());
 	}
 
 	public IEnumerator ExplodeCoroutine()

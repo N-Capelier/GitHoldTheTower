@@ -39,12 +39,19 @@ public class SensorPlayer : MonoBehaviour
 
             if(!block.isButton)
 			{
-				GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(block.blockID);
-			}
+                if(selfMovement.isPerfectTiming)
+				{
+                    GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdExplode(block.blockID);
+
+                }
+                else
+				{
+                    GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(block.blockID);
+                }
+            }
             else if(block.buttonActiveTerrainIndex == block.loadedTerrainID)
 			{
 				GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdSwitchArea(block.blockID);
-
 			}
 		}
     }

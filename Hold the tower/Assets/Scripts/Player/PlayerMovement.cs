@@ -29,6 +29,8 @@ public class PlayerMovement : MonoBehaviour
     private bool canWallJump = true;
     private bool stopPunchFlag;
 
+    [HideInInspector] public bool isPerfectTiming = false;
+
     [HideInInspector]
     public bool isClimbingMovement;
     [HideInInspector]
@@ -39,6 +41,8 @@ public class PlayerMovement : MonoBehaviour
     public bool isAttackInCooldown;
     [HideInInspector]
     public Vector3 directionAttack;
+
+    WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
 
     private void FixedUpdate()
     {
@@ -333,11 +337,11 @@ public class PlayerMovement : MonoBehaviour
         float ratio = 0;
         
         //Slow player
-        if(selfLogic.isGrounded)
-        {
-            //attackspd = hspd * -1;
-            //attackspd *= selfParams.chargeSlowMovementRatio;
-        }
+        //if(selfLogic.isGrounded)
+        //{
+        //    attackspd = hspd * -1;
+        //    attackspd *= selfParams.chargeSlowMovementRatio;
+        //}
 
         //Si est en dessous du pickTime
         if(time <= selfParams.punchPerfectTiming)
@@ -348,6 +352,7 @@ public class PlayerMovement : MonoBehaviour
         //Si est au pickTime
         if(time <= selfParams.punchPerfectTiming + selfParams.punchPerfectTimingTreshold && time >= selfParams.punchPerfectTiming)
         {
+            isPerfectTiming = true;
             ratio = selfParams.punchPerfectTimingPropulsionMultiplier;
         }
 
@@ -384,10 +389,10 @@ public class PlayerMovement : MonoBehaviour
             selfRbd.velocity = directionAttack * selfParams.velocityCurve.Evaluate(_time) * Time.fixedDeltaTime * ratio * selfParams.punchBaseSpeed;
             _time += Time.deltaTime;
             //ResetVerticalVelocity();
-            yield return new WaitForFixedUpdate();
+            yield return waitForFixedUpdate;
         }
         stopPunchFlag = false;
-        float attackTimeStamp = Time.time;
+        //float attackTimeStamp = Time.time;
 
         StartCoroutine(TimerAttack());
 
@@ -399,6 +404,8 @@ public class PlayerMovement : MonoBehaviour
         canWallJump = true;
         selfRbd.velocity = directionAttack * selfParams.velocityCurve.Evaluate(selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time) * Time.fixedDeltaTime * ratio * selfParams.punchBaseSpeed;
         isAttacking = false;
+        isPerfectTiming = false;
+        yield return null;
     }
 
     public IEnumerator TimerAttack()
