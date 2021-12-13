@@ -56,11 +56,11 @@ public class ThemeManager : Singleton<ThemeManager>
 		}
 	}
 
-	public void LoadTerrainForSwitchArea(int[] _indexes)
+	public void LoadTerrainForSwitchArea(int _index)
 	{
-		for (int i = 0; i < _indexes.Length; i++)
+		for (int i = 0; i < blocks[_index].buttonManager.switchables.Length; i++)
 		{
-			blocks[_indexes[i]].SetNextTerrainPosition();
+			blocks[_index].buttonManager.switchables[i].SetNextTerrainPosition();
 		}
 	}
 }

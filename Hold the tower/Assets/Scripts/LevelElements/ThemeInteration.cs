@@ -27,14 +27,14 @@ public class ThemeInteration : NetworkBehaviour
 	}
 
 	[Command(requiresAuthority = false)]
-	public void CmdSwitchArea(int[] _indexes)
+	public void CmdSwitchArea(int _index)
 	{
-		RpcSwitchArea(_indexes);
+		RpcSwitchArea(_index);
 	}
 
 	[ClientRpc]
-	public void RpcSwitchArea(int[] _indexes)
+	public void RpcSwitchArea(int _index)
 	{
-		ThemeManager.Instance.LoadTerrainForSwitchArea(_indexes);
+		ThemeManager.Instance.LoadTerrainForSwitchArea(_index);
 	}
 }

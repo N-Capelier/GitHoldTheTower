@@ -39,20 +39,13 @@ public class SensorPlayer : MonoBehaviour
 
             if(!block.isButton)
 			{
-                //Problème ici
-                GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(block.blockID);
-            }
+				GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(block.blockID);
+			}
             else if(block.buttonActiveTerrainIndex == block.loadedTerrainID)
 			{
-                int[] _indexes = new int[block.buttonManager.switchables.Length];
-				for (int i = 0; i < _indexes.Length; i++)
-				{
-                    _indexes[i] = block.buttonManager.switchables[i].blockID;
-                }
-                //et ici
-                GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdSwitchArea(_indexes);
+				GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdSwitchArea(block.blockID);
 
-            }
+			}
 		}
     }
 
