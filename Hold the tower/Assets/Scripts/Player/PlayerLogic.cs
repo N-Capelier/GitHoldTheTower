@@ -88,9 +88,6 @@ public class PlayerLogic : NetworkBehaviour
     //Move if the round is start
     public bool roundStarted = false;
 
-
-
-
     void Start()
     {
         matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>(); //Ne pas bouger
@@ -407,31 +404,37 @@ public class PlayerLogic : NetworkBehaviour
     public IEnumerator RespawnManager()
     {
         //Find respawn and set spawn
-        Debug.Log(spawnPosition);
-        Transform spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(spawnPosition);
-        transform.position = spawnPoint.position; //Obligatoire, sinon ne trouve pas le spawner à la premirèe frame
-        selfCollisionParent.transform.localRotation = spawnPoint.rotation;
-        selfCamera.localRotation = spawnPoint.rotation;
-
-        //Debug.Log(spawnPoint.position);
-        //Debug.Log("Spawn");
-        
-        //Tp player to the spwan point
-        selfSmoothSync.teleportOwnedObjectFromOwner();
-
-        //Create timer before restart player
-        hudTextPlayer.gameObject.SetActive(true);
-        while (NetworkTime.time - timerToStart <= timerMaxToStart)
+        if (hasAuthority)
         {
-            selfMovement.ResetVelocity();
-            selfMovement.ResetVerticalVelocity();
-            if (System.Math.Round(NetworkTime.time - timerToStart).ToString() != hudTextPlayer.text)
-                hudTextPlayer.text = System.Math.Round(NetworkTime.time - timerToStart).ToString();
-            yield return new WaitForEndOfFrame();
+            Transform spawnPoint;
+            spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(spawnPosition);
 
+
+
+            transform.position = spawnPoint.position; //Obligatoire, sinon ne trouve pas le spawner à la premirèe frame
+            selfCollisionParent.transform.localRotation = spawnPoint.rotation;
+            selfCamera.localRotation = spawnPoint.rotation;
+
+            //Debug.Log(spawnPoint.position);
+            //Debug.Log("Spawn");
+
+            //Tp player to the spwan point
+            selfSmoothSync.teleportOwnedObjectFromOwner();
+
+            //Create timer before restart player
+            hudTextPlayer.gameObject.SetActive(true);
+            while (NetworkTime.time - timerToStart <= timerMaxToStart)
+            {
+                selfMovement.ResetVelocity();
+                selfMovement.ResetVerticalVelocity();
+                if (System.Math.Round(NetworkTime.time - timerToStart).ToString() != hudTextPlayer.text)
+                    hudTextPlayer.text = System.Math.Round(NetworkTime.time - timerToStart).ToString();
+                yield return new WaitForEndOfFrame();
+
+            }
+            roundStarted = true;
+            hudTextPlayer.gameObject.SetActive(false);
         }
-        roundStarted = true;
-        hudTextPlayer.gameObject.SetActive(false);
     }
 
     [TargetRpc]

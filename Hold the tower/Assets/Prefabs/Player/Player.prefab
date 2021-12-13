@@ -243,9 +243,9 @@ MonoBehaviour:
   syncScale: 0
   syncVelocity: 0
   syncAngularVelocity: 0
-  isPositionCompressed: 0
+  isPositionCompressed: 1
   isRotationCompressed: 0
-  isScaleCompressed: 0
+  isScaleCompressed: 1
   isVelocityCompressed: 0
   isAngularVelocityCompressed: 0
   automaticallyResetTime: 1
