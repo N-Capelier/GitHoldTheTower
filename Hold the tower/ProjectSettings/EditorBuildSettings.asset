@@ -35,4 +35,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Dev/DEV_Template.unity
     guid: a8806ebf9399a3149bc55c71535cbb99
+  - enabled: 1
+    path: Assets/Scenes/Dev/LUD_TemplateLighting.unity
+    guid: 6d2f648b20e05de4ab62cebd14e020be
   m_configObjects: {}
