@@ -24,6 +24,7 @@ MonoBehaviour:
   maxRunningSpeed: 9
   airControlForce: 55
   groundFriction: 200
+  minSpeedToStop: 0.02
   gravityForce: 30
   jumpForwardForce: 2
   jumpForce: 12
