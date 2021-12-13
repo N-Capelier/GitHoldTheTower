@@ -4276,7 +4276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Port: 25565
   DualMode: 1
-  NoDelay: 1
+  NoDelay: 0
   Interval: 10
   Timeout: 10000
   FastResend: 2
