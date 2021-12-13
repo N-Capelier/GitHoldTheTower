@@ -8,28 +8,28 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game/LobbyScene.unity
     guid: 0fcc151014fda6a49b10ef6b18532b97
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Dev/DEV_FLATVOID01.unity
     guid: a15835692f14c2b43a1b9f865a3eb934
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Dev/AG_3C01.unity
     guid: 6a169e431f54b8c4688bf66a269b0ff1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Dev/JB_Debug.unity
     guid: e0dfadef0eb3bdc4980974151edcff35
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Dev/LUD_Ambient.unity
     guid: 064151576c54127498a841d41fd47dc4
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Dev/LUD_PaternsTesting.unity
     guid: dea5e52a687c0d5409c8aedf406ed2ce
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Dev/NCO_OutlineDemo.unity
     guid: 6894cc73390b293429ce2743da16d520
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Dev/TW_PatternsTesting.unity
     guid: 7cdf2f3f14999b2469ad5b542f08c477
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Dev/WS_TestSounds.unity
     guid: 6e5cef1df27e1ac47b43c3ab8676f5c9
   - enabled: 1

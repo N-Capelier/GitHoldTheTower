@@ -85,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Decelerate(float timeStamp)
     {
-        if(GetHorizontalVelocity().magnitude > 0.2f)
+        if(GetHorizontalVelocity().magnitude > 5f)
         {
             selfRbd.velocity -= selfLogic.GetHorizontalVector(selfRbd.velocity) * selfParams.groundFriction * Time.deltaTime;
         }

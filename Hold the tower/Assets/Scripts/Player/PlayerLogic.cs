@@ -104,25 +104,22 @@ public class PlayerLogic : NetworkBehaviour
         if (hasAuthority)
         {
             selfCamera.gameObject.SetActive(true);
-            //Cursor.lockState = CursorLockMode.Locked;
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if(Time.deltaTime > 0.1f)
+		{
+            Debug.LogError("LAG");
+		}
+        Debug.LogError(Time.fixedDeltaTime);
         if (hasAuthority && roundStarted)
         {
             fpsView();
             VerticalMovement();
             HorizontalMovement();
-        }
-        else
-        {
-            if (roundStarted)
-            {
-                
-            }
         }
         ShowFlagToAllPlayer();
     }
@@ -131,8 +128,8 @@ public class PlayerLogic : NetworkBehaviour
 
     private void fpsView()
     {
-        float mouseX = Input.GetAxis("Mouse X") * selfParams.mouseSensivity * Time.fixedDeltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * selfParams.mouseSensivity * Time.fixedDeltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * selfParams.mouseSensivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * selfParams.mouseSensivity * Time.deltaTime;
 
         yRotation += mouseX;
         xRotation -= mouseY;
@@ -230,10 +227,6 @@ public class PlayerLogic : NetworkBehaviour
                     timeStampRunDecel = Time.time;
                 }
             }
-
-        }
-        else
-        {
 
         }
 

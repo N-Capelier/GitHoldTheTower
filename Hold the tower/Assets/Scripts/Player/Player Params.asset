@@ -19,7 +19,7 @@ MonoBehaviour:
   jump: 32
   wallMouseInput: 1
   attackMouseInput: 0
-  mouseSensivity: 150
+  mouseSensivity: 400
   runningForce: 100
   maxRunningSpeed: 9
   airControlForce: 55

@@ -10,7 +10,7 @@ public class LobbyPlayerLogic : NetworkBehaviour
     [Header("SyncVar")]
     [SyncVar(hook =nameof(setReadyUI))]
     public bool isReady = false;
-    [SyncVar(hook = nameof(updatePseudo))]
+    [SyncVar(hook = nameof(UpdateUsername))]
     public string clientPseudo;
     [SyncVar(hook = nameof(ChangeTeam))]
     public int team;
@@ -78,25 +78,31 @@ public class LobbyPlayerLogic : NetworkBehaviour
     [Command]
     public void ButtonLeft()
     {
-        team--;
-        if(team < 0)
+        if(team - 1 < 0)
         {
             team = 1;
         }
+        else
+		{
+            team = 0;
+		}
     }
     [Command]
     public void ButtonRight()
     {
-        team++;
-        if (team > 1)
+        if (team + 1 > 1)
         {
             team = 0;
         }
+        else
+		{
+            team = 1;
+		}
     }
     #endregion
 
     #region Syncro Logic
-    public void updatePseudo(string oldValue, string newValue)
+    public void UpdateUsername(string oldValue, string newValue)
     {
         usernameText.text = newValue;
         gameObject.name = newValue;
