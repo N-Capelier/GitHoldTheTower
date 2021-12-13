@@ -27,6 +27,7 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float maxRunningSpeed;
     public float airControlForce;
     public float groundFriction;
+    public float minSpeedToStop;
     public float gravityForce;
 
     [Header("Jump and WallJump")]

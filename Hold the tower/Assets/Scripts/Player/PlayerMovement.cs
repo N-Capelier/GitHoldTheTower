@@ -85,15 +85,19 @@ public class PlayerMovement : MonoBehaviour
 
     public void Decelerate(float timeStamp)
     {
-        if(GetHorizontalVelocity().magnitude > 5f)
+        SetHorizontalVelocity(Vector3.zero);
+        moveDirection = Vector3.zero;
+        /*
+        if(GetHorizontalVelocity().magnitude > selfParams.minSpeedToStop * selfParams.groundFriction)
         {
-            selfRbd.velocity -= selfLogic.GetHorizontalVector(selfRbd.velocity) * selfParams.groundFriction * Time.deltaTime;
+            //Debug.LogError("Velocity : " + GetHorizontalVelocity().magnitude);
+            selfRbd.velocity -= selfLogic.GetHorizontalVector(selfRbd.velocity).normalized * selfParams.groundFriction * Time.deltaTime;
         }
         else
         {
             SetHorizontalVelocity(Vector3.zero);
             moveDirection = Vector3.zero;
-        }
+        }*/
     }
 
     public void ResetVelocity()
