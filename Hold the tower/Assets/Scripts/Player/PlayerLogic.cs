@@ -107,11 +107,6 @@ public class PlayerLogic : NetworkBehaviour
 
     void Update()
     {
-        if(Time.deltaTime > 0.1f)
-		{
-            Debug.LogError("LAG");
-		}
-        Debug.LogError(Time.fixedDeltaTime);
         if (hasAuthority && roundStarted)
         {
             fpsView();
