@@ -85,9 +85,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void Decelerate(float timeStamp)
     {
-        SetHorizontalVelocity(Vector3.zero);
-        moveDirection = Vector3.zero;
-        /*
         if(GetHorizontalVelocity().magnitude > selfParams.minSpeedToStop * selfParams.groundFriction)
         {
             //Debug.LogError("Velocity : " + GetHorizontalVelocity().magnitude);
@@ -97,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
         {
             SetHorizontalVelocity(Vector3.zero);
             moveDirection = Vector3.zero;
-        }*/
+        }
     }
 
     public void ResetVelocity()
