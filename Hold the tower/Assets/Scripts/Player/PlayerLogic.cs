@@ -45,6 +45,8 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     public float punchSliderEndOffset;
     [SerializeField]
+    public Image punchCooldownDisplay;
+    [SerializeField]
     private Text hudTextPlayer;
     [SerializeField]
     private Text scoreTextBlue;
@@ -378,6 +380,11 @@ public class PlayerLogic : NetworkBehaviour
     }
 
     // faire fonction de d�lai d'affichage de la charge du punch
+
+    public void UpdatePunchCooldown(float cdTime)
+    {
+        punchCooldownDisplay.fillAmount = cdTime / selfParams.punchCooldown;
+    }
 
     #endregion
 
