@@ -6,6 +6,8 @@ public class BlockBehaviour : MonoBehaviour
 {
 	[Header("Components")]
 	[SerializeField] BoxCollider boxCollider;
+	[SerializeField] MeshRenderer meshRenderer;
+	Material blockMaterial;
 
 	[Header("Movement")]
 	//Movement
@@ -26,6 +28,7 @@ public class BlockBehaviour : MonoBehaviour
 	[HideInInspector] public bool isAlive;
 	WaitForSeconds beforeExplosionTimeWait;
 	WaitForSeconds explosionTimeWait;
+	WaitForEndOfFrame waitForEndOfFrame;
 
 	[Header("Buttons")]
 	//Button switch
@@ -42,6 +45,11 @@ public class BlockBehaviour : MonoBehaviour
 	{
 		beforeExplosionTimeWait = new WaitForSeconds(timeBeforeExplosion);
 		explosionTimeWait = new WaitForSeconds(explosionTime);
+		waitForEndOfFrame = new WaitForEndOfFrame();
+		if(isDestroyable)
+		{
+			blockMaterial = meshRenderer.material;
+		}
 	}
 
 	private void FixedUpdate()
@@ -55,6 +63,11 @@ public class BlockBehaviour : MonoBehaviour
 
 	public void SetNextTerrainPosition()
 	{
+		if(isDestroyable)
+		{
+			blockMaterial.SetFloat("DissolveValue", 0);
+			gameObject.layer = LayerMask.NameToLayer("Outlined");
+		}
 		isAlive = true;
 		boxCollider.enabled = true;
 		startPosition = transform.position;
@@ -72,7 +85,6 @@ public class BlockBehaviour : MonoBehaviour
 		completion = elapsedTime / moveDuration;
 		Vector3 previousPos = transform.position;
 		transform.position = Vector3.Lerp(startPosition, targetPosition, Mathf.SmoothStep(0, 1, completion));
-
 		//Calculate velocity of each block (give this velo to player)
 		ownVelo = ((transform.position - previousPos));
 		//ownVelo = -Vector3.Lerp(ownVelo, currentFrameVel, 0.1f);
@@ -96,14 +108,23 @@ public class BlockBehaviour : MonoBehaviour
 
 	public IEnumerator ExplodeCoroutine()
 	{
+		gameObject.layer = LayerMask.NameToLayer("Default");
 		isAlive = false;
 		boxCollider.enabled = false;
 
 		//start explosion vfx
+		float _elapsedTime = 0f;
+		float _completion = 0f;
+		while(_elapsedTime < explosionTime)
+		{
+			_elapsedTime += Time.deltaTime;
+			_completion = _elapsedTime / explosionTime;
+			blockMaterial.SetFloat("DissolveValue", Mathf.Lerp(0, 1, _completion));
+			yield return waitForEndOfFrame;
+		}
 
-
-		yield return explosionTimeWait;
 		transform.position = new Vector3(transform.position.x, deathZoneY, transform.position.z);
+		yield return waitForEndOfFrame;
 	}
 
 	public void StartButtonActivationEffect()
