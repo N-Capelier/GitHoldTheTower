@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 02196e29c42990549a6e818fc78a495d, type: 2}
+  - {fileID: 2100000, guid: 008c290c7e9c5984fad7b1ef4a838193, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -111,11 +111,13 @@ MonoBehaviour:
   boxCollider: {fileID: 4468554095973789624}
   moveDuration: 1
   ownVelo: {x: 0, y: 0, z: 0}
+  isDestroyable: 0
   timeBeforeExplosion: 2
   explosionTime: 2
   deathZoneY: -100
   isAlive: 0
   isButton: 0
-  switchables: []
-  isSwitched: 0
+  buttonActiveTerrainIndex: 0
+  buttonManager: {fileID: 0}
   blockID: 0
+  loadedTerrainID: 0
