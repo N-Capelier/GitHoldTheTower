@@ -11,6 +11,8 @@ public class ThemeManager : Singleton<ThemeManager>
 
 	public BlockBehaviour[][] areas = new BlockBehaviour[3][];
 
+	public GameObject buttonActivationEffectPrefab;
+
 #if UNITY_EDITOR
 
 	public void InitTerrainBlocks()

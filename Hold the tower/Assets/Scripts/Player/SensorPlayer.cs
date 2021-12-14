@@ -68,6 +68,7 @@ public class SensorPlayer : MonoBehaviour
             else if(block.buttonActiveTerrainIndex == block.loadedTerrainID)
 			{
 				GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdSwitchArea(block.blockID);
+                block.StartButtonActivationEffect();
 
 			}
 		}

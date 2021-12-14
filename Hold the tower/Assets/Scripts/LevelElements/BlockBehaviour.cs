@@ -105,5 +105,10 @@ public class BlockBehaviour : MonoBehaviour
 		transform.position = new Vector3(transform.position.x, deathZoneY, transform.position.z);
 	}
 
-
+	public void StartButtonActivationEffect()
+    {
+		// JB !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! c'est à toi !
+		GameObject effect = Instantiate(ThemeManager.Instance.buttonActivationEffectPrefab, transform);
+		effect.transform.localScale = new Vector3(transform.localScale.x * 2 + 0.3f, transform.localScale.y * 2 + 2, transform.localScale.z * 2 + 0.3f);
+	}
 }
