@@ -53,6 +53,10 @@ public class PlayerLogic : NetworkBehaviour
     public GameObject punchHitUi;
     [SerializeField]
     private GameObject punchGetHitUi;
+    [SerializeField]
+    private GameObject punchLoadingEffect;
+    [SerializeField]
+    private GameObject punchHitEffect;
 
     [SerializeField]
     private GameObject FlagObject;
@@ -122,7 +126,7 @@ public class PlayerLogic : NetworkBehaviour
             //Respawn player
             if (Input.GetKeyDown(KeyCode.R))
             {
-                RpcForceRespawn(3f);
+                CmdForceRespawn(3f);
             }
         }
         ShowFlagToAllPlayer();
@@ -349,6 +353,7 @@ public class PlayerLogic : NetworkBehaviour
         //Attack load
         if (Input.GetMouseButton(selfParams.attackMouseInput) && hasStartedCharge)
         {
+            CmdShowLoadingPunchStart();
             timeAttack += Time.deltaTime;
             if(timeAttack > 0.2f)
             {
@@ -362,6 +367,7 @@ public class PlayerLogic : NetworkBehaviour
         //Attack lauch
         if (Input.GetMouseButtonUp(selfParams.attackMouseInput) && hasStartedCharge)
         {
+            CmdShowLoadingPunchEnd();
             hasStartedCharge = false;
             punchChargeDisplay.gameObject.SetActive(false);
             SoundManager.Instance.PlaySoundEvent("PlayerPunch", playerSource);
@@ -392,7 +398,7 @@ public class PlayerLogic : NetworkBehaviour
     }
 
     [Command]
-    public void RpcForceRespawn(float maxTimer)
+    public void CmdForceRespawn(float maxTimer)
     {
         NetworkConnection conn = null;
         RpcRespawn(conn, maxTimer);
@@ -507,6 +513,7 @@ public class PlayerLogic : NetworkBehaviour
         MyNewNetworkManager.singleton.ServerChangeScene("LobbyScene"); // Need to be rework
     }
 
+    //Punch and getPunch Logic
 
     [Command]
     public void CmdAttackCollider(bool isActive)
@@ -573,7 +580,6 @@ public class PlayerLogic : NetworkBehaviour
     public void GetPunch(Vector3 directedForce)
     {
         StartCoroutine(NoControl(selfParams.punchedNoControlTime));
-       
         selfMovement.Propulse(directedForce);
     }
 
@@ -584,24 +590,61 @@ public class PlayerLogic : NetworkBehaviour
         isInControl = true;
     }
 
-    public IEnumerator GetHitUi(float timelife)
+    [Command]
+    public void CmdCreateParticulePunch(Vector3 position)
     {
-        punchGetHitUi.SetActive(true);
-        Color temp = punchGetHitUi.GetComponent<Image>().color;
-        temp.a = 1;
-        float time = 0;
-        while(time < timelife)
-        {
-            Debug.Log(time);
-            time += Time.deltaTime;
-            temp.a = 1-time;
-            punchGetHitUi.GetComponent<Image>().color = temp;
-            yield return new WaitForEndOfFrame();
-        }
-        punchGetHitUi.SetActive(false);
-        yield return null;
+        StartCoroutine(ParticulePunchManage(position));
     }
 
+    public IEnumerator ParticulePunchManage(Vector3 position)
+    {
+        GameObject objEffect = Instantiate(punchHitEffect, position,Quaternion.identity);
+        NetworkServer.Spawn(objEffect);
+        yield return new WaitForSeconds(4);
+        NetworkServer.Destroy(objEffect);
+    }
+
+
+    //Loading network particule loading 
+
+    [Command]
+    public void CmdShowLoadingPunchStart()
+    {
+        RpcShowLoadingPunchStart();
+    }
+
+    [ClientRpc]
+    public void RpcShowLoadingPunchStart()
+    {
+        if (!hasAuthority)
+        {
+            punchLoadingEffect.SetActive(true);
+        }
+        
+    }
+
+    [Command]
+    public void CmdShowLoadingPunchEnd()
+    {
+        RpcShowLoadingPunchEnd();
+    }
+
+    [ClientRpc]
+    public void RpcShowLoadingPunchEnd()
+    {
+        if (!hasAuthority)
+        {
+            punchLoadingEffect.SetActive(false);
+        }
+        
+    }
+
+
+    #endregion
+
+    #region Ui
+
+    //Manage ui hit getHit
     public void StartHitUi(float timelife)
     {
         StartCoroutine(HitUi(timelife));
@@ -616,12 +659,31 @@ public class PlayerLogic : NetworkBehaviour
             while (time < timelife)
             {
                 time += Time.deltaTime;
-                 yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
             }
             punchHitUi.SetActive(false);
         }
         yield return null;
     }
+
+    public IEnumerator GetHitUi(float timelife)
+    {
+        punchGetHitUi.SetActive(true);
+        Color temp = punchGetHitUi.GetComponent<Image>().color;
+        temp.a = 1;
+        float time = 0;
+        while (time < timelife)
+        {
+            Debug.Log(time);
+            time += Time.deltaTime;
+            temp.a = 1 - time;
+            punchGetHitUi.GetComponent<Image>().color = temp;
+            yield return new WaitForEndOfFrame();
+        }
+        punchGetHitUi.SetActive(false);
+        yield return null;
+    }
+
     #endregion
 
     #region Flag Logic

@@ -29,6 +29,7 @@ public class SensorPlayer : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             selfLogic.StartHitUi(0.5f);
+            selfLogic.CmdCreateParticulePunch(transform.position);
             if (other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
             {
                 
