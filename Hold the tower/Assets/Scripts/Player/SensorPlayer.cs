@@ -32,7 +32,6 @@ public class SensorPlayer : MonoBehaviour
             selfLogic.CmdCreateParticulePunch(transform.position);
             if (other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
             {
-                
                 selfTransform.GetComponent<PlayerLogic>().CmdGetFlag();
 
             }

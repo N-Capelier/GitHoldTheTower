@@ -100,6 +100,7 @@ public class BlockBehaviour : MonoBehaviour
 		boxCollider.enabled = false;
 
 		//start explosion vfx
+		SoundManager.Instance.PlaySoundEvent("LevelBlockDestroyed");
 
 
 		yield return explosionTimeWait;
@@ -110,6 +111,7 @@ public class BlockBehaviour : MonoBehaviour
     {
 		// JB !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! c'est à toi !
 		GameObject effect = Instantiate(ThemeManager.Instance.buttonActivationEffectPrefab, transform);
+		SoundManager.Instance.PlaySoundEvent("LevelButtonActivated");
 		effect.transform.localScale = new Vector3(transform.localScale.x * 2 + 0.3f, transform.localScale.y * 2 + 2, transform.localScale.z * 2 + 0.3f);
 	}
 }

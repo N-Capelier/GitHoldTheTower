@@ -432,6 +432,7 @@ public class PlayerMovement : MonoBehaviour
         //vspd = new Vector3(0, directedForce.y, 0);
         //Debug.Log("Propulse");
         PropulseManager(directedForce);
+        SoundManager.Instance.PlaySoundEvent("PlayerPunched");
     }
 
     public void PropulseManager(Vector3 directedForce)

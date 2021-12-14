@@ -38,11 +38,13 @@ public class GoalBehavior : NetworkBehaviour
     private void CmdRedTeamScore()
     {
         matchManager.redScore++;
+        SoundManager.Instance.PlaySoundEvent("LevelRedTeamScores");
     }
     [Command(requiresAuthority = false)]
     private void CmdBlueTeamScore()
     {
         matchManager.blueScore++;
+        SoundManager.Instance.PlaySoundEvent("LevelBlueTeamScores");
     }
 
     [Command(requiresAuthority = false)]
