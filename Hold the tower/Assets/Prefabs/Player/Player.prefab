@@ -182,6 +182,7 @@ MonoBehaviour:
   hudTextPlayer: {fileID: 5169459364437788771}
   scoreTextBlue: {fileID: 5267247992604390232}
   scoreTextRed: {fileID: 6345052149121753362}
+  nextRotationTimeText: {fileID: 7675038353713864145}
   punchHitUi: {fileID: 6551196854206295680}
   punchGetHitUi: {fileID: 133667200708303100}
   FlagObject: {fileID: 9122566769478347446}
@@ -829,7 +830,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &428763650820602970
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1379,6 +1380,81 @@ Transform:
   m_Father: {fileID: 9175226997489984019}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4181508433818979408
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7611880153909909534}
+  - component: {fileID: 2430614066478070006}
+  - component: {fileID: 7892173100772450712}
+  m_Layer: 5
+  m_Name: PunchCooldown
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7611880153909909534
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4181508433818979408}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 572779569669669741}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -184}
+  m_SizeDelta: {x: 39.543, y: 39.543}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2430614066478070006
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4181508433818979408}
+  m_CullTransparentMesh: 1
+--- !u!114 &7892173100772450712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4181508433818979408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 9c56de5ff9b6c4548ae54c3caf60bbb9, type: 3}
+  m_Type: 3
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &4269058998969779500
 GameObject:
   m_ObjectHideFlags: 0
@@ -1920,7 +1996,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6154896342665932412
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2247,6 +2323,7 @@ RectTransform:
   - {fileID: 428763650820602970}
   - {fileID: 8661965240810662152}
   - {fileID: 4593784188494254321}
+  - {fileID: 7611880153909909534}
   m_Father: {fileID: 7456886662093332267}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2729,7 +2806,7 @@ GameObject:
   - component: {fileID: 2069245207254087991}
   - component: {fileID: 3506127499282245377}
   m_Layer: 5
-  m_Name: Image
+  m_Name: FlagDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2752,7 +2829,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 1995, y: 1217}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2069245207254087991
 CanvasRenderer:
@@ -2782,7 +2859,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: a34603532992d834c9b0adc305e0f007, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

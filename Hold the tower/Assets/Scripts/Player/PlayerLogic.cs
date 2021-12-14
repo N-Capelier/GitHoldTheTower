@@ -32,6 +32,7 @@ public class PlayerLogic : NetworkBehaviour
     private SmoothSyncMirror selfSmoothSync;
 
     private MatchManager matchManager;
+    private LevelTransition levelTransition;
 
     [SerializeField]
     public RectTransform punchChargeDisplay;
@@ -49,6 +50,8 @@ public class PlayerLogic : NetworkBehaviour
     private Text scoreTextBlue;
     [SerializeField]
     private Text scoreTextRed;
+    [SerializeField]
+    private Text nextRotationTimeText;
     [SerializeField]
     public GameObject punchHitUi;
     [SerializeField]
@@ -97,7 +100,7 @@ public class PlayerLogic : NetworkBehaviour
     void Start()
     {
         matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>(); //Ne pas bouger
-
+        levelTransition = GameObject.Find("GameManager").GetComponent<LevelTransition>();
         if (FlagObject != null)
         {
             FlagObject = GameObject.Find("Flag");
@@ -113,6 +116,8 @@ public class PlayerLogic : NetworkBehaviour
 
     void Update()
     {
+        UpdateNextTransitionTime();
+
         if (hasAuthority && roundStarted)
         {
             fpsView();
@@ -680,7 +685,12 @@ public class PlayerLogic : NetworkBehaviour
     {
         scoreTextRed.text = matchManager.redScore.ToString();
         scoreTextBlue.text = matchManager.blueScore.ToString();
+    }
 
+    private void UpdateNextTransitionTime()
+    {
+        float timerBeforeNextTransition = Mathf.Ceil((float)(levelTransition.timerChange - (NetworkTime.time - levelTransition.networkTime)));
+        nextRotationTimeText.text = timerBeforeNextTransition.ToString();
     }
 
     #endregion
