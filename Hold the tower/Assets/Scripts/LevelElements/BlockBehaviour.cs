@@ -111,17 +111,11 @@ public class BlockBehaviour : MonoBehaviour
 		gameObject.layer = LayerMask.NameToLayer("Default");
 		isAlive = false;
 		boxCollider.enabled = false;
-
-		//start explosion vfx
+		SoundManager.Instance.PlaySoundEvent("LevelBlockDestroyed");
+
 		float _elapsedTime = 0f;
 		float _completion = 0f;
-		while(_elapsedTime < explosionTime)
-		{
-			_elapsedTime += Time.deltaTime;
-			_completion = _elapsedTime / explosionTime;
-			blockMaterial.SetFloat("DissolveValue", Mathf.Lerp(0, 1, _completion));
-			yield return waitForEndOfFrame;
-		}
+		while(_elapsedTime < explosionTime)		{			_elapsedTime += Time.deltaTime;			_completion = _elapsedTime / explosionTime;			blockMaterial.SetFloat("DissolveValue", Mathf.Lerp(0, 1, _completion));			yield return waitForEndOfFrame;		}
 
 		transform.position = new Vector3(transform.position.x, deathZoneY, transform.position.z);
 		yield return waitForEndOfFrame;
