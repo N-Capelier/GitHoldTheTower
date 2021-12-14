@@ -565,7 +565,7 @@ public class PlayerLogic : NetworkBehaviour
     [TargetRpc]
     public void RpcGetPunch(NetworkConnection conn,Vector3 directedForce)
     {
-        
+        StartCoroutine(GetHitUi(1f));
         StartCoroutine(NoControl(selfParams.punchedNoControlTime));
         selfMovement.Propulse(directedForce);
     }
@@ -573,43 +573,53 @@ public class PlayerLogic : NetworkBehaviour
     public void GetPunch(Vector3 directedForce)
     {
         StartCoroutine(NoControl(selfParams.punchedNoControlTime));
+       
         selfMovement.Propulse(directedForce);
     }
 
     public IEnumerator NoControl(float time)
     {
-        punchGetHitUi.SetActive(true);
         isInControl = false;
         yield return new WaitForSeconds(time);
         isInControl = true;
-        punchGetHitUi.SetActive(false);
     }
 
-    public IEnumerable GetHitUi(float timelife)
+    public IEnumerator GetHitUi(float timelife)
     {
         punchGetHitUi.SetActive(true);
         Color temp = punchGetHitUi.GetComponent<Image>().color;
-        float time = Time.time;
-        while(Time.time < time + timelife)
+        temp.a = 1;
+        float time = 0;
+        while(time < timelife)
         {
-            temp.a -= 0.1f*timelife/ timelife;
+            Debug.Log(time);
+            time += Time.deltaTime;
+            temp.a = 1-time;
             punchGetHitUi.GetComponent<Image>().color = temp;
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
+        punchGetHitUi.SetActive(false);
         yield return null;
     }
 
-    public IEnumerator HitUi(float timelife)
+    public void StartHitUi(float timelife)
     {
-        punchHitUi.SetActive(true);
-        float time = 0;
-        while (time < timelife)
+        StartCoroutine(HitUi(timelife));
+    }
+
+    private IEnumerator HitUi(float timelife)
+    {
+        if (hasAuthority)
         {
-            time += Time.deltaTime;
-            Debug.Log(time);
-            yield return new WaitForFixedUpdate();
+            punchHitUi.SetActive(true);
+            float time = 0;
+            while (time < timelife)
+            {
+                time += Time.deltaTime;
+                 yield return new WaitForEndOfFrame();
+            }
+            punchHitUi.SetActive(false);
         }
-        punchHitUi.SetActive(false);
         yield return null;
     }
     #endregion
