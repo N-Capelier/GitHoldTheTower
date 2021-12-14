@@ -109,6 +109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 4468554095973789624}
+  meshRenderer: {fileID: 137992972706850449}
   moveDuration: 1
   ownVelo: {x: 0, y: 0, z: 0}
   isDestroyable: 0
