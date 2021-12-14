@@ -45,7 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blocks: []
-  terrain: {fileID: 0}
+  terrains: []
+  activeTerrain: {fileID: 0}
+  buttonActivationEffectPrefab: {fileID: 3899629167079348300, guid: a0241f610ceae00429c432a8fdcac90d, type: 3}
 --- !u!1 &6999395385916053326
 GameObject:
   m_ObjectHideFlags: 0
