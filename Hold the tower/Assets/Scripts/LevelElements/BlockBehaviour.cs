@@ -19,6 +19,7 @@ public class BlockBehaviour : MonoBehaviour
 
 	[Header("Destruction")]
 	//Explosion
+	public bool isDestroyable = false;
 	[SerializeField] [Range(0f, 5f)] float timeBeforeExplosion = 2f;
 	[SerializeField] [Range(0f, 5f)] float explosionTime = 2f;
 	[SerializeField] float deathZoneY = -100f;
