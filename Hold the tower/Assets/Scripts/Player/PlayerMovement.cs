@@ -375,6 +375,7 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator AttackManage(float ratio) //Coroutine g�rant le mouvement d'attaque
     {
+        StartCoroutine(TimerAttack());
         selfAttackCollider.SetActive(true);
         //StopMovement(); ////////////////////////////////////////////////////////////////////////////// Check merge conflict ///////////////////////////////////////////////////
         selfLogic.CmdAttackCollider(true);
@@ -386,7 +387,7 @@ public class PlayerMovement : MonoBehaviour
         float _time = 0;
         while(_time <selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time && !stopPunchFlag)
         {
-            selfRbd.velocity = directionAttack * selfParams.velocityCurve.Evaluate(_time) * Time.fixedDeltaTime * ratio * selfParams.punchBaseSpeed;
+            selfRbd.velocity = directionAttack * selfParams.velocityCurve.Evaluate(_time) * Time.fixedDeltaTime * selfParams.punchBaseSpeed;
             _time += Time.deltaTime;
             //ResetVerticalVelocity();
             yield return waitForFixedUpdate;
@@ -394,7 +395,6 @@ public class PlayerMovement : MonoBehaviour
         stopPunchFlag = false;
         //float attackTimeStamp = Time.time;
 
-        StartCoroutine(TimerAttack());
 
         isAttackInCooldown = true;
         selfAttackCollider.SetActive(false);
@@ -410,7 +410,13 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator TimerAttack()
     {
-        yield return new WaitForSeconds(selfParams.punchCooldown);
+        float timerPunchCD = 0;
+        while(timerPunchCD < selfParams.punchCooldown)
+        {
+            timerPunchCD += Time.deltaTime;
+            selfLogic.UpdatePunchCooldown(timerPunchCD);
+            yield return new WaitForEndOfFrame();
+        }
         isAttackInCooldown = false;
     }
 
