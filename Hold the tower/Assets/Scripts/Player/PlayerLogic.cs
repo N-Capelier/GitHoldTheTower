@@ -105,6 +105,7 @@ public class PlayerLogic : NetworkBehaviour
 
     void Start()
     {
+        Debug.Log("Start");
         matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>(); //Ne pas bouger
         levelTransition = GameObject.Find("GameManager").GetComponent<LevelTransition>();
         if (FlagObject != null)

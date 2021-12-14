@@ -313,7 +313,7 @@ namespace Mirror
                     Debug.LogWarning($"Unknown message id: {msgType}. This can happen if no handler was registered for this message.");
                     // simply return false. caller is responsible for disconnecting.
                     //connection.Disconnect();
-                    return false;
+                    return true; //NEED TO BE FIX LATER
                 }
             }
             else

@@ -190,7 +190,7 @@ namespace Mirror
         {
             if (!NetworkServer.active)
             {
-                Debug.LogError($"TargetRPC {rpcName} called when server not active");
+                Debug.Log($"TargetRPC {rpcName} called when server not active"); //A CHANGER
                 return;
             }
 
