@@ -14,7 +14,13 @@ public class SoundManager : Singleton<SoundManager>
 
     public GameObject emptyGameObject;
 
-	private void Awake()
+    public SoundReference actualMusic;
+
+    public AudioSource MusicSource1;
+
+    public AudioSource MusicSource2;
+
+    private void Awake()
 	{
         CreateSingleton(true);
 	}
@@ -41,6 +47,31 @@ public class SoundManager : Singleton<SoundManager>
 
         //SoundReference soundRef PlaySoundEvent(0, emptyGameObject);
     }
+
+    public void PlayMusic(SoundEvent thisEvent)
+    {
+        if (MusicSource1.clip != null)
+        {
+            MusicSource1.Stop();
+        }
+
+        MusicSource1.clip = thisEvent.sounds[0].clip;
+
+        MusicSource1.volume = thisEvent.sounds[0].volume;
+
+        MusicSource1.Play();
+
+    }
+
+    public void StopMusic(SoundEvent thisEvent)
+    {
+        MusicSource1.Stop();
+
+        MusicSource1.clip = null;
+
+    }
+
+
 
     public SoundReference PlaySoundEvent(SoundEvent thisEvent)
     {
