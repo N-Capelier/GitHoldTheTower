@@ -39,7 +39,7 @@ public class MenuManager : MonoBehaviour
 		networkAuthenticator.lobbyPassword = passwordInputText.text;
 		networkManager.SetGameScene(_sceneName);
 
-		changeMenu();
+		ChangeMenu();
 		isHost = true;
 		networkManager.StartHost();
 	}
@@ -50,14 +50,14 @@ public class MenuManager : MonoBehaviour
 		networkAuthenticator.lobbyPseudo = usernameInputText.text;
 		networkAuthenticator.lobbyPassword = passwordInputText.text;
 
-		changeMenu();
+		ChangeMenu();
 		networkManager.StartClient();
 		
 	}
 
 	public void OnPressedLeave()
 	{
-		changeMenu();
+		ChangeMenu();
 		if (isHost)
 		{
 			networkManager.StopHost();
@@ -72,7 +72,7 @@ public class MenuManager : MonoBehaviour
 
 	#endregion
 
-	public void changeMenu()
+	public void ChangeMenu()
 	{
 		menuObject.SetActive(!menuObject.activeSelf);
 		lobbyObject.SetActive(!lobbyObject.activeSelf);

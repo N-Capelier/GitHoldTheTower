@@ -10,6 +10,8 @@ using Smooth;
 
 public class PlayerLogic : NetworkBehaviour
 {
+    private WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
+
     [SerializeField]
     private ScriptableParamsPlayer selfParams;
     [SerializeField]
@@ -47,6 +49,10 @@ public class PlayerLogic : NetworkBehaviour
     private Text scoreTextBlue;
     [SerializeField]
     private Text scoreTextRed;
+    [SerializeField]
+    public GameObject punchHitUi;
+    [SerializeField]
+    private GameObject punchGetHitUi;
 
     [SerializeField]
     private GameObject FlagObject;
@@ -112,6 +118,12 @@ public class PlayerLogic : NetworkBehaviour
             fpsView();
             VerticalMovement();
             HorizontalMovement();
+
+            //Respawn player
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                RpcForceRespawn(3f);
+            }
         }
         ShowFlagToAllPlayer();
     }
@@ -379,6 +391,13 @@ public class PlayerLogic : NetworkBehaviour
         playerCollider.isTrigger = isTrigger;
     }
 
+    [Command]
+    public void RpcForceRespawn(float maxTimer)
+    {
+        NetworkConnection conn = null;
+        RpcRespawn(conn, maxTimer);
+    }
+
     [TargetRpc]
     public void RpcRespawn(NetworkConnection conn, float maxTimer)
     {
@@ -442,7 +461,6 @@ public class PlayerLogic : NetworkBehaviour
 
     public IEnumerator GoalMessageManager(string text)
     {
-        
         hudTextPlayer.gameObject.SetActive(true);
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
@@ -547,6 +565,7 @@ public class PlayerLogic : NetworkBehaviour
     [TargetRpc]
     public void RpcGetPunch(NetworkConnection conn,Vector3 directedForce)
     {
+        
         StartCoroutine(NoControl(selfParams.punchedNoControlTime));
         selfMovement.Propulse(directedForce);
     }
@@ -559,9 +578,39 @@ public class PlayerLogic : NetworkBehaviour
 
     public IEnumerator NoControl(float time)
     {
+        punchGetHitUi.SetActive(true);
         isInControl = false;
         yield return new WaitForSeconds(time);
         isInControl = true;
+        punchGetHitUi.SetActive(false);
+    }
+
+    public IEnumerable GetHitUi(float timelife)
+    {
+        punchGetHitUi.SetActive(true);
+        Color temp = punchGetHitUi.GetComponent<Image>().color;
+        float time = Time.time;
+        while(Time.time < time + timelife)
+        {
+            temp.a -= 0.1f*timelife/ timelife;
+            punchGetHitUi.GetComponent<Image>().color = temp;
+            yield return new WaitForFixedUpdate();
+        }
+        yield return null;
+    }
+
+    public IEnumerator HitUi(float timelife)
+    {
+        punchHitUi.SetActive(true);
+        float time = 0;
+        while (time < timelife)
+        {
+            time += Time.deltaTime;
+            Debug.Log(time);
+            yield return new WaitForFixedUpdate();
+        }
+        punchHitUi.SetActive(false);
+        yield return null;
     }
     #endregion
 
@@ -623,6 +672,7 @@ public class PlayerLogic : NetworkBehaviour
         scoreTextBlue.text = matchManager.blueScore.ToString();
 
     }
+
     #endregion
 }
 
