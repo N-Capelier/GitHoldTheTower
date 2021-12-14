@@ -4318,6 +4318,7 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 636420859277789967, guid: cc1145e4adf84084aabc6663ccb0cfd1, type: 3}
   - {fileID: 334883179893610998, guid: 3eb076c26c5ff9b438317d5832fb1db5, type: 3}
+  - {fileID: 4294928102648936705, guid: 6b866cb14215b244d8ab1ca4c7ac1be9, type: 3}
   lobbyPlayer: {fileID: 636420859277789967, guid: cc1145e4adf84084aabc6663ccb0cfd1, type: 3}
   Player: {fileID: 334883179893610998, guid: 3eb076c26c5ff9b438317d5832fb1db5, type: 3}
   MenuManagerObject: {fileID: 2088129841}
