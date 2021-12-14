@@ -46,8 +46,8 @@ public class BlockBehaviour : MonoBehaviour
 		beforeExplosionTimeWait = new WaitForSeconds(timeBeforeExplosion);
 		explosionTimeWait = new WaitForSeconds(explosionTime);
 		waitForEndOfFrame = new WaitForEndOfFrame();
-		if(isDestroyable)
-		{
+		if(isDestroyable)
+		{
 			blockMaterial = meshRenderer.material;
 		}
 	}
@@ -63,10 +63,10 @@ public class BlockBehaviour : MonoBehaviour
 
 	public void SetNextTerrainPosition()
 	{
-		if(isDestroyable)
-		{
-			blockMaterial.SetFloat("DissolveValue", 0);
-			gameObject.layer = LayerMask.NameToLayer("Outlined");
+		if(isDestroyable)
+		{
+			blockMaterial.SetFloat("DissolveValue", 0);
+			gameObject.layer = LayerMask.NameToLayer("Outlined");
 		}
 		isAlive = true;
 		boxCollider.enabled = true;
@@ -110,27 +110,28 @@ public class BlockBehaviour : MonoBehaviour
 	{
 		gameObject.layer = LayerMask.NameToLayer("Default");
 		isAlive = false;
-		boxCollider.enabled = false;
-
-		//start explosion vfx
+		boxCollider.enabled = false;
+
+		//start explosion vfx
 		float _elapsedTime = 0f;
 		float _completion = 0f;
-		while(_elapsedTime < explosionTime)
-		{
-			_elapsedTime += Time.deltaTime;
-			_completion = _elapsedTime / explosionTime;
-			blockMaterial.SetFloat("DissolveValue", Mathf.Lerp(0, 1, _completion));
-			yield return waitForEndOfFrame;
+		while(_elapsedTime < explosionTime)
+		{
+			_elapsedTime += Time.deltaTime;
+			_completion = _elapsedTime / explosionTime;
+			blockMaterial.SetFloat("DissolveValue", Mathf.Lerp(0, 1, _completion));
+			yield return waitForEndOfFrame;
 		}
 
 		transform.position = new Vector3(transform.position.x, deathZoneY, transform.position.z);
 		yield return waitForEndOfFrame;
 	}
 
-	public void StartButtonActivationEffect()
-    {
-		// JB !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! c'est à toi !
-		GameObject effect = Instantiate(ThemeManager.Instance.buttonActivationEffectPrefab, transform);
-		effect.transform.localScale = new Vector3(transform.localScale.x * 2 + 0.3f, transform.localScale.y * 2 + 2, transform.localScale.z * 2 + 0.3f);
+	public void StartButtonActivationEffect()
+    {
+		// JB !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! c'est ï¿½ toi !
+		GameObject effect = Instantiate(ThemeManager.Instance.buttonActivationEffectPrefab, transform);
+		SoundManager.Instance.PlaySoundEvent("LevelButtonActivated");
+		effect.transform.localScale = new Vector3(transform.localScale.x * 2 + 0.3f, transform.localScale.y * 2 + 2, transform.localScale.z * 2 + 0.3f);
 	}
 }

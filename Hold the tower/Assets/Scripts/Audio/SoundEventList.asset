@@ -23,6 +23,7 @@ MonoBehaviour:
     isLocalized: 1
     isRandom: 0
     isLoop: 0
+    isMusic: 0
   - name: PlayerFootstep
     ID: 1
     sounds:
@@ -33,6 +34,7 @@ MonoBehaviour:
     isLocalized: 1
     isRandom: 0
     isLoop: 1
+    isMusic: 0
   - name: PlayerJump
     ID: 2
     sounds:
@@ -43,6 +45,7 @@ MonoBehaviour:
     isLocalized: 1
     isRandom: 0
     isLoop: 0
+    isMusic: 0
   - name: PlayerJumpOff
     ID: 3
     sounds:
@@ -53,6 +56,7 @@ MonoBehaviour:
     isLocalized: 1
     isRandom: 0
     isLoop: 0
+    isMusic: 0
   - name: PlayerPunchCharge
     ID: 4
     sounds:
@@ -63,6 +67,7 @@ MonoBehaviour:
     isLocalized: 1
     isRandom: 0
     isLoop: 0
+    isMusic: 0
   - name: PlayerPunch
     ID: 5
     sounds:
@@ -71,103 +76,168 @@ MonoBehaviour:
       clip: {fileID: 8300000, guid: ecc60e6ac6344b043820e1118d68a4ac, type: 3}
       volume: 1
     - name: NullSound
-      ID: 5
+      ID: 6
       clip: {fileID: 8300000, guid: ae5dd80791347654e9f492666f4ec23e, type: 3}
       volume: 1
     - name: NullSound
-      ID: 5
+      ID: 7
       clip: {fileID: 8300000, guid: 090ddad5feb75fb4b9cba035e0b78923, type: 3}
       volume: 1
     isLocalized: 1
     isRandom: 1
     isLoop: 0
+    isMusic: 0
   - name: PlayerOverdriveTaken
     ID: 6
     sounds:
     - name: PlayerOverdriveTaken
-      ID: 7
+      ID: 8
       clip: {fileID: 8300000, guid: 52e7fbddbb3c94d4aa894e53821f830e, type: 3}
       volume: 1
     isLocalized: 1
     isRandom: 0
     isLoop: 0
+    isMusic: 0
   - name: PlayerOverdriveLoop
     ID: 7
     sounds:
     - name: NullSound
-      ID: 7
+      ID: 9
       clip: {fileID: 8300000, guid: ec60d5946c7a6eb4886183169a450268, type: 3}
       volume: 1
     isLocalized: 1
     isRandom: 0
     isLoop: 0
+    isMusic: 0
   - name: LevelOverdriveTaken
     ID: 8
     sounds:
     - name: LevelOverdriveTaken
-      ID: 7
+      ID: 10
       clip: {fileID: 8300000, guid: 940a4bee4d9af7b42bb87ec225c9c863, type: 3}
       volume: 1
     isLocalized: 1
     isRandom: 0
     isLoop: 0
+    isMusic: 0
   - name: LevelOverdriveDroped
     ID: 9
     sounds:
     - name: LevelOverdriveDroped
-      ID: 7
+      ID: 11
       clip: {fileID: 8300000, guid: b4511d19390af964fa2b0325df0f2c1c, type: 3}
       volume: 1
     isLocalized: 1
     isRandom: 0
     isLoop: 0
+    isMusic: 0
   - name: LevelEvolvingAnoucement
     ID: 10
     sounds:
     - name: LevelEvolvingAnoucement
-      ID: 7
-      clip: {fileID: 8300000, guid: 6a558e8bc118ca345aad374de302c3ee, type: 3}
+      ID: 12
+      clip: {fileID: 8300000, guid: cb8b17ce0dbb4be47a883a57698f29c8, type: 3}
       volume: 1
     isLocalized: 1
     isRandom: 0
     isLoop: 0
+    isMusic: 0
   - name: LevelEvolvingAlarm
     ID: 11
     sounds:
     - name: LevelEvolvingAlarm
-      ID: 7
+      ID: 13
       clip: {fileID: 8300000, guid: f81f3dd7af59596498404ce449b1d36a, type: 3}
       volume: 1
     isLocalized: 1
     isRandom: 0
     isLoop: 0
+    isMusic: 0
   - name: LevelEvolvingSound
     ID: 12
     sounds:
     - name: LevelEvolvingSound
-      ID: 7
+      ID: 14
       clip: {fileID: 8300000, guid: 5a90b787c576cd048ac816efd3475f2d, type: 3}
       volume: 1
     isLocalized: 1
     isRandom: 0
     isLoop: 0
+    isMusic: 0
   - name: LevelBlueTeamScores
-    ID: 12
+    ID: 13
     sounds:
     - name: LevelBlueTeamScores
-      ID: 7
+      ID: 15
       clip: {fileID: 8300000, guid: efdeec11b39ecf241bd4481ad5fcf9d3, type: 3}
       volume: 1
     isLocalized: 1
     isRandom: 0
     isLoop: 0
+    isMusic: 0
   - name: LevelRedTeamScores
-    ID: 12
+    ID: 14
     sounds:
     - name: LevelRedTeamScores
-      ID: 7
+      ID: 16
       clip: {fileID: 8300000, guid: 43f0454de0bbcef4d8aa1a1bd54813b3, type: 3}
       volume: 1
     isLocalized: 1
     isRandom: 0
     isLoop: 0
+    isMusic: 0
+  - name: PlayerPunched
+    ID: 15
+    sounds:
+    - name: PlayerPunched
+      ID: 17
+      clip: {fileID: 8300000, guid: baf3e846f64aedc40aeb49bf35053520, type: 3}
+      volume: 1
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 0
+    isMusic: 0
+  - name: PlayerPunchImpact
+    ID: 16
+    sounds:
+    - name: PlayerPunchImpact
+      ID: 18
+      clip: {fileID: 8300000, guid: 73b2df4527ceb484296fb85e083a49ab, type: 3}
+      volume: 1
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 0
+    isMusic: 0
+  - name: LevelBlockDestroyed
+    ID: 17
+    sounds:
+    - name: LevelBlockDestroyed
+      ID: 19
+      clip: {fileID: 8300000, guid: a2a97b97216dab34795e08e68740bf68, type: 3}
+      volume: 1
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 0
+    isMusic: 0
+  - name: LevelButtonActivated
+    ID: 18
+    sounds:
+    - name: LevelButtonActivated
+      ID: 20
+      clip: {fileID: 8300000, guid: 3ea3def82f4bbe743a0a6ccc4e1e3b40, type: 3}
+      volume: 1
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 0
+    isMusic: 0
+  - name: GameMusic
+    ID: 19
+    sounds:
+    - name: LevelRedTeamScores
+      ID: 21
+      clip: {fileID: 8300000, guid: 8e0f04b12fabe7542ace9f468ff041e6, type: 3}
+      volume: 1
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 1
+    isMusic: 1

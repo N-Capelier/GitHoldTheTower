@@ -424,6 +424,7 @@ public class PlayerLogic : NetworkBehaviour
 
         if (hasFlag)
         {
+            SoundManager.Instance.PlaySoundEvent("LevelOverdriveDroped");
             CmdDropFlag();
             CmdShowFlagInGame();
         }
@@ -544,12 +545,13 @@ public class PlayerLogic : NetworkBehaviour
     public void CmdGetFlag()
     {
         hasFlag = true;
+        SoundManager.Instance.PlaySoundEvent("LevelOverdriveTaken");
     }
 
     [Command(requiresAuthority = false)]
     public void CmdDropFlag()
     {
-        hasFlag = false;
+        hasFlag = false;        
     }
 
     [Command(requiresAuthority = false)]
