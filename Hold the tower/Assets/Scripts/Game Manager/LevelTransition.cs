@@ -7,11 +7,11 @@ public class LevelTransition : NetworkBehaviour
     [SerializeField]
     private GameObject ThemeObject;
 
-    private double networkTime = 0;
+    [HideInInspector]
+    public double networkTime = 0;
     private int niveau = 0;
 
-    [SerializeField]
-    private double timerChange = 5d;
+    public double timerChange = 5d;
 
     void OnChangeTerrain()
     {
