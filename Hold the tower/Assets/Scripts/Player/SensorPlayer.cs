@@ -43,35 +43,28 @@ public class SensorPlayer : MonoBehaviour
 		{
             BlockBehaviour block = other.GetComponent<BlockBehaviour>();
 
-            if(!block.isButton)
+            if(block.isButton)
 			{
-
-                if(selfMovement.isPerfectTiming)
-
+                if(block.buttonActiveTerrainIndex == block.loadedTerrainID)
 				{
-
-                    GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdExplode(block.blockID);
-
-
-
+                    GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdSwitchArea(block.blockID);
                 }
-
-                else
-
-				{
-
-                    GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(block.blockID);
-
-                }
-
-            }
-            else if(block.buttonActiveTerrainIndex == block.loadedTerrainID)
-			{
-				GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdSwitchArea(block.blockID);
-
+				return;
 			}
+
+            if(block.isDestroyable)
+			{
+                if (selfMovement.isPerfectTiming)
+                {
+                    GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdExplode(block.blockID);
+                }
+                else
+                {
+                    GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(block.blockID);
+                }
+            }
 		}
-    }
+	}
 
 
 }
