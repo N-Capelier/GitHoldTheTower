@@ -304,7 +304,7 @@ public class MyNewNetworkManager : NetworkManager
     public override void OnStopClient() {
         if (SceneManager.GetActiveScene().name == "LobbyScene" && MenuManagerObject.GetComponent<MenuManager>().lobbyObject.activeSelf)
         {
-            MenuManagerObject.GetComponent<MenuManager>().changeMenu();
+            MenuManagerObject.GetComponent<MenuManager>().ChangeMenu();
         }
     }
 
