@@ -22,7 +22,20 @@ public class SensorGround : MonoBehaviour
 
     private GameObject target;
     private Vector3 offset;
+    private BlockBehaviour contactGround;
 
+    public void Update()
+    {
+        if (contactGround != null && !contactGround.boxCollider.enabled)
+        {
+            nbCollide--;
+            if (nbCollide == 0)
+            {
+                contactGround = null;
+                Uncollide.Invoke();
+            }
+        }
+    }
 
     // Start is called before the first frame update
     private void OnTriggerEnter(Collider other)
@@ -32,6 +45,7 @@ public class SensorGround : MonoBehaviour
             nbCollide++;
             if (nbCollide == 1)
             {
+                contactGround = other.GetComponent<BlockBehaviour>();
                 collide.Invoke();
             }
 
@@ -47,6 +61,7 @@ public class SensorGround : MonoBehaviour
             nbCollide--;
             if (nbCollide == 0)
             {
+                contactGround = null;
                 Uncollide.Invoke();
                 target = null;
             }

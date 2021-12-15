@@ -5,7 +5,7 @@ using Mirror;
 public class BlockBehaviour : MonoBehaviour
 {
 	[Header("Components")]
-	[SerializeField] BoxCollider boxCollider;
+	[SerializeField] public BoxCollider boxCollider;
 	[SerializeField] MeshRenderer meshRenderer;
 	Material blockMaterial;
 
@@ -48,6 +48,7 @@ public class BlockBehaviour : MonoBehaviour
 		waitForEndOfFrame = new WaitForEndOfFrame();
 		if(isDestroyable)		{			blockMaterial = meshRenderer.material;
 		}
+		isAlive = true;
 	}
 
 	private void FixedUpdate()
