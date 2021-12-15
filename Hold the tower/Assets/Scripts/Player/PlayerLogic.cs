@@ -55,6 +55,8 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     private Text nextRotationTimeText;
     [SerializeField]
+    public Image teamColorIndicator;
+    [SerializeField]
     public GameObject punchHitUi;
     [SerializeField]
     private GameObject punchGetHitUi;
@@ -123,6 +125,15 @@ public class PlayerLogic : NetworkBehaviour
         {
             selfCamera.gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
+
+            if (teamName == LobbyPlayerLogic.TeamName.Blue)
+            {
+                teamColorIndicator.color = Color.blue;
+            }
+            else
+            {
+                teamColorIndicator.color = Color.red;
+            }
         }
 
         if(teamName == LobbyPlayerLogic.TeamName.Blue)
