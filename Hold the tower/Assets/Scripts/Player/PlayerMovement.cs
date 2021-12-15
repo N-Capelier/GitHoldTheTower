@@ -346,6 +346,7 @@ public class PlayerMovement : MonoBehaviour
         //Si est en dessous du pickTime
         if(time <= selfParams.punchPerfectTiming)
         {
+            isPerfectTiming = false;
             ratio = selfParams.punchSpeedByCharge.Evaluate(time/selfParams.punchMaxChargeTime);
         }
 
@@ -359,6 +360,7 @@ public class PlayerMovement : MonoBehaviour
         //Si sup�rieur au pickTime + treshHold
         if(time > selfParams.punchPerfectTiming + selfParams.punchPerfectTimingTreshold)
         {
+            isPerfectTiming = false;
             ratio = 1;
         }
 
