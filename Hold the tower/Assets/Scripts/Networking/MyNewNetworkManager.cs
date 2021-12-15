@@ -73,14 +73,6 @@ public class MyNewNetworkManager : NetworkManager
 
     #region Start & Stop
 
-    /// <summary>
-    /// Set the frame rate for a headless server.
-    /// <para>Override if you wish to disable the behavior or set your own tick rate.</para>
-    /// </summary>
-    public override void ConfigureServerFrameRate()
-    {
-        base.ConfigureServerFrameRate();
-    }
 
     /// <summary>
     /// called when quitting the application by closing the window / pressing stop in the editor
@@ -116,11 +108,7 @@ public class MyNewNetworkManager : NetworkManager
     /// </summary>
     /// <param name="sceneName">The name of the new scene.</param>
     public override void OnServerSceneChanged(string sceneName) {
-        if (sceneName != "LobbyScene")
-        {
-            SpawnPlayerPosition = GameObject.FindGameObjectsWithTag("Spawner");
-
-        }
+        
     }
 
     /// <summary>
@@ -218,7 +206,6 @@ public class MyNewNetworkManager : NetworkManager
     /// <param name="conn">Connection to the server.</param>
     public override void OnClientConnect(NetworkConnection conn)//Quand le client se connecte envoit un message contenant le pseudo
     {
-        Debug.Log("test");
         base.OnClientConnect(conn);
         Debug.Log(GetComponent<MyNewNetworkAuthenticator>().lobbyPseudo);
         MyNewNetworkAuthenticator.ClientConnectionMessage clientMsg = new MyNewNetworkAuthenticator.ClientConnectionMessage 
@@ -327,7 +314,7 @@ public class MyNewNetworkManager : NetworkManager
 
     public void CreatePlayer(NetworkConnection conn, MyNewNetworkAuthenticator.CreateClientPlayer msg)
     {
-
+        Debug.Log(conn);
         /*GameObject obj = Instantiate(Player);
 
         obj.GetComponent<PlayerLogic>().teamName = msg.teamName;
