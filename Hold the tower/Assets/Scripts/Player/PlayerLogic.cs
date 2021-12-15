@@ -178,6 +178,12 @@ public class PlayerLogic : NetworkBehaviour
         float mouseX = Input.GetAxis("Mouse X") * selfParams.mouseSensivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * selfParams.mouseSensivity * Time.deltaTime;
 
+        #if UNITY_EDITOR
+        mouseX = Input.GetAxis("Mouse X") * selfParams.mouseSensivity * 4f * Time.deltaTime;
+        mouseY = Input.GetAxis("Mouse Y") * selfParams.mouseSensivity * 4f * Time.deltaTime;
+        #endif
+
+
         yRotation += mouseX;
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90);
