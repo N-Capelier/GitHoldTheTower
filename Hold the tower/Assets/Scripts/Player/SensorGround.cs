@@ -23,29 +23,60 @@ public class SensorGround : MonoBehaviour
     private GameObject target;
     private Vector3 offset;
     private BlockBehaviour contactGround;
+    private BoxCollider bcollider;
+    private Collider[] grounds;
+    private bool isOnGround;
+
+    private void Start()
+    {
+        bcollider = GetComponent<BoxCollider>();
+    }
 
     public void Update()
     {
+        /*
         if (contactGround != null && !contactGround.boxCollider.enabled)
         {
             nbCollide--;
+            Debug.Log("destroy not on ground second one");
             if (nbCollide == 0)
             {
+                Debug.Log("destroy not on ground");
                 contactGround = null;
                 Uncollide.Invoke();
             }
         }
-    }
+        */
 
+        grounds = Physics.OverlapBox(bcollider.bounds.center, bcollider.bounds.extents, transform.rotation, LayerMask.GetMask("Outlined"));
+        if(grounds.Length > 0)
+        {
+            if(!isOnGround)
+            {
+                collide.Invoke();
+                isOnGround = true;
+            }
+        }
+        else
+        {
+            if (isOnGround)
+            {
+                Uncollide.Invoke();
+                isOnGround = false;
+            }
+        }
+
+    }
+    /*
     // Start is called before the first frame update
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Wall"))
         {
             nbCollide++;
+            contactGround = other.GetComponent<BlockBehaviour>();
             if (nbCollide == 1)
             {
-                contactGround = other.GetComponent<BlockBehaviour>();
                 collide.Invoke();
             }
 
@@ -70,7 +101,7 @@ public class SensorGround : MonoBehaviour
         }
 
     }
-
+    */
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Wall"))

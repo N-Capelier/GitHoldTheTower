@@ -12,8 +12,18 @@ public class SensorCollider : MonoBehaviour
 
     private int nbCollide = 0;
 
+    private BoxCollider bcollider;
+    private Collider[] walls;
+    private bool isOnWall;
+
+    private void Start()
+    {
+        bcollider = GetComponent<BoxCollider>();
+    }
+
     public void Update()
     {
+        /*
         if(contactWall != null && !contactWall.boxCollider.enabled)
         {
             nbCollide--;
@@ -23,9 +33,28 @@ public class SensorCollider : MonoBehaviour
                 contactWall = null;
                 Uncollide.Invoke();
             }
+        }*/
+
+        walls = Physics.OverlapBox(bcollider.bounds.center, bcollider.bounds.extents, transform.rotation, LayerMask.GetMask("Outlined"));
+        if (walls.Length > 0)
+        {
+            if (!isOnWall)
+            {
+                collide.Invoke();
+                isOnWall = true;
+            }
+        }
+        else
+        {
+            if (isOnWall)
+            {
+                Uncollide.Invoke();
+                isOnWall = false;
+            }
         }
     }
 
+    /*
     // Start is called before the first frame update
     private void OnTriggerEnter(Collider other)
     {
@@ -68,5 +97,5 @@ public class SensorCollider : MonoBehaviour
         }
 
     }
-
+    */
 }
