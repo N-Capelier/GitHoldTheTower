@@ -46,9 +46,7 @@ public class BlockBehaviour : MonoBehaviour
 		beforeExplosionTimeWait = new WaitForSeconds(timeBeforeExplosion);
 		explosionTimeWait = new WaitForSeconds(explosionTime);
 		waitForEndOfFrame = new WaitForEndOfFrame();
-		if(isDestroyable)
-		{
-			blockMaterial = meshRenderer.material;
+		if(isDestroyable)		{			blockMaterial = meshRenderer.material;
 		}
 	}
 
@@ -63,11 +61,7 @@ public class BlockBehaviour : MonoBehaviour
 
 	public void SetNextTerrainPosition()
 	{
-		if(isDestroyable)
-		{
-			blockMaterial.SetFloat("DissolveValue", 0);
-			gameObject.layer = LayerMask.NameToLayer("Outlined");
-		}
+		if(isDestroyable)		{			blockMaterial.SetFloat("DissolveValue", 0);			gameObject.layer = LayerMask.NameToLayer("Outlined");		}
 		isAlive = true;
 		boxCollider.enabled = true;
 		startPosition = transform.position;

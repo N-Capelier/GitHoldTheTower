@@ -1,7 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 
 public enum OneTwoThree
 {
@@ -62,11 +62,14 @@ public class LevelEditorWindow : EditorWindow
 
 	static int currentTab = 0;
 	static int registeredTab = 0;
-	string[] toolbarTabsNames = { "Theme Creator", "Terrain Creator", "Area Creator", "Terrain Editor" };
+	string[] toolbarTabsNames = { "Theme Creator", "Terrain Creator", "Terrain Editor", "Destroyables Editor" };
 
 	ThemeManager themeManager;
 	string newThemeName;
 	string newTerrainName;
+	Material newBlockMaterial1;
+	Material newBlockMaterial2;
+	Material newBlockMaterial3;
 
 	OneTwoThree areaIndex = OneTwoThree.One;
 
@@ -94,14 +97,45 @@ public class LevelEditorWindow : EditorWindow
 			case 1:
 				DisplayTerrainCreatorWindow();
 				break;
+			//case 2:
+			//	DisplayAreaCreatorWindow();
+			//	break;
 			case 2:
-				DisplayAreaCreatorWindow();
+				DisplayTerrainEditorWindow();
 				break;
 			case 3:
-				DisplayTerrainEditorWindow();
+				DisplayDestroyablesEditorWindow();
 				break;
 			default:
 				break;
+		}
+	}
+
+	private void DisplayDestroyablesEditorWindow()
+	{
+		EditorGUILayout.LabelField("Theme Manager:", textStyle);
+		themeManager = (ThemeManager)EditorGUILayout.ObjectField(themeManager, typeof(ThemeManager), true);
+
+		EditorGUILayout.Space(10);
+
+		EditorGUILayout.LabelField("New default material:", textStyle);
+		newBlockMaterial1 = (Material)EditorGUILayout.ObjectField(newBlockMaterial1, typeof(Material), false);
+
+		EditorGUILayout.Space(10);
+
+		EditorGUILayout.LabelField("New blue material:", textStyle);
+		newBlockMaterial2 = (Material)EditorGUILayout.ObjectField(newBlockMaterial2, typeof(Material), false);
+
+		EditorGUILayout.Space(10);
+
+		EditorGUILayout.LabelField("New red material:", textStyle);
+		newBlockMaterial3 = (Material)EditorGUILayout.ObjectField(newBlockMaterial3, typeof(Material), false);
+
+		EditorGUILayout.Space(10);
+
+		if (GUILayout.Button("Change Material for destroyables", buttonStyle))
+		{
+			ChangeMaterials();
 		}
 	}
 
@@ -127,8 +161,33 @@ public class LevelEditorWindow : EditorWindow
 		}
 		else if (GUILayout.Button("Create Theme", buttonStyle))
 		{
-			CreateTheme();
+			ChangeMaterials();
 		}
+	}
+
+	private void ChangeMaterials()
+	{
+		BlockBehaviour[] _blocks = themeManager.GetComponentsInChildren<BlockBehaviour>();
+		foreach(BlockBehaviour _block in _blocks)
+		{
+			if(_block.isDestroyable)
+			{
+				Material _currentBlockMaterial = _block.GetComponent<MeshRenderer>().material;
+				if(_currentBlockMaterial.name.Contains("3"))
+				{
+					_currentBlockMaterial = newBlockMaterial2;
+				}
+				else if(_currentBlockMaterial.name.Contains("2"))
+				{
+					_currentBlockMaterial = newBlockMaterial3;
+				}
+				else
+				{
+					_currentBlockMaterial = newBlockMaterial1;
+				}
+			}
+		}
+		EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
 	}
 
 	void DisplayTerrainCreatorWindow()
