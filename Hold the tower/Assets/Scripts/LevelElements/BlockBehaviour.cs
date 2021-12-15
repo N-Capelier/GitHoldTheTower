@@ -61,8 +61,9 @@ public class BlockBehaviour : MonoBehaviour
 
 	public void SetNextTerrainPosition()
 	{
-		if(isDestroyable)		{			blockMaterial.SetFloat("DissolveValue", 0);			gameObject.layer = LayerMask.NameToLayer("Outlined");		}
-		isAlive = true;
+		if(isDestroyable && !isAlive)		{
+			isAlive = true;
+			blockMaterial.SetFloat("DissolveValue", 0);			gameObject.layer = LayerMask.NameToLayer("Outlined");		}
 		boxCollider.enabled = true;
 		startPosition = transform.position;
 		loadedTerrainID++;
@@ -103,7 +104,6 @@ public class BlockBehaviour : MonoBehaviour
 	public IEnumerator ExplodeCoroutine()
 	{
 		gameObject.layer = LayerMask.NameToLayer("Default");
-		isAlive = false;
 		boxCollider.enabled = false;
 		SoundManager.Instance.PlaySoundEvent("LevelBlockDestroyed");
 
@@ -112,6 +112,7 @@ public class BlockBehaviour : MonoBehaviour
 		while(_elapsedTime < explosionTime)		{			_elapsedTime += Time.deltaTime;			_completion = _elapsedTime / explosionTime;			blockMaterial.SetFloat("DissolveValue", Mathf.Lerp(0, 1, _completion));			yield return waitForEndOfFrame;		}
 
 		transform.position = new Vector3(transform.position.x, deathZoneY, transform.position.z);
+		isAlive = false;
 		yield return waitForEndOfFrame;
 	}
 
