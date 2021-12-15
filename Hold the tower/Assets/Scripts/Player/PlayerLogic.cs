@@ -68,6 +68,11 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     private GameObject FlagInGame;
 
+    [SerializeField]
+    private Material redTeamMaterial;
+    [SerializeField]
+    private Material blueTeamMaterial;
+
     [SyncVar]
     public LobbyPlayerLogic.TeamName teamName;
     [SyncVar]
@@ -118,6 +123,15 @@ public class PlayerLogic : NetworkBehaviour
         {
             selfCamera.gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        if(teamName == LobbyPlayerLogic.TeamName.Blue)
+        {
+            playerCollider.transform.GetComponent<MeshRenderer>().material = blueTeamMaterial;
+        }
+        else
+        {
+            playerCollider.transform.GetComponent<MeshRenderer>().material = redTeamMaterial;
         }
     }
 

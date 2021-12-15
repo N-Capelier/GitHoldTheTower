@@ -191,6 +191,8 @@ MonoBehaviour:
   punchHitEffect: {fileID: 4294928102648936705, guid: 6b866cb14215b244d8ab1ca4c7ac1be9, type: 3}
   FlagObject: {fileID: 9122566769478347446}
   FlagInGame: {fileID: 6498996468193615644}
+  redTeamMaterial: {fileID: 2100000, guid: b724d93edfa7c354cb1e6c4826a5af5f, type: 2}
+  blueTeamMaterial: {fileID: 2100000, guid: 43da0a92a1c334d4b8b76f0939264b01, type: 2}
   teamName: 0
   spawnPosition: 0
   ratioAttack: 0
@@ -1898,7 +1900,6 @@ GameObject:
   - component: {fileID: 2355962031360022469}
   - component: {fileID: 9075025024488250800}
   - component: {fileID: 1194054984403694790}
-  - component: {fileID: 7609236196921408031}
   m_Layer: 0
   m_Name: Flag
   m_TagString: Untagged
@@ -1970,19 +1971,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7609236196921408031
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6498996468193615644}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6551196854206295680
 GameObject:
   m_ObjectHideFlags: 0
