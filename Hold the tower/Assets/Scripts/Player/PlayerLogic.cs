@@ -136,8 +136,12 @@ public class PlayerLogic : NetworkBehaviour
                 teamColorIndicator.color = Color.red;
             }
         }
+        else
+        {
+            selfFirstPersonView.SetActive(false);
+        }
 
-        if(teamName == LobbyPlayerLogic.TeamName.Blue)
+        if (teamName == LobbyPlayerLogic.TeamName.Blue)
         {
             playerCollider.transform.GetComponent<MeshRenderer>().material = blueTeamMaterial;
         }
@@ -145,10 +149,7 @@ public class PlayerLogic : NetworkBehaviour
         {
             playerCollider.transform.GetComponent<MeshRenderer>().material = redTeamMaterial;
         }
-        else
-		{
-            selfFirstPersonView.SetActive(false);
-		}
+
     }
 
     void Update()
