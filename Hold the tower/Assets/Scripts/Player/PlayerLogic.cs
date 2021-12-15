@@ -16,6 +16,7 @@ public class PlayerLogic : NetworkBehaviour
     private ScriptableParamsPlayer selfParams;
     [SerializeField]
     private Transform selfCamera;
+    [SerializeField] GameObject selfFirstPersonView;
     [SerializeField]
     private PlayerMovement selfMovement;
     [SerializeField]
@@ -119,6 +120,10 @@ public class PlayerLogic : NetworkBehaviour
             selfCamera.gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
         }
+        else
+		{
+            selfFirstPersonView.SetActive(false);
+		}
     }
 
     void Update()
