@@ -20,6 +20,7 @@ MonoBehaviour:
   wallMouseInput: 1
   attackMouseInput: 0
   mouseSensivity: 100
+  aimJoystickSensitivity: 200
   runningForce: 100
   maxRunningSpeed: 9
   airControlForce: 55
