@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
+using AnotherFileBrowser.Windows; //Librairy fais par un docteur en informatique indien, pas des lol, il a du devenir fou pour faire cett merde, merci à lui
 
 public class MenuManager : MonoBehaviour
 {
@@ -83,9 +84,17 @@ public class MenuManager : MonoBehaviour
 
 	public void AnalyticsExplorer()
     {
-		string path = EditorUtility.OpenFilePanel("","","");
-		analyticsPath.text = path;
 
-		serverManager.GetComponent<MyNewNetworkManager>().analyticsPath = path;
+		var bp = new BrowserProperties();
+		bp.filter = "txt files (*.txt)|*.txt|All Files (*.*)|*.*";
+		bp.filterIndex = 0;
+
+		new FileBrowser().OpenFileBrowser(bp, path =>
+		{
+			analyticsPath.text = path;
+			serverManager.GetComponent<MyNewNetworkManager>().analyticsPath = path;
+		});
+
+
 	}
 }
