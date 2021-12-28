@@ -25,11 +25,20 @@ public class CustomAnalyticsPositionRenderer : Editor
         serializedObject.Update();
         //Path to get the file
         EditorGUILayout.PropertyField(pathFilePositions);
-        if(GUILayout.Button("Drawn In World"))
+
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Drawn In World"))
         {
             PA_RenderPosition renderPos = (PA_RenderPosition)target;
             renderPos.LoadKeyPositions();
         }
+        if (GUILayout.Button("Load file Position"))
+        {
+            string path = EditorUtility.OpenFilePanel("Load Text positions", "", "txt");
+            pathFilePositions.stringValue = path;
+        }
+        GUILayout.EndHorizontal();
+
         EditorGUILayout.PropertyField(colors);
         //EditorGUILayout.PropertyField(keyPositions);
 

@@ -16,6 +16,18 @@ public class PA_Position : MonoBehaviour
 
     private bool onceInit = true;
 
+    private void Start()
+    {
+        if (GameObject.Find("ServerManager").GetComponent<MyNewNetworkManager>().analyticsPath != string.Empty)
+        {
+            fileToStorePosition = GameObject.Find("ServerManager").GetComponent<MyNewNetworkManager>().analyticsPath;
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
+        
+    }
 
     void InitAnalytics()
     {

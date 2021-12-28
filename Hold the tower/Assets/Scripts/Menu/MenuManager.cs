@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 using TMPro;
 
 public class MenuManager : MonoBehaviour
@@ -13,6 +14,8 @@ public class MenuManager : MonoBehaviour
 	public TextMeshProUGUI usernameInputText, passwordInputText;
 
 	public Text ipInputText;
+
+	public Text analyticsPath;
 
 	private GameObject serverManager;
 	MyNewNetworkManager networkManager;
@@ -76,5 +79,13 @@ public class MenuManager : MonoBehaviour
 	{
 		menuObject.SetActive(!menuObject.activeSelf);
 		lobbyObject.SetActive(!lobbyObject.activeSelf);
+	}
+
+	public void AnalyticsExplorer()
+    {
+		string path = EditorUtility.OpenFilePanel("","","");
+		analyticsPath.text = path;
+
+		serverManager.GetComponent<MyNewNetworkManager>().analyticsPath = path;
 	}
 }

@@ -29,6 +29,9 @@ public class MyNewNetworkManager : NetworkManager
     [SerializeField]
     private string gameScene;
 
+    [HideInInspector]
+    public string analyticsPath;
+
     #region Unity Callbacks
 
     public override void OnValidate()
