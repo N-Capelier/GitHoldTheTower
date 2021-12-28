@@ -116,6 +116,14 @@ public class PlayerLogic : NetworkBehaviour
         Debug.Log("Start");
         matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>(); //Ne pas bouger
         levelTransition = GameObject.Find("GameManager").GetComponent<LevelTransition>();
+
+        //Analytics
+        if(GameObject.Find("Analytics") != null)
+        {
+            GameObject.Find("Analytics").GetComponent<PA_Position>().analyticGameObjectPosition.Add(this.transform);
+        }
+        //
+
         if (FlagObject != null)
         {
             FlagObject = GameObject.Find("Flag");

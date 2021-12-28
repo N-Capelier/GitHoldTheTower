@@ -751,6 +751,7 @@ RectTransform:
   - {fileID: 791356088}
   - {fileID: 770716291}
   - {fileID: 1559181001}
+  - {fileID: 703059039}
   - {fileID: 1379505947}
   m_Father: {fileID: 1729248004}
   m_RootOrder: 2
@@ -1294,6 +1295,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 694736366}
   m_CullTransparentMesh: 1
+--- !u!1 &703059038
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 703059039}
+  m_Layer: 5
+  m_Name: LobbyPosition_4
+  m_TagString: LobbyPosition
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &703059039
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 703059038}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 408179669}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 600, y: 50}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &703733840
 GameObject:
   m_ObjectHideFlags: 0
@@ -3208,7 +3244,7 @@ RectTransform:
   m_Children:
   - {fileID: 1863537999}
   m_Father: {fileID: 408179669}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4319,13 +4355,16 @@ MonoBehaviour:
   - {fileID: 636420859277789967, guid: cc1145e4adf84084aabc6663ccb0cfd1, type: 3}
   - {fileID: 334883179893610998, guid: 3eb076c26c5ff9b438317d5832fb1db5, type: 3}
   - {fileID: 4294928102648936705, guid: 6b866cb14215b244d8ab1ca4c7ac1be9, type: 3}
+  - {fileID: 1809492080181572235, guid: 676773c0c1171664b9f612fa2c33c80f, type: 3}
   lobbyPlayer: {fileID: 636420859277789967, guid: cc1145e4adf84084aabc6663ccb0cfd1, type: 3}
   Player: {fileID: 334883179893610998, guid: 3eb076c26c5ff9b438317d5832fb1db5, type: 3}
+  spectator: {fileID: 1809492080181572235, guid: 676773c0c1171664b9f612fa2c33c80f, type: 3}
   MenuManagerObject: {fileID: 2088129841}
   StartButton: {fileID: 1379505946}
   TextInputIp: {fileID: 0}
   textInputSceneName: {fileID: 0}
   lobbyPlayerServer:
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
