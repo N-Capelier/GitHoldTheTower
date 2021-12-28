@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea2fd072aabdf964d89d2459a9d5ecdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
   fileToStorePosition: 
   timeEachBreak: 0.01
   analyticGameObjectPosition: []

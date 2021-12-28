@@ -33,6 +33,11 @@ public class SpectatorMovement : NetworkBehaviour
     {
         selfTransform = this.transform;
         Cursor.lockState = CursorLockMode.Locked;
+        selfCamera.gameObject.SetActive(false);
+        if (hasAuthority)
+        {
+            selfCamera.gameObject.SetActive(true);
+        }
     }
 
     // Update is called once per frame

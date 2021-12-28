@@ -346,7 +346,6 @@ public class MyNewNetworkManager : NetworkManager
         else //Create Spectator
         {
             GameObject obj = Instantiate(spectator);
-            Debug.Log("SPECTATOR");
             NetworkServer.AddPlayerForConnection(conn, obj);
         }
         
