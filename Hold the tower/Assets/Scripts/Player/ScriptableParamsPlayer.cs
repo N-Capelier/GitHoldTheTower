@@ -41,6 +41,7 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float wallSlideGravity;
     public float wallSlideMaxGravitySpeed;
     public float wallSlideSpeedDampening;
+    public float wallRideSpeed;
 
     [Header("Climb")]
     public float climbHeight = 5f;
