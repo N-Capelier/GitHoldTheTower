@@ -105,9 +105,6 @@ public class QuickPlayWindow : EditorWindow
 
 	void ExitPlayMode()
 	{
-        currentPlayImage = playImage;
-        currentPauseImage = pauseImage;
-
         EditorApplication.playModeStateChanged += OnPlayModeExited;
 
         EditorApplication.ExitPlaymode();
@@ -118,6 +115,9 @@ public class QuickPlayWindow : EditorWindow
         if(_newState == PlayModeStateChange.EnteredEditMode)
 		{
             EditorSceneManager.OpenScene(referenceScenePath);
+
+            currentPlayImage = playImage;
+            currentPauseImage = pauseImage;
 
             EditorApplication.playModeStateChanged -= OnPlayModeExited;
         }
