@@ -235,6 +235,7 @@ MonoBehaviour:
   isAttackReset: 0
   isAttackInCooldown: 0
   directionAttack: {x: 0, y: 0, z: 0}
+  wallSlideDirection: {x: 0, y: 0, z: 0}
 --- !u!114 &3790924781881019435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1236,7 +1237,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3982039265386144874
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2244,6 +2245,11 @@ MonoBehaviour:
   selfCameraTransform: {fileID: 9175226997489984019}
   selfParams: {fileID: 11400000, guid: a24272e5804e7bd4891a2cf20f79574a, type: 2}
   selfTransform: {fileID: 2771112604293887708}
+  playerCamera: {fileID: 0}
+  wallLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  shockwavePrefab: {fileID: 0}
 --- !u!1 &6498996468193615644
 GameObject:
   m_ObjectHideFlags: 0
@@ -2655,7 +2661,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &280822712675716148
 RectTransform:
   m_ObjectHideFlags: 0
