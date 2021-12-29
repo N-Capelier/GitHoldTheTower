@@ -31,6 +31,7 @@ public class MyNewNetworkManager : NetworkManager
 
     [HideInInspector]
     public string analyticsPath;
+    
 
     #region Unity Callbacks
 
