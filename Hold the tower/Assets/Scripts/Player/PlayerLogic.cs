@@ -379,8 +379,13 @@ public class PlayerLogic : NetworkBehaviour
                 if (selfMovement.IsSomethingCollide())
                 {
                     isTouchingWall = true;
+
                     if (Input.GetKey(selfParams.jump))
                     {
+                        if (!isAttachToWall)
+                        {
+                            selfMovement.SetWallSlideDirection();
+                        }
                         isAttachToWall = true;
                         selfMovement.ApplyWallSlideForces();
                     }
@@ -537,9 +542,19 @@ public class PlayerLogic : NetworkBehaviour
             {
                 punchChargeDisplay.gameObject.SetActive(true);
             }
-            ratioAttack = selfMovement.AttackLoad(timeAttack);
-            punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
-            punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
+
+            if(hasFlag)
+            {
+                ratioAttack = 0;
+                punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), 0);
+                punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), 0);
+            }
+            else
+            {
+                ratioAttack = selfMovement.AttackLoad(timeAttack);
+                punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
+                punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
+            }
 
         }
         //Attack lauch

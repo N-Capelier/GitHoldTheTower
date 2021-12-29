@@ -125,17 +125,37 @@ public class PlayerMovement : MonoBehaviour
         //vspd += new Vector3(0, -selfParams.gravity, 0) * Time.deltaTime;
         selfRbd.velocity -= new Vector3(0, selfParams.gravityForce, 0) * Time.deltaTime;
     }
+
+    [HideInInspector] public Vector3 wallSlideDirection;
+
+    public void SetWallSlideDirection()
+    {
+        wallSlideDirection = selfLogic.GetNearbyWallNormal();
+        float wallAngle = Vector3.SignedAngle(Vector3.right, wallSlideDirection, Vector3.up);
+        float lookAngle = Vector3.SignedAngle(Vector3.right, selfLogic.GetHorizontalVector(selfCamera.forward).normalized, Vector3.up);
+        if (Mathf.Abs(GetClampedAngle(lookAngle - GetClampedAngle(wallAngle + 90))) < 90)
+        {
+            wallSlideDirection = new Vector3(Mathf.Cos(GetClampedAngle(wallAngle + 90) * Mathf.Deg2Rad), 0, -Mathf.Sin(GetClampedAngle(wallAngle + 90) * Mathf.Deg2Rad));
+        }
+        else
+        {
+            wallSlideDirection = new Vector3(Mathf.Cos(GetClampedAngle(wallAngle - 90) * Mathf.Deg2Rad), 0, -Mathf.Sin(GetClampedAngle(wallAngle - 90) * Mathf.Deg2Rad));
+        }
+    }
+
     public void ApplyWallSlideForces()
     {
-        selfRbd.velocity -= new Vector3(0, selfParams.wallSlideGravity, 0) * Time.deltaTime;
-        //vspd += new Vector3(0, -selfParams.wallSlideGravity, 0) * Time.deltaTime;
-        if(selfRbd.velocity.y < -selfParams.wallSlideMaxGravitySpeed)
+        //selfRbd.velocity -= new Vector3(0, selfParams.wallSlideGravity, 0) * Time.deltaTime;
+
+        selfRbd.velocity = wallSlideDirection * selfParams.wallRideSpeed;
+
+        /*if (selfRbd.velocity.y < -selfParams.wallSlideMaxGravitySpeed)
         {
             selfRbd.velocity = new Vector3(0, -selfParams.wallSlideMaxGravitySpeed, 0);
         }
         float verticalVelocity = selfRbd.velocity.y;
         selfRbd.velocity -= selfRbd.velocity * selfParams.wallSlideSpeedDampening * Time.deltaTime;
-        selfRbd.velocity = new Vector3(selfRbd.velocity.x, verticalVelocity, selfRbd.velocity.z);
+        selfRbd.velocity = new Vector3(selfRbd.velocity.x, verticalVelocity, selfRbd.velocity.z);*/
     }
 
     public void ResetVerticalVelocity()
@@ -151,32 +171,7 @@ public class PlayerMovement : MonoBehaviour
         {
             selfRbd.velocity += selfLogic.GetHorizontalVector(selfCamera.forward) * selfParams.jumpForwardForce * Time.fixedDeltaTime;
         }
-        //StartCoroutine(JumpManage());
     }
-
-    /*public IEnumerator JumpManage()
-    {
-        selfLogic.isJumping = true;
-        ResetVerticalVelocity();
-        for(int i = 0;i< selfParams.jumpNumberToApply; i++)
-        {
-            if(isClimbingMovement)
-            {
-                break;
-            }
-            selfRbd.velocity += Vector3.up * selfParams.jumpForce * Time.fixedDeltaTime;
-
-            //vspd += transform.up * selfParams.topForceJump * Time.fixedDeltaTime;
-            if(Input.GetKey(selfParams.front))
-            {
-                selfRbd.velocity += selfLogic.GetHorizontalVector(selfCamera.forward) * selfParams.jumpForwardForce * Time.fixedDeltaTime;
-                //hspd += selfLogic.GetHorizontalVector(selfCamera.forward) * selfParams.forwardForceJump * Time.fixedDeltaTime;
-            }
-            yield return new WaitForFixedUpdate();
-        }
-        
-        selfLogic.isJumping = false;
-    }*/
 
     //start WallJump
     public void WallJump(Vector3 direction)
@@ -252,7 +247,21 @@ public class PlayerMovement : MonoBehaviour
         vspd = new Vector3(0, WallJumpspd.y, 0);*/
         yield return new WaitForEndOfFrame();
     }
-    //manage jump
+
+
+    public float GetClampedAngle(float angle)
+    {
+        float newAngle = angle;
+        if (newAngle > 180)
+        {
+            newAngle -= 360;
+        }
+        else if (newAngle < -180)
+        {
+            newAngle += 360;
+        }
+        return newAngle;
+    }
     #endregion
 
     #region Climb

@@ -41,7 +41,6 @@ public class SensorPlayer : MonoBehaviour
         }
         else if(other.CompareTag("Wall"))
         {
-            Debug.Log(selfMovement.directionAttack.y);
             if (Mathf.Abs(selfMovement.directionAttack.y) < 0.6f)
             {
                 selfTransform.GetComponent<PlayerMovement>().StopPunch();
