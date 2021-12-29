@@ -113,6 +113,10 @@ public class PlayerLogic : NetworkBehaviour
     //Move if the round is start
     public bool roundStarted = false;
 
+    //Joystick
+    float attackTriggerValueDelta = 0f;
+    float jumpTriggerValueDelta = 0f;
+
     void Start()
     {
         Debug.Log("Start");
@@ -194,12 +198,26 @@ public class PlayerLogic : NetworkBehaviour
 
     private void fpsView()
     {
-        float mouseX = Input.GetAxis("Mouse X") * selfParams.mouseSensivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * selfParams.mouseSensivity * Time.deltaTime;
+        float mouseX;
+        float mouseY;
+        if (Input.GetJoystickNames().Length > 0)
+		{
+            mouseX = Input.GetAxis("RHorizontal") * Time.deltaTime * selfParams.aimJoystickSensitivity;
+            mouseY = Input.GetAxis("RVertical") * Time.deltaTime * selfParams.aimJoystickSensitivity;
+		}
+        else
+		{
+            mouseX = Input.GetAxis("Mouse X") * selfParams.mouseSensivity * Time.deltaTime;
+            mouseY = Input.GetAxis("Mouse Y") * selfParams.mouseSensivity * Time.deltaTime;
+        }
 
-        #if UNITY_EDITOR
-        mouseX = Input.GetAxis("Mouse X") * selfParams.mouseSensivity * 4f * Time.deltaTime;
-        mouseY = Input.GetAxis("Mouse Y") * selfParams.mouseSensivity * 4f * Time.deltaTime;
+#if UNITY_EDITOR
+
+        if (Input.GetJoystickNames().Length <= 0)
+		{
+            mouseX = Input.GetAxis("Mouse X") * selfParams.mouseSensivity * 4f * Time.deltaTime;
+            mouseY = Input.GetAxis("Mouse Y") * selfParams.mouseSensivity * 4f * Time.deltaTime;
+        }
         #endif
 
 
@@ -250,10 +268,59 @@ public class PlayerLogic : NetworkBehaviour
 
         if (!selfMovement.isClimbingMovement && !isAttachToWall && !selfMovement.isAttacking && isInControl)
         {
-            if (Input.GetKey(selfParams.left) || Input.GetKey(selfParams.right) || Input.GetKey(selfParams.front) || Input.GetKey(selfParams.back))
+            Vector3 keyDirection = Vector3.zero;
+
+            if (Input.GetJoystickNames().Length > 0)
+			{
+                float _horizontal = Input.GetAxis("Horizontal");
+                float _vertical = Input.GetAxis("Vertical");
+                if(_vertical > 0)
+				{
+                    keyDirection += GetHorizontalVector(selfCollisionParent.transform.forward);//a changer ici
+                    selfMovement.CanClimb();
+                }
+                else if(_vertical < 0)
+				{
+                    keyDirection += GetHorizontalVector(-selfCollisionParent.transform.forward);
+                }
+                if(_horizontal > 0)
+				{
+                    keyDirection += GetHorizontalVector(selfCollisionParent.transform.right);
+                }
+                else if(_horizontal < 0)
+				{
+                    keyDirection += GetHorizontalVector(-selfCollisionParent.transform.right);
+                }
+
+                keyDirection.Normalize();
+
+                if(keyDirection != Vector3.zero)
+				{
+                    if (isGrounded)
+                    {
+                        selfMovement.Move(keyDirection, Time.time - timeStampRunAccel);
+                    }
+                    else
+                    {
+                        selfMovement.AirMove(keyDirection);
+                    }
+                }
+                else
+				{
+                    if (isGrounded)
+                    {
+                        selfMovement.Decelerate(Time.time - timeStampRunDecel);
+                        timeStampRunAccel = Time.time;
+                    }
+                    else
+                    {
+                        timeStampRunDecel = Time.time;
+                    }
+                }
+            }
+            else if (Input.GetKey(selfParams.left) || Input.GetKey(selfParams.right) || Input.GetKey(selfParams.front) || Input.GetKey(selfParams.back))
             {
                 timeStampRunDecel = Time.time;
-                Vector3 keyDirection = Vector3.zero;
 
                 if (Input.GetKey(selfParams.front))
                 {
@@ -318,6 +385,12 @@ public class PlayerLogic : NetworkBehaviour
 
     private void VerticalMovement()
     {
+        if(Input.GetJoystickNames().Length > 0)
+		{
+            VerticalMovementFromJoystick();
+            return;
+		}
+
         if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking)
         {
             if (!isGrounded)
@@ -370,6 +443,61 @@ public class PlayerLogic : NetworkBehaviour
 
     }
 
+    void VerticalMovementFromJoystick()
+	{
+        if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking)
+        {
+            if (!isGrounded)
+            {
+                if (selfMovement.IsSomethingCollide())
+                {
+                    isTouchingWall = true;
+                    if (Input.GetAxis("LT") > 0f)
+                    {
+                        isAttachToWall = true;
+                        selfMovement.ApplyWallSlideForces();
+                    }
+                    else if (Input.GetAxis("LT") == 0f && jumpTriggerValueDelta != 0f)
+                    {
+                        if (GetNearbyWallNormal() != Vector3.zero)
+                        {
+                            selfMovement.WallJump(GetNearbyWallNormal());
+                        }
+                    }
+                    else
+                    {
+                        isAttachToWall = false;
+                        selfMovement.ApplyGravity();
+                    }
+                }
+                else
+                {
+                    isAttachToWall = false;
+                    selfMovement.ApplyGravity();
+                    isTouchingWall = false;
+                }
+
+            }
+            else
+            {
+                selfMovement.ApplyGravity();
+                if (Input.GetAxis("LT") > 0f && jumpTriggerValueDelta == 0f && !isJumping && !isAttachToWall)
+                {
+                    SoundManager.Instance.PlaySoundEvent("PlayerJump", playerSource);
+                    selfMovement.Jump();
+                }
+
+                if (isGrounded && !selfMovement.isAttacking)
+                {
+                    selfMovement.isAttackReset = true;
+                }
+                isAttachToWall = false;
+            }
+        }
+
+        jumpTriggerValueDelta = Input.GetAxis("LT");
+    }
+
     #endregion
 
     #region Collision
@@ -409,6 +537,11 @@ public class PlayerLogic : NetworkBehaviour
 
     public void AttackInput()
     {
+        if(Input.GetJoystickNames().Length > 0)
+		{
+            AttackInputFromJoystick();
+            return;
+		}
         if (Input.GetMouseButtonDown(selfParams.attackMouseInput) && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown)
         {
             SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
@@ -440,6 +573,44 @@ public class PlayerLogic : NetworkBehaviour
             timeAttack = 0;
             ratioAttack = 0;
         }
+    }
+
+    void AttackInputFromJoystick()
+	{
+        if (Input.GetAxis("RT") > 0 && attackTriggerValueDelta == 0f && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown)
+        {
+            SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
+            hasStartedCharge = true;
+        }
+        //Attack load
+        if (Input.GetAxis("RT") > 0f && hasStartedCharge)
+        {
+            CmdShowLoadingPunchStart();
+            timeAttack += Time.deltaTime;
+            if (timeAttack > 0.2f)
+            {
+                punchChargeDisplay.gameObject.SetActive(true);
+            }
+            ratioAttack = selfMovement.AttackLoad(timeAttack);
+            punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
+            punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
+
+        }
+        //Attack lauch
+        if (Input.GetAxis("RT") == 0 && attackTriggerValueDelta != 0f && hasStartedCharge)
+        {
+            CmdShowLoadingPunchEnd();
+            hasStartedCharge = false;
+            punchChargeDisplay.gameObject.SetActive(false);
+            SoundManager.Instance.PlaySoundEvent("PlayerPunch", playerSource);
+            SoundManager.Instance.StopSoundWithDelay(playerSource, 0.2f);
+            selfMovement.Attack(ratioAttack);
+            timeAttack = 0;
+            ratioAttack = 0;
+        }
+
+        //Refresh attack input value for next frame
+        attackTriggerValueDelta = Input.GetAxis("RT");
     }
 
     // faire fonction de d�lai d'affichage de la charge du punch

@@ -25,6 +25,7 @@ namespace UTPI.SceneViewer
         {
             GUIStyle _style = new GUIStyle();
 
+            _style.alignment = TextAnchor.MiddleCenter;
             _style.fontStyle = FontStyle.Bold;
             _style.fontSize = 24;
             _style.normal.textColor = Color.white;
@@ -54,12 +55,12 @@ namespace UTPI.SceneViewer
             titleStyle = GetTitleStyle();
             buttonStyle = GetButtonStyle();
 
-            if (GUILayout.Button("Refresh project scenes", buttonStyle))
-            {
-                RefreshScenes();
-            }
+			if (GUILayout.Button("Refresh project scenes", buttonStyle))
+			{
+				RefreshScenes();
+			}
 
-            if (scenesGUIDs is null)
+			if (scenesGUIDs is null)
                 RefreshScenes();
             if (scenesGUIDs.Length == 0)
                 return;
@@ -67,6 +68,8 @@ namespace UTPI.SceneViewer
             currentFolderName = "";
 
             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+
+            EditorGUILayout.Space(5f);
 
             foreach (string sceneGUID in scenesGUIDs)
             {
@@ -77,6 +80,7 @@ namespace UTPI.SceneViewer
 
                 if (currentFolderName != items[items.Length - 2])
                 {
+                    EditorGUILayout.Space(5f);
                     currentFolderName = items[items.Length - 2];
                     GUILayout.Label(currentFolderName, titleStyle);
                 }
@@ -96,6 +100,11 @@ namespace UTPI.SceneViewer
                         }
                     }
                 }
+
+                if(GUILayout.Button("Add", buttonStyle, GUILayout.Width(50f)))
+				{
+                    EditorSceneManager.OpenScene(AssetDatabase.GUIDToAssetPath(sceneGUID).ToString(), OpenSceneMode.Additive);
+				}
                 GUILayout.EndHorizontal();
             }
 

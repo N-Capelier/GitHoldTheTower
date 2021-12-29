@@ -18,6 +18,7 @@ public class ScriptableParamsPlayer : ScriptableObject
     [Range(0, 2)] public int wallMouseInput;
     [Range(0, 2)] public int attackMouseInput;
     public float mouseSensivity;
+    public float aimJoystickSensitivity = 100f;
 
 
     #endregion
