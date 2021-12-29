@@ -9,6 +9,7 @@ public class ShockwaveCollider : MonoBehaviour
 	float elapsedTime = 0f;
 	bool expanding = false;
 	float completion;
+	[HideInInspector] public bool hasAuthority = false;
 
 	private void FixedUpdate()
 	{
@@ -33,6 +34,16 @@ public class ShockwaveCollider : MonoBehaviour
 	{
 		maxExpandDuration *= _playerPunchLoadFactor;
 		expanding = true;
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.CompareTag("Wall") && hasAuthority)
+		{
+			BlockBehaviour block = other.GetComponent<BlockBehaviour>();
+
+			GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(block.blockID);
+		}
 	}
 
 }

@@ -10,8 +10,6 @@ public class SensorPlayer : MonoBehaviour
     [SerializeField]
     private UnityEvent collidePlayer;
 
-    WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
-
     [SerializeField]
     private PlayerMovement selfMovement;
     [SerializeField]
@@ -23,6 +21,10 @@ public class SensorPlayer : MonoBehaviour
 
     private ScriptableParamsPlayer selfParams;
     public Transform selfTransform;
+
+    [SerializeField] Camera playerCamera;
+    [SerializeField] LayerMask wallLayerMask;
+    [SerializeField] GameObject shockwavePrefab;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -55,17 +57,46 @@ public class SensorPlayer : MonoBehaviour
 
             if(block.isDestroyable)
 			{
+                Vector3 _shockwaveSpawnPoint = RayCollisionPoint(other);
+
                 if (selfMovement.isPerfectTiming)
                 {
+                    GameObject _shockWave = Instantiate(shockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
+                    _shockWave.GetComponent<ShockwaveCollider>().Shock(5f);
                     GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdExplode(block.blockID);
                 }
                 else
                 {
-                    GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(block.blockID);
+                    GameObject _shockWave = Instantiate(shockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
+                    ShockwaveCollider _shockWaveCollider = _shockWave.GetComponent<ShockwaveCollider>();
+                    _shockWaveCollider.hasAuthority = true;
+                    _shockWaveCollider.Shock(5f);
                 }
             }
 		}
 	}
 
+    Vector3 RayCollisionPoint(Collider _impactCollider)
+	{
+        RaycastHit _hit;
+        if(Physics.Raycast(playerCamera.transform.position, playerCamera.transform.rotation.eulerAngles, out _hit, Mathf.Infinity, wallLayerMask))
+		{
+            if(_hit.collider == _impactCollider)
+			{
+                Debug.LogWarning("Impact point from camera");
+                return _hit.point;
+			}
+		}
+        else if(Physics.Raycast(playerCamera.transform.position, _impactCollider.gameObject.transform.position - playerCamera.transform.position, out _hit, Mathf.Infinity, wallLayerMask))
+		{
+            if (_hit.collider == _impactCollider)
+            {
+                Debug.LogWarning("Impact point from vector");
+                return _hit.point;
+            }
+        }
+        Debug.LogWarning("Impact point from transform");
+        return _impactCollider.transform.position;
+	}
 
 }

@@ -15,6 +15,18 @@ public class ThemeInteration : NetworkBehaviour
 	}
 
 	[Command(requiresAuthority = false)]
+	public void CmdInstantiateShockwave()
+	{
+		RpcInstantiateShockwave();
+	}
+
+	[ClientRpc]
+	public void RpcInstantiateShockwave()
+	{
+
+	}
+
+	[Command(requiresAuthority = false)]
 	public void CmdWaitAndExplode(int _index)
 	{
 		RpcWaitAndExplode(_index);
