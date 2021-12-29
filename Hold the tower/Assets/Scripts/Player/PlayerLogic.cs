@@ -31,6 +31,8 @@ public class PlayerLogic : NetworkBehaviour
     private GameObject selfCollisionParent;
     [SerializeField]
     private SmoothSyncMirror selfSmoothSync;
+    [SerializeField]
+    private PlayerMenu selfMenu;
 
     private MatchManager matchManager;
     private LevelTransition levelTransition;
@@ -116,6 +118,14 @@ public class PlayerLogic : NetworkBehaviour
         Debug.Log("Start");
         matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>(); //Ne pas bouger
         levelTransition = GameObject.Find("GameManager").GetComponent<LevelTransition>();
+
+        //Analytics
+        if(GameObject.Find("Analytics") != null)
+        {
+            GameObject.Find("Analytics").GetComponent<PA_Position>().analyticGameObjectPosition.Add(this.transform);
+        }
+        //
+
         if (FlagObject != null)
         {
             FlagObject = GameObject.Find("Flag");
@@ -135,20 +145,25 @@ public class PlayerLogic : NetworkBehaviour
             {
                 teamColorIndicator.color = Color.red;
             }
-        }
-        else
-        {
-            selfFirstPersonView.SetActive(false);
-        }
-
-        if (teamName == LobbyPlayerLogic.TeamName.Blue)
-        {
+            //Own player is blue
             playerCollider.transform.GetComponent<MeshRenderer>().material = blueTeamMaterial;
         }
         else
         {
-            playerCollider.transform.GetComponent<MeshRenderer>().material = redTeamMaterial;
+            selfFirstPersonView.SetActive(false);
+
+            //Make blue if ally, else make red him red
+            if(GameObject.Find("ServerManager").GetComponent<MyNewNetworkManager>().playerTeamName == teamName)
+            {
+                playerCollider.transform.GetComponent<MeshRenderer>().material = blueTeamMaterial;
+            }
+            else
+            {
+                playerCollider.transform.GetComponent<MeshRenderer>().material = redTeamMaterial;
+            }
+            
         }
+
 
     }
 
@@ -158,7 +173,11 @@ public class PlayerLogic : NetworkBehaviour
 
         if (hasAuthority && roundStarted)
         {
-            fpsView();
+            if (!selfMenu.menuIsOpen)
+            {
+                fpsView();
+            }
+            
             VerticalMovement();
             HorizontalMovement();
 
@@ -284,7 +303,7 @@ public class PlayerLogic : NetworkBehaviour
         }
 
         //Attack Logic
-        if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking && selfMovement.isAttackReset && !selfMovement.isAttackInCooldown)
+        if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking && selfMovement.isAttackReset && !selfMovement.isAttackInCooldown && !selfMenu.menuIsOpen)
         {
             AttackInput();
         }

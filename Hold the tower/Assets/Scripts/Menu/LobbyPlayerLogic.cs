@@ -18,7 +18,7 @@ public class LobbyPlayerLogic : NetworkBehaviour
 
     public enum TeamName
     {
-        Red,Blue
+        Red,Blue,Spectator
     };
 
     public TeamName teamName;
@@ -80,23 +80,23 @@ public class LobbyPlayerLogic : NetworkBehaviour
     {
         if(team - 1 < 0)
         {
-            team = 1;
+            team = 2;
         }
         else
 		{
-            team = 0;
+            team--;
 		}
     }
     [Command]
     public void ButtonRight()
     {
-        if (team + 1 > 1)
+        if (team + 1 > 2)
         {
             team = 0;
         }
         else
 		{
-            team = 1;
+            team++;
 		}
     }
     #endregion
@@ -137,6 +137,10 @@ public class LobbyPlayerLogic : NetworkBehaviour
             case 1:
                 teamImage.color = Color.blue;
                 teamName = TeamName.Blue;
+                break;
+            case 2:
+                teamImage.color = Color.grey;
+                teamName = TeamName.Spectator;
                 break;
         }
         if (hasAuthority)

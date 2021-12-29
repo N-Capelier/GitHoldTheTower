@@ -13,12 +13,13 @@ public class MyNewNetworkManager : NetworkManager
     [Header("Params")]
     public GameObject lobbyPlayer;
     public GameObject Player;
+    public GameObject spectator;
     public GameObject MenuManagerObject;
     public GameObject StartButton;
     public GameObject TextInputIp;
     public GameObject textInputSceneName;
-    public GameObject[] lobbyPlayerServer = new GameObject[4];
-    public GameObject[] SpawnPlayerPosition = new GameObject[4];
+    public GameObject[] lobbyPlayerServer = new GameObject[5];
+    public GameObject[] SpawnPlayerPosition = new GameObject[5];
 
     [HideInInspector]
     public LobbyPlayerLogic.TeamName playerTeamName;
@@ -27,6 +28,10 @@ public class MyNewNetworkManager : NetworkManager
 
     [SerializeField]
     private string gameScene;
+
+    [HideInInspector]
+    public string analyticsPath;
+    
 
     #region Unity Callbacks
 
@@ -314,48 +319,40 @@ public class MyNewNetworkManager : NetworkManager
 
     public void CreatePlayer(NetworkConnection conn, MyNewNetworkAuthenticator.CreateClientPlayer msg)
     {
-        Debug.Log(conn);
-        /*GameObject obj = Instantiate(Player);
-
-        obj.GetComponent<PlayerLogic>().teamName = msg.teamName;
-
-        if (msg.teamName == LobbyPlayerLogic.nameOfTeam.blue)
-        {
-            obj.GetComponent<PlayerLogic>().spawnPosition = nbBlueTeam;
-            nbBlueTeam++;
-        }
-
-        if (msg.teamName == LobbyPlayerLogic.nameOfTeam.red)
-        {
-            obj.GetComponent<PlayerLogic>().spawnPosition = nbRedTeam + 2;
-            nbRedTeam++;
-        }
-
-        NetworkServer.AddPlayerForConnection(conn, obj);*/
         StartCoroutine(CreateDelayPlayer(conn, msg));
-
     }
 
     public IEnumerator CreateDelayPlayer(NetworkConnection conn, MyNewNetworkAuthenticator.CreateClientPlayer msg)
     {
         //yield return new WaitForSeconds(0.1f);
-        GameObject obj = Instantiate(Player);
 
-        obj.GetComponent<PlayerLogic>().teamName = msg.teamName;
-
-        if (msg.teamName == LobbyPlayerLogic.TeamName.Blue)
+        //Create player in game
+        if(msg.teamName != LobbyPlayerLogic.TeamName.Spectator)
         {
-            obj.GetComponent<PlayerLogic>().spawnPosition = nbBlueTeam;
-            nbBlueTeam++;
-        }
+            GameObject obj = Instantiate(Player);
 
-        if (msg.teamName == LobbyPlayerLogic.TeamName.Red)
+            obj.GetComponent<PlayerLogic>().teamName = msg.teamName;
+
+            if (msg.teamName == LobbyPlayerLogic.TeamName.Blue)
+            {
+                obj.GetComponent<PlayerLogic>().spawnPosition = nbBlueTeam;
+                nbBlueTeam++;
+            }
+
+            if (msg.teamName == LobbyPlayerLogic.TeamName.Red)
+            {
+                obj.GetComponent<PlayerLogic>().spawnPosition = nbRedTeam + 2;
+                nbRedTeam++;
+            }
+
+            NetworkServer.AddPlayerForConnection(conn, obj);
+        }
+        else //Create Spectator
         {
-            obj.GetComponent<PlayerLogic>().spawnPosition = nbRedTeam + 2;
-            nbRedTeam++;
+            GameObject obj = Instantiate(spectator);
+            NetworkServer.AddPlayerForConnection(conn, obj);
         }
-
-        NetworkServer.AddPlayerForConnection(conn, obj);
+        
         yield return null;
     }
 
