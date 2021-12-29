@@ -44,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
 
     WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
 
+    private float punchRatio;
+
     private void FixedUpdate()
     {
         if (!isClimbingMovement)
@@ -347,14 +349,16 @@ public class PlayerMovement : MonoBehaviour
         if(time <= selfParams.punchPerfectTiming)
         {
             isPerfectTiming = false;
-            ratio = selfParams.punchSpeedByCharge.Evaluate(time/selfParams.punchMaxChargeTime);
+            //ratio = selfParams.punchSpeedByCharge.Evaluate(time/selfParams.punchMaxChargeTime);
+            ratio = time / (selfParams.punchPerfectTiming + selfParams.punchPerfectTimingTreshold);
         }
 
         //Si est au pickTime
         if(time <= selfParams.punchPerfectTiming + selfParams.punchPerfectTimingTreshold && time >= selfParams.punchPerfectTiming)
         {
             isPerfectTiming = true;
-            ratio = selfParams.punchPerfectTimingPropulsionMultiplier;
+            //ratio = selfParams.punchPerfectTimingPropulsionMultiplier;
+            ratio = time / (selfParams.punchPerfectTiming + selfParams.punchPerfectTimingTreshold);
         }
 
         //Si sup�rieur au pickTime + treshHold
@@ -385,11 +389,13 @@ public class PlayerMovement : MonoBehaviour
         directionAttack = selfCamera.forward;
         isAttacking = true;
         isAttackReset = false;
+        float finalBaseSpeed = selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(ratio);
+        punchRatio = ratio;
 
         float _time = 0;
         while(_time <selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time && !stopPunchFlag)
         {
-            selfRbd.velocity = directionAttack * selfParams.velocityCurve.Evaluate(_time) * Time.fixedDeltaTime * selfParams.punchBaseSpeed;
+            selfRbd.velocity = directionAttack * selfParams.velocityCurve.Evaluate(_time) * Time.fixedDeltaTime * finalBaseSpeed;
             _time += Time.deltaTime;
             //ResetVerticalVelocity();
             yield return waitForFixedUpdate;
@@ -404,7 +410,7 @@ public class PlayerMovement : MonoBehaviour
 
         //active Wall Jump if player punch
         canWallJump = true;
-        selfRbd.velocity = directionAttack * selfParams.velocityCurve.Evaluate(selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time) * Time.fixedDeltaTime * ratio * selfParams.punchBaseSpeed;
+        selfRbd.velocity = directionAttack * selfParams.velocityCurve.Evaluate(selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time) * Time.fixedDeltaTime * finalBaseSpeed;
         isAttacking = false;
         isPerfectTiming = false;
         yield return null;
@@ -439,7 +445,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void PropulseManager(Vector3 directedForce)
     {
-        selfRbd.velocity += directedForce;
+        selfRbd.velocity += directedForce * selfParams.punchPropulsionForceByCharge.Evaluate(punchRatio);
     }
 
     public void StopPunch()

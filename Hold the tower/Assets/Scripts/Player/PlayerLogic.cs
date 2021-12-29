@@ -629,6 +629,19 @@ public class PlayerLogic : NetworkBehaviour
         selfMovement.Propulse(directedForce);
     }
 
+    [Command(requiresAuthority = false)]
+    public void CmdPropulse(Vector3 directedForce)
+    {
+        RpcPropulse(directedForce);
+    }
+
+    [TargetRpc]
+    public void RpcPropulse(Vector3 directedForce)
+    {
+        StartCoroutine(NoControl(0.1f));
+        selfMovement.Propulse(directedForce);
+    }
+
     public void GetPunch(Vector3 directedForce)
     {
         StartCoroutine(NoControl(selfParams.punchedNoControlTime));
