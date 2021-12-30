@@ -9,7 +9,6 @@ public class ShockwaveCollider : MonoBehaviour
 	float elapsedTime = 0f;
 	bool expanding = false;
 	float completion;
-	[HideInInspector] public bool hasAuthority = false;
 
 	private void FixedUpdate()
 	{
@@ -19,14 +18,25 @@ public class ShockwaveCollider : MonoBehaviour
 		}
 	}
 
+	private void OnDrawGizmos()
+	{
+		if (!expanding)
+			return;
+
+		Gizmos.color = Color.blue;
+		Gizmos.DrawSphere(transform.position, sphereCollider.radius);
+	}
+
 	void Expand()
 	{
 		elapsedTime += Time.fixedDeltaTime;
 		completion = elapsedTime / maxExpandDuration;
 		sphereCollider.radius = Mathf.Lerp(minRadius, maxRadius, completion);
+
 		if (completion >= 1f)
 		{
 			expanding = false;
+			Destroy(gameObject);
 		}
 	}
 
@@ -36,13 +46,16 @@ public class ShockwaveCollider : MonoBehaviour
 		expanding = true;
 	}
 
-	private void OnTriggerEnter(Collider other)
+	private void OnTriggerStay(Collider other)
 	{
-		if (other.CompareTag("Wall") && hasAuthority)
+
+		if (other.CompareTag("Wall"))
 		{
 			BlockBehaviour block = other.GetComponent<BlockBehaviour>();
-
-			GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(block.blockID);
+			if(block.isDestroyable && !block.isExploding)
+			{
+				GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdWaitAndExplode(block.blockID);
+			}
 		}
 	}
 

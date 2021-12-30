@@ -68,15 +68,14 @@ public class SensorPlayer : MonoBehaviour
                 if (selfMovement.isPerfectTiming)
                 {
                     GameObject _shockWave = Instantiate(shockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
-                    _shockWave.GetComponent<ShockwaveCollider>().Shock(5f);
+                    _shockWave.GetComponent<ShockwaveCollider>().Shock(1f);
                     GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdExplode(block.blockID);
                 }
                 else
                 {
                     GameObject _shockWave = Instantiate(shockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
                     ShockwaveCollider _shockWaveCollider = _shockWave.GetComponent<ShockwaveCollider>();
-                    _shockWaveCollider.hasAuthority = true;
-                    _shockWaveCollider.Shock(5f);
+                    _shockWaveCollider.Shock(1f);
                 }
             }
 		}
@@ -85,7 +84,9 @@ public class SensorPlayer : MonoBehaviour
     Vector3 RayCollisionPoint(Collider _impactCollider)
 	{
         RaycastHit _hit;
-        if(Physics.Raycast(playerCamera.transform.position, playerCamera.transform.rotation.eulerAngles, out _hit, Mathf.Infinity, wallLayerMask))
+        Debug.DrawRay(playerCamera.transform.position, playerCamera.transform.forward, Color.blue, 2f);
+        Debug.DrawRay(playerCamera.transform.position, _impactCollider.gameObject.transform.position - playerCamera.transform.position, Color.yellow, 2f);
+        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out _hit, Mathf.Infinity, wallLayerMask))
 		{
             if(_hit.collider == _impactCollider)
 			{

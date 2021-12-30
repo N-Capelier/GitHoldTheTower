@@ -29,6 +29,7 @@ public class BlockBehaviour : MonoBehaviour
 	WaitForSeconds beforeExplosionTimeWait;
 	WaitForSeconds explosionTimeWait;
 	WaitForEndOfFrame waitForEndOfFrame;
+	[HideInInspector] public bool isExploding = false;
 
 	[Header("Buttons")]
 	//Button switch
