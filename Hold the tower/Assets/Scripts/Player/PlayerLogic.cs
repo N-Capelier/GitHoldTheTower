@@ -685,8 +685,6 @@ public class PlayerLogic : NetworkBehaviour
             Transform spawnPoint;
             spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(spawnPosition);
 
-
-
             transform.position = spawnPoint.position; //Obligatoire, sinon ne trouve pas le spawner à la premirèe frame
             selfCollisionParent.transform.localRotation = spawnPoint.rotation;
             selfCamera.localRotation = spawnPoint.rotation;
@@ -703,13 +701,17 @@ public class PlayerLogic : NetworkBehaviour
             {
                 selfMovement.ResetVelocity();
                 selfMovement.ResetVerticalVelocity();
-                if (System.Math.Round(NetworkTime.time - timerToStart).ToString() != hudTextPlayer.text)
-                    hudTextPlayer.text = System.Math.Round(NetworkTime.time - timerToStart).ToString();
+                hudTextPlayer.text = System.Math.Round(timerMaxToStart -(NetworkTime.time - timerToStart)).ToString();
                 yield return new WaitForEndOfFrame();
 
             }
             roundStarted = true;
             hudTextPlayer.gameObject.SetActive(false);
+
+            if (GameObject.Find("Analytics") != null)
+            {
+                GameObject.Find("Analytics").GetComponent<PA_Position>().startWrite = true;
+            }
         }
     }
 
@@ -719,6 +721,7 @@ public class PlayerLogic : NetworkBehaviour
         timerToStart = NetworkTime.time;
         StartCoroutine(GoalMessageManager(text));
         CmdShowScoreHud();
+
     }
 
     public IEnumerator GoalMessageManager(string text)
@@ -731,6 +734,12 @@ public class PlayerLogic : NetworkBehaviour
             yield return new WaitForEndOfFrame();
 
         }
+
+        if (GameObject.Find("Analytics") != null)
+        {
+            GameObject.Find("Analytics").GetComponent<PA_Position>().WriteNewRound();
+        }
+
         selfMovement.ResetVelocity();
         roundStarted = false;
         timerToStart = NetworkTime.time;
@@ -766,7 +775,8 @@ public class PlayerLogic : NetworkBehaviour
         {
             NetworkManager.singleton.StopClient();
         }
-        MyNewNetworkManager.singleton.ServerChangeScene("LobbyScene"); // Need to be rework
+        Destroy(GameObject.Find("SceneManager"));
+        SceneManager.LoadScene("LobbyScene");
     }
 
     //Punch and getPunch Logic

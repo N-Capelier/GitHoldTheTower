@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMenu : MonoBehaviour
 {
@@ -52,6 +53,15 @@ public class PlayerMenu : MonoBehaviour
 
     public void BackToMenu()
     {
-        Debug.Log("Back to menu");
+        if (selfLogic.isClientOnly)
+        {
+            MyNewNetworkManager.singleton.StopClient();
+        }
+        else
+        {
+            MyNewNetworkManager.singleton.StopHost();
+        }
+        Destroy(GameObject.Find("ServerManager"));
+        SceneManager.LoadScene("LobbyScene");
     }
 }

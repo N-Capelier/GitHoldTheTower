@@ -12,12 +12,15 @@ public class CustomAnalyticsPositionRenderer : Editor
 
     SerializedProperty keyPositions;
     SerializedProperty colors;
+    SerializedProperty round;
+
     public void OnEnable()
     {
         pathFilePositions = serializedObject.FindProperty("pathFilePositions");
         drawnGizmos = serializedObject.FindProperty("drawnGizmos");
         //keyPositions = serializedObject.FindProperty("playersKeyPosition");
         colors = serializedObject.FindProperty("colors");
+        round = serializedObject.FindProperty("round");
     }
 
     public override void OnInspectorGUI()
@@ -25,6 +28,9 @@ public class CustomAnalyticsPositionRenderer : Editor
         serializedObject.Update();
         //Path to get the file
         EditorGUILayout.PropertyField(pathFilePositions);
+        //Round to show
+        EditorGUILayout.PropertyField(round);
+        round.intValue = Mathf.Clamp(round.intValue, 0, 5);
 
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Drawn In World"))
