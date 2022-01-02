@@ -5,6 +5,7 @@ public class ShockwaveCollider : MonoBehaviour
 	[SerializeField] float minRadius = 0f;
 	[SerializeField] float maxRadius = 5f;
 	[SerializeField] float maxExpandDuration = 2f;
+	float expandDuration = 2f;
 	[SerializeField] SphereCollider sphereCollider;
 	float elapsedTime = 0f;
 	bool expanding = false;
@@ -30,7 +31,7 @@ public class ShockwaveCollider : MonoBehaviour
 	void Expand()
 	{
 		elapsedTime += Time.fixedDeltaTime;
-		completion = elapsedTime / maxExpandDuration;
+		completion = elapsedTime / expandDuration;
 		sphereCollider.radius = Mathf.Lerp(minRadius, maxRadius, completion);
 
 		if (completion >= 1f)
@@ -42,7 +43,13 @@ public class ShockwaveCollider : MonoBehaviour
 
 	public void Shock(float _playerPunchLoadFactor)
 	{
-		maxExpandDuration *= _playerPunchLoadFactor;
+		expandDuration = (1 - _playerPunchLoadFactor) * maxExpandDuration;
+		expandDuration = expandDuration.Remap(0f, maxExpandDuration, 1f, maxExpandDuration);
+
+		maxRadius *= _playerPunchLoadFactor;
+		if(_playerPunchLoadFactor == 0f)
+			maxRadius = minRadius;
+
 		expanding = true;
 	}
 

@@ -2248,7 +2248,7 @@ MonoBehaviour:
   playerCamera: {fileID: 5664242416663754116}
   wallLayerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 72
   shockwavePrefab: {fileID: 422133644557816062, guid: 0db31f1bf9900bc4c9b42b73d7217bf6, type: 3}
 --- !u!1 &6498996468193615644
 GameObject:
