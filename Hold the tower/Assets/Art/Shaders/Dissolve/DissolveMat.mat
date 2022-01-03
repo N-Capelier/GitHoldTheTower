@@ -106,6 +106,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - DissolveValue: 0
+    - PreDissolveAlphaValue: 0
+    - PreDissolveInValue: 0.45
+    - PreDissolveOutValue: 0.5
     - Vector1_3c6b5ffd8fa74cb49512177f81476c5f: 30
     - Vector1_c2f3bb1fae384d47bf80e34372824541: 0.01
     - Vector1_cd086550ae744c83bf10f28377931280: 0

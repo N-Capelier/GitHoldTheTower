@@ -42,6 +42,7 @@ public class BlockBehaviour : MonoBehaviour
 	[HideInInspector]
 	public int loadedTerrainID = 0;
 
+
 	private void Start()
 	{
 		beforeExplosionTimeWait = new WaitForSeconds(timeBeforeExplosion);
@@ -69,6 +70,7 @@ public class BlockBehaviour : MonoBehaviour
 		{
 			isAlive = true;
 			blockMaterial.SetFloat("DissolveValue", 0);
+			blockMaterial.SetFloat("PreDissolveAlphaValue", 0);
 			gameObject.layer = LayerMask.NameToLayer("Outlined");
 		}
 		boxCollider.enabled = true;
@@ -103,7 +105,17 @@ public class BlockBehaviour : MonoBehaviour
 	{
 		//Start crumble vfx
 
-		yield return beforeExplosionTimeWait;
+		float _elapsedTime = 0f;
+		float _completion = 0f;
+
+		while(_elapsedTime < timeBeforeExplosion)
+		{
+			_elapsedTime += Time.deltaTime;
+			_completion = _elapsedTime / timeBeforeExplosion;
+			blockMaterial.SetFloat("PreDissolveAlphaValue", Mathf.Lerp(0, 1, _completion));
+			Debug.LogWarning("PreDissolve: " + blockMaterial.GetFloat("PreDissolveAlphaValue"));
+			yield return waitForEndOfFrame;
+		}
 
 		StartCoroutine(ExplodeCoroutine());
 	}
