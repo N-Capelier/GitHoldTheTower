@@ -235,6 +235,7 @@ MonoBehaviour:
   isAttackReset: 0
   isAttackInCooldown: 0
   directionAttack: {x: 0, y: 0, z: 0}
+  punchRatio: 0
   wallSlideDirection: {x: 0, y: 0, z: 0}
 --- !u!114 &3790924781881019435
 MonoBehaviour:
@@ -4213,8 +4214,8 @@ MonoBehaviour:
   playerCamera: {fileID: 5664242416663754116}
   wallLayerMask:
     serializedVersion: 2
-    m_Bits: 0
-  shockwavePrefab: {fileID: 0}
+    m_Bits: 8
+  shockwavePrefab: {fileID: 422133644557816062, guid: 0db31f1bf9900bc4c9b42b73d7217bf6, type: 3}
 --- !u!1 &6498996468193615644
 GameObject:
   m_ObjectHideFlags: 0
