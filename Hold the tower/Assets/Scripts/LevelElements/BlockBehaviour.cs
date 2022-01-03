@@ -113,7 +113,6 @@ public class BlockBehaviour : MonoBehaviour
 			_elapsedTime += Time.deltaTime;
 			_completion = _elapsedTime / timeBeforeExplosion;
 			blockMaterial.SetFloat("PreDissolveAlphaValue", Mathf.Lerp(0, 1, _completion));
-			Debug.LogWarning("PreDissolve: " + blockMaterial.GetFloat("PreDissolveAlphaValue"));
 			yield return waitForEndOfFrame;
 		}
 
