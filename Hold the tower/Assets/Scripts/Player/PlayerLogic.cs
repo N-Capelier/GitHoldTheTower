@@ -192,6 +192,12 @@ public class PlayerLogic : NetworkBehaviour
                 CmdForceRespawn(3f);
             }
         }
+
+        if(!hasAuthority && roundStarted)
+        {
+            HorizontalMovementSound();
+        }
+
         ShowFlagToAllPlayer();
     }
 
@@ -368,6 +374,60 @@ public class PlayerLogic : NetworkBehaviour
                 }
             }
 
+        }
+
+        //Attack Logic
+        if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking && selfMovement.isAttackReset && !selfMovement.isAttackInCooldown && !selfMenu.menuIsOpen)
+        {
+            AttackInput();
+        }
+    }
+
+    private void HorizontalMovementSound()
+    {
+        isGrounded = isTouchingTheGround && !selfMovement.isAttacking;
+
+        if (isGrounded && Time.time - timeStampRunAccel > 0.2f)
+        {
+            if (footStepFlag)
+            {
+                Debug.Log("play");
+                SoundManager.Instance.PlaySoundEvent("PlayerFootstep", playerFootstepSource);
+                footStepFlag = false;
+            }
+        }
+        else
+        {
+            if (!footStepFlag)
+            {
+                playerFootstepSource.Stop();
+                footStepFlag = true;
+            }
+        }
+
+        if (isTouchingTheGround)
+        {
+            if (touchingGroundFlag)
+            {
+                SoundManager.Instance.PlaySoundEvent("PlayerJumpOff", playerSource);
+                touchingGroundFlag = false;
+                footStepFlag = false;
+            }
+        }
+        else
+        {
+            touchingGroundFlag = true;
+        }
+
+        
+        if (isGrounded)
+        {
+            selfMovement.Decelerate(Time.time - timeStampRunDecel);
+            timeStampRunAccel = Time.time;
+        }
+        else
+        {
+            timeStampRunDecel = Time.time;
         }
 
         //Attack Logic
