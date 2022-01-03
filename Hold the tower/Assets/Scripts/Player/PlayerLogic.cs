@@ -69,6 +69,13 @@ public class PlayerLogic : NetworkBehaviour
     private GameObject punchHitEffect;
 
     [SerializeField]
+    public GameObject punchChargeDistancePreview;
+    [SerializeField]
+    public GameObject punchChargeDistancePreview2;
+    [SerializeField]
+    public GameObject punchChargeSliderLine;
+
+    [SerializeField]
     private GameObject FlagObject;
     [SerializeField]
     private GameObject FlagInGame;
@@ -117,11 +124,15 @@ public class PlayerLogic : NetworkBehaviour
     float attackTriggerValueDelta = 0f;
     float jumpTriggerValueDelta = 0f;
 
+    //charge preview
+    Vector3 chargePreviewStartPos;
+
     void Start()
     {
         Debug.Log("Start");
         matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>(); //Ne pas bouger
         levelTransition = GameObject.Find("GameManager").GetComponent<LevelTransition>();
+        chargePreviewStartPos = punchChargeDistancePreview.transform.localPosition;
 
         //Analytics
         if(GameObject.Find("Analytics") != null)
@@ -558,7 +569,10 @@ public class PlayerLogic : NetworkBehaviour
         {
             CmdShowLoadingPunchStart();
             timeAttack += Time.deltaTime;
-            if(timeAttack > 0.2f)
+
+            punchChargeDistancePreview.SetActive(true);
+            punchChargeDistancePreview2.SetActive(true);
+            if (timeAttack > 0.2f)
             {
                 punchChargeDisplay.gameObject.SetActive(true);
             }
@@ -568,12 +582,22 @@ public class PlayerLogic : NetworkBehaviour
                 ratioAttack = 0;
                 punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), 0);
                 punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), 0);
+
+                punchChargeDistancePreview.transform.localPosition = chargePreviewStartPos + Vector3.forward * 0.0046923076923077f * selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(0) / selfParams.punchSpeedByCharge.Evaluate(1);
+                punchChargeDistancePreview2.transform.localPosition = punchChargeDistancePreview.transform.localPosition;
+
             }
             else
             {
                 ratioAttack = selfMovement.AttackLoad(timeAttack);
                 punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
                 punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
+
+                punchChargeDistancePreview.transform.rotation = Quaternion.Euler(0, selfCamera.rotation.eulerAngles.y, 0);
+                punchChargeDistancePreview.transform.rotation = Quaternion.Euler(0, 0, 0);
+                punchChargeDistancePreview2.transform.rotation = Quaternion.Inverse(selfCamera.rotation);
+                punchChargeDistancePreview.transform.localPosition = chargePreviewStartPos + Vector3.forward * 0.0046923076923077f * selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(ratioAttack) / selfParams.punchSpeedByCharge.Evaluate(1); // alors ce chiffre bizarre je l'ai calculer rapport à la courbe de velocité, c'est le coefficient de la distance par rapport à la vitesse du punch
+                punchChargeDistancePreview2.transform.localPosition = punchChargeDistancePreview.transform.localPosition;
             }
 
         }
@@ -583,6 +607,8 @@ public class PlayerLogic : NetworkBehaviour
             CmdShowLoadingPunchEnd();
             hasStartedCharge = false;
             punchChargeDisplay.gameObject.SetActive(false);
+            punchChargeDistancePreview.SetActive(false);
+            punchChargeDistancePreview2.SetActive(false);
             SoundManager.Instance.PlaySoundEvent("PlayerPunch", playerSource);
             SoundManager.Instance.StopSoundWithDelay(playerSource, 0.2f);
             selfMovement.Attack(ratioAttack);
