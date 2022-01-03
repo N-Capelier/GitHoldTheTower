@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 public class SoundManagerNet : NetworkBehaviour
 {
+
     [Command(requiresAuthority = false)]
     public void CmdPlaySoundEvent(string thisEventName, GameObject location)
     {
@@ -13,6 +14,8 @@ public class SoundManagerNet : NetworkBehaviour
     [ClientRpc]
     public void RpcPlaySoundEvent(string thisEventName, GameObject location)
     {
-        SoundManager.Instance.PlaySoundEvent(thisEventName, location);
+        AudioSource source = location.GetComponent<AudioSource>();
+        SoundManager.Instance.PlaySoundEvent(thisEventName, source);
     }
+
 }

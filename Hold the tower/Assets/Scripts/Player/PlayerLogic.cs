@@ -117,6 +117,7 @@ public class PlayerLogic : NetworkBehaviour
     float attackTriggerValueDelta = 0f;
     float jumpTriggerValueDelta = 0f;
 
+
     void Start()
     {
         Debug.Log("Start");
@@ -169,7 +170,6 @@ public class PlayerLogic : NetworkBehaviour
             
         }
 
-
     }
 
     void Update()
@@ -193,9 +193,9 @@ public class PlayerLogic : NetworkBehaviour
             }
         }
 
-        if(!hasAuthority && roundStarted)
+        if(!hasAuthority)
         {
-            HorizontalMovementSound();
+            //HorizontalMovementSound();
         }
 
         ShowFlagToAllPlayer();
@@ -246,7 +246,8 @@ public class PlayerLogic : NetworkBehaviour
         {
             if(footStepFlag)
             {
-                SoundManager.Instance.PlaySoundEvent("PlayerFootstep", playerFootstepSource);
+                //SoundManager.Instance.PlaySoundEvent("PlayerFootstep", playerFootstepSource);
+                CmdPlayerFootstepSource("PlayerFootstep");
                 footStepFlag = false;
             }
         }
@@ -254,7 +255,7 @@ public class PlayerLogic : NetworkBehaviour
         {
             if(!footStepFlag)
             {
-                playerFootstepSource.Stop();
+                CmdStopPlayerFootstepSource();
                 footStepFlag = true;
             }
         }
@@ -263,7 +264,7 @@ public class PlayerLogic : NetworkBehaviour
         {
             if(touchingGroundFlag)
             {
-                SoundManager.Instance.PlaySoundEvent("PlayerJumpOff", playerSource);
+                CmdPlayerSource("PlayerJumpOff");
                 touchingGroundFlag = false;
                 footStepFlag = false;
             }
@@ -383,61 +384,6 @@ public class PlayerLogic : NetworkBehaviour
         }
     }
 
-    private void HorizontalMovementSound()
-    {
-        isGrounded = isTouchingTheGround && !selfMovement.isAttacking;
-
-        if (isGrounded && Time.time - timeStampRunAccel > 0.2f)
-        {
-            if (footStepFlag)
-            {
-                Debug.Log("play");
-                SoundManager.Instance.PlaySoundEvent("PlayerFootstep", playerFootstepSource);
-                footStepFlag = false;
-            }
-        }
-        else
-        {
-            if (!footStepFlag)
-            {
-                playerFootstepSource.Stop();
-                footStepFlag = true;
-            }
-        }
-
-        if (isTouchingTheGround)
-        {
-            if (touchingGroundFlag)
-            {
-                SoundManager.Instance.PlaySoundEvent("PlayerJumpOff", playerSource);
-                touchingGroundFlag = false;
-                footStepFlag = false;
-            }
-        }
-        else
-        {
-            touchingGroundFlag = true;
-        }
-
-        
-        if (isGrounded)
-        {
-            selfMovement.Decelerate(Time.time - timeStampRunDecel);
-            timeStampRunAccel = Time.time;
-        }
-        else
-        {
-            timeStampRunDecel = Time.time;
-        }
-
-        //Attack Logic
-        if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking && selfMovement.isAttackReset && !selfMovement.isAttackInCooldown && !selfMenu.menuIsOpen)
-        {
-            AttackInput();
-        }
-    }
-
-
     public Vector3 GetHorizontalVector(Vector3 originVector)
     {
         Vector3 horizontalVector = new Vector3(originVector.x, 0, originVector.z);
@@ -495,7 +441,7 @@ public class PlayerLogic : NetworkBehaviour
                 selfMovement.ApplyGravity();
                 if (Input.GetKeyDown(selfParams.jump) && !isJumping && !isAttachToWall)
                 {
-                    SoundManager.Instance.PlaySoundEvent("PlayerJump", playerSource);
+                    CmdPlayerSource("PlayerJump");
                     selfMovement.Jump();
                 }
 
@@ -549,7 +495,8 @@ public class PlayerLogic : NetworkBehaviour
                 selfMovement.ApplyGravity();
                 if (Input.GetAxis("LT") > 0f && jumpTriggerValueDelta == 0f && !isJumping && !isAttachToWall)
                 {
-                    SoundManager.Instance.PlaySoundEvent("PlayerJump", playerSource);
+                    //SoundManager.Instance.PlaySoundEvent("PlayerJump", playerSource);
+                    CmdPlayerSource("PlayerJump");
                     selfMovement.Jump();
                 }
 
@@ -610,7 +557,8 @@ public class PlayerLogic : NetworkBehaviour
 		}
         if (Input.GetMouseButtonDown(selfParams.attackMouseInput) && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown)
         {
-            SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
+            //SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
+            CmdPlayerSource("PlayerPunchCharge");
             hasStartedCharge = true;
         }
         //Attack load
@@ -643,8 +591,9 @@ public class PlayerLogic : NetworkBehaviour
             CmdShowLoadingPunchEnd();
             hasStartedCharge = false;
             punchChargeDisplay.gameObject.SetActive(false);
-            SoundManager.Instance.PlaySoundEvent("PlayerPunch", playerSource);
-            SoundManager.Instance.StopSoundWithDelay(playerSource, 0.2f);
+            //SoundManager.Instance.PlaySoundEvent("PlayerPunch", playerSource);
+            //SoundManager.Instance.StopSoundWithDelay(playerSource, 0.2f);
+            CmdPlayerSource("PlayerPunch");
             selfMovement.Attack(ratioAttack);
             timeAttack = 0;
             ratioAttack = 0;
@@ -655,8 +604,9 @@ public class PlayerLogic : NetworkBehaviour
 	{
         if (Input.GetAxis("RT") > 0 && attackTriggerValueDelta == 0f && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown)
         {
-            SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
-            hasStartedCharge = true;
+            //SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
+            CmdPlayerSource("PlayerPunchCharge");
+             hasStartedCharge = true;
         }
         //Attack load
         if (Input.GetAxis("RT") > 0f && hasStartedCharge)
@@ -678,8 +628,9 @@ public class PlayerLogic : NetworkBehaviour
             CmdShowLoadingPunchEnd();
             hasStartedCharge = false;
             punchChargeDisplay.gameObject.SetActive(false);
-            SoundManager.Instance.PlaySoundEvent("PlayerPunch", playerSource);
-            SoundManager.Instance.StopSoundWithDelay(playerSource, 0.2f);
+            //SoundManager.Instance.PlaySoundEvent("PlayerPunch", playerSource);
+            //SoundManager.Instance.StopSoundWithDelay(playerSource, 0.2f);
+            CmdPlayerSource("PlayerPunch");
             selfMovement.Attack(ratioAttack);
             timeAttack = 0;
             ratioAttack = 0;
@@ -750,11 +701,11 @@ public class PlayerLogic : NetworkBehaviour
             selfCollisionParent.transform.localRotation = spawnPoint.rotation;
             selfCamera.localRotation = spawnPoint.rotation;
 
-            //Debug.Log(spawnPoint.position);
-            //Debug.Log("Spawn");
 
             //Tp player to the spwan point
             selfSmoothSync.teleportOwnedObjectFromOwner();
+
+            Quaternion startRot = selfCamera.localRotation;
 
             //Create timer before restart player
             hudTextPlayer.gameObject.SetActive(true);
@@ -768,6 +719,10 @@ public class PlayerLogic : NetworkBehaviour
             }
             roundStarted = true;
             hudTextPlayer.gameObject.SetActive(false);
+
+            //adjust Camera rotation
+            xRotation = startRot.eulerAngles.x;
+            yRotation = startRot.eulerAngles.y;
 
             if (GameObject.Find("Analytics") != null)
             {
@@ -980,6 +935,57 @@ public class PlayerLogic : NetworkBehaviour
         
     }
 
+    //Sound in network
+
+    //Use this for playing audio over network with PlayerSource AudioSource
+    [Command(requiresAuthority =false)]
+    private void CmdPlayerSource(string thisEventName)
+    {
+        RpcPlayerSource(thisEventName);
+    }
+    [ClientRpc]
+    private void RpcPlayerSource(string thisEventName)
+    {
+        SoundManager.Instance.PlaySoundEvent(thisEventName, playerSource);
+    }
+
+    //Use this for playing audio over network with PlayerFootstepSource AudioSource
+    [Command(requiresAuthority = false)]
+    private void CmdPlayerFootstepSource(string thisEventName)
+    {
+        RpcPlayerFootstepSource(thisEventName);
+    }
+    [ClientRpc]
+    private void RpcPlayerFootstepSource(string thisEventName)
+    {
+        SoundManager.Instance.PlaySoundEvent(thisEventName, playerFootstepSource);
+    }
+
+    //Use this to stop audio over network with PlayerSource AudioSource
+    [Command]
+    private void CmdStopPlayerSource()
+    {
+        RpcStopPlayerSource();
+    }
+
+    [ClientRpc]
+    private void RpcStopPlayerSource()
+    {
+        playerSource.Stop();
+    }
+
+    //Use this to stop audio over network with PlayerFootstepSource AudioSource
+    [Command]
+    private void CmdStopPlayerFootstepSource()
+    {
+        RpcStopPlayerFootstepSource();
+    }
+
+    [ClientRpc]
+    private void RpcStopPlayerFootstepSource()
+    {
+        playerFootstepSource.Stop();
+    }
 
     #endregion
 
