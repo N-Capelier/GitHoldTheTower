@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
 
     WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
 
-    private float punchRatio;
+    [HideInInspector] public float punchRatio;
 
     private void FixedUpdate()
     {
