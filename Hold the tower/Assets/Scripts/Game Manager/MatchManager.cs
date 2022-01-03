@@ -30,6 +30,11 @@ public class MatchManager : NetworkBehaviour
     [SerializeField]
     public string blueTeamTextWin = "Blue team win the game";
 
+    [SerializeField]
+    private GameObject redObjects;
+    [SerializeField]
+    private GameObject blueObjects;
+
     void Start()
     {
         redGoal.goalTeam = LobbyPlayerLogic.TeamName.Red;
@@ -112,5 +117,15 @@ public class MatchManager : NetworkBehaviour
                 }
             }
         }
+    }
+
+    public void AllySideBlue()
+    {
+
+    }
+
+    public void AllySideRed()
+    {
+
     }
 }

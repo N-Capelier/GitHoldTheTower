@@ -144,6 +144,7 @@ public class PlayerLogic : NetworkBehaviour
             if (teamName == LobbyPlayerLogic.TeamName.Blue)
             {
                 teamColorIndicator.color = Color.blue;
+                
             }
             else
             {
@@ -775,7 +776,7 @@ public class PlayerLogic : NetworkBehaviour
         {
             NetworkManager.singleton.StopClient();
         }
-        Destroy(GameObject.Find("SceneManager"));
+        Destroy(GameObject.Find("ServerManager"));
         SceneManager.LoadScene("LobbyScene");
     }
 
