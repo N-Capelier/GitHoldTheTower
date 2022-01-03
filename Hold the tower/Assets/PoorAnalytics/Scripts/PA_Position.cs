@@ -15,6 +15,8 @@ public class PA_Position : MonoBehaviour
     public List<Transform> analyticGameObjectPosition;
 
     private bool onceInit = true;
+    [HideInInspector]
+    public bool startWrite = true;
 
     private void Start()
     {
@@ -53,7 +55,7 @@ public class PA_Position : MonoBehaviour
             }
 
             ownDeltaTime += Time.deltaTime;
-            if (ownDeltaTime >= timeEachBreak)
+            if (ownDeltaTime >= timeEachBreak && startWrite)
             {
                 WriteAllObjectPosition();
                 ownDeltaTime = 0f;
@@ -77,6 +79,15 @@ public class PA_Position : MonoBehaviour
         {
             writer.Write(objPosition.position.x.ToString() + "|" + objPosition.position.y.ToString() + "|" + objPosition.position.z.ToString() + ";");
         }
+        writer.Write("\n");
+        writer.Close();
+    }
+
+    public void WriteNewRound()
+    {
+        startWrite = false;
+        StreamWriter writer = new StreamWriter(fileToStorePosition, true);
+        writer.Write("++New Round++");
         writer.Write("\n");
         writer.Close();
     }

@@ -7,7 +7,16 @@ public class GoalBehavior : NetworkBehaviour
     [HideInInspector]
     public LobbyPlayerLogic.TeamName goalTeam;
     public MatchManager matchManager;
-    
+
+    public PA_Position pa_pos;
+
+    public void Start()
+    {
+        if(GameObject.Find("Analytics") != null)
+        {
+            pa_pos = GameObject.Find("Analytics").GetComponent<PA_Position>();
+        }
+    }
 
     private void OnTriggerEnter(Collider other) //Add a point to the team
     {
@@ -29,6 +38,8 @@ public class GoalBehavior : NetworkBehaviour
                 }
                 other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
                 CmdTeamWin(textToShow);
+
+                
             }
         }
         
