@@ -352,6 +352,7 @@ public class SoundManager : Singleton<SoundManager>
 
 
 
+
     //Fontion pour jouer un son simplement.
     /*       public void PlaySoundEffect(SoundEvent playedEvent)
     {
