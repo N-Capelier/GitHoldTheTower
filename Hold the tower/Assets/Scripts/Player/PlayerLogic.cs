@@ -78,6 +78,9 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     private Material blueTeamMaterial;
 
+    [SerializeField]
+    private Image loadingScreen;
+
     [SyncVar]
     public LobbyPlayerLogic.TeamName teamName;
     [SyncVar]
@@ -142,6 +145,8 @@ public class PlayerLogic : NetworkBehaviour
             selfCamera.gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
 
+            loadingScreen.gameObject.SetActive(true);
+
             if (teamName == LobbyPlayerLogic.TeamName.Blue)
             {
                 teamColorIndicator.color = Color.blue;
@@ -179,11 +184,12 @@ public class PlayerLogic : NetworkBehaviour
 
         if (hasAuthority && roundStarted)
         {
+            //Stop Movement if in the menu
             if (!selfMenu.menuIsOpen)
             {
                 fpsView();
+
             }
-            
             VerticalMovement();
             HorizontalMovement();
 
@@ -697,6 +703,11 @@ public class PlayerLogic : NetworkBehaviour
         {
             Transform spawnPoint;
             spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(spawnPosition);
+
+            if (loadingScreen.color.a == 1)
+            {
+                loadingScreen.CrossFadeAlpha(0, 0.5f, false);
+            }
 
             transform.position = spawnPoint.position; //Obligatoire, sinon ne trouve pas le spawner à la premirèe frame
             selfCollisionParent.transform.localRotation = spawnPoint.rotation;
