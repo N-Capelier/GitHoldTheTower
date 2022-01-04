@@ -1,7 +1,10 @@
 using Mirror;
+using UnityEngine;
 
-public class ThemeInteration : NetworkBehaviour
+public class ThemeInteraction : NetworkBehaviour
 {
+	[SerializeField] GameObject visualShockwavePrefab;
+
 	[Command(requiresAuthority = false)]
 	public void CmdExplode(int _index)
 	{
@@ -15,15 +18,16 @@ public class ThemeInteration : NetworkBehaviour
 	}
 
 	[Command(requiresAuthority = false)]
-	public void CmdInstantiateShockwave()
+	public void CmdInstantiateShockwave(Vector3 _spawnPoint, float _punchRatio)
 	{
-		RpcInstantiateShockwave();
+		RpcInstantiateShockwave(_spawnPoint, _punchRatio);
 	}
 
 	[ClientRpc]
-	public void RpcInstantiateShockwave()
+	public void RpcInstantiateShockwave(Vector3 _spawnPoint, float _punchRatio)
 	{
-
+		GameObject _shockWave = Instantiate(visualShockwavePrefab, _spawnPoint, Quaternion.identity);
+		_shockWave.GetComponent<ShockwaveCollider>().Shock(_punchRatio);
 	}
 
 	[Command(requiresAuthority = false)]
