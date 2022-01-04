@@ -712,6 +712,7 @@ public class PlayerLogic : NetworkBehaviour
         if (hasFlag)
         {
             SoundManager.Instance.PlaySoundEvent("LevelOverdriveDroped");
+            SoundManager.Instance.actualMusic.audioSource.volume = selfParams.effectsVolume;
             CmdDropFlag();
             CmdShowFlagInGame();
         }
@@ -852,6 +853,7 @@ public class PlayerLogic : NetworkBehaviour
     {
         hasFlag = true;
         SoundManager.Instance.PlaySoundEvent("LevelOverdriveTaken");
+        SoundManager.Instance.actualMusic.audioSource.volume = selfParams.effectsVolume;
     }
 
     [Command(requiresAuthority = false)]
@@ -984,6 +986,7 @@ public class PlayerLogic : NetworkBehaviour
     private void RpcPlayerSource(string thisEventName)
     {
         SoundManager.Instance.PlaySoundEvent(thisEventName, playerSource);
+        SoundManager.Instance.actualMusic.audioSource.volume = selfParams.effectsVolume;
     }
 
     //Use this for playing audio over network with PlayerFootstepSource AudioSource
@@ -996,6 +999,7 @@ public class PlayerLogic : NetworkBehaviour
     private void RpcPlayerFootstepSource(string thisEventName)
     {
         SoundManager.Instance.PlaySoundEvent(thisEventName, playerFootstepSource);
+        SoundManager.Instance.actualMusic.audioSource.volume = selfParams.effectsVolume;
     }
 
     //Use this to stop audio over network with PlayerSource AudioSource

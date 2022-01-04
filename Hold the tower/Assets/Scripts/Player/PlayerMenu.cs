@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerMenu : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class PlayerMenu : MonoBehaviour
 
     [SerializeField]
     private PlayerLogic selfLogic;
+    [SerializeField]
+    private ScriptableParamsPlayer selfParams;
 
     [SerializeField]
     private GameObject menuHud;
@@ -22,6 +25,13 @@ public class PlayerMenu : MonoBehaviour
     private GameObject blackLoadScreen;
     [SerializeField]
     private GameObject menuBase;
+    [SerializeField]
+    private GameObject menuSound;
+
+    [SerializeField]
+    private Text volumeMusicText;
+    [SerializeField]
+    private Text volumeEffectsText;
 
     [HideInInspector]
     public bool menuIsOpen = false;
@@ -54,6 +64,7 @@ public class PlayerMenu : MonoBehaviour
                 menuSettingsPlayer.SetActive(false);
                 menuInput.SetActive(false);
                 menuBase.SetActive(false);
+                menuSound.SetActive(false);
             }
         }
     }
@@ -65,6 +76,7 @@ public class PlayerMenu : MonoBehaviour
         menuMainPlayer.SetActive(false);
         menuSettingsPlayer.SetActive(false);
         menuInput.SetActive(false);
+
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -87,6 +99,7 @@ public class PlayerMenu : MonoBehaviour
         menuMainPlayer.SetActive(false);
         menuSettingsPlayer.SetActive(true);
         menuInput.SetActive(false);
+        menuSound.SetActive(false);
     }
 
     public void OpenMainMenu()
@@ -101,5 +114,10 @@ public class PlayerMenu : MonoBehaviour
         menuInput.SetActive(true);
     }
 
+    public void OpenSoundSettings()
+    {
+        menuSound.SetActive(true);
+        menuSettingsPlayer.SetActive(false);
+    }
 
 }
