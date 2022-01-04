@@ -161,7 +161,7 @@ public class LevelEditorWindow : EditorWindow
 		}
 		else if (GUILayout.Button("Create Theme", buttonStyle))
 		{
-			ChangeMaterials();
+			CreateTheme();
 		}
 	}
 
