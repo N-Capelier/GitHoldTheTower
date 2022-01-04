@@ -76,7 +76,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - F_GlobalAlpha: 0.8
+    - F_GlobalAlpha: 0.058
     - F_Tilling: 25
     - F_TimeSpeed: 10
     - _AlphaClip: 0
@@ -108,7 +108,7 @@ Material:
     m_Colors:
     - EmissiveColor: {r: 0.64569163, g: 0.1745283, b: 1, a: 0}
     - GlobalColor: {r: 0.2797683, g: 0.07058822, b: 0.4627451, a: 0}
-    - V2_AlphaGradient: {r: 0, g: 1, b: 0, a: 0}
+    - V2_AlphaGradient: {r: 0, g: 0.6, b: 0, a: 0}
     - V2_TopGradient: {r: 0, g: 1, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
