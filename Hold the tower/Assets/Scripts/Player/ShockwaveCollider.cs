@@ -61,7 +61,7 @@ public class ShockwaveCollider : MonoBehaviour
 		expanding = true;
 	}
 
-	private void OnTriggerStay(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
 		if (isVisual)
 			return;
