@@ -150,6 +150,7 @@ public class PlayerLogic : NetworkBehaviour
             else
             {
                 teamColorIndicator.color = Color.red;
+                matchManager.GetComponent<LandMarkManager>().SwapColor();
             }
             //Own player is blue
             playerCollider.transform.GetComponent<MeshRenderer>().material = blueTeamMaterial;
