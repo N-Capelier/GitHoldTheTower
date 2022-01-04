@@ -50,6 +50,8 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     public Image punchCooldownDisplay;
     [SerializeField]
+    public Image punchCooldownSecondDisplay;
+    [SerializeField]
     private Text hudTextPlayer;
     [SerializeField]
     private Text scoreTextBlue;
@@ -681,6 +683,7 @@ public class PlayerLogic : NetworkBehaviour
     public void UpdatePunchCooldown(float cdTime)
     {
         punchCooldownDisplay.fillAmount = cdTime / selfParams.punchCooldown;
+        punchCooldownSecondDisplay.fillAmount = cdTime / selfParams.punchCooldown;
     }
 
     #endregion
