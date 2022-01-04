@@ -586,6 +586,7 @@ public class PlayerLogic : NetworkBehaviour
 
             punchChargeDistancePreview.SetActive(true);
             punchChargeDistancePreview2.SetActive(true);
+            punchChargeSliderLine.SetActive(true);
             if (timeAttack > 0.2f)
             {
                 punchChargeDisplay.gameObject.SetActive(true);
@@ -612,6 +613,8 @@ public class PlayerLogic : NetworkBehaviour
                 punchChargeDistancePreview2.transform.rotation = Quaternion.Inverse(selfCamera.rotation);
                 punchChargeDistancePreview.transform.localPosition = chargePreviewStartPos + Vector3.forward * 0.0046923076923077f * selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(ratioAttack) / selfParams.punchSpeedByCharge.Evaluate(1); // alors ce chiffre bizarre je l'ai calculer rapport à la courbe de velocité, c'est le coefficient de la distance par rapport à la vitesse du punch
                 punchChargeDistancePreview2.transform.localPosition = punchChargeDistancePreview.transform.localPosition;
+                punchChargeSliderLine.transform.localPosition = (punchChargeDistancePreview.transform.localPosition + chargePreviewStartPos) / 2;
+                punchChargeSliderLine.transform.localScale = new Vector3(punchChargeSliderLine.transform.localScale.x, punchChargeSliderLine.transform.localScale.y, punchChargeDistancePreview.transform.localPosition.z);
             }
 
         }
@@ -623,6 +626,7 @@ public class PlayerLogic : NetworkBehaviour
             punchChargeDisplay.gameObject.SetActive(false);
             punchChargeDistancePreview.SetActive(false);
             punchChargeDistancePreview2.SetActive(false);
+            punchChargeSliderLine.SetActive(false);
             //SoundManager.Instance.PlaySoundEvent("PlayerPunch", playerSource);
             //SoundManager.Instance.StopSoundWithDelay(playerSource, 0.2f);
             CmdPlayerSource("PlayerPunch");
