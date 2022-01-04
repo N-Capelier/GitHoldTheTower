@@ -55,7 +55,7 @@ public class SensorPlayer : MonoBehaviour
 			{
                 if(block.buttonActiveTerrainIndex == block.loadedTerrainID)
 				{
-                    GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdSwitchArea(block.blockID);
+                    GameObject.Find("GameManager").GetComponent<ThemeInteraction>().CmdSwitchArea(block.blockID);
                     block.StartButtonActivationEffect();
                 }
 				return;
@@ -65,17 +65,18 @@ public class SensorPlayer : MonoBehaviour
 			{
                 Vector3 _shockwaveSpawnPoint = RayCollisionPoint(other);
 
+                GameObject.Find("GameManager").GetComponent<ThemeInteraction>().CmdInstantiateShockwave(_shockwaveSpawnPoint, selfMovement.punchRatio);
+
                 if (selfMovement.punchRatio == 1f)
                 {
                     GameObject _shockWave = Instantiate(shockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
                     _shockWave.GetComponent<ShockwaveCollider>().Shock(selfMovement.punchRatio);
-                    GameObject.Find("GameManager").GetComponent<ThemeInteration>().CmdExplode(block.blockID);
+                    GameObject.Find("GameManager").GetComponent<ThemeInteraction>().CmdExplode(block.blockID);
                 }
                 else
                 {
                     GameObject _shockWave = Instantiate(shockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
-                    ShockwaveCollider _shockWaveCollider = _shockWave.GetComponent<ShockwaveCollider>();
-                    _shockWaveCollider.Shock(selfMovement.punchRatio);
+                    _shockWave.GetComponent<ShockwaveCollider>().Shock(selfMovement.punchRatio);
                 }
             }
 		}

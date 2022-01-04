@@ -66,6 +66,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   ThemeObject: {fileID: 0}
+  networkTime: 0
   timerChange: 5
 --- !u!114 &4063080022727842472
 MonoBehaviour:
@@ -92,6 +93,8 @@ MonoBehaviour:
   blueTeamTextScore: Blue Team Score
   redTeamTextWin: Red team win the game
   blueTeamTextWin: Blue team win the game
+  redObjects: {fileID: 0}
+  blueObjects: {fileID: 0}
 --- !u!114 &1363016482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,3 +109,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  visualShockwavePrefab: {fileID: 7122243114621868103, guid: 4daa25df340b5fc4188a8c2cfae67436, type: 3}
