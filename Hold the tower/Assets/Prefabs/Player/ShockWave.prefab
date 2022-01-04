@@ -45,10 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcb5933a6a3fbe54f9203179dfd7b66b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minRadius: 0.05
+  isVisual: 0
+  minRadius: 0.1
   maxRadius: 5
-  maxExpandDuration: 2
+  maxExpandDuration: 1
   sphereCollider: {fileID: 422133644557816049}
+  shockwaveRenderer: {fileID: 0}
 --- !u!135 &422133644557816049
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -60,7 +62,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.05
+  m_Radius: 0.1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5592012084399055836
 Rigidbody:

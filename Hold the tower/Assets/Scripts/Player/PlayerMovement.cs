@@ -401,6 +401,8 @@ public class PlayerMovement : MonoBehaviour
         float finalBaseSpeed = selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(ratio);
         punchRatio = ratio;
 
+        //Vector3 startPos = transform.position; pour calculer la distance du punch
+
         float _time = 0;
         while(_time <selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time && !stopPunchFlag)
         {
@@ -422,6 +424,8 @@ public class PlayerMovement : MonoBehaviour
         selfRbd.velocity = directionAttack * selfParams.velocityCurve.Evaluate(selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time) * Time.fixedDeltaTime * finalBaseSpeed;
         isAttacking = false;
         isPerfectTiming = false;
+        //startPos = transform.position - startPos;
+        //Debug.Log("Punch Distance : " + startPos.magnitude);
         yield return null;
     }
 
