@@ -18,6 +18,10 @@ public class PlayerMenu : MonoBehaviour
     private GameObject menuSettingsPlayer;
     [SerializeField]
     private GameObject menuInput;
+    [SerializeField]
+    private GameObject blackLoadScreen;
+    [SerializeField]
+    private GameObject menuBase;
 
     [HideInInspector]
     public bool menuIsOpen = false;
@@ -34,11 +38,13 @@ public class PlayerMenu : MonoBehaviour
         if (Input.GetKeyDown(menuKey))
         {
             menuIsOpen = !menuIsOpen;
+            blackLoadScreen.SetActive(false);
             if (menuIsOpen)
             {
                 Cursor.lockState = CursorLockMode.None;
                 menuHud.SetActive(true);
                 menuMainPlayer.SetActive(true);
+                menuBase.SetActive(true);
             }
             else
             {
@@ -47,16 +53,19 @@ public class PlayerMenu : MonoBehaviour
                 menuMainPlayer.SetActive(false);
                 menuSettingsPlayer.SetActive(false);
                 menuInput.SetActive(false);
+                menuBase.SetActive(false);
             }
         }
     }
 
     public void CloseMenu()
     {
+        menuIsOpen = false;
         menuHud.SetActive(false);
         menuMainPlayer.SetActive(false);
         menuSettingsPlayer.SetActive(false);
         menuInput.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void BackToMenu()

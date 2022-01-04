@@ -15,7 +15,7 @@ public class BindManager : MonoBehaviour
             if (Input.anyKeyDown && IgnoreKey())
             {
                 BindSave("front");
-                isBindingForward = true;
+                isBindingForward = false;
             }
 
             isBindingBehind = false;
@@ -29,7 +29,7 @@ public class BindManager : MonoBehaviour
             if (Input.anyKeyDown && IgnoreKey())
             {
                 BindSave("behind");
-                isBindingBehind = true;
+                isBindingBehind = false;
             }
             isBindingLeft = false;
             isBindingRight = false;
@@ -42,7 +42,7 @@ public class BindManager : MonoBehaviour
             if (Input.anyKeyDown && IgnoreKey())
             {
                 BindSave("left");
-                isBindingLeft = true;
+                isBindingLeft = false;
             }
 
             isBindingBehind = false;
@@ -56,7 +56,7 @@ public class BindManager : MonoBehaviour
             if (Input.anyKeyDown && IgnoreKey())
             {
                 BindSave("right");
-                isBindingRight = true;
+                isBindingRight = false;
             }
 
             isBindingBehind = false;
@@ -70,7 +70,7 @@ public class BindManager : MonoBehaviour
             if (Input.anyKeyDown && IgnoreKey())
             {
                 BindSave("jump");
-                isBindingJump = true;
+                isBindingJump = false;
             }
 
             isBindingBehind = false;
@@ -102,6 +102,12 @@ public class BindManager : MonoBehaviour
     public void BindJump()
     {
         isBindingJump = true;
+    }
+
+    public void BindSensivity(float sensivity)
+    {
+        Debug.Log(sensivity);
+        playerInput.mouseSensivity = sensivity;
     }
 
 
