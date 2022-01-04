@@ -71,6 +71,7 @@ public class ShockwaveCollider : MonoBehaviour
 			BlockBehaviour block = other.GetComponent<BlockBehaviour>();
 			if(block.isDestroyable && !block.isExploding)
 			{
+				block.isExploding = true;
 				GameObject.Find("GameManager").GetComponent<ThemeInteraction>().CmdWaitAndExplode(block.blockID);
 			}
 		}

@@ -123,7 +123,6 @@ public class BlockBehaviour : MonoBehaviour
 	{
 		gameObject.layer = LayerMask.NameToLayer("Default");
 		boxCollider.enabled = false;
-
 		SoundManager.Instance.PlaySoundEvent("LevelBlockDestroyed");
 
 		float _elapsedTime = 0f;
