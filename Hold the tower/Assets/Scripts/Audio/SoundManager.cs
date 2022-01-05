@@ -137,6 +137,7 @@ public class SoundManager : Singleton<SoundManager>
 
             soundRef.sound = thisEvent.sounds[temp];
             soundRef.ApplySoundToAudioSource(thisEvent.sounds[temp], thisEvent.isLoop, sfxMixer);
+            
         }
         else
         {
@@ -154,6 +155,8 @@ public class SoundManager : Singleton<SoundManager>
 
         //On met la référence du son joué
         actualMusic = soundRef;
+
+        soundRef.audioSource.spatialize = thisEvent.isLocalized;
 
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
@@ -192,6 +195,7 @@ public class SoundManager : Singleton<SoundManager>
             soundRef.sound = soundEventList.FindEvent(0).sounds[0];
         }
 
+        soundRef.audioSource.spatialize = thisEvent.isLocalized;
 
         //On met la référence du son joué
         actualMusic = soundRef;
@@ -238,6 +242,8 @@ public class SoundManager : Singleton<SoundManager>
         //On met la référence du son joué
         actualMusic = soundRef;
 
+        soundRef.audioSource.spatialize = thisEvent.isLocalized;
+
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
 
@@ -277,6 +283,8 @@ public class SoundManager : Singleton<SoundManager>
 
         //On met la référence du son joué
         actualMusic = soundRef;
+
+        soundRef.audioSource.spatialize = thisEvent.isLocalized;
 
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
@@ -318,6 +326,8 @@ public class SoundManager : Singleton<SoundManager>
         //On met la référence du son joué
         actualMusic = soundRef;
 
+        soundRef.audioSource.spatialize = thisEvent.isLocalized;
+
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
 
@@ -354,6 +364,8 @@ public class SoundManager : Singleton<SoundManager>
             {
                 soundRef.sound = soundEventList.FindEvent(0).sounds[0];
             }
+
+            soundRef.audioSource.spatialize = thisEvent.isLocalized;
 
             //On joue le son !
             soundRef.audioSource.Play();
