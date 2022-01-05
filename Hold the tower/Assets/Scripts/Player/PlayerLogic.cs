@@ -911,24 +911,10 @@ public class PlayerLogic : NetworkBehaviour
     {
         hasFlag = true;
         RpcPlayGlobalSound("LevelOverdriveTaken");
-        RpcGetFlag();
     }
 
     [Command(requiresAuthority = false)]
     public void CmdDropFlag()
-    {
-        hasFlag = false;
-        RpcDropFlag();
-    }
-
-    [ClientRpc]
-    public void RpcGetFlag()
-    {
-        hasFlag = true;
-    }
-
-    [ClientRpc]
-    public void RpcDropFlag()
     {
         hasFlag = false;
     }
