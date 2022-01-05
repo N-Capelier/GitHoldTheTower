@@ -117,6 +117,7 @@ MonoBehaviour:
   explosionTime: 2
   deathZoneY: -100
   isAlive: 0
+  isExploding: 0
   isButton: 0
   buttonActiveTerrainIndex: 0
   buttonManager: {fileID: 0}
