@@ -50,8 +50,6 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     public Image punchCooldownDisplay;
     [SerializeField]
-    public Image punchCooldownSecondDisplay;
-    [SerializeField]
     private Text hudTextPlayer;
     [SerializeField]
     private Text scoreTextBlue;
@@ -89,8 +87,6 @@ public class PlayerLogic : NetworkBehaviour
 
     [SerializeField]
     private Image loadingScreen;
-    [SerializeField]
-    public GameObject HUD;
 
     [SyncVar]
     public LobbyPlayerLogic.TeamName teamName;
@@ -142,7 +138,7 @@ public class PlayerLogic : NetworkBehaviour
         chargePreviewStartPos = punchChargeDistancePreview.transform.localPosition;
 
         //Analytics
-        if (GameObject.Find("Analytics") != null)
+        if(GameObject.Find("Analytics") != null)
         {
             GameObject.Find("Analytics").GetComponent<PA_Position>().analyticGameObjectPosition.Add(this.transform);
         }
@@ -160,12 +156,11 @@ public class PlayerLogic : NetworkBehaviour
             Cursor.lockState = CursorLockMode.Locked;
 
             loadingScreen.gameObject.SetActive(true);
-            HUD.SetActive(true);
 
             if (teamName == LobbyPlayerLogic.TeamName.Blue)
             {
                 teamColorIndicator.color = Color.blue;
-
+                
             }
             else
             {
@@ -180,7 +175,7 @@ public class PlayerLogic : NetworkBehaviour
             selfFirstPersonView.SetActive(false);
 
             //Make blue if ally, else make red him red
-            if (GameObject.Find("ServerManager").GetComponent<MyNewNetworkManager>().playerTeamName == teamName)
+            if(GameObject.Find("ServerManager").GetComponent<MyNewNetworkManager>().playerTeamName == teamName)
             {
                 playerCollider.transform.GetComponent<MeshRenderer>().material = blueTeamMaterial;
             }
@@ -188,7 +183,7 @@ public class PlayerLogic : NetworkBehaviour
             {
                 playerCollider.transform.GetComponent<MeshRenderer>().material = redTeamMaterial;
             }
-
+            
         }
 
     }
@@ -215,7 +210,7 @@ public class PlayerLogic : NetworkBehaviour
             }
         }
 
-        if (!hasAuthority)
+        if(!hasAuthority)
         {
             //HorizontalMovementSound();
         }
@@ -230,12 +225,12 @@ public class PlayerLogic : NetworkBehaviour
         float mouseX;
         float mouseY;
         if (Input.GetJoystickNames().Length > 0)
-        {
+		{
             mouseX = Input.GetAxis("RHorizontal") * Time.deltaTime * selfParams.aimJoystickSensitivity;
             mouseY = Input.GetAxis("RVertical") * Time.deltaTime * selfParams.aimJoystickSensitivity;
-        }
+		}
         else
-        {
+		{
             mouseX = Input.GetAxis("Mouse X") * selfParams.mouseSensivity * Time.deltaTime;
             mouseY = Input.GetAxis("Mouse Y") * selfParams.mouseSensivity * Time.deltaTime;
         }
@@ -243,11 +238,11 @@ public class PlayerLogic : NetworkBehaviour
 #if UNITY_EDITOR
 
         if (Input.GetJoystickNames().Length <= 0)
-        {
+		{
             mouseX = Input.GetAxis("Mouse X") * selfParams.mouseSensivity * 4f * Time.deltaTime;
             mouseY = Input.GetAxis("Mouse Y") * selfParams.mouseSensivity * 4f * Time.deltaTime;
         }
-#endif
+        #endif
 
 
         yRotation += mouseX;
@@ -264,9 +259,9 @@ public class PlayerLogic : NetworkBehaviour
     {
         isGrounded = isTouchingTheGround && !selfMovement.isAttacking;
 
-        if (isGrounded && Time.time - timeStampRunAccel > 0.2f)
+        if(isGrounded && Time.time - timeStampRunAccel > 0.2f)
         {
-            if (footStepFlag)
+            if(footStepFlag)
             {
                 //SoundManager.Instance.PlaySoundEvent("PlayerFootstep", playerFootstepSource);
                 CmdPlayerFootstepSource("PlayerFootstep");
@@ -275,16 +270,16 @@ public class PlayerLogic : NetworkBehaviour
         }
         else
         {
-            if (!footStepFlag)
+            if(!footStepFlag)
             {
                 CmdStopPlayerFootstepSource();
                 footStepFlag = true;
             }
         }
 
-        if (isTouchingTheGround)
+        if(isTouchingTheGround)
         {
-            if (touchingGroundFlag)
+            if(touchingGroundFlag)
             {
                 CmdPlayerSource("PlayerJumpOff");
                 touchingGroundFlag = false;
@@ -301,31 +296,31 @@ public class PlayerLogic : NetworkBehaviour
             Vector3 keyDirection = Vector3.zero;
 
             if (Input.GetJoystickNames().Length > 0)
-            {
+			{
                 float _horizontal = Input.GetAxis("Horizontal");
                 float _vertical = Input.GetAxis("Vertical");
-                if (_vertical > 0)
-                {
+                if(_vertical > 0)
+				{
                     keyDirection += GetHorizontalVector(selfCollisionParent.transform.forward);//a changer ici
                     selfMovement.CanClimb();
                 }
-                else if (_vertical < 0)
-                {
+                else if(_vertical < 0)
+				{
                     keyDirection += GetHorizontalVector(-selfCollisionParent.transform.forward);
                 }
-                if (_horizontal > 0)
-                {
+                if(_horizontal > 0)
+				{
                     keyDirection += GetHorizontalVector(selfCollisionParent.transform.right);
                 }
-                else if (_horizontal < 0)
-                {
+                else if(_horizontal < 0)
+				{
                     keyDirection += GetHorizontalVector(-selfCollisionParent.transform.right);
                 }
 
                 keyDirection.Normalize();
 
-                if (keyDirection != Vector3.zero)
-                {
+                if(keyDirection != Vector3.zero)
+				{
                     if (isGrounded)
                     {
                         selfMovement.Move(keyDirection, Time.time - timeStampRunAccel);
@@ -336,7 +331,7 @@ public class PlayerLogic : NetworkBehaviour
                     }
                 }
                 else
-                {
+				{
                     if (isGrounded)
                     {
                         selfMovement.Decelerate(Time.time - timeStampRunDecel);
@@ -412,14 +407,13 @@ public class PlayerLogic : NetworkBehaviour
         return horizontalVector.normalized;
     }
 
-    private bool isWallSliding;
     private void VerticalMovement()
     {
-        if (Input.GetJoystickNames().Length > 0)
-        {
+        if(Input.GetJoystickNames().Length > 0)
+		{
             VerticalMovementFromJoystick();
             return;
-        }
+		}
 
         if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking)
         {
@@ -433,39 +427,21 @@ public class PlayerLogic : NetworkBehaviour
                     {
                         if (!isAttachToWall)
                         {
-                            isAttachToWall = true;
-                            if (!IsLookingInWall())
-                            {
-                                if (selfMovement.SetWallSlideDirection())
-                                {
-                                    isWallSliding = true;
-                                }
-                            }
+                            selfMovement.SetWallSlideDirection();
                         }
-
-
-                        if (isWallSliding)
-                        {
-                            selfMovement.ApplyWallSlideForces();
-                        }
-                        else
-                        {
-                            selfMovement.ApplyWallAttachForces();
-                        }
+                        isAttachToWall = true;
+                        selfMovement.ApplyWallSlideForces();
                     }
                     else if (Input.GetKeyUp(selfParams.jump))
                     {
                         if (GetNearbyWallNormal() != Vector3.zero)
                         {
                             selfMovement.WallJump(GetNearbyWallNormal());
-                            isAttachToWall = false;
-                            isWallSliding = false;
                         }
                     }
                     else
                     {
                         isAttachToWall = false;
-                        isWallSliding = false;
                         selfMovement.ApplyGravity();
                     }
                 }
@@ -474,7 +450,6 @@ public class PlayerLogic : NetworkBehaviour
                     isAttachToWall = false;
                     selfMovement.ApplyGravity();
                     isTouchingWall = false;
-                    isWallSliding = false;
                 }
 
             }
@@ -492,15 +467,13 @@ public class PlayerLogic : NetworkBehaviour
                     selfMovement.isAttackReset = true;
                 }
                 isAttachToWall = false;
-                isWallSliding = false;
-                isTouchingWall = false;
             }
         }
 
     }
 
     void VerticalMovementFromJoystick()
-    {
+	{
         if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking)
         {
             if (!isGrounded)
@@ -570,8 +543,8 @@ public class PlayerLogic : NetworkBehaviour
     {
         Vector3 wallNormal = Vector3.zero;
 
-        Collider[] nearbyWalls = Physics.OverlapBox(transform.position, new Vector3(1f, 0.2f, 1f), Quaternion.identity, LayerMask.GetMask("Outlined"));
-        if (nearbyWalls.Length > 0)
+        Collider[] nearbyWalls = Physics.OverlapBox(transform.position, new Vector3(0.7f, 0.2f, 0.7f), Quaternion.identity, LayerMask.GetMask("Outlined"));
+        if(nearbyWalls.Length > 0)
         {
             RaycastHit wallHit;
             Vector3 wallPosDir = nearbyWalls[0].transform.position - transform.position;
@@ -584,33 +557,8 @@ public class PlayerLogic : NetworkBehaviour
                 wallNormal = wallHit.normal;
             }
         }
+
         return wallNormal;
-    }
-
-    public bool IsLookingInWall()
-    {
-        Vector3 wallNormal = GetNearbyWallNormal();
-        if (wallNormal != Vector3.zero)
-        {
-            float wallAngle = Vector3.SignedAngle(Vector3.right, wallNormal, Vector3.up);
-            float lookAngle = Vector3.SignedAngle(Vector3.right, GetHorizontalVector(selfCamera.forward).normalized, Vector3.up);
-
-            float angleDist = lookAngle - wallAngle;
-            angleDist = selfMovement.GetClampedAngle(angleDist);
-
-            if (Mathf.Abs(angleDist) > selfParams.wallJumpMinAngleToCancelDeviation)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            return true;
-        }
     }
 
     #endregion
@@ -619,11 +567,11 @@ public class PlayerLogic : NetworkBehaviour
 
     public void AttackInput()
     {
-        if (Input.GetJoystickNames().Length > 0)
-        {
+        if(Input.GetJoystickNames().Length > 0)
+		{
             AttackInputFromJoystick();
             return;
-        }
+		}
         if (Input.GetMouseButtonDown(selfParams.attackMouseInput) && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown)
         {
             //SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
@@ -638,13 +586,12 @@ public class PlayerLogic : NetworkBehaviour
 
             punchChargeDistancePreview.SetActive(true);
             punchChargeDistancePreview2.SetActive(true);
-            punchChargeSliderLine.SetActive(true);
             if (timeAttack > 0.2f)
             {
                 punchChargeDisplay.gameObject.SetActive(true);
             }
 
-            if (hasFlag)
+            if(hasFlag)
             {
                 ratioAttack = 0;
                 punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), 0);
@@ -665,8 +612,6 @@ public class PlayerLogic : NetworkBehaviour
                 punchChargeDistancePreview2.transform.rotation = Quaternion.Inverse(selfCamera.rotation);
                 punchChargeDistancePreview.transform.localPosition = chargePreviewStartPos + Vector3.forward * 0.0046923076923077f * selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(ratioAttack) / selfParams.punchSpeedByCharge.Evaluate(1); // alors ce chiffre bizarre je l'ai calculer rapport à la courbe de velocité, c'est le coefficient de la distance par rapport à la vitesse du punch
                 punchChargeDistancePreview2.transform.localPosition = punchChargeDistancePreview.transform.localPosition;
-                punchChargeSliderLine.transform.localPosition = (punchChargeDistancePreview.transform.localPosition + chargePreviewStartPos) / 2;
-                punchChargeSliderLine.transform.localScale = new Vector3(punchChargeSliderLine.transform.localScale.x, punchChargeSliderLine.transform.localScale.y, punchChargeDistancePreview.transform.localPosition.z);
             }
 
         }
@@ -678,7 +623,6 @@ public class PlayerLogic : NetworkBehaviour
             punchChargeDisplay.gameObject.SetActive(false);
             punchChargeDistancePreview.SetActive(false);
             punchChargeDistancePreview2.SetActive(false);
-            punchChargeSliderLine.SetActive(false);
             //SoundManager.Instance.PlaySoundEvent("PlayerPunch", playerSource);
             //SoundManager.Instance.StopSoundWithDelay(playerSource, 0.2f);
             CmdPlayerSource("PlayerPunch");
@@ -689,12 +633,12 @@ public class PlayerLogic : NetworkBehaviour
     }
 
     void AttackInputFromJoystick()
-    {
+	{
         if (Input.GetAxis("RT") > 0 && attackTriggerValueDelta == 0f && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown)
         {
             //SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
             CmdPlayerSource("PlayerPunchCharge");
-            hasStartedCharge = true;
+             hasStartedCharge = true;
         }
         //Attack load
         if (Input.GetAxis("RT") > 0f && hasStartedCharge)
@@ -733,7 +677,6 @@ public class PlayerLogic : NetworkBehaviour
     public void UpdatePunchCooldown(float cdTime)
     {
         punchCooldownDisplay.fillAmount = cdTime / selfParams.punchCooldown;
-        punchCooldownSecondDisplay.fillAmount = cdTime / selfParams.punchCooldown;
     }
 
     #endregion
@@ -776,7 +719,7 @@ public class PlayerLogic : NetworkBehaviour
         }
 
         StartCoroutine(RespawnManager());
-
+        
     }
 
 
@@ -809,7 +752,7 @@ public class PlayerLogic : NetworkBehaviour
             {
                 selfMovement.ResetVelocity();
                 selfMovement.ResetVerticalVelocity();
-                hudTextPlayer.text = System.Math.Round(timerMaxToStart - (NetworkTime.time - timerToStart)).ToString();
+                hudTextPlayer.text = System.Math.Round(timerMaxToStart -(NetworkTime.time - timerToStart)).ToString();
                 yield return new WaitForEndOfFrame();
 
             }
@@ -828,7 +771,7 @@ public class PlayerLogic : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void RpcShowGoal(NetworkConnection conn, string text)
+    public void RpcShowGoal(NetworkConnection conn,string text)
     {
         timerToStart = NetworkTime.time;
         StartCoroutine(GoalMessageManager(text));
@@ -861,7 +804,7 @@ public class PlayerLogic : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void RpcEndGame(NetworkConnection conn, string text)
+    public void RpcEndGame(NetworkConnection conn,string text)
     {
         timerToStart = NetworkTime.time;
         StartCoroutine(EndGameManager(text));
@@ -911,26 +854,12 @@ public class PlayerLogic : NetworkBehaviour
     {
         hasFlag = true;
         RpcPlayGlobalSound("LevelOverdriveTaken");
-        RpcGetFlag();
     }
 
     [Command(requiresAuthority = false)]
     public void CmdDropFlag()
     {
-        hasFlag = false;
-        RpcDropFlag();
-    }
-
-    [ClientRpc]
-    public void RpcGetFlag()
-    {
-        hasFlag = true;
-    }
-
-    [ClientRpc]
-    public void RpcDropFlag()
-    {
-        hasFlag = false;
+        hasFlag = false;                
     }
 
     [Command(requiresAuthority = false)]
@@ -938,7 +867,7 @@ public class PlayerLogic : NetworkBehaviour
     {
         if (hasFlag)
         {
-            CmdDropFlag();
+            hasFlag = false;
         }
 
         if(netid.connectionToClient != null)
@@ -1145,6 +1074,7 @@ public class PlayerLogic : NetworkBehaviour
         float time = 0;
         while (time < timelife)
         {
+            Debug.Log(time);
             time += Time.deltaTime;
             temp.a = 1 - time;
             punchGetHitUi.GetComponent<Image>().color = temp;
