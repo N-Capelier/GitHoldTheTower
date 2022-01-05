@@ -12,6 +12,8 @@ public class SoundManager : Singleton<SoundManager>
 
     public AudioMixerGroup sfxMixer;
 
+    public AudioMixerGroup musicMixer;
+
     public GameObject emptyGameObject;
 
     public SoundReference actualMusic;
@@ -19,6 +21,8 @@ public class SoundManager : Singleton<SoundManager>
     public AudioSource MusicSource1;
 
     public AudioSource MusicSource2;
+
+    public ScriptableParamsPlayer playersParam;
 
     private void Awake()
 	{
@@ -48,8 +52,15 @@ public class SoundManager : Singleton<SoundManager>
         //SoundReference soundRef PlaySoundEvent(0, emptyGameObject);
     }
 
-    public void PlayMusic(SoundEvent thisEvent)
+    public void PlayMusic(string thisEventName)
     {
+
+        SoundReference soundRef = new SoundReference();
+        soundRef.audioSource = gameObject.AddComponent<AudioSource>();
+
+        //On va chercher l'event avec l'ID correspondant;
+        SoundEvent thisEvent = soundEventList.FindEvent(thisEventName);
+
         if (MusicSource1.clip != null)
         {
             MusicSource1.Stop();
@@ -63,7 +74,7 @@ public class SoundManager : Singleton<SoundManager>
 
     }
 
-    public void StopMusic(SoundEvent thisEvent)
+    public void StopMusic()
     {
         MusicSource1.Stop();
 
@@ -80,9 +91,9 @@ public class SoundManager : Singleton<SoundManager>
         //On commence par créer la référence puis créer l'audioSource qui va jouer le son.
         SoundReference soundRef = new SoundReference();
         soundRef.audioSource = gameObject.AddComponent<AudioSource>();
-        
+
         //On appliques les infos du son dans l'audiosource
-        if(thisEvent.isRandom)
+        if (thisEvent.isRandom)
         {
             int temp = UnityEngine.Random.Range(0, thisEvent.sounds.Length - 1);
 
@@ -99,6 +110,10 @@ public class SoundManager : Singleton<SoundManager>
         {
             soundRef.sound = soundEventList.FindEvent(0).sounds[0];
         }
+
+
+        //On met la référence du son joué
+        actualMusic = soundRef;
 
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
@@ -122,6 +137,7 @@ public class SoundManager : Singleton<SoundManager>
 
             soundRef.sound = thisEvent.sounds[temp];
             soundRef.ApplySoundToAudioSource(thisEvent.sounds[temp], thisEvent.isLoop, sfxMixer);
+            
         }
         else
         {
@@ -133,6 +149,14 @@ public class SoundManager : Singleton<SoundManager>
         {
             soundRef.sound = soundEventList.FindEvent(0).sounds[0];
         }
+
+        //On change le volume du son;
+        soundRef.audioSource.volume = playersParam.effectsVolume;
+
+        //On met la référence du son joué
+        actualMusic = soundRef;
+
+        soundRef.audioSource.spatialize = thisEvent.isLocalized;
 
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
@@ -171,6 +195,11 @@ public class SoundManager : Singleton<SoundManager>
             soundRef.sound = soundEventList.FindEvent(0).sounds[0];
         }
 
+        soundRef.audioSource.spatialize = thisEvent.isLocalized;
+
+        //On met la référence du son joué
+        actualMusic = soundRef;
+
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
 
@@ -185,6 +214,9 @@ public class SoundManager : Singleton<SoundManager>
         //On commence par créer la référence puis créer l'audioSource qui va jouer le son.
         SoundReference soundRef = new SoundReference();
         soundRef.audioSource = location.AddComponent<AudioSource>();
+
+        //On change le volume du son;
+        soundRef.audioSource.volume = playersParam.effectsVolume;
 
         //On va chercher l'event avec l'ID correspondant;
         SoundEvent thisEvent = soundEventList.FindEvent(thisEventID);
@@ -207,6 +239,10 @@ public class SoundManager : Singleton<SoundManager>
         {
             soundRef.sound = soundEventList.FindEvent(0).sounds[0];
         }
+        //On met la référence du son joué
+        actualMusic = soundRef;
+
+        soundRef.audioSource.spatialize = thisEvent.isLocalized;
 
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
@@ -245,6 +281,11 @@ public class SoundManager : Singleton<SoundManager>
             soundRef.sound = soundEventList.FindEvent(0).sounds[0];
         }
 
+        //On met la référence du son joué
+        actualMusic = soundRef;
+
+        soundRef.audioSource.spatialize = thisEvent.isLocalized;
+
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
 
@@ -281,6 +322,11 @@ public class SoundManager : Singleton<SoundManager>
         {
             soundRef.sound = soundEventList.FindEvent(0).sounds[0];
         }
+
+        //On met la référence du son joué
+        actualMusic = soundRef;
+
+        soundRef.audioSource.spatialize = thisEvent.isLocalized;
 
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
@@ -319,9 +365,13 @@ public class SoundManager : Singleton<SoundManager>
                 soundRef.sound = soundEventList.FindEvent(0).sounds[0];
             }
 
+            soundRef.audioSource.spatialize = thisEvent.isLocalized;
+
             //On joue le son !
             soundRef.audioSource.Play();
         }
+        //On met la référence du son joué
+        actualMusic = soundRef;
 
         //On retourne la référence du son pour qu'il soit modifiable pas la suite la ou on l'appel.
         return soundRef;

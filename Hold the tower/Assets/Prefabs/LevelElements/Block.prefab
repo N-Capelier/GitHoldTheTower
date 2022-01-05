@@ -123,3 +123,4 @@ MonoBehaviour:
   buttonManager: {fileID: 0}
   blockID: 0
   loadedTerrainID: 0
+  playerParams: {fileID: 11400000, guid: a24272e5804e7bd4891a2cf20f79574a, type: 2}

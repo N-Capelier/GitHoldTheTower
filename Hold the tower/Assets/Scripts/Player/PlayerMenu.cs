@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerMenu : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class PlayerMenu : MonoBehaviour
 
     [SerializeField]
     private PlayerLogic selfLogic;
+    [SerializeField]
+    private ScriptableParamsPlayer selfParams;
 
     [SerializeField]
     private GameObject menuHud;
@@ -18,6 +21,12 @@ public class PlayerMenu : MonoBehaviour
     private GameObject menuSettingsPlayer;
     [SerializeField]
     private GameObject menuInput;
+    [SerializeField]
+    private GameObject blackLoadScreen;
+    [SerializeField]
+    private GameObject menuBase;
+    [SerializeField]
+    private GameObject menuSound;
 
     [HideInInspector]
     public bool menuIsOpen = false;
@@ -34,11 +43,13 @@ public class PlayerMenu : MonoBehaviour
         if (Input.GetKeyDown(menuKey))
         {
             menuIsOpen = !menuIsOpen;
+            blackLoadScreen.SetActive(false);
             if (menuIsOpen)
             {
                 Cursor.lockState = CursorLockMode.None;
                 menuHud.SetActive(true);
                 menuMainPlayer.SetActive(true);
+                menuBase.SetActive(true);
             }
             else
             {
@@ -47,16 +58,21 @@ public class PlayerMenu : MonoBehaviour
                 menuMainPlayer.SetActive(false);
                 menuSettingsPlayer.SetActive(false);
                 menuInput.SetActive(false);
+                menuBase.SetActive(false);
+                menuSound.SetActive(false);
             }
         }
     }
 
     public void CloseMenu()
     {
+        menuIsOpen = false;
         menuHud.SetActive(false);
         menuMainPlayer.SetActive(false);
         menuSettingsPlayer.SetActive(false);
         menuInput.SetActive(false);
+
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void BackToMenu()
@@ -78,6 +94,7 @@ public class PlayerMenu : MonoBehaviour
         menuMainPlayer.SetActive(false);
         menuSettingsPlayer.SetActive(true);
         menuInput.SetActive(false);
+        menuSound.SetActive(false);
     }
 
     public void OpenMainMenu()
@@ -92,5 +109,15 @@ public class PlayerMenu : MonoBehaviour
         menuInput.SetActive(true);
     }
 
+    public void OpenSoundSettings()
+    {
+        menuSound.SetActive(true);
+        menuSettingsPlayer.SetActive(false);
+    }
+
+    public void OpenGraphicsSettings()
+    {
+
+    }
 
 }

@@ -31,6 +31,8 @@ public class MyNewNetworkManager : NetworkManager
 
     [HideInInspector]
     public string analyticsPath;
+
+    public SoundManager soundManager;
     
 
     #region Unity Callbacks
@@ -135,6 +137,9 @@ public class MyNewNetworkManager : NetworkManager
         base.OnClientSceneChanged(conn);
         if (SceneManager.GetActiveScene().name != "LobbyScene")
         {
+            soundManager.StopMusic();
+            soundManager.PlayMusic("GameMusic");
+
             //Reset number
             nbBlueTeam = 0;
             nbRedTeam = 0;
@@ -145,6 +150,10 @@ public class MyNewNetworkManager : NetworkManager
             };
             
             conn.Send(msg);
+        }
+        else
+        {
+            soundManager.StopMusic();
         }
        
     }

@@ -487,6 +487,7 @@ public class PlayerMovement : MonoBehaviour
         //Debug.Log("Propulse");
         PropulseManager(directedForce);
         SoundManager.Instance.PlaySoundEvent("PlayerPunched");
+        
     }
 
     public void PropulseManager(Vector3 directedForce)

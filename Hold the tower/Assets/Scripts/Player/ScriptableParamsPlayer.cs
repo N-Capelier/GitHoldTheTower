@@ -65,4 +65,10 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float punchedNoControlTime;
     public AnimationCurve punchPropulsionForceByCharge;
 
+    [Header("Sounds")]
+    [Range(0f, 1f)] public float musicVolume;
+    [Range(0f, 1f)] public float effectsVolume;
+
+    /*[Range(0f, 1f)] public static float musicVolume;
+    [Range(0f, 1f)] public static float effectsVolume;*/
 }

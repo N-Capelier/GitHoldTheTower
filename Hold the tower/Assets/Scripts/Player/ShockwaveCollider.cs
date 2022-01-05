@@ -61,7 +61,7 @@ public class ShockwaveCollider : MonoBehaviour
 		expanding = true;
 	}
 
-	private void OnTriggerStay(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
 		if (isVisual)
 			return;
@@ -71,6 +71,7 @@ public class ShockwaveCollider : MonoBehaviour
 			BlockBehaviour block = other.GetComponent<BlockBehaviour>();
 			if(block.isDestroyable && !block.isExploding)
 			{
+				block.isExploding = true;
 				GameObject.Find("GameManager").GetComponent<ThemeInteraction>().CmdWaitAndExplode(block.blockID);
 			}
 		}

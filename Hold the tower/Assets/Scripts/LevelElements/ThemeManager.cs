@@ -13,6 +13,7 @@ public class ThemeManager : Singleton<ThemeManager>
 
 	public GameObject buttonActivationEffectPrefab;
 
+
 #if UNITY_EDITOR
 
 	public void InitTerrainBlocks()
@@ -37,6 +38,7 @@ public class ThemeManager : Singleton<ThemeManager>
 	public void LoadNextTerrain()
 	{
 		SoundManager.Instance.PlaySoundEvent("LevelEvolvingSound");
+
 		if (blocks.Length == 0)
 		{
 			Debug.LogError("No block found in theme");

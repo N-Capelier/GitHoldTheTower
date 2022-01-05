@@ -49,13 +49,19 @@ public class GoalBehavior : NetworkBehaviour
     private void CmdRedTeamScore()
     {
         matchManager.redScore++;
-        SoundManager.Instance.PlaySoundEvent("LevelRedTeamScores");
+        RpcPlayGlobalSound("LevelRedTeamScores");
     }
     [Command(requiresAuthority = false)]
     private void CmdBlueTeamScore()
     {
         matchManager.blueScore++;
-        SoundManager.Instance.PlaySoundEvent("LevelBlueTeamScores");
+        RpcPlayGlobalSound("LevelBlueTeamScores");
+    }
+
+    [ClientRpc]
+    private void RpcPlayGlobalSound(string thisEventName)
+    {
+        SoundManager.Instance.PlaySoundEvent(thisEventName);
     }
 
     [Command(requiresAuthority = false)]

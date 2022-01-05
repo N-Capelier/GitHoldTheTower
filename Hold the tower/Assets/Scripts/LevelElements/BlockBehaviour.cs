@@ -42,7 +42,6 @@ public class BlockBehaviour : MonoBehaviour
 	[HideInInspector]
 	public int loadedTerrainID = 0;
 
-
 	private void Start()
 	{
 		beforeExplosionTimeWait = new WaitForSeconds(timeBeforeExplosion);
@@ -150,6 +149,7 @@ public class BlockBehaviour : MonoBehaviour
 		GameObject effect = Instantiate(ThemeManager.Instance.buttonActivationEffectPrefab, transform);
 
 		SoundManager.Instance.PlaySoundEvent("LevelButtonActivated");
+
 
 		effect.transform.localScale = new Vector3(transform.localScale.x * 2 + 0.3f, transform.localScale.y * 2 + 2, transform.localScale.z * 2 + 0.3f);
 
