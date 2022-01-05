@@ -12,6 +12,9 @@ public class PlayerLogic : NetworkBehaviour
 {
     private WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
 
+    private GameObject[] noAuthorityPlayer;
+    private GameObject authorityPlayer;
+
     [SerializeField]
     private ScriptableParamsPlayer selfParams;
     [SerializeField]
@@ -87,11 +90,15 @@ public class PlayerLogic : NetworkBehaviour
 
     [SerializeField]
     private Image loadingScreen;
+    [SerializeField]
+    private GameObject player3dPseudo;
 
     [SyncVar]
     public LobbyPlayerLogic.TeamName teamName;
     [SyncVar]
     public int spawnPosition;
+    [SyncVar(hook = nameof(SetPseudo))]
+    public string pseudoPlayer;
 
     private float yRotation, xRotation;
 
@@ -135,10 +142,11 @@ public class PlayerLogic : NetworkBehaviour
         Debug.Log("Start");
         matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>(); //Ne pas bouger
         levelTransition = GameObject.Find("GameManager").GetComponent<LevelTransition>();
+
         chargePreviewStartPos = punchChargeDistancePreview.transform.localPosition;
 
         //Analytics
-        if(GameObject.Find("Analytics") != null)
+        if (GameObject.Find("Analytics") != null)
         {
             GameObject.Find("Analytics").GetComponent<PA_Position>().analyticGameObjectPosition.Add(this.transform);
         }
@@ -148,6 +156,8 @@ public class PlayerLogic : NetworkBehaviour
         {
             FlagObject = GameObject.Find("Flag");
         }
+
+
         isInControl = true;
         selfCamera.gameObject.SetActive(false);
         if (hasAuthority)
@@ -183,7 +193,19 @@ public class PlayerLogic : NetworkBehaviour
             {
                 playerCollider.transform.GetComponent<MeshRenderer>().material = redTeamMaterial;
             }
-            
+
+            foreach (GameObject objPlayer in GameObject.FindGameObjectsWithTag("Player"))
+            {
+                if(objPlayer.name == "Player(Clone)")
+                {
+                    if (objPlayer.GetComponent<NetworkIdentity>().hasAuthority)
+                    {
+                        authorityPlayer = objPlayer;
+                    }
+                }
+                
+            }
+
         }
 
     }
@@ -212,7 +234,7 @@ public class PlayerLogic : NetworkBehaviour
 
         if(!hasAuthority)
         {
-            //HorizontalMovementSound();
+            player3dPseudo.transform.rotation = Quaternion.LookRotation(transform.position - authorityPlayer.transform.position);
         }
 
         ShowFlagToAllPlayer();
@@ -711,9 +733,6 @@ public class PlayerLogic : NetworkBehaviour
 
         if (hasFlag)
         {
-
-            
-
             CmdDropFlag();
             CmdShowFlagInGame();
         }
@@ -824,13 +843,19 @@ public class PlayerLogic : NetworkBehaviour
 
         if (isServer)
         {
-            NetworkManager.singleton.StopHost();
+            MyNewNetworkManager.singleton.StopHost();
         }
         else
         {
-            NetworkManager.singleton.StopClient();
+            MyNewNetworkManager.singleton.StopClient();
         }
-        Destroy(GameObject.Find("ServerManager"));
+
+        //Destroy GameManager because Already exist on LobbyScene
+        DestroyImmediate(GameObject.Find("ServerManager"));
+
+        //Stop Music
+        SoundManager.Instance.StopMusic();
+
         SceneManager.LoadScene("LobbyScene");
     }
 
@@ -1039,6 +1064,34 @@ public class PlayerLogic : NetworkBehaviour
     {
         SoundManager.Instance.PlaySoundEvent(thisEventName);
     }
+
+    //Send a different song for each differente team
+    [Command]
+    private void CmdPlayEquipTeamSound(string eventAllyTeam,string eventEnemyTeam, LobbyPlayerLogic.TeamName teamNameToCheck)
+    {
+        RpcPlayEquipTeamSound(eventAllyTeam, eventEnemyTeam, teamName);
+    }
+
+    [ClientRpc]
+    private void RpcPlayEquipTeamSound(string eventAllyTeam, string eventEnemyTeam, LobbyPlayerLogic.TeamName teamNameToCheck)
+    {
+        if(teamName == teamNameToCheck)
+        {
+            SoundManager.Instance.PlaySoundEvent(eventAllyTeam);
+        }
+        else
+        {
+            SoundManager.Instance.PlaySoundEvent(eventEnemyTeam);
+        }
+    }
+
+    //Pseudo
+
+    public void SetPseudo(string oldString, string newString)
+    {
+        gameObject.transform.Find("NameText").GetComponent<TextMesh>().text = newString;
+    }
+
 
     #endregion
 
