@@ -204,6 +204,7 @@ MonoBehaviour:
   redTeamMaterial: {fileID: 2100000, guid: b724d93edfa7c354cb1e6c4826a5af5f, type: 2}
   blueTeamMaterial: {fileID: 2100000, guid: 43da0a92a1c334d4b8b76f0939264b01, type: 2}
   loadingScreen: {fileID: 3113217646462068070}
+  HUD: {fileID: 7467340940595755413}
   teamName: 0
   spawnPosition: 0
   ratioAttack: 0
@@ -581,8 +582,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectiveCursor: {fileID: 8268309990049003215}
   playerCamera: {fileID: 5664242416663754116}
-  canvas: {fileID: 572779569669669741}
-  borderWidth: 200
+  borderWidthRatio: 150
 --- !u!1 &357448910990213783
 GameObject:
   m_ObjectHideFlags: 0
@@ -4737,7 +4737,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -45.299988, y: 18.400024}
+  m_AnchoredPosition: {x: -45.30005, y: 18.400024}
   m_SizeDelta: {x: 56.0533, y: 56.0538}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &4036464183078666769
@@ -5611,7 +5611,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &572779569669669741
 RectTransform:
   m_ObjectHideFlags: 0
