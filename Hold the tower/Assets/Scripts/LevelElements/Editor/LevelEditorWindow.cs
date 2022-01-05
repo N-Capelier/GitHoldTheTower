@@ -373,10 +373,13 @@ public class LevelEditorWindow : EditorWindow
 
     void SaveTerrain()
     {
+		themeManager.activeTerrain.positions = new Vector3[themeManager.blocks.Length];
 
-        for (int i = 0; i < themeManager.blocks.Length; i++)
+		Debug.LogWarning($"active terrain size: {themeManager.activeTerrain.positions.Length} || themeManager size: {themeManager.blocks.Length}");
+
+		for (int i = 0; i < themeManager.blocks.Length; i++)
         {
-            ////////////////////////////////// Could change to themeManager.blocks[i].tranform.child.position if we use child object for the renderer
+			////////////////////////////////// Could change to themeManager.blocks[i].tranform.child.position if we use child object for the renderer
             themeManager.activeTerrain.positions[i] = themeManager.blocks[i].transform.position;
         }
 
