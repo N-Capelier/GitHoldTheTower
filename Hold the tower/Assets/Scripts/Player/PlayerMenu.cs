@@ -28,11 +28,6 @@ public class PlayerMenu : MonoBehaviour
     [SerializeField]
     private GameObject menuSound;
 
-    [SerializeField]
-    private Text volumeMusicText;
-    [SerializeField]
-    private Text volumeEffectsText;
-
     [HideInInspector]
     public bool menuIsOpen = false;
 
@@ -118,6 +113,11 @@ public class PlayerMenu : MonoBehaviour
     {
         menuSound.SetActive(true);
         menuSettingsPlayer.SetActive(false);
+    }
+
+    public void OpenGraphicsSettings()
+    {
+
     }
 
 }

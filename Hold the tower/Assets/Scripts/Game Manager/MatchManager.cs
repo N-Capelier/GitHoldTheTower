@@ -119,13 +119,4 @@ public class MatchManager : NetworkBehaviour
         }
     }
 
-    public void AllySideBlue()
-    {
-
-    }
-
-    public void AllySideRed()
-    {
-
-    }
 }

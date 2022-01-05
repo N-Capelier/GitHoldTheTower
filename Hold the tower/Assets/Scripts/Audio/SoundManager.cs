@@ -83,9 +83,6 @@ public class SoundManager : Singleton<SoundManager>
         SoundReference soundRef = new SoundReference();
         soundRef.audioSource = gameObject.AddComponent<AudioSource>();
 
-        //On change le volume du son;
-        soundRef.audioSource.volume = playersParam.effectsVolume;
-
         //On appliques les infos du son dans l'audiosource
         if (thisEvent.isRandom)
         {
@@ -104,6 +101,7 @@ public class SoundManager : Singleton<SoundManager>
         {
             soundRef.sound = soundEventList.FindEvent(0).sounds[0];
         }
+
 
         //On met la référence du son joué
         actualMusic = soundRef;
@@ -123,9 +121,6 @@ public class SoundManager : Singleton<SoundManager>
         SoundReference soundRef = new SoundReference();
         soundRef.audioSource = location.AddComponent<AudioSource>();
 
-        //On change le volume du son;
-        soundRef.audioSource.volume = playersParam.effectsVolume;
-
         //On appliques les infos du son dans l'audiosource
         if (thisEvent.isRandom)
         {
@@ -145,6 +140,9 @@ public class SoundManager : Singleton<SoundManager>
             soundRef.sound = soundEventList.FindEvent(0).sounds[0];
         }
 
+        //On change le volume du son;
+        soundRef.audioSource.volume = playersParam.effectsVolume;
+
         //On met la référence du son joué
         actualMusic = soundRef;
 
@@ -162,9 +160,6 @@ public class SoundManager : Singleton<SoundManager>
         //On commence par créer la référence puis créer l'audioSource qui va jouer le son.
         SoundReference soundRef = new SoundReference();
         soundRef.audioSource = gameObject.AddComponent<AudioSource>();
-
-        //On change le volume du son;
-        soundRef.audioSource.volume = playersParam.effectsVolume;
 
         //On va chercher l'event avec l'ID correspondant;
         SoundEvent thisEvent = soundEventList.FindEvent(thisEventID);
@@ -187,6 +182,7 @@ public class SoundManager : Singleton<SoundManager>
         {
             soundRef.sound = soundEventList.FindEvent(0).sounds[0];
         }
+
 
         //On met la référence du son joué
         actualMusic = soundRef;
@@ -248,9 +244,6 @@ public class SoundManager : Singleton<SoundManager>
         SoundReference soundRef = new SoundReference();
         soundRef.audioSource = gameObject.AddComponent<AudioSource>();
 
-        //On change le volume du son;
-        soundRef.audioSource.volume = playersParam.effectsVolume;
-
         //On va chercher l'event avec l'ID correspondant;
         SoundEvent thisEvent = soundEventList.FindEvent(thisEventName);
 
@@ -291,9 +284,6 @@ public class SoundManager : Singleton<SoundManager>
         SoundReference soundRef = new SoundReference();
         soundRef.audioSource = location.AddComponent<AudioSource>();
 
-        //On change le volume du son;
-        soundRef.audioSource.volume = playersParam.effectsVolume;
-
         //On va chercher l'event avec l'ID correspondant;
         SoundEvent thisEvent = soundEventList.FindEvent(thisEventName);
 
@@ -332,9 +322,6 @@ public class SoundManager : Singleton<SoundManager>
         //On commence par créer la référence puis créer l'audioSource qui va jouer le son.
         SoundReference soundRef = new SoundReference();
         soundRef.audioSource = source;
-
-        //On change le volume du son;
-        soundRef.audioSource.volume = playersParam.effectsVolume;
 
         //On va chercher l'event avec l'ID correspondant;
         SoundEvent thisEvent = soundEventList.FindEvent(thisEventName);
