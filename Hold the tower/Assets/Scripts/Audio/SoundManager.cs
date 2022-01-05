@@ -52,8 +52,15 @@ public class SoundManager : Singleton<SoundManager>
         //SoundReference soundRef PlaySoundEvent(0, emptyGameObject);
     }
 
-    public void PlayMusic(SoundEvent thisEvent)
+    public void PlayMusic(string thisEventName)
     {
+
+        SoundReference soundRef = new SoundReference();
+        soundRef.audioSource = gameObject.AddComponent<AudioSource>();
+
+        //On va chercher l'event avec l'ID correspondant;
+        SoundEvent thisEvent = soundEventList.FindEvent(thisEventName);
+
         if (MusicSource1.clip != null)
         {
             MusicSource1.Stop();
@@ -67,7 +74,7 @@ public class SoundManager : Singleton<SoundManager>
 
     }
 
-    public void StopMusic(SoundEvent thisEvent)
+    public void StopMusic()
     {
         MusicSource1.Stop();
 

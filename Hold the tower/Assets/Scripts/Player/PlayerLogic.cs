@@ -711,8 +711,9 @@ public class PlayerLogic : NetworkBehaviour
 
         if (hasFlag)
         {
-            SoundManager.Instance.PlaySoundEvent("LevelOverdriveDroped");
+
             
+
             CmdDropFlag();
             CmdShowFlagInGame();
         }
@@ -852,8 +853,7 @@ public class PlayerLogic : NetworkBehaviour
     public void CmdGetFlag()
     {
         hasFlag = true;
-        SoundManager.Instance.PlaySoundEvent("LevelOverdriveTaken");
-        
+        RpcPlayGlobalSound("LevelOverdriveTaken");
     }
 
     [Command(requiresAuthority = false)]
@@ -1026,6 +1026,18 @@ public class PlayerLogic : NetworkBehaviour
     private void RpcStopPlayerFootstepSource()
     {
         playerFootstepSource.Stop();
+    }
+
+    [Command]
+    private void CmdPlayGlobalSound(string thisEventName)
+    {
+        RpcPlayGlobalSound(thisEventName);
+    }
+
+    [ClientRpc]
+    private void RpcPlayGlobalSound(string thisEventName)
+    {
+        SoundManager.Instance.PlaySoundEvent(thisEventName);
     }
 
     #endregion

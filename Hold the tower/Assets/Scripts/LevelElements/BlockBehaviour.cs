@@ -150,6 +150,7 @@ public class BlockBehaviour : MonoBehaviour
 
 		SoundManager.Instance.PlaySoundEvent("LevelButtonActivated");
 
+
 		effect.transform.localScale = new Vector3(transform.localScale.x * 2 + 0.3f, transform.localScale.y * 2 + 2, transform.localScale.z * 2 + 0.3f);
 
 	}
