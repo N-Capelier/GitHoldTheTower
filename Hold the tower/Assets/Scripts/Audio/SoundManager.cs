@@ -12,6 +12,8 @@ public class SoundManager : Singleton<SoundManager>
 
     public AudioMixerGroup sfxMixer;
 
+    public AudioMixerGroup musicMixer;
+
     public GameObject emptyGameObject;
 
     public SoundReference actualMusic;
