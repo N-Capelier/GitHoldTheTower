@@ -279,6 +279,10 @@ public class LevelEditorWindow : EditorWindow
 			SaveTerrain();
 		}
 		GUILayout.Space(50);
+        if (GUILayout.Button("Reload Theme Blocks"))
+        {
+			themeManager.InitTerrainBlocks();
+		}
 		EditorGUILayout.EndHorizontal();
 	}
 
