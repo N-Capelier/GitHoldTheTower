@@ -22,7 +22,7 @@ MonoBehaviour:
   mouseSensivity: 100
   aimJoystickSensitivity: 200
   runningForce: 100
-  maxRunningSpeed: 9
+  maxRunningSpeed: 11
   airControlForce: 55
   groundFriction: 200
   minSpeedToStop: 0.02
@@ -34,9 +34,9 @@ MonoBehaviour:
   maxWallJumpAngleDeviation: 30
   wallJumpMinAngleToCancelDeviation: 140
   wallSlideGravity: 30
-  wallSlideMaxGravitySpeed: 3
+  wallSlideMaxGravitySpeed: 1.5
   wallSlideSpeedDampening: 5
-  wallRideSpeed: 9
+  wallRideSpeed: 11
   climbHeight: 1.5
   climbWidth: 1.3
   timeToClimb: 0.1
