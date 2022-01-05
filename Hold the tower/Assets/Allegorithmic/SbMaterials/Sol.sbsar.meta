@@ -14,7 +14,7 @@ ScriptedImporter:
   - graphLabel: Sol
     prototypeName: Sol
     graphDescIndex: 0
-    generateAllOutputs: 0
+    generateAllOutputs: 1
     generateMipMaps: 1
     preset: " <sbspreset pkgurl=\"pkg://Sol\" label=\"\" >\n  <presetinput identifier=\"$outputsize\"
       uid=\"962021816\" type=\"8\" value=\"9,9\" />\n </sbspreset>\n"
@@ -253,5 +253,6 @@ ScriptedImporter:
     generatedTextures:
     - {fileID: 3393500418436224399, guid: fada02b6b000eea4988660a945b58666, type: 3}
     - {fileID: -1987067108565637102, guid: fada02b6b000eea4988660a945b58666, type: 3}
+    - {fileID: -3628969255016945096, guid: fada02b6b000eea4988660a945b58666, type: 3}
     - {fileID: 8664526130154320057, guid: fada02b6b000eea4988660a945b58666, type: 3}
     - {fileID: 8739396733219190820, guid: fada02b6b000eea4988660a945b58666, type: 3}
