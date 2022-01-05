@@ -14,19 +14,18 @@ ScriptedImporter:
   - graphLabel: Sol
     prototypeName: Sol
     graphDescIndex: 0
-    generateAllOutputs: 1
+    generateAllOutputs: 0
     generateMipMaps: 1
     preset: " <sbspreset pkgurl=\"pkg://Sol\" label=\"\" >\n  <presetinput identifier=\"$outputsize\"
       uid=\"962021816\" type=\"8\" value=\"9,9\" />\n </sbspreset>\n"
     shaderName: Universal Render Pipeline/Lit
     materialProperties:
       shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
-      shaderKeywords: _BASEMAP _BUMPMAP _METALLICGLOSSMAP _METALLICSPECGLOSSMAP _NORMALMAP
-        _OCCLUSIONMAP
+      shaderKeywords: _BASEMAP _BUMPMAP _METALLICGLOSSMAP _OCCLUSIONMAP
       lightmapFlags: 4
       enableInstancingVariants: 0
       doubleSidedGI: 0
-      customRenderQueue: 2000
+      customRenderQueue: -1
       texEnvs:
       - name: _BaseMap
         texture: {fileID: 3393500418436224399, guid: fada02b6b000eea4988660a945b58666, type: 3}
@@ -248,12 +247,11 @@ ScriptedImporter:
       textureWidth: 512
       textureHeight: 512
       textureFormatMode: 0
-      normalCompressed: 0
+      normalCompressed: 1
       bGenerateOnLoad: 1
     material: {fileID: 305120383336616533, guid: fada02b6b000eea4988660a945b58666, type: 3}
     generatedTextures:
     - {fileID: 3393500418436224399, guid: fada02b6b000eea4988660a945b58666, type: 3}
     - {fileID: -1987067108565637102, guid: fada02b6b000eea4988660a945b58666, type: 3}
-    - {fileID: -3628969255016945096, guid: fada02b6b000eea4988660a945b58666, type: 3}
     - {fileID: 8664526130154320057, guid: fada02b6b000eea4988660a945b58666, type: 3}
     - {fileID: 8739396733219190820, guid: fada02b6b000eea4988660a945b58666, type: 3}
