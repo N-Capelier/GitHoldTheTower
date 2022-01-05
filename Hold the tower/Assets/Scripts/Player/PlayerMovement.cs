@@ -128,34 +128,58 @@ public class PlayerMovement : MonoBehaviour
 
     [HideInInspector] public Vector3 wallSlideDirection;
 
-    public void SetWallSlideDirection()
+    public bool SetWallSlideDirection()
     {
         wallSlideDirection = selfLogic.GetNearbyWallNormal();
-        float wallAngle = Vector3.SignedAngle(Vector3.right, wallSlideDirection, Vector3.up);
-        float lookAngle = Vector3.SignedAngle(Vector3.right, selfLogic.GetHorizontalVector(selfCamera.forward).normalized, Vector3.up);
-        if (Mathf.Abs(GetClampedAngle(lookAngle - GetClampedAngle(wallAngle + 90))) < 90)
+
+        if(wallSlideDirection != Vector3.zero)
         {
-            wallSlideDirection = new Vector3(Mathf.Cos(GetClampedAngle(wallAngle + 90) * Mathf.Deg2Rad), 0, -Mathf.Sin(GetClampedAngle(wallAngle + 90) * Mathf.Deg2Rad));
+            float wallAngle = Vector3.SignedAngle(Vector3.right, wallSlideDirection, Vector3.up);
+            float lookAngle = Vector3.SignedAngle(Vector3.right, selfLogic.GetHorizontalVector(selfCamera.forward).normalized, Vector3.up);
+            if (Mathf.Abs(GetClampedAngle(lookAngle - GetClampedAngle(wallAngle + 90))) < 90)
+            {
+                wallSlideDirection = new Vector3(Mathf.Cos(GetClampedAngle(wallAngle + 90) * Mathf.Deg2Rad), 0, -Mathf.Sin(GetClampedAngle(wallAngle + 90) * Mathf.Deg2Rad));
+            }
+            else
+            {
+                wallSlideDirection = new Vector3(Mathf.Cos(GetClampedAngle(wallAngle - 90) * Mathf.Deg2Rad), 0, -Mathf.Sin(GetClampedAngle(wallAngle - 90) * Mathf.Deg2Rad));
+            }
+
+
+            Debug.DrawRay(transform.position, wallSlideDirection * 3, Color.green, 4);
+            Debug.DrawRay(transform.position, Vector3.up * 0.3f, Color.red, 4);
+            return true;
         }
         else
         {
-            wallSlideDirection = new Vector3(Mathf.Cos(GetClampedAngle(wallAngle - 90) * Mathf.Deg2Rad), 0, -Mathf.Sin(GetClampedAngle(wallAngle - 90) * Mathf.Deg2Rad));
+            return false;
         }
     }
 
     public void ApplyWallSlideForces()
     {
-        //selfRbd.velocity -= new Vector3(0, selfParams.wallSlideGravity, 0) * Time.deltaTime;
+        Vector3 wallRideVelocity = wallSlideDirection * selfParams.wallRideSpeed;
+        if (selfRbd.velocity.y < -selfParams.wallSlideMaxGravitySpeed)
+        {
+            selfRbd.velocity = new Vector3(wallRideVelocity.x, -selfParams.wallSlideMaxGravitySpeed, wallRideVelocity.z);
+        }
+        else
+        {
+            selfRbd.velocity = new Vector3(wallRideVelocity.x, selfRbd.velocity.y - selfParams.wallSlideGravity * Time.deltaTime, wallRideVelocity.z);
+        }
+    }
 
-        selfRbd.velocity = wallSlideDirection * selfParams.wallRideSpeed;
+    public void ApplyWallAttachForces()
+    {
+        selfRbd.velocity -= new Vector3(0, selfParams.wallSlideGravity, 0) * Time.deltaTime;
 
-        /*if (selfRbd.velocity.y < -selfParams.wallSlideMaxGravitySpeed)
+        if (selfRbd.velocity.y < -selfParams.wallSlideMaxGravitySpeed)
         {
             selfRbd.velocity = new Vector3(0, -selfParams.wallSlideMaxGravitySpeed, 0);
         }
         float verticalVelocity = selfRbd.velocity.y;
         selfRbd.velocity -= selfRbd.velocity * selfParams.wallSlideSpeedDampening * Time.deltaTime;
-        selfRbd.velocity = new Vector3(selfRbd.velocity.x, verticalVelocity, selfRbd.velocity.z);*/
+        selfRbd.velocity = new Vector3(selfRbd.velocity.x, verticalVelocity, selfRbd.velocity.z);
     }
 
     public void ResetVerticalVelocity()
@@ -188,6 +212,7 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator WallJumpManage(Vector3 wallDirection)
     {
         isAttackReset = true;
+        bool cancelJump = false;
         Vector3 adjustDirection = wallDirection;
 
         Vector3 moveKeyDirection = Vector3.zero;
@@ -216,6 +241,7 @@ public class PlayerMovement : MonoBehaviour
             if (Mathf.Abs(angleDist) > selfParams.wallJumpMinAngleToCancelDeviation)
             {
                 jumpAngle = wallAngle;
+                cancelJump = true;
             }
             else
             {
@@ -237,9 +263,16 @@ public class PlayerMovement : MonoBehaviour
 
         adjustDirection += new Vector3(0, selfParams.wallJumpUpwardForce, 0);
 
-        ResetVelocity();
-        ResetVerticalVelocity();
-        selfRbd.velocity += adjustDirection * selfParams.wallJumpNormalForce;
+        if(!cancelJump)
+        {
+            ResetVelocity();
+            ResetVerticalVelocity();
+            selfRbd.velocity += adjustDirection * selfParams.wallJumpNormalForce;
+        }
+        else
+        {
+
+        }
 
         canWallJump = true;
         /*
