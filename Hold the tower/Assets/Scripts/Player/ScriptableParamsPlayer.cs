@@ -14,6 +14,7 @@ public class ScriptableParamsPlayer : ScriptableObject
     public KeyCode back = KeyCode.S;
 
     public KeyCode jump = KeyCode.Space;
+    public KeyCode switchChunckKey = KeyCode.E;
 
     [Range(0, 2)] public int wallMouseInput;
     [Range(0, 2)] public int attackMouseInput;
@@ -65,6 +66,9 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float punchBaseUpwardPropulsionForce = 1f;
     public float punchedNoControlTime;
     public AnimationCurve punchPropulsionForceByCharge;
+
+    [Header("Punch")]
+    public float switchChunckMaxDistance;
 
     [Header("Sounds")]
     [Range(-80, 20)] public int musicVolume;

@@ -1188,7 +1188,6 @@ public class PlayerLogic : NetworkBehaviour
         float time = 0;
         while (time < timelife)
         {
-            Debug.Log(time);
             time += Time.deltaTime;
             temp.a = 1 - time;
             punchGetHitUi.GetComponent<Image>().color = temp;

@@ -8,6 +8,7 @@ TagManager:
   - LobbyPlayer
   - Wall
   - Spawner
+  - Switcher
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - OutlinedRed
   - OutlinedBlue
   - FirstPersonView
-  - 
+  - Switcher
   - 
   - 
   - 
