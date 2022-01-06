@@ -53,6 +53,8 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     public Image punchCooldownDisplay;
     [SerializeField]
+    public Image punchCooldownSecondDisplay;
+    [SerializeField]
     private Text hudTextPlayer;
     [SerializeField]
     private Text scoreTextBlue;
@@ -92,6 +94,8 @@ public class PlayerLogic : NetworkBehaviour
     private Image loadingScreen;
     [SerializeField]
     private GameObject player3dPseudo;
+    [SerializeField]
+    public GameObject hud;
 
     [SyncVar]
     public LobbyPlayerLogic.TeamName teamName;
@@ -166,6 +170,7 @@ public class PlayerLogic : NetworkBehaviour
             Cursor.lockState = CursorLockMode.Locked;
 
             loadingScreen.gameObject.SetActive(true);
+            hud.SetActive(true);
 
             if (teamName == LobbyPlayerLogic.TeamName.Blue)
             {
@@ -608,6 +613,7 @@ public class PlayerLogic : NetworkBehaviour
 
             punchChargeDistancePreview.SetActive(true);
             punchChargeDistancePreview2.SetActive(true);
+            punchChargeSliderLine.SetActive(true);
             if (timeAttack > 0.2f)
             {
                 punchChargeDisplay.gameObject.SetActive(true);
@@ -634,6 +640,8 @@ public class PlayerLogic : NetworkBehaviour
                 punchChargeDistancePreview2.transform.rotation = Quaternion.Inverse(selfCamera.rotation);
                 punchChargeDistancePreview.transform.localPosition = chargePreviewStartPos + Vector3.forward * 0.0046923076923077f * selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(ratioAttack) / selfParams.punchSpeedByCharge.Evaluate(1); // alors ce chiffre bizarre je l'ai calculer rapport à la courbe de velocité, c'est le coefficient de la distance par rapport à la vitesse du punch
                 punchChargeDistancePreview2.transform.localPosition = punchChargeDistancePreview.transform.localPosition;
+                punchChargeSliderLine.transform.localPosition = (punchChargeDistancePreview.transform.localPosition + chargePreviewStartPos) / 2;
+                punchChargeSliderLine.transform.localScale = new Vector3(punchChargeSliderLine.transform.localScale.x, punchChargeSliderLine.transform.localScale.y, punchChargeDistancePreview.transform.localPosition.z);
             }
 
         }
@@ -644,6 +652,7 @@ public class PlayerLogic : NetworkBehaviour
             hasStartedCharge = false;
             punchChargeDisplay.gameObject.SetActive(false);
             punchChargeDistancePreview.SetActive(false);
+            punchChargeSliderLine.SetActive(false);
             punchChargeDistancePreview2.SetActive(false);
             //SoundManager.Instance.PlaySoundEvent("PlayerPunch", playerSource);
             //SoundManager.Instance.StopSoundWithDelay(playerSource, 0.2f);
@@ -699,6 +708,7 @@ public class PlayerLogic : NetworkBehaviour
     public void UpdatePunchCooldown(float cdTime)
     {
         punchCooldownDisplay.fillAmount = cdTime / selfParams.punchCooldown;
+        punchCooldownSecondDisplay.fillAmount = cdTime / selfParams.punchCooldown;
     }
 
     #endregion
