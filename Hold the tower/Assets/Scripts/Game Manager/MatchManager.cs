@@ -59,7 +59,14 @@ public class MatchManager : NetworkBehaviour
         {
             ChangeUiPlayer(text);
         }
+        RpcResetDestroyedBlocks();
     }
+
+    [ClientRpc]
+    public void RpcResetDestroyedBlocks()
+	{
+        ThemeManager.Instance.ResetDestroyedBlocks();
+	}
 
     [ServerCallback]
     private bool AllClientAreReady()

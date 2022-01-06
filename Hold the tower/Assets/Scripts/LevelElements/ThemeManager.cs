@@ -76,4 +76,12 @@ public class ThemeManager : Singleton<ThemeManager>
 			blocks[blockIndex].buttonManager.switchables[i].SetNextTerrainPosition();
 		}
 	}
+
+	public void ResetDestroyedBlocks()
+	{
+		for (int i = 0; i < blocks.Length; i++)
+		{
+			blocks[i].SetBlockAlive();
+		}
+	}
 }
