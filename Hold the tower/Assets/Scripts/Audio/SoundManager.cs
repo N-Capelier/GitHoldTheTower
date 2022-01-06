@@ -115,6 +115,17 @@ public class SoundManager : Singleton<SoundManager>
         //On met la référence du son joué
         actualMusic = soundRef;
 
+        if (thisEvent.isLocalized)
+        {
+            soundRef.audioSource.spatialize = true;
+            soundRef.audioSource.maxDistance = 20;
+            soundRef.audioSource.spatialBlend = 0.5f;
+        }
+        else
+        {
+            soundRef.audioSource.spatialize = false;
+        }
+
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
 
@@ -156,7 +167,16 @@ public class SoundManager : Singleton<SoundManager>
         //On met la référence du son joué
         actualMusic = soundRef;
 
-        soundRef.audioSource.spatialize = thisEvent.isLocalized;
+        if (thisEvent.isLocalized)
+        {
+            soundRef.audioSource.spatialize = true;
+            soundRef.audioSource.maxDistance = 20;
+            soundRef.audioSource.spatialBlend = 0.5f;
+        }
+        else
+        {
+            soundRef.audioSource.spatialize = false;
+        }
 
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
@@ -195,7 +215,16 @@ public class SoundManager : Singleton<SoundManager>
             soundRef.sound = soundEventList.FindEvent(0).sounds[0];
         }
 
-        soundRef.audioSource.spatialize = thisEvent.isLocalized;
+        if (thisEvent.isLocalized)
+        {
+            soundRef.audioSource.spatialize = true;
+            soundRef.audioSource.maxDistance = 20;
+            soundRef.audioSource.spatialBlend = 0.5f;
+        }
+        else
+        {
+            soundRef.audioSource.spatialize = false;
+        }
 
         //On met la référence du son joué
         actualMusic = soundRef;
@@ -242,7 +271,16 @@ public class SoundManager : Singleton<SoundManager>
         //On met la référence du son joué
         actualMusic = soundRef;
 
-        soundRef.audioSource.spatialize = thisEvent.isLocalized;
+        if (thisEvent.isLocalized)
+        {
+            soundRef.audioSource.spatialize = true;
+            soundRef.audioSource.maxDistance = 20;
+            soundRef.audioSource.spatialBlend = 0.5f;
+        }
+        else
+        {
+            soundRef.audioSource.spatialize = false;
+        }
 
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
@@ -284,7 +322,16 @@ public class SoundManager : Singleton<SoundManager>
         //On met la référence du son joué
         actualMusic = soundRef;
 
-        soundRef.audioSource.spatialize = thisEvent.isLocalized;
+        if (thisEvent.isLocalized)
+        {
+            soundRef.audioSource.spatialize = true;
+            soundRef.audioSource.maxDistance = 20;
+            soundRef.audioSource.spatialBlend = 0.5f;
+        }
+        else
+        {
+            soundRef.audioSource.spatialize = false;
+        }
 
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
@@ -326,7 +373,16 @@ public class SoundManager : Singleton<SoundManager>
         //On met la référence du son joué
         actualMusic = soundRef;
 
-        soundRef.audioSource.spatialize = thisEvent.isLocalized;
+        if (thisEvent.isLocalized)
+        {
+            soundRef.audioSource.spatialize = true;
+            soundRef.audioSource.maxDistance = 20;
+            soundRef.audioSource.spatialBlend = 0.5f;
+        }
+        else
+        {
+            soundRef.audioSource.spatialize = false;
+        }
 
         //On joue le son !
         StartCoroutine(PlaySFX(soundRef));
@@ -365,7 +421,16 @@ public class SoundManager : Singleton<SoundManager>
                 soundRef.sound = soundEventList.FindEvent(0).sounds[0];
             }
 
-            soundRef.audioSource.spatialize = thisEvent.isLocalized;
+            if (thisEvent.isLocalized)
+            {
+                soundRef.audioSource.spatialize = true;
+                soundRef.audioSource.maxDistance = 20;
+                soundRef.audioSource.spatialBlend = 0.5f;
+            }
+            else
+            {
+                soundRef.audioSource.spatialize = false;
+            }
 
             //On joue le son !
             soundRef.audioSource.Play();

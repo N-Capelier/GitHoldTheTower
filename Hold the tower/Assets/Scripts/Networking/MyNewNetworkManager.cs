@@ -23,6 +23,8 @@ public class MyNewNetworkManager : NetworkManager
 
     [HideInInspector]
     public LobbyPlayerLogic.TeamName playerTeamName;
+    [HideInInspector]
+    public string playerPseudo;
     private int nbRedTeam = 0;
     private int nbBlueTeam = 0;
 
@@ -32,6 +34,7 @@ public class MyNewNetworkManager : NetworkManager
     [HideInInspector]
     public string analyticsPath;
 
+    [HideInInspector]
     public SoundManager soundManager;
     
 
@@ -58,6 +61,9 @@ public class MyNewNetworkManager : NetworkManager
     public override void Start()
     {
         base.Start();
+        soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        //Stop music when player is back to Menu
+        soundManager.StopMusic();
     }
 
     /// <summary>
@@ -146,7 +152,8 @@ public class MyNewNetworkManager : NetworkManager
 
             MyNewNetworkAuthenticator.CreateClientPlayer msg = new MyNewNetworkAuthenticator.CreateClientPlayer
             {
-                teamName = playerTeamName
+                teamName = playerTeamName,
+                pseudo = playerPseudo
             };
             
             conn.Send(msg);
@@ -222,6 +229,11 @@ public class MyNewNetworkManager : NetworkManager
     {
         base.OnClientConnect(conn);
         Debug.Log(GetComponent<MyNewNetworkAuthenticator>().lobbyPseudo);
+
+        //Keep player pseudo
+        playerPseudo = GetComponent<MyNewNetworkAuthenticator>().lobbyPseudo;
+
+        //Send message to host with client pseudo
         MyNewNetworkAuthenticator.ClientConnectionMessage clientMsg = new MyNewNetworkAuthenticator.ClientConnectionMessage 
         {
             pseudo = GetComponent<MyNewNetworkAuthenticator>().lobbyPseudo
@@ -340,6 +352,10 @@ public class MyNewNetworkManager : NetworkManager
         {
             GameObject obj = Instantiate(Player);
 
+            //Set Pseudo for the client
+            obj.GetComponent<PlayerLogic>().pseudoPlayer = msg.pseudo;
+
+            //Set the team for the client
             obj.GetComponent<PlayerLogic>().teamName = msg.teamName;
 
             if (msg.teamName == LobbyPlayerLogic.TeamName.Blue)

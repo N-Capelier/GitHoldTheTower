@@ -4647,7 +4647,7 @@ MonoBehaviour:
   onlineScene: 
   transport: {fileID: 1715714066}
   networkAddress: localhost
-  maxConnections: 100
+  maxConnections: 5
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 1715714065}
@@ -4678,6 +4678,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   playerTeamName: 0
+  playerPseudo: 
   gameScene: AG_3C01
   analyticsPath: 
   soundManager: {fileID: 2068529658}
@@ -5316,7 +5317,7 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 0
+  m_CharacterLimit: 12
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []

@@ -35,9 +35,13 @@ public class LandMarkManager : MonoBehaviour
             {
                 int layerBlue = landMark.blueSide[0].layer;
                 int layerRed = landMark.redSide[0].layer;
+
                 for (int i =0; i < landMark.blueSide.Count; i++)
                 {
                     landMark.blueSide[i].layer = layerRed;
+                }
+                for (int i = 0; i < landMark.redSide.Count; i++)
+                {
                     landMark.redSide[i].layer = layerBlue;
                 }
             }
@@ -50,6 +54,11 @@ public class LandMarkManager : MonoBehaviour
                 for (int i = 0; i < landMark.blueSide.Count; i++)
                 {
                     landMark.blueSide[i].GetComponent<Renderer>().material = redMaterial;
+                    
+                }
+
+                for (int i = 0; i < landMark.redSide.Count; i++)
+                {
                     landMark.redSide[i].GetComponent<Renderer>().material = blueMaterial;
                 }
             }
@@ -62,6 +71,11 @@ public class LandMarkManager : MonoBehaviour
                 for (int i = 0; i < landMark.blueSide.Count; i++)
                 {
                     landMark.blueSide[i].GetComponent<Light>().color = redColor;
+                    
+                }
+
+                for (int i = 0; i < landMark.redSide.Count; i++)
+                {
                     landMark.redSide[i].GetComponent<Light>().color = blueColor;
                 }
             }
