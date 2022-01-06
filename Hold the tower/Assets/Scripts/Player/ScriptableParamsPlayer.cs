@@ -67,8 +67,14 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float punchedNoControlTime;
     public AnimationCurve punchPropulsionForceByCharge;
 
-    [Header("Punch")]
+    [Header("Switch")]
     public float switchChunckMaxDistance;
+
+    [Header("ObjectifTexts")]
+    public string captureOverdriveText;
+    public string goToGoalText;
+    public string defendText;
+    public string protectText;
 
     [Header("Sounds")]
     [Range(-80, 20)] public int musicVolume;

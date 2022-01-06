@@ -200,5 +200,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   switchChunckMaxDistance: 100
+  captureOverdriveText: Capture overdrive
+  goToGoalText: Reach the enemy goal
+  defendText: Take back the overdrive
+  protectText: Protect your ally
   musicVolume: 0
   effectsVolume: 0
