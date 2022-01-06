@@ -107,13 +107,15 @@ public class BlockBehaviour : MonoBehaviour
 		float _elapsedTime = 0f;
 		float _completion = 0f;
 
-		while(_elapsedTime < timeBeforeExplosion)
+		while(_elapsedTime < timeBeforeExplosion * .4f)
 		{
 			_elapsedTime += Time.deltaTime;
 			_completion = _elapsedTime / timeBeforeExplosion;
 			blockMaterial.SetFloat("PreDissolveAlphaValue", Mathf.Lerp(0, 1, _completion));
 			yield return waitForEndOfFrame;
 		}
+
+		yield return new WaitForSeconds(timeBeforeExplosion * .6f);
 
 		StartCoroutine(ExplodeCoroutine());
 	}
