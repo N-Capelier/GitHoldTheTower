@@ -434,13 +434,14 @@ public class PlayerLogic : NetworkBehaviour
         return horizontalVector.normalized;
     }
 
+    private bool isWallSliding;
     private void VerticalMovement()
     {
-        if(Input.GetJoystickNames().Length > 0)
-		{
+        if (Input.GetJoystickNames().Length > 0)
+        {
             VerticalMovementFromJoystick();
             return;
-		}
+        }
 
         if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking)
         {
@@ -454,21 +455,39 @@ public class PlayerLogic : NetworkBehaviour
                     {
                         if (!isAttachToWall)
                         {
-                            selfMovement.SetWallSlideDirection();
+                            isAttachToWall = true;
+                            if (!IsLookingInWall())
+                            {
+                                if (selfMovement.SetWallSlideDirection())
+                                {
+                                    isWallSliding = true;
+                                }
+                            }
                         }
-                        isAttachToWall = true;
-                        selfMovement.ApplyWallSlideForces();
+
+
+                        if (isWallSliding)
+                        {
+                            selfMovement.ApplyWallSlideForces();
+                        }
+                        else
+                        {
+                            selfMovement.ApplyWallAttachForces();
+                        }
                     }
                     else if (Input.GetKeyUp(selfParams.jump))
                     {
                         if (GetNearbyWallNormal() != Vector3.zero)
                         {
                             selfMovement.WallJump(GetNearbyWallNormal());
+                            isAttachToWall = false;
+                            isWallSliding = false;
                         }
                     }
                     else
                     {
                         isAttachToWall = false;
+                        isWallSliding = false;
                         selfMovement.ApplyGravity();
                     }
                 }
@@ -477,6 +496,7 @@ public class PlayerLogic : NetworkBehaviour
                     isAttachToWall = false;
                     selfMovement.ApplyGravity();
                     isTouchingWall = false;
+                    isWallSliding = false;
                 }
 
             }
@@ -494,6 +514,8 @@ public class PlayerLogic : NetworkBehaviour
                     selfMovement.isAttackReset = true;
                 }
                 isAttachToWall = false;
+                isWallSliding = false;
+                isTouchingWall = false;
             }
         }
 
@@ -565,13 +587,12 @@ public class PlayerLogic : NetworkBehaviour
 
         //Debug.DrawRay(point, (normalWallJump + new Vector3(0, 0.5f, 0)) * 10, Color.red, 2.5f);
     }
-
     public Vector3 GetNearbyWallNormal()
     {
         Vector3 wallNormal = Vector3.zero;
 
-        Collider[] nearbyWalls = Physics.OverlapBox(transform.position, new Vector3(0.7f, 0.2f, 0.7f), Quaternion.identity, LayerMask.GetMask("Outlined"));
-        if(nearbyWalls.Length > 0)
+        Collider[] nearbyWalls = Physics.OverlapBox(transform.position, new Vector3(1f, 0.2f, 1f), Quaternion.identity, LayerMask.GetMask("Outlined"));
+        if (nearbyWalls.Length > 0)
         {
             RaycastHit wallHit;
             Vector3 wallPosDir = nearbyWalls[0].transform.position - transform.position;
@@ -584,8 +605,33 @@ public class PlayerLogic : NetworkBehaviour
                 wallNormal = wallHit.normal;
             }
         }
-
         return wallNormal;
+    }
+
+    public bool IsLookingInWall()
+    {
+        Vector3 wallNormal = GetNearbyWallNormal();
+        if (wallNormal != Vector3.zero)
+        {
+            float wallAngle = Vector3.SignedAngle(Vector3.right, wallNormal, Vector3.up);
+            float lookAngle = Vector3.SignedAngle(Vector3.right, GetHorizontalVector(selfCamera.forward).normalized, Vector3.up);
+
+            float angleDist = lookAngle - wallAngle;
+            angleDist = selfMovement.GetClampedAngle(angleDist);
+
+            if (Mathf.Abs(angleDist) > selfParams.wallJumpMinAngleToCancelDeviation)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return true;
+        }
     }
 
     #endregion
