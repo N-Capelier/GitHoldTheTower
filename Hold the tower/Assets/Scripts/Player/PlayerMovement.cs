@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private PlayerLogic selfLogic;
     [SerializeField]
-    private Rigidbody selfRbd;
+    public Rigidbody selfRbd;
     [SerializeField]
     private Transform selfCamera;
     [SerializeField]
@@ -135,7 +135,8 @@ public class PlayerMovement : MonoBehaviour
         if(wallSlideDirection != Vector3.zero)
         {
             float wallAngle = Vector3.SignedAngle(Vector3.right, wallSlideDirection, Vector3.up);
-            float lookAngle = Vector3.SignedAngle(Vector3.right, selfLogic.GetHorizontalVector(selfCamera.forward).normalized, Vector3.up);
+            //float lookAngle = Vector3.SignedAngle(Vector3.right, selfLogic.GetHorizontalVector(selfCamera.forward).normalized, Vector3.up);
+            float lookAngle = Vector3.SignedAngle(Vector3.right, selfLogic.GetHorizontalVector(selfRbd.velocity).normalized, Vector3.up);
             if (Mathf.Abs(GetClampedAngle(lookAngle - GetClampedAngle(wallAngle + 90))) < 90)
             {
                 wallSlideDirection = new Vector3(Mathf.Cos(GetClampedAngle(wallAngle + 90) * Mathf.Deg2Rad), 0, -Mathf.Sin(GetClampedAngle(wallAngle + 90) * Mathf.Deg2Rad));
