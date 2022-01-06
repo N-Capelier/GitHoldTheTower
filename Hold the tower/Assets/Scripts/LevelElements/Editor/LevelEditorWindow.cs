@@ -170,21 +170,31 @@ public class LevelEditorWindow : EditorWindow
 		BlockBehaviour[] _blocks = themeManager.GetComponentsInChildren<BlockBehaviour>();
 		foreach(BlockBehaviour _block in _blocks)
 		{
+			Debug.LogWarning("loop");
 			if(_block.isDestroyable)
 			{
-				Material _currentBlockMaterial = _block.GetComponent<MeshRenderer>().material;
-				if(_currentBlockMaterial.name.Contains("3"))
-				{
-					_currentBlockMaterial = newBlockMaterial2;
-				}
-				else if(_currentBlockMaterial.name.Contains("2"))
-				{
-					_currentBlockMaterial = newBlockMaterial3;
-				}
-				else
-				{
-					_currentBlockMaterial = newBlockMaterial1;
-				}
+				Debug.LogWarning("Aplpying");
+				_block.GetComponent<MeshRenderer>().material = null;
+				/*Material _currentBlockMaterial = */
+				_block.GetComponent<MeshRenderer>().material = newBlockMaterial1; //sharedMaterial
+					//_currentBlockMaterial = null;
+					//_currentBlockMaterial = newBlockMaterial1;
+					//if (_currentBlockMaterial.name.Contains("3"))
+					//{
+					//	_currentBlockMaterial = null;
+					//	_currentBlockMaterial = newBlockMaterial2;
+					//}
+					//else if (_currentBlockMaterial.name.Contains("2"))
+					//{
+					//	_currentBlockMaterial = null;
+					//	_currentBlockMaterial = newBlockMaterial3;
+					//}
+					//else
+					//{
+					//	_currentBlockMaterial = null;
+					//	_currentBlockMaterial = newBlockMaterial1;
+					//}
+
 			}
 		}
 		EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
