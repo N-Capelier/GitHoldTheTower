@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: BlockMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: 344408697ce7bdb47874858d7e25a221, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 20a8c4332c7cb894d85c38ecacd2ad46, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -20,23 +20,23 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_0563a86029004892b0a12a7ac371cbc3:
-        m_Texture: {fileID: 2800000, guid: a21f771acb0747c449555bfd7aab5f04, type: 3}
+        m_Texture: {fileID: 2800000, guid: e9b403bc8261cf745b51b7d2135f2fbd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_15197091f610487fabf2a64f96bf6639:
-        m_Texture: {fileID: 2800000, guid: 54d1ab5ca04eacc4eb4fc28456943827, type: 3}
+        m_Texture: {fileID: 2800000, guid: 60adbc65cfca236479c7f688b2f7d3d4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_30a21ead911c4733a5c5be6fa8a07d8f:
-        m_Texture: {fileID: 2800000, guid: fad5b43e6678bb24c975d1fc97c49a1b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2decb9d810f8bff45a71554ab0002bd8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_94948f0241ee45ffa35eee0e068312f0:
-        m_Texture: {fileID: 2800000, guid: 4efbaa1f8f2bc5f4897f7c3e690e226c, type: 3}
+        m_Texture: {fileID: 2800000, guid: b25260d0118aa684590cf7d2504a2924, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_ab9b58dbbcf44368b8e149957f675459:
-        m_Texture: {fileID: 2800000, guid: 75a3921d4a94fc849b89651754002288, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8cc1d11a6fbe3ea499e147959787902a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -79,6 +79,30 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_08cd9e6b27fe4c72afc69efc62cf8eec_Texture_1:
+        m_Texture: {fileID: 2800000, guid: b25260d0118aa684590cf7d2504a2924, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_332e27f73e824ac09f35c7348e1b647b_Texture_1:
+        m_Texture: {fileID: 2800000, guid: b25260d0118aa684590cf7d2504a2924, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_8f4fae32d0f140a78e30f9ff3fc0b71c_Texture_1:
+        m_Texture: {fileID: 2800000, guid: b25260d0118aa684590cf7d2504a2924, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_bb76fb96ce8e4e9f92b00576545d6491_Texture_1:
+        m_Texture: {fileID: 2800000, guid: e9b403bc8261cf745b51b7d2135f2fbd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_c4062d1300c746bf8f908035ef2027da_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 60adbc65cfca236479c7f688b2f7d3d4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_dbc9a34979a9433b8084c163b1e8456f_Texture_1:
+        m_Texture: {fileID: 2800000, guid: b25260d0118aa684590cf7d2504a2924, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -97,16 +121,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - DissolveValue: 0
-    - Vector1_0bfe0e6f4db444518e53e46a086fc232: 1
+    - Vector1_0bfe0e6f4db444518e53e46a086fc232: 0.18
     - Vector1_1ec78ac595ca439181f38cec84013fef: 0.01
     - Vector1_289f180caaa745a7854cbf56e5e99c36: 110
     - Vector1_44e785dbc62542c89491f35335a51e24: 0.42
     - Vector1_6f3e673cfad94486a075bb233269e97c: 30
-    - Vector1_96ceeb79730145d9907a47d84da3ed76: 0
-    - Vector1_be01fa312b664c91a02c3ed4a4abe753: 1
+    - Vector1_96ceeb79730145d9907a47d84da3ed76: 0.39
+    - Vector1_be01fa312b664c91a02c3ed4a4abe753: 0.18
     - Vector1_be3e14ad907a4ead9895ad227b6b7cb6: 0.47
     - Vector1_cb03d76b90ea405aafccef8e91299221: 0
-    - Vector1_d7666c49abc74028a8cabfed34d87d8d: 1
+    - Vector1_d7666c49abc74028a8cabfed34d87d8d: 0.18
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
