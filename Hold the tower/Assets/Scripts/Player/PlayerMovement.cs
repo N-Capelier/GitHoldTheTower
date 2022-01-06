@@ -171,6 +171,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void ApplyWallAttachForces()
     {
+        selfRbd.velocity -= new Vector3(0, selfParams.gravityForce, 0) * Time.deltaTime;
+        /*
         selfRbd.velocity -= new Vector3(0, selfParams.wallSlideGravity, 0) * Time.deltaTime;
 
         if (selfRbd.velocity.y < -selfParams.wallSlideMaxGravitySpeed)
@@ -179,7 +181,7 @@ public class PlayerMovement : MonoBehaviour
         }
         float verticalVelocity = selfRbd.velocity.y;
         selfRbd.velocity -= selfRbd.velocity * selfParams.wallSlideSpeedDampening * Time.deltaTime;
-        selfRbd.velocity = new Vector3(selfRbd.velocity.x, verticalVelocity, selfRbd.velocity.z);
+        selfRbd.velocity = new Vector3(selfRbd.velocity.x, verticalVelocity, selfRbd.velocity.z);*/
     }
 
     public void ResetVerticalVelocity()
