@@ -662,7 +662,7 @@ public class PlayerLogic : NetworkBehaviour
             punchChargeDistancePreview.SetActive(true);
             punchChargeDistancePreview2.SetActive(true);
             punchChargeSliderLine.SetActive(true);
-            if (timeAttack > 0.2f)
+            if (timeAttack > 0.2f && !hasFlag)
             {
                 punchChargeDisplay.gameObject.SetActive(true);
             }
