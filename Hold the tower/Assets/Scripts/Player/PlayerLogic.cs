@@ -199,16 +199,16 @@ public class PlayerLogic : NetworkBehaviour
                 playerCollider.transform.GetComponent<MeshRenderer>().material = redTeamMaterial;
             }
 
-            foreach (GameObject objPlayer in GameObject.FindGameObjectsWithTag("Player"))
+        }
+
+        foreach (GameObject objPlayer in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            if (objPlayer.name == "Player(Clone)")
             {
-                if(objPlayer.name == "Player(Clone)")
+                if (objPlayer.GetComponent<NetworkIdentity>().hasAuthority)
                 {
-                    if (objPlayer.GetComponent<NetworkIdentity>().hasAuthority)
-                    {
-                        authorityPlayer = objPlayer;
-                    }
+                    authorityPlayer = objPlayer;
                 }
-                
             }
 
         }
@@ -934,7 +934,7 @@ public class PlayerLogic : NetworkBehaviour
     public void CmdGetFlag()
     {
         hasFlag = true;
-        RpcPlayGlobalSound("LevelOverdriveTaken");
+        CmdPlayEquipTeamSound("LevelTakenTeam", "LevelTakenEnemy");
     }
 
     [Command(requiresAuthority = false)]
@@ -1091,7 +1091,7 @@ public class PlayerLogic : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void RpcStopPlayerSource()
+    public void RpcStopPlayerSource()
     {
         playerSource.Stop();
     }
@@ -1122,16 +1122,16 @@ public class PlayerLogic : NetworkBehaviour
     }
 
     //Send a different song for each differente team
-    [Command]
-    private void CmdPlayEquipTeamSound(string eventAllyTeam,string eventEnemyTeam, LobbyPlayerLogic.TeamName teamNameToCheck)
+    [Command(requiresAuthority = false)]
+    private void CmdPlayEquipTeamSound(string eventAllyTeam,string eventEnemyTeam)
     {
-        RpcPlayEquipTeamSound(eventAllyTeam, eventEnemyTeam, teamName);
+        RpcPlayEquipTeamSound(eventAllyTeam, eventEnemyTeam);
     }
 
     [ClientRpc]
-    private void RpcPlayEquipTeamSound(string eventAllyTeam, string eventEnemyTeam, LobbyPlayerLogic.TeamName teamNameToCheck)
+    private void RpcPlayEquipTeamSound(string eventAllyTeam, string eventEnemyTeam)
     {
-        if(teamName == teamNameToCheck)
+        if(authorityPlayer.GetComponent<PlayerLogic>().teamName == teamName)
         {
             SoundManager.Instance.PlaySoundEvent(eventAllyTeam);
         }
