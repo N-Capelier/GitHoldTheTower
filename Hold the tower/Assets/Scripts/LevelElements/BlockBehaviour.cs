@@ -67,10 +67,11 @@ public class BlockBehaviour : MonoBehaviour
 	{
 		if(isDestroyable && !isAlive)
 		{
-			isAlive = true;
-			blockMaterial.SetFloat("DissolveValue", 0);
-			blockMaterial.SetFloat("PreDissolveAlphaValue", 0);
-			gameObject.layer = LayerMask.NameToLayer("Outlined");
+			return;
+			//isAlive = true;
+			//blockMaterial.SetFloat("DissolveValue", 0);
+			//blockMaterial.SetFloat("PreDissolveAlphaValue", 0);
+			//gameObject.layer = LayerMask.NameToLayer("Outlined");
 		}
 		boxCollider.enabled = true;
 		startPosition = transform.position;
@@ -80,6 +81,19 @@ public class BlockBehaviour : MonoBehaviour
 		targetPosition = ThemeManager.Instance.terrains[loadedTerrainID].positions[blockID];
 		movingToTargetPos = true;
 		elapsedTime = 0f;
+	}
+
+	public void SetBlockAlive()
+	{
+		if(isDestroyable && !isAlive)
+		{
+			isAlive = true;
+			blockMaterial.SetFloat("DissolveValue", 0);
+			blockMaterial.SetFloat("PreDissolveAlphaValue", 0);
+			gameObject.layer = LayerMask.NameToLayer("Outlined");
+
+			SetNextTerrainPosition();
+		}
 	}
 
 	void MoveToTargetPos()
