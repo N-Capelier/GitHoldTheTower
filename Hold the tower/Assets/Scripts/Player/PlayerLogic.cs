@@ -201,13 +201,15 @@ public class PlayerLogic : NetworkBehaviour
 
         }
 
-        foreach (GameObject objPlayer in GameObject.FindGameObjectsWithTag("Player"))
+        GameObject[] allPlayers = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject objPlayer in allPlayers)
         {
             if (objPlayer.name == "Player(Clone)")
             {
                 if (objPlayer.GetComponent<NetworkIdentity>().hasAuthority)
                 {
                     authorityPlayer = objPlayer;
+                    Debug.Log(authorityPlayer);
                 }
             }
 
