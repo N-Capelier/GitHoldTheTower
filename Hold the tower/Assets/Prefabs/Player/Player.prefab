@@ -379,6 +379,7 @@ MonoBehaviour:
   punchSliderStartOffset: 235
   punchSliderEndOffset: 5
   punchCooldownDisplay: {fileID: 7892173100772450712}
+  punchCooldownSecondDisplay: {fileID: 182106032646636290}
   hudTextPlayer: {fileID: 5169459364437788771}
   scoreTextBlue: {fileID: 5267247992604390232}
   scoreTextRed: {fileID: 6345052149121753362}
@@ -397,6 +398,7 @@ MonoBehaviour:
   blueTeamMaterial: {fileID: 2100000, guid: 43da0a92a1c334d4b8b76f0939264b01, type: 2}
   loadingScreen: {fileID: 3113217646462068070}
   player3dPseudo: {fileID: 2695693587259514459}
+  hud: {fileID: 7467340940595755413}
   teamName: 0
   spawnPosition: 0
   pseudoPlayer: 
