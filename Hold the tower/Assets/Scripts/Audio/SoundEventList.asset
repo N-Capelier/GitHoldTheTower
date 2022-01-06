@@ -30,7 +30,7 @@ MonoBehaviour:
     - name: NullSound
       ID: 1
       clip: {fileID: 8300000, guid: 0bf928ec4e4f3ec4388aa58573d003fa, type: 3}
-      volume: 0.2
+      volume: 0.5
     isLocalized: 1
     isRandom: 0
     isLoop: 1
@@ -52,7 +52,7 @@ MonoBehaviour:
     - name: PlayerJump
       ID: 3
       clip: {fileID: 8300000, guid: 34e12c161cb59084a8047706b4c79eeb, type: 3}
-      volume: 0
+      volume: 0.8
     isLocalized: 1
     isRandom: 0
     isLoop: 0
@@ -63,7 +63,7 @@ MonoBehaviour:
     - name: PlayerWallJump
       ID: 4
       clip: {fileID: 8300000, guid: 2a7f8c98c8d445644abe9a3625400b9b, type: 3}
-      volume: 1
+      volume: 0.5
     isLocalized: 1
     isRandom: 0
     isLoop: 0
@@ -74,7 +74,7 @@ MonoBehaviour:
     - name: PlayerJumpOff
       ID: 5
       clip: {fileID: 8300000, guid: 42ef11a620b659342a084a82da0e06d0, type: 3}
-      volume: 0.2
+      volume: 0.5
     isLocalized: 1
     isRandom: 0
     isLoop: 0
@@ -85,7 +85,7 @@ MonoBehaviour:
     - name: NullSound
       ID: 6
       clip: {fileID: 8300000, guid: ecc60e6ac6344b043820e1118d68a4ac, type: 3}
-      volume: 1
+      volume: 0.8
     isLocalized: 1
     isRandom: 0
     isLoop: 0
@@ -96,7 +96,7 @@ MonoBehaviour:
     - name: NullSound
       ID: 7
       clip: {fileID: 8300000, guid: 10f36f00e21dca8468235a72777a1b66, type: 3}
-      volume: 1
+      volume: 0.8
     isLocalized: 0
     isRandom: 0
     isLoop: 0
@@ -129,7 +129,7 @@ MonoBehaviour:
     - name: PlayerPunched
       ID: 10
       clip: {fileID: 8300000, guid: baf3e846f64aedc40aeb49bf35053520, type: 3}
-      volume: 1
+      volume: 0.8
     isLocalized: 0
     isRandom: 0
     isLoop: 0
@@ -140,7 +140,7 @@ MonoBehaviour:
     - name: PlayerPunchImpact
       ID: 11
       clip: {fileID: 8300000, guid: 73b2df4527ceb484296fb85e083a49ab, type: 3}
-      volume: 1
+      volume: 0.8
     isLocalized: 0
     isRandom: 0
     isLoop: 0
@@ -151,7 +151,7 @@ MonoBehaviour:
     - name: PlayerOverdrive
       ID: 12
       clip: {fileID: 8300000, guid: 0dad3089d990c614f803f2be35f5b84b, type: 3}
-      volume: 1
+      volume: 0.8
     isLocalized: 1
     isRandom: 0
     isLoop: 0
@@ -206,7 +206,7 @@ MonoBehaviour:
     - name: LevelEvolvingAlarm
       ID: 17
       clip: {fileID: 8300000, guid: f81f3dd7af59596498404ce449b1d36a, type: 3}
-      volume: 1
+      volume: 0.8
     isLocalized: 1
     isRandom: 0
     isLoop: 0
@@ -217,7 +217,7 @@ MonoBehaviour:
     - name: LevelEvolvingSound
       ID: 18
       clip: {fileID: 8300000, guid: 5a90b787c576cd048ac816efd3475f2d, type: 3}
-      volume: 1
+      volume: 0.8
     isLocalized: 1
     isRandom: 0
     isLoop: 0
@@ -228,7 +228,7 @@ MonoBehaviour:
     - name: LevelBlockDestroyed
       ID: 19
       clip: {fileID: 8300000, guid: a2a97b97216dab34795e08e68740bf68, type: 3}
-      volume: 1
+      volume: 0.8
     isLocalized: 1
     isRandom: 0
     isLoop: 0
@@ -239,7 +239,7 @@ MonoBehaviour:
     - name: LevelButtonActivated
       ID: 20
       clip: {fileID: 8300000, guid: 3ea3def82f4bbe743a0a6ccc4e1e3b40, type: 3}
-      volume: 1
+      volume: 0.8
     isLocalized: 1
     isRandom: 0
     isLoop: 0
@@ -327,7 +327,7 @@ MonoBehaviour:
     - name: LevelRedTeamScores
       ID: 28
       clip: {fileID: 8300000, guid: 8e0f04b12fabe7542ace9f468ff041e6, type: 3}
-      volume: 1
+      volume: 0.3
     isLocalized: 0
     isRandom: 0
     isLoop: 1

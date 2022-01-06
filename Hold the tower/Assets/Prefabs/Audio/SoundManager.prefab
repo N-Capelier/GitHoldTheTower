@@ -48,11 +48,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundEventList: {fileID: 11400000, guid: e55ea489aacafa24ab7b352ff6896134, type: 2}
   sfxMixer: {fileID: 859602042225167352, guid: cde55cf782acd164bb731d17649287e1, type: 2}
-  musicMixer: {fileID: 0}
+  musicMixer: {fileID: 6644533101274923571, guid: cde55cf782acd164bb731d17649287e1, type: 2}
   emptyGameObject: {fileID: 0}
   MusicSource1: {fileID: 1204675635174919855}
   MusicSource2: {fileID: 9207590425111150745}
   playersParam: {fileID: 11400000, guid: a24272e5804e7bd4891a2cf20f79574a, type: 2}
+  minDistance: 0
+  maxDistance: 30
+  spatialBlend: 1
+  audioRolloffMode: 1
 --- !u!82 &4702431631337844707
 AudioSource:
   m_ObjectHideFlags: 0
@@ -76,7 +80,7 @@ AudioSource:
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -158,7 +162,7 @@ AudioSource:
   m_GameObject: {fileID: 4702431631337844716}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 6644533101274923571, guid: cde55cf782acd164bb731d17649287e1, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -254,7 +258,7 @@ AudioSource:
   m_GameObject: {fileID: 4702431631337844716}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 6644533101274923571, guid: cde55cf782acd164bb731d17649287e1, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

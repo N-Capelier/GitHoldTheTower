@@ -24,6 +24,14 @@ public class SoundManager : Singleton<SoundManager>
 
     public ScriptableParamsPlayer playersParam;
 
+    public float minDistance;
+
+    public float maxDistance;
+
+    public float spatialBlend;
+
+    public AudioRolloffMode audioRolloffMode;
+
     private void Awake()
 	{
         CreateSingleton(true);
@@ -118,8 +126,10 @@ public class SoundManager : Singleton<SoundManager>
         if (thisEvent.isLocalized)
         {
             soundRef.audioSource.spatialize = true;
-            soundRef.audioSource.maxDistance = 20;
-            soundRef.audioSource.spatialBlend = 0.5f;
+            soundRef.audioSource.minDistance = minDistance;
+            soundRef.audioSource.maxDistance = maxDistance;
+            soundRef.audioSource.spatialBlend = spatialBlend;
+            soundRef.audioSource.rolloffMode = audioRolloffMode;
         }
         else
         {
@@ -170,8 +180,10 @@ public class SoundManager : Singleton<SoundManager>
         if (thisEvent.isLocalized)
         {
             soundRef.audioSource.spatialize = true;
-            soundRef.audioSource.maxDistance = 20;
-            soundRef.audioSource.spatialBlend = 0.5f;
+            soundRef.audioSource.minDistance = minDistance;
+            soundRef.audioSource.maxDistance = maxDistance;
+            soundRef.audioSource.spatialBlend = spatialBlend;
+            soundRef.audioSource.rolloffMode = audioRolloffMode;
         }
         else
         {
@@ -218,8 +230,10 @@ public class SoundManager : Singleton<SoundManager>
         if (thisEvent.isLocalized)
         {
             soundRef.audioSource.spatialize = true;
-            soundRef.audioSource.maxDistance = 20;
-            soundRef.audioSource.spatialBlend = 0.5f;
+            soundRef.audioSource.minDistance = minDistance;
+            soundRef.audioSource.maxDistance = maxDistance;
+            soundRef.audioSource.spatialBlend = spatialBlend;
+            soundRef.audioSource.rolloffMode = audioRolloffMode;
         }
         else
         {
@@ -274,8 +288,10 @@ public class SoundManager : Singleton<SoundManager>
         if (thisEvent.isLocalized)
         {
             soundRef.audioSource.spatialize = true;
-            soundRef.audioSource.maxDistance = 20;
-            soundRef.audioSource.spatialBlend = 0.5f;
+            soundRef.audioSource.minDistance = minDistance;
+            soundRef.audioSource.maxDistance = maxDistance;
+            soundRef.audioSource.spatialBlend = spatialBlend;
+            soundRef.audioSource.rolloffMode = audioRolloffMode;
         }
         else
         {
@@ -325,8 +341,10 @@ public class SoundManager : Singleton<SoundManager>
         if (thisEvent.isLocalized)
         {
             soundRef.audioSource.spatialize = true;
-            soundRef.audioSource.maxDistance = 20;
-            soundRef.audioSource.spatialBlend = 0.5f;
+            soundRef.audioSource.minDistance = minDistance;
+            soundRef.audioSource.maxDistance = maxDistance;
+            soundRef.audioSource.spatialBlend = spatialBlend;
+            soundRef.audioSource.rolloffMode = audioRolloffMode;
         }
         else
         {
@@ -376,8 +394,10 @@ public class SoundManager : Singleton<SoundManager>
         if (thisEvent.isLocalized)
         {
             soundRef.audioSource.spatialize = true;
-            soundRef.audioSource.maxDistance = 20;
-            soundRef.audioSource.spatialBlend = 0.5f;
+            soundRef.audioSource.minDistance = minDistance;
+            soundRef.audioSource.maxDistance = maxDistance;
+            soundRef.audioSource.spatialBlend = spatialBlend;
+            soundRef.audioSource.rolloffMode = audioRolloffMode;
         }
         else
         {
@@ -424,8 +444,10 @@ public class SoundManager : Singleton<SoundManager>
             if (thisEvent.isLocalized)
             {
                 soundRef.audioSource.spatialize = true;
-                soundRef.audioSource.maxDistance = 20;
-                soundRef.audioSource.spatialBlend = 0.5f;
+                soundRef.audioSource.minDistance = minDistance;
+                soundRef.audioSource.maxDistance = maxDistance;
+                soundRef.audioSource.spatialBlend = spatialBlend;
+                soundRef.audioSource.rolloffMode = audioRolloffMode;
             }
             else
             {
@@ -464,7 +486,15 @@ public class SoundManager : Singleton<SoundManager>
 
     }
 
+    public IEnumerator StopSoundAfterPlay(AudioSource source)
+    {
+        while (source.isPlaying)
+        {
+            yield return null;
+        }
 
+        source.Stop();
+    }
 
 
 
