@@ -1,27 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Mirror;
 
 public class PlayerGuide : MonoBehaviour
 {
+    [SerializeField]
+    private ScriptableParamsPlayer selfParams;
+    [SerializeField]
+    private Text objectiveText;
     [SerializeField]
     private RectTransform objectiveCursor;
     [SerializeField]
     private Camera playerCamera;
     [SerializeField]
     private float borderWidthRatio;
+    [SerializeField]
+    private RectTransform overdriveProgressionIcon;
+    [SerializeField]
+    private Vector2 overdriveProgressionMinMaxPos;
 
     private PlayerLogic playerLogic;
     private MatchManager matchManager;
     private GameObject targetObject;
     private GameObject flag;
     private GameObject adverseGoal;
+    private GameObject ownGoal;
     private GameObject playerHoldingFlag;
 
     private List<PlayerLogic> teamMates;
     private List<PlayerLogic> adversaries;
     private bool playersSetUp;
+    private Vector3 overdriveCurrentPosition;
 
     Vector3 forwardAxis;
     private void Start()
@@ -102,10 +113,12 @@ public class PlayerGuide : MonoBehaviour
             if (playerLogic.teamName == LobbyPlayerLogic.TeamName.Red)
             {
                 adverseGoal = matchManager.blueGoal.gameObject;
+                ownGoal = matchManager.redGoal.gameObject;
             }
             else
             {
                 adverseGoal = matchManager.redGoal.gameObject;
+                ownGoal = matchManager.blueGoal.gameObject;
             }
             GetAllPlayers();
             playersSetUp = true;
@@ -164,17 +177,39 @@ public class PlayerGuide : MonoBehaviour
 
                 if (adversaryHasFlag || teamMateHasFlag)
                 {
+                    if(adversaryHasFlag)
+                    {
+                        objectiveText.text = selfParams.defendText;
+                    }
+                    else
+                    {
+                        objectiveText.text = selfParams.protectText;
+                    }
+
                     targetObject = playerHoldingFlag;
+                    overdriveCurrentPosition = targetObject.transform.position;
                 }
                 else
                 {
+                    objectiveText.text = selfParams.captureOverdriveText;
                     targetObject = flag;
+                    overdriveCurrentPosition = flag.transform.position;
                 }
             }
             else
             {
                 targetObject = adverseGoal;
+                overdriveCurrentPosition = transform.position;
+                objectiveText.text = selfParams.goToGoalText;
             }
+
+            Vector3 oDirectionFromOwnGoal = overdriveCurrentPosition - ownGoal.transform.position;
+            float overdriveDistanceFromOwnGoal = oDirectionFromOwnGoal.magnitude;
+            Vector3 oDirectionFromAdverseGoal = overdriveCurrentPosition - adverseGoal.transform.position;
+            float overdriveDistanceFromAdverseGoal = oDirectionFromAdverseGoal.magnitude;
+
+            float oProgressionRatio = overdriveDistanceFromOwnGoal / (overdriveDistanceFromAdverseGoal + overdriveDistanceFromOwnGoal);
+            overdriveProgressionIcon.anchoredPosition = new Vector2(Mathf.Lerp(overdriveProgressionMinMaxPos.x, overdriveProgressionMinMaxPos.y, oProgressionRatio), overdriveProgressionIcon.anchoredPosition.y);
         }
     }
 }

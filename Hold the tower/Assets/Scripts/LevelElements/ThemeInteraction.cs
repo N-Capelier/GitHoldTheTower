@@ -53,4 +53,16 @@ public class ThemeInteraction : NetworkBehaviour
 	{
 		ThemeManager.Instance.LoadTerrainForSwitchArea(_index);
 	}
+
+	[Command(requiresAuthority = false)]
+	public void CmdSwitchChunck(int blockIndex)
+	{
+		RpcSwitchChunck(blockIndex);
+	}
+
+	[ClientRpc]
+	public void RpcSwitchChunck(int blockIndex)
+	{
+		ThemeManager.Instance.LoadNextStateForChunck(blockIndex);
+	}
 }

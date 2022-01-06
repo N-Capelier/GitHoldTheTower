@@ -453,10 +453,11 @@ public class PlayerLogic : NetworkBehaviour
 
                     if (Input.GetKey(selfParams.jump))
                     {
+                        Vector3 hSpeed = new Vector3(selfMovement.selfRbd.velocity.x, 0, selfMovement.selfRbd.velocity.z);
                         if (!isAttachToWall)
                         {
                             isAttachToWall = true;
-                            if (!IsLookingInWall())
+                            if (!IsLookingInWall() && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide)
                             {
                                 if (selfMovement.SetWallSlideDirection())
                                 {
@@ -466,16 +467,17 @@ public class PlayerLogic : NetworkBehaviour
                         }
 
 
-                        if (isWallSliding)
+                        if (isWallSliding && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide)
                         {
                             selfMovement.ApplyWallSlideForces();
                         }
                         else
                         {
                             selfMovement.ApplyWallAttachForces();
+                            isWallSliding = false;
                         }
                     }
-                    else if (Input.GetKeyUp(selfParams.jump))
+                    else if (Input.GetKeyUp(selfParams.jump) && isWallSliding)
                     {
                         if (GetNearbyWallNormal() != Vector3.zero)
                         {
@@ -660,7 +662,7 @@ public class PlayerLogic : NetworkBehaviour
             punchChargeDistancePreview.SetActive(true);
             punchChargeDistancePreview2.SetActive(true);
             punchChargeSliderLine.SetActive(true);
-            if (timeAttack > 0.2f)
+            if (timeAttack > 0.2f && !hasFlag)
             {
                 punchChargeDisplay.gameObject.SetActive(true);
             }
@@ -673,6 +675,9 @@ public class PlayerLogic : NetworkBehaviour
 
                 punchChargeDistancePreview.transform.localPosition = chargePreviewStartPos + Vector3.forward * 0.0046923076923077f * selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(0) / selfParams.punchSpeedByCharge.Evaluate(1);
                 punchChargeDistancePreview2.transform.localPosition = punchChargeDistancePreview.transform.localPosition;
+
+                punchChargeSliderLine.transform.localPosition = (punchChargeDistancePreview.transform.localPosition + chargePreviewStartPos) / 2;
+                punchChargeSliderLine.transform.localScale = new Vector3(punchChargeSliderLine.transform.localScale.x, punchChargeSliderLine.transform.localScale.y, punchChargeDistancePreview.transform.localPosition.z);
 
             }
             else
@@ -1183,7 +1188,6 @@ public class PlayerLogic : NetworkBehaviour
         float time = 0;
         while (time < timelife)
         {
-            Debug.Log(time);
             time += Time.deltaTime;
             temp.a = 1 - time;
             punchGetHitUi.GetComponent<Image>().color = temp;

@@ -14,6 +14,7 @@ public class ScriptableParamsPlayer : ScriptableObject
     public KeyCode back = KeyCode.S;
 
     public KeyCode jump = KeyCode.Space;
+    public KeyCode switchChunckKey = KeyCode.E;
 
     [Range(0, 2)] public int wallMouseInput;
     [Range(0, 2)] public int attackMouseInput;
@@ -42,6 +43,7 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float wallSlideMaxGravitySpeed;
     public float wallSlideSpeedDampening;
     public float wallRideSpeed;
+    public float minHorizontalSpeedToStartWallRide;
 
     [Header("Climb")]
     public float climbHeight = 5f;
@@ -64,6 +66,15 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float punchBaseUpwardPropulsionForce = 1f;
     public float punchedNoControlTime;
     public AnimationCurve punchPropulsionForceByCharge;
+
+    [Header("Switch")]
+    public float switchChunckMaxDistance;
+
+    [Header("ObjectifTexts")]
+    public string captureOverdriveText;
+    public string goToGoalText;
+    public string defendText;
+    public string protectText;
 
     [Header("Sounds")]
     [Range(-80, 20)] public int musicVolume;

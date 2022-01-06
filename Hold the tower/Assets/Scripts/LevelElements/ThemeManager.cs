@@ -68,4 +68,12 @@ public class ThemeManager : Singleton<ThemeManager>
 			blocks[_index].buttonManager.switchables[i].SetNextTerrainPosition();
 		}
 	}
+
+	public void LoadNextStateForChunck(int blockIndex)
+	{
+		for (int i = 0; i < blocks[blockIndex].buttonManager.switchables.Length; i++)
+		{
+			blocks[blockIndex].buttonManager.switchables[i].SetNextTerrainPosition();
+		}
+	}
 }
