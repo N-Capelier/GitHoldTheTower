@@ -37,6 +37,9 @@ public class BlockBehaviour : MonoBehaviour
 	public int buttonActiveTerrainIndex;
 	public ButtonManager buttonManager;
 
+	[Header("Highlight")]
+	public GameObject highlightDisplay;
+
 	[HideInInspector]
 	public int blockID;
 	[HideInInspector]

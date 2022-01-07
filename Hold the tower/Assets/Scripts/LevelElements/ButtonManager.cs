@@ -8,6 +8,7 @@ public class ButtonManager : NetworkBehaviour
 	private float activationCooldown;
 
 	public float cooldownRemaining;
+    private bool isHighlighted;
 
     private void Update()
     {
@@ -37,5 +38,17 @@ public class ButtonManager : NetworkBehaviour
     public float GetCDRatio()
     {
         return (activationCooldown - cooldownRemaining) / activationCooldown;
+    }
+
+    public void HighlightChunck(bool doHighlight)
+    {
+        if((isHighlighted && !doHighlight) || (!isHighlighted && doHighlight))
+        {
+            isHighlighted = doHighlight;
+            for (int i = 0; i < switchables.Length; i++)
+            {
+                switchables[i].highlightDisplay.SetActive(doHighlight);
+            }
+        }
     }
 }

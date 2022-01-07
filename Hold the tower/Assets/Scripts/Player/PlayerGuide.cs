@@ -22,6 +22,8 @@ public class PlayerGuide : MonoBehaviour
     private RectTransform overdriveProgressionIcon;
     [SerializeField]
     private Vector2 overdriveProgressionMinMaxPos;
+    [SerializeField]
+    private Color reachGoalObjectiveColor, captureObjectiveColor, defendObjectiveColor, protectObjectiveColor;
 
     private PlayerLogic playerLogic;
     private MatchManager matchManager;
@@ -35,6 +37,7 @@ public class PlayerGuide : MonoBehaviour
     private List<PlayerLogic> adversaries;
     private bool playersSetUp;
     private Vector3 overdriveCurrentPosition;
+    private Image objectiveCursorImage;
 
     Vector3 forwardAxis;
     private void Start()
@@ -42,6 +45,7 @@ public class PlayerGuide : MonoBehaviour
         flag = GameObject.Find("Flag");
         matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>();
         playerLogic = GetComponent<PlayerLogic>();
+        objectiveCursorImage = objectiveCursor.GetComponent<Image>();
     }
 
 
@@ -186,10 +190,12 @@ public class PlayerGuide : MonoBehaviour
                     if(adversaryHasFlag)
                     {
                         objectiveText.text = selfParams.defendText;
+                        objectiveCursorImage.color = defendObjectiveColor;
                     }
                     else
                     {
                         objectiveText.text = selfParams.protectText;
+                        objectiveCursorImage.color = protectObjectiveColor;
                     }
 
                     targetObject = playerHoldingFlag;
@@ -198,6 +204,7 @@ public class PlayerGuide : MonoBehaviour
                 else
                 {
                     objectiveText.text = selfParams.captureOverdriveText;
+                    objectiveCursorImage.color = captureObjectiveColor;
                     targetObject = flag;
                     overdriveCurrentPosition = flag.transform.position;
                 }
@@ -207,6 +214,7 @@ public class PlayerGuide : MonoBehaviour
                 targetObject = adverseGoal;
                 overdriveCurrentPosition = transform.position;
                 objectiveText.text = selfParams.goToGoalText;
+                objectiveCursorImage.color = reachGoalObjectiveColor;
             }
 
             Vector3 oDirectionFromOwnGoal = overdriveCurrentPosition - ownGoal.transform.position;
