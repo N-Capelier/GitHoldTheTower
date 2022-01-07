@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     private bool stopPunchFlag;
 
     [HideInInspector] public bool isPerfectTiming = false;
+    [HideInInspector] public bool isPunchInstantDestroy = false;
 
     [HideInInspector]
     public bool isClimbingMovement;
@@ -391,25 +392,35 @@ public class PlayerMovement : MonoBehaviour
         //}
 
         //Si est en dessous du pickTime
-        if(time <= selfParams.punchPerfectTiming)
+        if(time <= selfParams.punchMaxChargeTime)
         {
-            isPerfectTiming = false;
-            //ratio = selfParams.punchSpeedByCharge.Evaluate(time/selfParams.punchMaxChargeTime);
-            ratio = time / (selfParams.punchPerfectTiming + selfParams.punchPerfectTimingTreshold);
+            //isPerfectTiming = false;
+            isPunchInstantDestroy = false;
+             //ratio = selfParams.punchSpeedByCharge.Evaluate(time/selfParams.punchMaxChargeTime);
+             //ratio = time / (selfParams.punchPerfectTiming + selfParams.punchPerfectTimingTreshold);
+             ratio = time / selfParams.punchMaxChargeTime;
         }
 
+        /*
         //Si est au pickTime
         if(time <= selfParams.punchPerfectTiming + selfParams.punchPerfectTimingTreshold && time >= selfParams.punchPerfectTiming)
         {
             isPerfectTiming = true;
             //ratio = selfParams.punchPerfectTimingPropulsionMultiplier;
             ratio = time / (selfParams.punchPerfectTiming + selfParams.punchPerfectTimingTreshold);
-        }
+        }*/
 
         //Si sup�rieur au pickTime + treshHold
-        if(time > selfParams.punchPerfectTiming + selfParams.punchPerfectTimingTreshold)
+        if(time > selfParams.punchMaxChargeTime && time <= selfParams.punchMaxChargeTime + selfParams.punchChargeTimeToInstantDestroy)
         {
             isPerfectTiming = false;
+            isPunchInstantDestroy = false;
+            ratio = 1;
+        }
+
+        if(time > selfParams.punchMaxChargeTime + selfParams.punchChargeTimeToInstantDestroy)
+        {
+            isPunchInstantDestroy = true;
             ratio = 1;
         }
 

@@ -13,6 +13,8 @@ public class PlayerGuide : MonoBehaviour
     [SerializeField]
     private RectTransform objectiveCursor;
     [SerializeField]
+    private RectTransform allyCursor;
+    [SerializeField]
     private Camera playerCamera;
     [SerializeField]
     private float borderWidthRatio;
@@ -106,6 +108,10 @@ public class PlayerGuide : MonoBehaviour
         }*/
     }
 
+    Vector2 viewportPosition;
+    Vector2 screenPos;
+    Vector3 targetDirection;
+    float angleFromTarget;
     private void Update()
     {
         if (playerLogic.roundStarted && !playersSetUp)
@@ -129,11 +135,11 @@ public class PlayerGuide : MonoBehaviour
         {
             if (targetObject != null)
             {
-                Vector2 viewportPosition = playerCamera.WorldToScreenPoint(targetObject.transform.position);
-                Vector2 screenPos = ((viewportPosition * 1920) / playerCamera.scaledPixelWidth) - new Vector2(1920, 1080) / 2;
-                Vector3 flagDirection = targetObject.transform.position - playerCamera.transform.position;
-                float angleFromFlag = Vector3.Angle(playerCamera.transform.forward, flagDirection);
-                if (angleFromFlag > 90)
+                viewportPosition = playerCamera.WorldToScreenPoint(targetObject.transform.position);
+                screenPos = ((viewportPosition * 1920) / playerCamera.scaledPixelWidth) - new Vector2(1920, 1080) / 2;
+                targetDirection = targetObject.transform.position - playerCamera.transform.position;
+                angleFromTarget = Vector3.Angle(playerCamera.transform.forward, targetDirection);
+                if (angleFromTarget > 90)
                 {
                     screenPos *= -1;
                     while (screenPos.x < (1920 / 2 - borderWidthRatio) && screenPos.x > -(1920 / 2 - borderWidthRatio) && screenPos.y < (1080 / 2 - borderWidthRatio) && screenPos.y > -(1080 / 2 - borderWidthRatio))
@@ -210,6 +216,29 @@ public class PlayerGuide : MonoBehaviour
 
             float oProgressionRatio = overdriveDistanceFromOwnGoal / (overdriveDistanceFromAdverseGoal + overdriveDistanceFromOwnGoal);
             overdriveProgressionIcon.anchoredPosition = new Vector2(Mathf.Lerp(overdriveProgressionMinMaxPos.x, overdriveProgressionMinMaxPos.y, oProgressionRatio), overdriveProgressionIcon.anchoredPosition.y);
+
+            if(teamMates.Count > 0)
+            {
+                viewportPosition = playerCamera.WorldToScreenPoint(teamMates[0].transform.position);
+                screenPos = ((viewportPosition * 1920) / playerCamera.scaledPixelWidth) - new Vector2(1920, 1080) / 2;
+                targetDirection = teamMates[0].transform.position - playerCamera.transform.position;
+                angleFromTarget = Vector3.Angle(playerCamera.transform.forward, targetDirection);
+                if (angleFromTarget > 90)
+                {
+                    screenPos *= -1;
+                    while (screenPos.x < (1920 / 2 - borderWidthRatio) && screenPos.x > -(1920 / 2 - borderWidthRatio) && screenPos.y < (1080 / 2 - borderWidthRatio) && screenPos.y > -(1080 / 2 - borderWidthRatio))
+                    {
+                        screenPos += screenPos.normalized;
+                    }
+                }
+                screenPos = new Vector2(Mathf.Clamp(screenPos.x, -(1920 / 2 - borderWidthRatio), (1920 / 2 - borderWidthRatio)), Mathf.Clamp(screenPos.y, -(1080 / 2 - borderWidthRatio), (1080 / 2 - borderWidthRatio)));
+                allyCursor.anchoredPosition = screenPos;
+                allyCursor.gameObject.SetActive(true);
+            }
+            else
+            {
+                allyCursor.gameObject.SetActive(false);
+            }
         }
     }
 }
