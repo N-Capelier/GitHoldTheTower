@@ -48,6 +48,7 @@ MonoBehaviour:
   fileToStorePosition: 
   timeEachBreak: 0.01
   analyticGameObjectPosition: []
+  startWrite: 1
 --- !u!114 &7630860951181387092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,3 +64,4 @@ MonoBehaviour:
   pathFilePositions: 
   drawnGizmos: 0
   colors: []
+  round: 0

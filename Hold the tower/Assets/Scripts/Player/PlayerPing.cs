@@ -10,11 +10,13 @@ public class PlayerPing : NetworkBehaviour
     [SerializeField]
     private GameObject selfCamera;
     [SerializeField]
-    private GameObject hudPing;
+    private GameObject selfPingObject;
 
     private int layerMaskBlock, layerMaskBlockRed, layerMaskBlockBlue, layerMaskBlockGreen;
 
     private Vector3 positionToPing = new Vector3(0,0,0);
+
+    private bool isPinging;
 
     void Start()
     {
@@ -32,14 +34,26 @@ public class PlayerPing : NetworkBehaviour
         {
             RaycastHit hit;
             int layerMask = (1 << layerMaskBlock) | (1 << layerMaskBlockRed) | (1 << layerMaskBlockBlue) | (1 << layerMaskBlockGreen);
-            layerMask = ~layerMask;
+            //layerMask = ~layerMask;
             if (Physics.Raycast(selfCamera.transform.position, selfCamera.transform.forward, out hit, Mathf.Infinity, layerMask))
             {
                 Debug.DrawRay(selfCamera.transform.position, selfCamera.transform.forward * hit.distance, Color.yellow,5);
-                positionToPing = hit.transform.position;
+                positionToPing = hit.point;
+                isPinging = true;
             }
         }
 
-        hudPing.transform.position = positionToPing;
+        if (Input.GetMouseButtonUp(selfParams.pingMouseInput))
+        {
+            isPinging = false;
+            Debug.Log(positionToPing);
+        }
+
+        if (!isPinging && !Input.GetMouseButton(selfParams.pingMouseInput))
+        {
+            selfPingObject.transform.position = positionToPing;
+        }
+
+        
     }
 }
