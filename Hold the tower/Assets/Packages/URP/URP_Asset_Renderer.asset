@@ -144,12 +144,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_RendererFeatures:
   - {fileID: -8671831654910073439}
+  - {fileID: -3142828487245699248}
   - {fileID: 1574679848982873850}
   - {fileID: -7448624140317902801}
   - {fileID: -314984262483028571}
   - {fileID: 8240997497022765644}
-  - {fileID: -3142828487245699248}
-  m_RendererFeatureMap: a1e518210e77a787fa0697c9fa62da152fb8f312cf2ba198a555dc6c7bf3a0fb4cdaec948fe75d7250e7bd6b246e62d4
+  m_RendererFeatureMap: a1e518210e77a78750e7bd6b246e62d4fa0697c9fa62da152fb8f312cf2ba198a555dc6c7bf3a0fb4cdaec948fe75d72
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
   shaders:
@@ -231,7 +231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
-    passTag: NewRenderObjects
+    passTag: Outlines Blue
     Event: 300
     filterSettings:
       RenderQueueType: 0
