@@ -6,7 +6,7 @@ public class BlockBehaviour : MonoBehaviour
 {
 	[Header("Components")]
 	[SerializeField] public BoxCollider boxCollider;
-	[SerializeField] MeshRenderer meshRenderer;
+	[SerializeField] public MeshRenderer meshRenderer;
 	Material blockMaterial;
 
 	[Header("Movement")]
