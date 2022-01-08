@@ -6,7 +6,7 @@ public class BlockBehaviour : MonoBehaviour
 {
 	[Header("Components")]
 	[SerializeField] public BoxCollider boxCollider;
-	[SerializeField] MeshRenderer meshRenderer;
+	[SerializeField] public MeshRenderer meshRenderer;
 	Material blockMaterial;
 
 	[Header("Movement")]
@@ -36,6 +36,9 @@ public class BlockBehaviour : MonoBehaviour
 	public bool isButton;
 	public int buttonActiveTerrainIndex;
 	public ButtonManager buttonManager;
+
+	[Header("Highlight")]
+	public GameObject highlightDisplay;
 
 	[HideInInspector]
 	public int blockID;

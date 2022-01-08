@@ -164,6 +164,7 @@ public class PlayerLogic : NetworkBehaviour
 
         isInControl = true;
         selfCamera.gameObject.SetActive(false);
+        hud.SetActive(false);
         if (hasAuthority)
         {
             selfCamera.gameObject.SetActive(true);
@@ -694,7 +695,14 @@ public class PlayerLogic : NetworkBehaviour
                 punchChargeDistancePreview.transform.localPosition = chargePreviewStartPos + Vector3.forward * 0.0046923076923077f * selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(ratioAttack) / selfParams.punchSpeedByCharge.Evaluate(1); // alors ce chiffre bizarre je l'ai calculer rapport à la courbe de velocité, c'est le coefficient de la distance par rapport à la vitesse du punch
                 punchChargeDistancePreview2.transform.localPosition = punchChargeDistancePreview.transform.localPosition;
                 punchChargeSliderLine.transform.localPosition = (punchChargeDistancePreview.transform.localPosition + chargePreviewStartPos) / 2;
-                punchChargeSliderLine.transform.localScale = new Vector3(punchChargeSliderLine.transform.localScale.x, punchChargeSliderLine.transform.localScale.y, punchChargeDistancePreview.transform.localPosition.z);
+                if(selfMovement.isPunchInstantDestroy)
+                {
+                    punchChargeSliderLine.transform.localScale = new Vector3(0.3f, 0.3f, punchChargeDistancePreview.transform.localPosition.z);
+                }
+                else
+                {
+                    punchChargeSliderLine.transform.localScale = new Vector3(0.15f, 0.15f, punchChargeDistancePreview.transform.localPosition.z);
+                }
             }
 
         }

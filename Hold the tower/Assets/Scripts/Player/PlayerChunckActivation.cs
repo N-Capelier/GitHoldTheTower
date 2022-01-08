@@ -24,7 +24,6 @@ public class PlayerChunckActivation : MonoBehaviour
     public void CheckPlayerAim()
     {
         isAimingSwitcher = false;
-        aimedSwitcher = null;
         RaycastHit hit;
         Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, selfParams.switchChunckMaxDistance, switcherLayer);
 
@@ -44,6 +43,8 @@ public class PlayerChunckActivation : MonoBehaviour
         {
             switchInputIndicator.gameObject.SetActive(true);
             switchInputIndicator.fillAmount = aimedSwitcher.linkedChunck.GetCDRatio();
+            aimedSwitcher.linkedChunck.HighlightChunck(true);
+
             if(Input.GetKeyDown(selfParams.switchChunckKey))
             {
                 if(aimedSwitcher.linkedChunck.GetCDRatio() == 1)
@@ -56,6 +57,10 @@ public class PlayerChunckActivation : MonoBehaviour
         else
         {
             switchInputIndicator.gameObject.SetActive(false);
+            if(aimedSwitcher != null)
+            {
+                aimedSwitcher.linkedChunck.HighlightChunck(false);
+            }
         }
     }
 }

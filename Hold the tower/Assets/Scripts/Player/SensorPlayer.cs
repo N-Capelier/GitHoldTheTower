@@ -67,7 +67,7 @@ public class SensorPlayer : MonoBehaviour
 
                 GameObject.Find("GameManager").GetComponent<ThemeInteraction>().CmdInstantiateShockwave(_shockwaveSpawnPoint, selfMovement.punchRatio);
 
-                if (selfMovement.punchRatio == 1f)
+                if (selfMovement.isPunchInstantDestroy)
                 {
                     GameObject _shockWave = Instantiate(shockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
                     _shockWave.GetComponent<ShockwaveCollider>().Shock(selfMovement.punchRatio);

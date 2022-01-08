@@ -52,6 +52,45 @@ MonoBehaviour:
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
       cameraFieldOfView: 60
+--- !u!114 &-3142828487245699248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
+  m_Name: Highlight
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    passTag: Highlight
+    Event: 300
+    filterSettings:
+      RenderQueueType: 0
+      LayerMask:
+        serializedVersion: 2
+        m_Bits: 4096
+      PassNames: []
+    overrideMaterial: {fileID: 2100000, guid: 4541bb1c4711c9c40902efccc22f249f, type: 2}
+    overrideMaterialPassIndex: 0
+    overrideDepthState: 0
+    depthCompareFunction: 4
+    enableWrite: 1
+    stencilSettings:
+      overrideStencilState: 0
+      stencilReference: 0
+      stencilCompareFunction: 8
+      passOperation: 0
+      failOperation: 0
+      zFailOperation: 0
+    cameraSettings:
+      overrideCamera: 0
+      restoreCamera: 1
+      offset: {x: 0, y: 0, z: 0, w: 0}
+      cameraFieldOfView: 60
 --- !u!114 &-314984262483028571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,11 +144,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_RendererFeatures:
   - {fileID: -8671831654910073439}
+  - {fileID: -3142828487245699248}
   - {fileID: 1574679848982873850}
   - {fileID: -7448624140317902801}
   - {fileID: -314984262483028571}
   - {fileID: 8240997497022765644}
-  m_RendererFeatureMap: a1e518210e77a787fa0697c9fa62da152fb8f312cf2ba198a555dc6c7bf3a0fb4cdaec948fe75d72
+  m_RendererFeatureMap: a1e518210e77a78750e7bd6b246e62d4fa0697c9fa62da152fb8f312cf2ba198a555dc6c7bf3a0fb4cdaec948fe75d72
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
   shaders:
@@ -187,11 +227,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
-  m_Name: NewRenderObjects
+  m_Name: Outlines Blue
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
-    passTag: NewRenderObjects
+    passTag: Outlines Blue
     Event: 300
     filterSettings:
       RenderQueueType: 0
