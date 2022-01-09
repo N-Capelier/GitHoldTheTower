@@ -127,7 +127,7 @@ public class BlockBehaviour : MonoBehaviour
 		while(_elapsedTime < timeBeforeExplosion * .4f)
 		{
 			_elapsedTime += Time.deltaTime;
-			_completion = _elapsedTime / timeBeforeExplosion;
+			_completion = _elapsedTime / (timeBeforeExplosion * .4f);
 			blockMaterial.SetFloat("PreDissolveAlphaValue", Mathf.Lerp(0, 1, _completion));
 			yield return waitForEndOfFrame;
 		}

@@ -12,7 +12,9 @@ public class ShockwaveCollider : MonoBehaviour
 	float elapsedTime = 0f;
 	bool expanding = false;
 	float completion;
-	[SerializeField] GameObject shockwaveRenderer;
+	[SerializeField] GameObject shockwaveRenderer1;
+	[SerializeField] GameObject shockwaveRenderer2;
+	[SerializeField] GameObject shockwaveRenderer3;
 
 	private void FixedUpdate()
 	{
@@ -39,7 +41,9 @@ public class ShockwaveCollider : MonoBehaviour
 
 		if(isVisual)
 		{
-			shockwaveRenderer.transform.localScale = new Vector3(sphereCollider.radius * 2f, sphereCollider.radius * 2f, sphereCollider.radius * 2f);
+			shockwaveRenderer1.transform.localScale = new Vector3(sphereCollider.radius * 2f, sphereCollider.radius * 2f, sphereCollider.radius * 2f);
+			shockwaveRenderer2.transform.localScale = new Vector3(sphereCollider.radius * 1.8f, sphereCollider.radius * 1.8f, sphereCollider.radius * 1.8f);
+			shockwaveRenderer3.transform.localScale = new Vector3(sphereCollider.radius * 1.6f, sphereCollider.radius * 1.6f, sphereCollider.radius * 1.6f);
 		}
 
 		if (completion >= 1f)

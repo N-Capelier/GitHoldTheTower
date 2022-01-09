@@ -26,7 +26,26 @@ public class SensorPlayer : MonoBehaviour
     [SerializeField] LayerMask wallLayerMask;
     [SerializeField] GameObject shockwavePrefab;
 
-    private void OnTriggerEnter(Collider other)
+    Clock shockwaveDelayTimer;
+    bool isShockwaveAvailable = true;
+
+	private void Start()
+	{
+        shockwaveDelayTimer = new Clock();
+        shockwaveDelayTimer.ClockEnded += OnShockwaveComputed;
+	}
+
+	private void OnDestroy()
+	{
+        shockwaveDelayTimer.ClockEnded -= OnShockwaveComputed;
+	}
+
+	void OnShockwaveComputed()
+	{
+        isShockwaveAvailable = true;
+    }
+
+	private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -35,7 +54,6 @@ public class SensorPlayer : MonoBehaviour
             if (other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
             {
                 selfTransform.GetComponent<PlayerLogic>().CmdGetFlag();
-
             }
 
             selfTransform.GetComponent<PlayerMovement>().StopPunch();
@@ -61,8 +79,11 @@ public class SensorPlayer : MonoBehaviour
 				return;
 			}
 
-            if(block.isDestroyable)
+            if(isShockwaveAvailable && block.isDestroyable)
 			{
+                isShockwaveAvailable = false;
+                shockwaveDelayTimer.SetTime(1f);
+
                 Vector3 _shockwaveSpawnPoint = RayCollisionPoint(other);
 
                 GameObject.Find("GameManager").GetComponent<ThemeInteraction>().CmdInstantiateShockwave(_shockwaveSpawnPoint, selfMovement.punchRatio);
