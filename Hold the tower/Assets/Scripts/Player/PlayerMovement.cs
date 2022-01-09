@@ -44,26 +44,66 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 directionAttack;
 
     WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
+    WaitForEndOfFrame waitForEndOfFrame = new WaitForEndOfFrame();
+    Coroutine walkTransitionCoroutine;
 
     [HideInInspector] public float punchRatio;
 
     [SerializeField] Animator characterAnimator;
 
+    bool isMoving = false;
+
     private void FixedUpdate()
     {
-        if (!isClimbingMovement)
-        {
-            //selfRbd.velocity += hspd + vspd + attackspd;
-        }
-        if(characterAnimator.gameObject.activeSelf)
-		{
-            characterAnimator.SetFloat("CharacterSpeed", Mathf.Abs(selfRbd.velocity.x));
-		}
-    }
-   
+        //if (!isClimbingMovement)
+        //{
+        //    selfRbd.velocity += hspd + vspd + attackspd;
+        //}
 
-    #region HorizontalPhysics
-    public void Move(Vector3 direction, float timeStamp)
+        if (isMoving && Mathf.Abs(selfRbd.velocity.x) < 0.02f)
+        {
+            isMoving = false;
+            if(walkTransitionCoroutine != null)
+                StopCoroutine(walkTransitionCoroutine);
+            walkTransitionCoroutine = StartCoroutine(WalkTransition());
+        }
+        else if (!isMoving && Mathf.Abs(selfRbd.velocity.x) > 0.02f)
+        {
+            isMoving = true;
+            if (walkTransitionCoroutine != null)
+                StopCoroutine(walkTransitionCoroutine);
+            walkTransitionCoroutine = StartCoroutine(WalkTransition());
+        }
+    }
+
+    IEnumerator WalkTransition()
+	{
+        float _elapsedTime = 0f, _completion = 0f;
+
+        while(_completion < .5f)
+		{
+            _elapsedTime += Time.deltaTime;
+            _completion = _elapsedTime * 2f;
+            if (isMoving)
+                characterAnimator.SetFloat("CharacterSpeed", Mathf.Lerp(0f, 2f, _completion));
+            else
+                characterAnimator.SetFloat("CharacterSpeed", Mathf.Lerp(2f, 0f, 1f -_completion));
+            yield return waitForEndOfFrame;
+        }
+        yield return waitForEndOfFrame;
+	}
+
+	private void Update()
+	{
+        if (characterAnimator.gameObject.activeSelf)
+        {
+            characterAnimator.SetFloat("CharacterSpeed", Mathf.Abs(selfRbd.velocity.x));
+        }
+    }
+
+
+	#region HorizontalPhysics
+	public void Move(Vector3 direction, float timeStamp)
     {
         moveDirection = direction;
 

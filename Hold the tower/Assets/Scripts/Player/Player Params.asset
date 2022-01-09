@@ -174,8 +174,8 @@ MonoBehaviour:
   punchMaxChargeTime: 0.95
   punchChargeTimeToInstantDestroy: 0.3
   chargeSlowMovementRatio: 0.5
-  punchBasePropulsionForce: 40
-  punchBaseUpwardPropulsionForce: 10
+  punchBasePropulsionForce: 60
+  punchBaseUpwardPropulsionForce: 20
   punchedNoControlTime: 0.2
   punchPropulsionForceByCharge:
     serializedVersion: 2
@@ -202,7 +202,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   switchChunckAimMaxDistance: 0
-  switchChunckRangeMaxDistance: 10
+  switchChunckRangeMaxDistance: 7
   captureOverdriveText: Capture overdrive
   goToGoalText: Reach the enemy goal
   defendText: Take back the overdrive

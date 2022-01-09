@@ -30,6 +30,7 @@ public class PlayerLogic : NetworkBehaviour
     private Collider playerCollider;
     [SerializeField] SkinnedMeshRenderer playerMeshRenderer;
     [SerializeField] GameObject playerRenderObject;
+    [SerializeField] GameObject firstPersonViewModel;
     [SerializeField]
     private GameObject flagRenderer;
     [SerializeField]
@@ -156,7 +157,7 @@ public class PlayerLogic : NetworkBehaviour
         //Analytics
         if (GameObject.Find("Analytics") != null)
         {
-            GameObject.Find("Analytics").GetComponent<PA_Position>().analyticGameObjectPosition.Add(this.transform);
+            GameObject.Find("Analytics").GetComponent<PA_Position>().analyticGameObjectPosition.Add(transform);
         }
         //
 
@@ -167,12 +168,14 @@ public class PlayerLogic : NetworkBehaviour
 
 
         isInControl = true;
+        firstPersonViewModel.SetActive(false);
         selfCamera.gameObject.SetActive(false);
         hud.SetActive(false);
         if (hasAuthority)
         {
             selfCamera.gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
+            firstPersonViewModel.SetActive(true);
 
             loadingScreen.gameObject.SetActive(true);
             hud.SetActive(true);

@@ -38,10 +38,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game/LUD_TemplateLighting.unity
     guid: 6d2f648b20e05de4ab62cebd14e020be
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Dev/DEV_MapBreakable.unity
     guid: cf6671a684bb6d8489101d0cfe0d1fc2
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Game/DEV_LD_2.unity
     guid: c407440fb5ff7d243a97591792e88aee
   m_configObjects: {}
