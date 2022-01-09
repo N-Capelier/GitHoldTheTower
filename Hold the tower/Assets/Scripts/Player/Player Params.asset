@@ -20,6 +20,7 @@ MonoBehaviour:
   switchChunckKey: 101
   wallMouseInput: 1
   attackMouseInput: 0
+  pingMouseInput: 0
   mouseSensivity: 100
   aimJoystickSensitivity: 200
   runningForce: 100
@@ -200,7 +201,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  switchChunckMaxDistance: 100
+  switchChunckAimMaxDistance: 50
+  switchChunckRangeMaxDistance: 15
   captureOverdriveText: Capture overdrive
   goToGoalText: Reach the enemy goal
   defendText: Take back the overdrive

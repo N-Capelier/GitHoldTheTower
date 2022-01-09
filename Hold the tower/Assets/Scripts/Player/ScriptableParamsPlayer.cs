@@ -71,7 +71,8 @@ public class ScriptableParamsPlayer : ScriptableObject
     public AnimationCurve punchPropulsionForceByCharge;
 
     [Header("Switch")]
-    public float switchChunckMaxDistance;
+    public float switchChunckAimMaxDistance;
+    public float switchChunckRangeMaxDistance;
 
     [Header("ObjectifTexts")]
     public string captureOverdriveText;
