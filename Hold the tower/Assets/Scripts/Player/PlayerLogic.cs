@@ -38,6 +38,8 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     private SmoothSyncMirror selfSmoothSync;
     [SerializeField]
+    private SmoothSyncMirror selfCollsionSmoothSync;
+    [SerializeField]
     private PlayerMenu selfMenu;
 
     private MatchManager matchManager;
@@ -848,9 +850,9 @@ public class PlayerLogic : NetworkBehaviour
             selfCollisionParent.transform.localRotation = spawnPoint.rotation;
             selfCamera.localRotation = spawnPoint.rotation;
 
-
             //Tp player to the spwan point
             selfSmoothSync.teleportOwnedObjectFromOwner();
+            selfCollsionSmoothSync.teleportOwnedObjectFromOwner();
 
             Quaternion startRot = selfCamera.localRotation;
             xRotation = startRot.eulerAngles.x;
@@ -931,6 +933,7 @@ public class PlayerLogic : NetworkBehaviour
     {
         CmdShowScoreHud();
         hudTextPlayer.gameObject.SetActive(true);
+
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
             if (text != hudTextPlayer.text)
@@ -938,6 +941,9 @@ public class PlayerLogic : NetworkBehaviour
             yield return new WaitForEndOfFrame();
 
         }
+
+        //Stop Music
+        SoundManager.Instance.StopMusic();
 
         if (isServer)
         {
@@ -948,15 +954,6 @@ public class PlayerLogic : NetworkBehaviour
             MyNewNetworkManager.singleton.StopClient();
         }
 
-        //Destroy GameManager because Already exist on LobbyScene
-        DestroyImmediate(GameObject.Find("ServerManager"));
-
-        //Stop Music
-        SoundManager.Instance.StopMusic();
-
-        yield return new WaitForSeconds(2f);
-
-        SceneManager.LoadScene("LobbyScene");
     }
 
     //Punch and getPunch Logic

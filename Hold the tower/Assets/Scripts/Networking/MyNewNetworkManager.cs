@@ -207,7 +207,6 @@ public class MyNewNetworkManager : NetworkManager
     public override void OnServerDisconnect(NetworkConnection conn)
     {
         base.OnServerDisconnect(conn);
-        Destroy(this.gameObject);
     }
 
     /// <summary>
@@ -251,8 +250,10 @@ public class MyNewNetworkManager : NetworkManager
     public override void OnClientDisconnect(NetworkConnection conn)
     {
         base.OnClientDisconnect(conn);
-        Destroy(this.gameObject);
+        Shutdown();
+        Destroy(gameObject);
         SceneManager.LoadScene("LobbyScene");
+
     }
 
     /// <summary>

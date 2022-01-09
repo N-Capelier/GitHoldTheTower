@@ -6357,6 +6357,7 @@ MonoBehaviour:
   passwordInputText: {fileID: 1556834883}
   ipInputText: {fileID: 1559177796}
   analyticsPath: {fileID: 1621802282}
+  serverManager: {fileID: 1715714063}
 --- !u!1 &2095052157
 GameObject:
   m_ObjectHideFlags: 0
