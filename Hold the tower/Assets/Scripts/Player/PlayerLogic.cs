@@ -1138,7 +1138,7 @@ public class PlayerLogic : NetworkBehaviour
 
     //Send a different song for each differente team
     [Command(requiresAuthority = false)]
-    private void CmdPlayEquipTeamSound(string eventAllyTeam,string eventEnemyTeam)
+    public void CmdPlayEquipTeamSound(string eventAllyTeam,string eventEnemyTeam)
     {
         RpcPlayEquipTeamSound(eventAllyTeam, eventEnemyTeam);
     }
