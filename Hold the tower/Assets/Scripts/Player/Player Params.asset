@@ -20,6 +20,7 @@ MonoBehaviour:
   switchChunckKey: 101
   wallMouseInput: 1
   attackMouseInput: 0
+  pingMouseInput: 1
   mouseSensivity: 100
   aimJoystickSensitivity: 200
   runningForce: 100

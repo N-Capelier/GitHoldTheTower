@@ -12,8 +12,8 @@ public class PlayerLogic : NetworkBehaviour
 {
     private WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
 
-    private GameObject[] noAuthorityPlayer;
-    private GameObject authorityPlayer;
+    private List<GameObject> noAuthorityPlayer;
+    public GameObject authorityPlayer;
 
     [SerializeField]
     private ScriptableParamsPlayer selfParams;
@@ -28,6 +28,8 @@ public class PlayerLogic : NetworkBehaviour
     private AudioSource playerFootstepSource;
     [SerializeField]
     private Collider playerCollider;
+    [SerializeField] SkinnedMeshRenderer playerMeshRenderer;
+    [SerializeField] GameObject playerRenderObject;
     [SerializeField]
     private GameObject flagRenderer;
     [SerializeField]
@@ -96,6 +98,8 @@ public class PlayerLogic : NetworkBehaviour
     private GameObject player3dPseudo;
     [SerializeField]
     public GameObject hud;
+    [SerializeField]
+    public GameObject playerModel;
 
     [SyncVar]
     public LobbyPlayerLogic.TeamName teamName;
@@ -120,7 +124,7 @@ public class PlayerLogic : NetworkBehaviour
 
     //State
     [HideInInspector]
-    public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround, isTouchingWall, isInControl;
+    public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround, isTouchingWall, isInControl, isSpawning;
 
     [SyncVar]
     public bool hasFlag;
@@ -184,7 +188,8 @@ public class PlayerLogic : NetworkBehaviour
                 matchManager.GetComponent<LandMarkManager>().SwapColor();
             }
             //Own player is blue
-            playerCollider.transform.GetComponent<MeshRenderer>().material = blueTeamMaterial;
+            playerMeshRenderer.material = blueTeamMaterial;
+            playerRenderObject.SetActive(false);
         }
         else
         {
@@ -193,24 +198,30 @@ public class PlayerLogic : NetworkBehaviour
             //Make blue if ally, else make red him red
             if(GameObject.Find("ServerManager").GetComponent<MyNewNetworkManager>().playerTeamName == teamName)
             {
-                playerCollider.transform.GetComponent<MeshRenderer>().material = blueTeamMaterial;
+                playerMeshRenderer.material = blueTeamMaterial;
             }
             else
             {
-                playerCollider.transform.GetComponent<MeshRenderer>().material = redTeamMaterial;
+                playerMeshRenderer.material = redTeamMaterial;
             }
 
         }
 
         GameObject[] allPlayers = GameObject.FindGameObjectsWithTag("Player");
+        noAuthorityPlayer = new List<GameObject>();
         foreach (GameObject objPlayer in allPlayers)
         {
-            if (objPlayer.name == "Player(Clone)")
+            if (objPlayer.GetComponent<PlayerLogic>() != null)
             {
                 if (objPlayer.GetComponent<NetworkIdentity>().hasAuthority)
                 {
                     authorityPlayer = objPlayer;
                     Debug.Log(authorityPlayer);
+                }
+                else
+                {
+
+                    noAuthorityPlayer.Add(objPlayer);
                 }
             }
 
@@ -220,18 +231,22 @@ public class PlayerLogic : NetworkBehaviour
 
     void Update()
     {
+        //Stop Movement if in the menu
+        if (!selfMenu.menuIsOpen && !isSpawning)
+        {
+            fpsView();
+
+        }
+
         UpdateNextTransitionTime();
 
         if (hasAuthority && roundStarted)
         {
             //Stop Movement if in the menu
-            if (!selfMenu.menuIsOpen)
-            {
-                fpsView();
-
-            }
+          
             VerticalMovement();
             HorizontalMovement();
+            CmdRotateModel(selfCamera.rotation.eulerAngles.y);
 
             //Respawn player
             if (Input.GetKeyDown(KeyCode.R))
@@ -247,6 +262,7 @@ public class PlayerLogic : NetworkBehaviour
 
         ShowFlagToAllPlayer();
     }
+
 
     #region Movement Logic
 
@@ -269,8 +285,8 @@ public class PlayerLogic : NetworkBehaviour
 
         if (Input.GetJoystickNames().Length <= 0)
 		{
-            mouseX = Input.GetAxis("Mouse X") * selfParams.mouseSensivity * 4f * Time.deltaTime;
-            mouseY = Input.GetAxis("Mouse Y") * selfParams.mouseSensivity * 4f * Time.deltaTime;
+            mouseX = Input.GetAxis("Mouse X") * selfParams.mouseSensivity * Time.deltaTime * 2f;
+            mouseY = Input.GetAxis("Mouse Y") * selfParams.mouseSensivity * Time.deltaTime * 2f;
         }
         #endif
 
@@ -293,7 +309,6 @@ public class PlayerLogic : NetworkBehaviour
         {
             if(footStepFlag)
             {
-                //SoundManager.Instance.PlaySoundEvent("PlayerFootstep", playerFootstepSource);
                 CmdPlayerFootstepSource("PlayerFootstep");
                 footStepFlag = false;
             }
@@ -835,9 +850,15 @@ public class PlayerLogic : NetworkBehaviour
             selfSmoothSync.teleportOwnedObjectFromOwner();
 
             Quaternion startRot = selfCamera.localRotation;
+            xRotation = startRot.eulerAngles.x;
+            yRotation = startRot.eulerAngles.y;
 
             //Create timer before restart player
             hudTextPlayer.gameObject.SetActive(true);
+
+            //Lock caméra
+            isSpawning = true;
+
             while (NetworkTime.time - timerToStart <= timerMaxToStart)
             {
                 selfMovement.ResetVelocity();
@@ -848,6 +869,9 @@ public class PlayerLogic : NetworkBehaviour
             }
             roundStarted = true;
             hudTextPlayer.gameObject.SetActive(false);
+
+            //Unlock Camera
+            isSpawning = false;
 
             //adjust Camera rotation
             xRotation = startRot.eulerAngles.x;
@@ -926,6 +950,8 @@ public class PlayerLogic : NetworkBehaviour
 
         //Stop Music
         SoundManager.Instance.StopMusic();
+
+        yield return new WaitForSeconds(2f);
 
         SceneManager.LoadScene("LobbyScene");
     }
@@ -1068,6 +1094,18 @@ public class PlayerLogic : NetworkBehaviour
             punchLoadingEffect.SetActive(false);
         }
         
+    }
+
+    [Command]
+    private void CmdRotateModel(float rotation)
+    {
+        RpcRotateModel(rotation);
+    }
+
+    [ClientRpc]
+    private void RpcRotateModel(float rotation)
+    {
+        playerModel.transform.rotation = Quaternion.Euler(0,rotation,0);
     }
 
     //Sound in network

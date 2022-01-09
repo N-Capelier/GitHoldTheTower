@@ -47,10 +47,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isVisual: 0
   minRadius: 0.1
-  maxRadius: 5
+  maxRadius: 8.5
   maxExpandDuration: 1
   sphereCollider: {fileID: 422133644557816049}
-  shockwaveRenderer: {fileID: 0}
+  shockwaveRenderer1: {fileID: 0}
+  shockwaveRenderer2: {fileID: 0}
+  shockwaveRenderer3: {fileID: 0}
 --- !u!135 &422133644557816049
 SphereCollider:
   m_ObjectHideFlags: 0

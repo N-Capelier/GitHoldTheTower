@@ -85,7 +85,14 @@ public class PlayerMenu : MonoBehaviour
         {
             MyNewNetworkManager.singleton.StopHost();
         }
+
+        StartCoroutine(BackToMenuManager());
+    }
+
+    private IEnumerator BackToMenuManager()
+    {
         Destroy(GameObject.Find("ServerManager"));
+        yield return new WaitForSeconds(1);
         SceneManager.LoadScene("LobbyScene");
     }
 
