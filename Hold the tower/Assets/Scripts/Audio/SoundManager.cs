@@ -46,6 +46,9 @@ public class SoundManager : Singleton<SoundManager>
         }
     }
 
+    //SetFloat("CinematicVolume", Mathf.Log10(SoundEffectsVolume) * 20);
+
+
     public void TestSound()
     {
         //Une fonction qui permet de tester un son
