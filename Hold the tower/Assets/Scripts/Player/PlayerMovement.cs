@@ -486,6 +486,7 @@ public class PlayerMovement : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         isAttackInCooldown = false;
+        SoundManager.Instance.PlaySoundEvent("PlayerPunchAvailable");
     }
 
     #endregion

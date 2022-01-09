@@ -106,7 +106,7 @@ MonoBehaviour:
     sounds:
     - name: PlayerPunchAvailable
       ID: 8
-      clip: {fileID: 8300000, guid: 80342c7cfcaffe640ba6dabfa35f7836, type: 3}
+      clip: {fileID: 8300000, guid: 3982895e113627f40bc2453afe4d71f6, type: 3}
       volume: 1
     isLocalized: 0
     isRandom: 0
@@ -298,6 +298,17 @@ MonoBehaviour:
     isLocalized: 0
     isRandom: 0
     isLoop: 0
+    isMusic: 0
+  - name: LevelOverdriveSound
+    ID: 28
+    sounds:
+    - name: LevelOverdriveSound
+      ID: 28
+      clip: {fileID: 8300000, guid: 80289738f74e43a43adc092283cd5115, type: 3}
+      volume: 0.5
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 1
     isMusic: 0
   - name: LevelTakenEnemy
     ID: 26
