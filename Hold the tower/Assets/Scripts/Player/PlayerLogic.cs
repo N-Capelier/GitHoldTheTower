@@ -12,8 +12,8 @@ public class PlayerLogic : NetworkBehaviour
 {
     private WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
 
-    private GameObject[] noAuthorityPlayer;
-    private GameObject authorityPlayer;
+    private List<GameObject> noAuthorityPlayer;
+    public GameObject authorityPlayer;
 
     [SerializeField]
     private ScriptableParamsPlayer selfParams;
@@ -203,14 +203,20 @@ public class PlayerLogic : NetworkBehaviour
         }
 
         GameObject[] allPlayers = GameObject.FindGameObjectsWithTag("Player");
+        noAuthorityPlayer = new List<GameObject>();
         foreach (GameObject objPlayer in allPlayers)
         {
-            if (objPlayer.name == "Player(Clone)")
+            if (objPlayer.GetComponent<PlayerLogic>() != null)
             {
                 if (objPlayer.GetComponent<NetworkIdentity>().hasAuthority)
                 {
                     authorityPlayer = objPlayer;
                     Debug.Log(authorityPlayer);
+                }
+                else
+                {
+
+                    noAuthorityPlayer.Add(objPlayer);
                 }
             }
 
