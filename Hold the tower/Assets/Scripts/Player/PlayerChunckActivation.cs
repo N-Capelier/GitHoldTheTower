@@ -19,17 +19,21 @@ public class PlayerChunckActivation : MonoBehaviour
     private ChunckSwitcher aimedSwitcher;
     private bool isAimingSwitcher;
     private bool isNearbySwitcher;
+    private PlayerLogic playerLogic;
 
     private void Start()
     {
-
+        playerLogic = GetComponent<PlayerLogic>();
     }
 
     private void Update()
     {
-        CheckPlayerAim();
-        CheckPlayerPos();
-        CheckPlayerActivation();
+        if(playerLogic.hasAuthority)
+        {
+            CheckPlayerAim();
+            CheckPlayerPos();
+            CheckPlayerActivation();
+        }
     }
 
     public void CheckPlayerAim()
