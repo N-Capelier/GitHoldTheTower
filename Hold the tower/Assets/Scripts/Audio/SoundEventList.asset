@@ -106,7 +106,7 @@ MonoBehaviour:
     sounds:
     - name: PlayerPunchAvailable
       ID: 8
-      clip: {fileID: 8300000, guid: 80342c7cfcaffe640ba6dabfa35f7836, type: 3}
+      clip: {fileID: 8300000, guid: 3982895e113627f40bc2453afe4d71f6, type: 3}
       volume: 1
     isLocalized: 0
     isRandom: 0
