@@ -47,12 +47,18 @@ public class PlayerMovement : MonoBehaviour
 
     [HideInInspector] public float punchRatio;
 
+    [SerializeField] Animator characterAnimator;
+
     private void FixedUpdate()
     {
         if (!isClimbingMovement)
         {
             //selfRbd.velocity += hspd + vspd + attackspd;
         }
+        if(characterAnimator.gameObject.activeSelf)
+		{
+            characterAnimator.SetFloat("CharacterSpeed", Mathf.Abs(selfRbd.velocity.x));
+		}
     }
    
 
