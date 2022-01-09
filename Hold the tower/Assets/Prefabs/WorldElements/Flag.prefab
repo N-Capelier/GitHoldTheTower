@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6613400858888509313}
   - component: {fileID: 2257173167969993439}
   - component: {fileID: -7903056947045534880}
+  - component: {fileID: 619297466819883130}
   m_Layer: 0
   m_Name: Flag
   m_TagString: Untagged
@@ -64,6 +65,19 @@ MonoBehaviour:
   visible: 0
   m_AssetId: 3fa46faea8664cc418165f148de7bbf8
   hasSpawned: 0
+--- !u!114 &619297466819883130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 12373011527264494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad2d9391a6ba8e3498f87083f57649fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boxCollider: {fileID: 2257173167969993439}
 --- !u!1001 &264408518304787426
 PrefabInstance:
   m_ObjectHideFlags: 0

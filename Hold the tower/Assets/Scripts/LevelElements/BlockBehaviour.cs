@@ -70,7 +70,7 @@ public class BlockBehaviour : MonoBehaviour
 	{
 		if(isDestroyable && !isAlive)
 		{
-			return;
+				return;
 			//isAlive = true;
 			//blockMaterial.SetFloat("DissolveValue", 0);
 			//blockMaterial.SetFloat("PreDissolveAlphaValue", 0);
@@ -88,8 +88,9 @@ public class BlockBehaviour : MonoBehaviour
 
 	public void SetBlockAlive()
 	{
-		if(isDestroyable && !isAlive)
+		if(isDestroyable)
 		{
+			StopAllCoroutines();
 			isAlive = true;
 			blockMaterial.SetFloat("DissolveValue", 0);
 			blockMaterial.SetFloat("PreDissolveAlphaValue", 0);
