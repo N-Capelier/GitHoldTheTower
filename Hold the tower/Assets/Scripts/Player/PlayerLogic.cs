@@ -28,6 +28,8 @@ public class PlayerLogic : NetworkBehaviour
     private AudioSource playerFootstepSource;
     [SerializeField]
     private Collider playerCollider;
+    [SerializeField] SkinnedMeshRenderer playerMeshRenderer;
+    [SerializeField] GameObject playerRenderObject;
     [SerializeField]
     private GameObject flagRenderer;
     [SerializeField]
@@ -184,7 +186,8 @@ public class PlayerLogic : NetworkBehaviour
                 matchManager.GetComponent<LandMarkManager>().SwapColor();
             }
             //Own player is blue
-            playerCollider.transform.GetComponent<MeshRenderer>().material = blueTeamMaterial;
+            playerMeshRenderer.material = blueTeamMaterial;
+            playerRenderObject.SetActive(false);
         }
         else
         {
@@ -193,11 +196,11 @@ public class PlayerLogic : NetworkBehaviour
             //Make blue if ally, else make red him red
             if(GameObject.Find("ServerManager").GetComponent<MyNewNetworkManager>().playerTeamName == teamName)
             {
-                playerCollider.transform.GetComponent<MeshRenderer>().material = blueTeamMaterial;
+                playerMeshRenderer.material = blueTeamMaterial;
             }
             else
             {
-                playerCollider.transform.GetComponent<MeshRenderer>().material = redTeamMaterial;
+                playerMeshRenderer.material = redTeamMaterial;
             }
 
         }
