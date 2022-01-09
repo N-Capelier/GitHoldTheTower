@@ -1198,7 +1198,7 @@ public class PlayerLogic : NetworkBehaviour
 
     public void SetPseudo(string oldString, string newString)
     {
-        gameObject.transform.Find("NameText").GetComponent<TextMesh>().text = newString;
+        player3dPseudo.transform.GetChild(0).GetComponent<Text>().text = newString;
     }
 
 
