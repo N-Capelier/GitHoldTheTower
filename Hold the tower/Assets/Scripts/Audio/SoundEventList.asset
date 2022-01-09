@@ -299,6 +299,17 @@ MonoBehaviour:
     isRandom: 0
     isLoop: 0
     isMusic: 0
+  - name: LevelOverdriveSound
+    ID: 28
+    sounds:
+    - name: LevelOverdriveSound
+      ID: 28
+      clip: {fileID: 8300000, guid: 80289738f74e43a43adc092283cd5115, type: 3}
+      volume: 0.5
+    isLocalized: 1
+    isRandom: 0
+    isLoop: 1
+    isMusic: 0
   - name: LevelTakenEnemy
     ID: 26
     sounds:
