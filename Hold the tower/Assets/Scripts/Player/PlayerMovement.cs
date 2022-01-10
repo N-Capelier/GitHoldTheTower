@@ -221,8 +221,8 @@ public class PlayerMovement : MonoBehaviour
     public void ApplyWallAttachForces()
     {
         selfRbd.velocity -= new Vector3(0, selfParams.gravityForce, 0) * Time.deltaTime;
-        /*
-        selfRbd.velocity -= new Vector3(0, selfParams.wallSlideGravity, 0) * Time.deltaTime;
+        
+        /*selfRbd.velocity -= new Vector3(0, selfParams.wallSlideGravity, 0) * Time.deltaTime;
 
         if (selfRbd.velocity.y < -selfParams.wallSlideMaxGravitySpeed)
         {

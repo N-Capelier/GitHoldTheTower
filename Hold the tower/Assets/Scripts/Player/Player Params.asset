@@ -31,15 +31,15 @@ MonoBehaviour:
   gravityForce: 30
   jumpForwardForce: 2
   jumpForce: 12
-  wallJumpNormalForce: 12
+  wallJumpNormalForce: 13
   wallJumpUpwardForce: 0.8
-  maxWallJumpAngleDeviation: 35
+  maxWallJumpAngleDeviation: 30
   wallJumpMinAngleToCancelDeviation: 140
   wallSlideGravity: 30
   wallSlideMaxGravitySpeed: 1.5
   wallSlideSpeedDampening: 5
   wallRideSpeed: 11
-  minHorizontalSpeedToStartWallRide: 5
+  minHorizontalSpeedToStartWallRide: 2
   climbHeight: 1.5
   climbWidth: 1.3
   timeToClimb: 0.1

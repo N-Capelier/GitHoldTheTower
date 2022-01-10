@@ -474,9 +474,9 @@ public class PlayerLogic : NetworkBehaviour
                 {
                     isTouchingWall = true;
 
-                    if (Input.GetKey(selfParams.jump))
+                    Vector3 hSpeed = new Vector3(selfMovement.selfRbd.velocity.x, 0, selfMovement.selfRbd.velocity.z);
+                    if (!Input.GetKey(selfParams.jump))
                     {
-                        Vector3 hSpeed = new Vector3(selfMovement.selfRbd.velocity.x, 0, selfMovement.selfRbd.velocity.z);
                         if (!isAttachToWall)
                         {
                             isAttachToWall = true;
@@ -500,20 +500,22 @@ public class PlayerLogic : NetworkBehaviour
                             isWallSliding = false;
                         }
                     }
-                    else if (Input.GetKeyUp(selfParams.jump) && isWallSliding)
-                    {
-                        if (GetNearbyWallNormal() != Vector3.zero)
-                        {
-                            selfMovement.WallJump(GetNearbyWallNormal());
-                            isAttachToWall = false;
-                            isWallSliding = false;
-                        }
-                    }
                     else
                     {
-                        isAttachToWall = false;
-                        isWallSliding = false;
-                        selfMovement.ApplyGravity();
+                        if (!IsLookingInWall() && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide && selfMovement.SetWallSlideDirection())
+                        {
+                            if (GetNearbyWallNormal() != Vector3.zero)
+                            {
+                                selfMovement.WallJump(GetNearbyWallNormal());
+                                isAttachToWall = false;
+                                isWallSliding = false;
+                            }
+                        }
+                        else
+                        {
+                            selfMovement.ApplyGravity();
+                            isWallSliding = false;
+                        }
                     }
                 }
                 else
