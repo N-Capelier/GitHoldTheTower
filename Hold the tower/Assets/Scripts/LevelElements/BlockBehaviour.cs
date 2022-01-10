@@ -91,6 +91,7 @@ public class BlockBehaviour : MonoBehaviour
 		if(isDestroyable)
 		{
 			StopAllCoroutines();
+			isExploding = false;
 			isAlive = true;
 			blockMaterial.SetFloat("DissolveValue", 0);
 			blockMaterial.SetFloat("PreDissolveAlphaValue", 0);
