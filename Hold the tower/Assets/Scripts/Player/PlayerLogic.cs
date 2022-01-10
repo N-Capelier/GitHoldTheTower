@@ -503,6 +503,7 @@ public class PlayerLogic : NetworkBehaviour
                         {
                             selfMovement.ApplyWallAttachForces();
                             isWallSliding = false;
+                            CmdStopPlayerFootstepSource();
                         }
                     }
                     else if (Input.GetKeyUp(selfParams.jump) && isWallSliding)
@@ -548,7 +549,7 @@ public class PlayerLogic : NetworkBehaviour
                 }
                 isAttachToWall = false;
                 isWallSliding = false;
-                CmdStopPlayerFootstepSource();
+                //CmdStopPlayerFootstepSource();
                 isTouchingWall = false;
             }
         }
