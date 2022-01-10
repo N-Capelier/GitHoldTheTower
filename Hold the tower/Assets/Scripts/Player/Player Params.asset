@@ -201,6 +201,48 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  punchPropulsionForceByAngle:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.4
+      inSlope: 2.9935977
+      outSlope: 0.13907124
+      tangentMode: 5
+      weightedMode: 3
+      inWeight: 0
+      outWeight: 0.5839085
+    - serializedVersion: 3
+      time: 0.3316006
+      value: 0.871534
+      inSlope: 3.2355475
+      outSlope: 3.0404391
+      tangentMode: 1
+      weightedMode: 3
+      inWeight: 0.26662812
+      outWeight: 0.22660139
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0.38739228
+      outSlope: 0.31226206
+      tangentMode: 65
+      weightedMode: 1
+      inWeight: 0.42949724
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1.156131
+      inSlope: 0.31226206
+      outSlope: 0.39999995
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   switchChunckAimMaxDistance: 0
   switchChunckRangeMaxDistance: 7
   captureOverdriveText: Capture overdrive

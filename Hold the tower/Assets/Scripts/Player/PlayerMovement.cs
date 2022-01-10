@@ -48,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
     Coroutine walkTransitionCoroutine;
 
     [HideInInspector] public float punchRatio;
+    [HideInInspector] public float punchAngle;
 
     [SerializeField] Animator characterAnimator;
 
@@ -429,7 +430,8 @@ public class PlayerMovement : MonoBehaviour
     public float AttackLoad(float time)
     {
         float ratio = 0;
-        
+        punchAngle = Vector3.Angle(Vector3.up, selfCamera.forward);
+
         //Slow player
         //if(selfLogic.isGrounded)
         //{
@@ -438,7 +440,7 @@ public class PlayerMovement : MonoBehaviour
         //}
 
         //Si est en dessous du pickTime
-        if(time <= selfParams.punchMaxChargeTime)
+        if (time <= selfParams.punchMaxChargeTime)
         {
             //isPerfectTiming = false;
             isPunchInstantDestroy = false;
@@ -491,7 +493,11 @@ public class PlayerMovement : MonoBehaviour
         directionAttack = selfCamera.forward;
         isAttacking = true;
         isAttackReset = false;
-        float finalBaseSpeed = selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(ratio);
+        float finalBaseSpeed = selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(ratio) * GetPunchAngleRatio(punchAngle);
+        if(selfLogic.hasFlag)
+        {
+            finalBaseSpeed = selfParams.punchBaseSpeed * Mathf.Clamp(selfParams.punchSpeedByCharge.Evaluate(0), 0, GetPunchAngleRatio(punchAngle));
+        }
         punchRatio = ratio;
 
         //Vector3 startPos = transform.position; pour calculer la distance du punch
@@ -533,6 +539,11 @@ public class PlayerMovement : MonoBehaviour
         }
         isAttackInCooldown = false;
         SoundManager.Instance.PlaySoundEvent("PlayerPunchAvailable");
+    }
+
+    public float GetPunchAngleRatio(float punchVerticalAngle)
+    {
+        return selfParams.punchPropulsionForceByAngle.Evaluate(punchVerticalAngle / 180);
     }
 
     #endregion
