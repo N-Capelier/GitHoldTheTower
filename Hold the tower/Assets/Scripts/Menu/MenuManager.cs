@@ -17,7 +17,7 @@ public class MenuManager : MonoBehaviour
 	public Text ipInputText;
 
 	public Text analyticsPath;
-
+	[SerializeField]
 	private GameObject serverManager;
 	MyNewNetworkManager networkManager;
 	MyNewNetworkAuthenticator networkAuthenticator;
@@ -30,7 +30,7 @@ public class MenuManager : MonoBehaviour
 		Cursor.lockState = CursorLockMode.None;
 		menuObject.SetActive(true);
 		lobbyObject.SetActive(false);
-		serverManager = GameObject.Find("ServerManager");
+		//serverManager = GameObject.Find("ServerManager");
 		networkManager = serverManager.GetComponent<MyNewNetworkManager>();
 		networkAuthenticator = serverManager.GetComponent<MyNewNetworkAuthenticator>();
 	}

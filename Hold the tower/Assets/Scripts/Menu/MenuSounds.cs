@@ -22,15 +22,19 @@ public class MenuSounds : MonoBehaviour
     public void VolumeMusicSlide(float volume)
     {
         selfParams.musicVolume = (int)volume;
-        masterMixer.SetFloat("MusicVolume", (int)volume);
-        volumeMusicText.text = ((int)volume).ToString();
+        float temp = SoundManager.Instance.ChangeMusicVolume(volume);
+        volumeMusicText.text = (temp).ToString();
+        //masterMixer.SetFloat("MusicVolume", (int)volume);
+        //volumeMusicText.text = ((int)volume).ToString();
 
     }
 
     public void VolumeEffectsSlide(float volume)
     {
         selfParams.effectsVolume = (int)volume;
-        masterMixer.SetFloat("EffectsVolume", (int)volume);
-        volumeEffectsText.text = ((int)volume).ToString();
+        float temp = SoundManager.Instance.ChangeSfxVolume(volume);
+        volumeEffectsText.text = (temp).ToString();
+        //masterMixer.SetFloat("EffectsVolume", (int)volume);
+        //volumeEffectsText.text = ((int)volume).ToString();
     }
 }
