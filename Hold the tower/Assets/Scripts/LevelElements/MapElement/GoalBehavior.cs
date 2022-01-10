@@ -29,14 +29,28 @@ public class GoalBehavior : NetworkBehaviour
                 {
                     textToShow = matchManager.redTeamTextScore;
                     CmdRedTeamScore();
-                    other.transform.parent.GetComponent<PlayerLogic>().CmdPlayEquipTeamSound("LevelTeamScores", "LevelEnemyScores");
+                    if (matchManager.redScore == matchManager.maxScore)
+                    {
+                        other.transform.parent.GetComponent<PlayerLogic>().CmdPlayEquipTeamSound("LevelMatchWon", "LevelMatchLost");
+                    }
+                    else 
+                    {
+                        other.transform.parent.GetComponent<PlayerLogic>().CmdPlayEquipTeamSound("LevelTeamScores", "LevelEnemyScores");
+                    }                    
                 }
 
                 if (goalTeam == LobbyPlayerLogic.TeamName.Red)
                 {
                     textToShow = matchManager.blueTeamTextScore;
                     CmdBlueTeamScore();
-                    other.transform.parent.GetComponent<PlayerLogic>().CmdPlayEquipTeamSound("LevelTeamScores", "LevelEnemyScores");
+                    if (matchManager.blueScore == matchManager.maxScore)
+                    {
+                        other.transform.parent.GetComponent<PlayerLogic>().CmdPlayEquipTeamSound("LevelMatchWon", "LevelMatchLost");
+                    }
+                    else
+                    {
+                        other.transform.parent.GetComponent<PlayerLogic>().CmdPlayEquipTeamSound("LevelTeamScores", "LevelEnemyScores");
+                    }
                 }
                 other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
                 CmdTeamWin(textToShow);

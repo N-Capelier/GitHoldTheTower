@@ -300,10 +300,10 @@ MonoBehaviour:
     isLoop: 0
     isMusic: 0
   - name: LevelOverdriveSound
-    ID: 28
+    ID: 26
     sounds:
     - name: LevelOverdriveSound
-      ID: 28
+      ID: 26
       clip: {fileID: 8300000, guid: 80289738f74e43a43adc092283cd5115, type: 3}
       volume: 0.5
     isLocalized: 1
@@ -311,10 +311,10 @@ MonoBehaviour:
     isLoop: 1
     isMusic: 0
   - name: LevelTakenEnemy
-    ID: 26
+    ID: 27
     sounds:
     - name: LevelTakenEnemy
-      ID: 26
+      ID: 27
       clip: {fileID: 8300000, guid: e9ae88916d5be904ca1a13b37838fbc8, type: 3}
       volume: 1
     isLocalized: 0
@@ -322,21 +322,32 @@ MonoBehaviour:
     isLoop: 0
     isMusic: 0
   - name: LevelTakenTeam
-    ID: 27
+    ID: 28
     sounds:
     - name: LevelTakenTeam
-      ID: 27
+      ID: 28
       clip: {fileID: 8300000, guid: 9c7327b6f7bf5b4478ba4524c23d4b61, type: 3}
       volume: 1
     isLocalized: 0
     isRandom: 0
     isLoop: 0
     isMusic: 0
+  - name: LevelStarting
+    ID: 29
+    sounds:
+    - name: LevelStarting
+      ID: 29
+      clip: {fileID: 8300000, guid: 9d771e2dea3374144b325e4ccdaa5554, type: 3}
+      volume: 0.8
+    isLocalized: 0
+    isRandom: 0
+    isLoop: 0
+    isMusic: 0
   - name: GameMusic
-    ID: 28
+    ID: 30
     sounds:
     - name: LevelRedTeamScores
-      ID: 28
+      ID: 30
       clip: {fileID: 8300000, guid: 8e0f04b12fabe7542ace9f468ff041e6, type: 3}
       volume: 0.3
     isLocalized: 0

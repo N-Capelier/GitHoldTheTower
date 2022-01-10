@@ -25,7 +25,11 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     private AudioSource playerSource;
     [SerializeField]
+    private AudioSource playerFlagSource;
+    [SerializeField]
     private AudioSource playerFootstepSource;
+    [SerializeField]
+    private List<AudioSource> audioSources;
     [SerializeField]
     private Collider playerCollider;
     [SerializeField] SkinnedMeshRenderer playerMeshRenderer;
@@ -124,7 +128,7 @@ public class PlayerLogic : NetworkBehaviour
     private bool footStepFlag;
     private bool touchingGroundFlag;
     private bool hasStartedCharge;
-
+    private bool doOnce = true;
     //State
     [HideInInspector]
     public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround, isTouchingWall, isInControl, isSpawning;
@@ -485,6 +489,7 @@ public class PlayerLogic : NetworkBehaviour
                                 if (selfMovement.SetWallSlideDirection())
                                 {
                                     isWallSliding = true;
+                                    CmdPlayerFootstepSource("PlayerFootstep");
                                 }
                             }
                         }
@@ -507,12 +512,14 @@ public class PlayerLogic : NetworkBehaviour
                             selfMovement.WallJump(GetNearbyWallNormal());
                             isAttachToWall = false;
                             isWallSliding = false;
+                            CmdStopPlayerFootstepSource();
                         }
                     }
                     else
                     {
                         isAttachToWall = false;
                         isWallSliding = false;
+                        CmdStopPlayerFootstepSource();
                         selfMovement.ApplyGravity();
                     }
                 }
@@ -522,6 +529,7 @@ public class PlayerLogic : NetworkBehaviour
                     selfMovement.ApplyGravity();
                     isTouchingWall = false;
                     isWallSliding = false;
+                    CmdStopPlayerFootstepSource();
                 }
 
             }
@@ -540,6 +548,7 @@ public class PlayerLogic : NetworkBehaviour
                 }
                 isAttachToWall = false;
                 isWallSliding = false;
+                CmdStopPlayerFootstepSource();
                 isTouchingWall = false;
             }
         }
@@ -822,8 +831,11 @@ public class PlayerLogic : NetworkBehaviour
         roundStarted = false;
         timerToStart = NetworkTime.time;
 
+        StopAllSounds();
+
         if (hasFlag)
         {
+            CmdPlayGlobalSound("LevelOverdriveDropped");
             CmdDropFlag();
             CmdShowFlagInGame();
         }
@@ -838,6 +850,12 @@ public class PlayerLogic : NetworkBehaviour
         //Find respawn and set spawn
         if (hasAuthority)
         {
+            if (doOnce)
+            {
+                doOnce = false;
+                SoundManager.Instance.PlaySoundEvent("LevelStarting");
+            }
+            
             Transform spawnPoint;
             spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(spawnPosition);
 
@@ -925,7 +943,7 @@ public class PlayerLogic : NetworkBehaviour
     [TargetRpc]
     public void RpcEndGame(NetworkConnection conn,string text)
     {
-        timerToStart = NetworkTime.time;
+        timerToStart = NetworkTime.time;         
         StartCoroutine(EndGameManager(text));
     }
 
@@ -976,12 +994,14 @@ public class PlayerLogic : NetworkBehaviour
     {
         hasFlag = true;
         CmdPlayEquipTeamSound("LevelTakenTeam", "LevelTakenEnemy");
+        CmdPlayerFlagSource("PlayerOverdrive");
     }
 
     [Command(requiresAuthority = false)]
     public void CmdDropFlag()
     {
-        hasFlag = false;                
+        hasFlag = false;
+        CmdStopPlayerFlagSource();
     }
 
     [Command(requiresAuthority = false)]
@@ -1119,7 +1139,9 @@ public class PlayerLogic : NetworkBehaviour
     [ClientRpc]
     private void RpcPlayerSource(string thisEventName)
     {
-        SoundManager.Instance.PlaySoundEvent(thisEventName, playerSource);
+        
+        
+        SoundManager.Instance.PlaySoundEvent(thisEventName, ChooseAudioSource());
         
     }
 
@@ -1160,6 +1182,30 @@ public class PlayerLogic : NetworkBehaviour
     private void RpcStopPlayerFootstepSource()
     {
         playerFootstepSource.Stop();
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdPlayerFlagSource(string thisEventName)
+    {
+        RpcPlayerFlagSource(thisEventName);
+    }
+    [ClientRpc]
+    private void RpcPlayerFlagSource(string thisEventName)
+    {
+        SoundManager.Instance.PlaySoundEvent(thisEventName, playerFlagSource);
+
+    }
+
+    [Command]
+    private void CmdStopPlayerFlagSource()
+    {
+        RpcStopPlayerFlagSource();
+    }
+
+    [ClientRpc]
+    private void RpcStopPlayerFlagSource()
+    {
+        playerFlagSource.Stop();
     }
 
     [Command]
@@ -1312,6 +1358,27 @@ public class PlayerLogic : NetworkBehaviour
     }
 
     #endregion
+
+    public AudioSource ChooseAudioSource()
+    {
+        foreach (AudioSource source in audioSources)
+        {
+            if (source.isPlaying == false) { return source; }
+        }
+
+        return audioSources[0];
+    }
+
+    public void StopAllSounds()
+    {
+        foreach (AudioSource source in audioSources)
+        {
+            source.Stop();
+        }
+
+        playerFootstepSource.Stop();
+        playerSource.Stop();
+    }
 }
 
 
