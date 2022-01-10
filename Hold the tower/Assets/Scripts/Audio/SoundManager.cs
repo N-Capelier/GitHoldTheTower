@@ -46,7 +46,45 @@ public class SoundManager : Singleton<SoundManager>
         }
     }
 
-    //SetFloat("CinematicVolume", Mathf.Log10(SoundEffectsVolume) * 20);
+    public float ChangeSfxVolume(float value)
+    {
+        value = value + 80f;
+
+        value = value * 0.80f;
+
+        value = value / 80f;
+
+        if (value != 0)
+        {
+            sfxMixer.audioMixer.SetFloat("EffectsVolume", Mathf.Log10(value) * 20.0f);
+        }
+        else
+        {
+            sfxMixer.audioMixer.SetFloat("EffectsVolume", -80f);
+        }
+
+        return value * 100;
+    }
+
+    public float ChangeMusicVolume(float value)
+    {
+        value = value + 80f;
+
+        value = value * 0.80f;
+
+        value = value / 80f;
+
+        if (value != 0)
+        {
+            sfxMixer.audioMixer.SetFloat("MusicVolume", Mathf.Log10(value) * 20.0f);
+        }
+        else
+        {
+            sfxMixer.audioMixer.SetFloat("MusicVolume", -80f);
+        }
+
+        return value * 100;
+    }
 
 
     public void TestSound()
