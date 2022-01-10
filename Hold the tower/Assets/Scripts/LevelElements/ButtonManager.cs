@@ -7,7 +7,7 @@ public class ButtonManager : NetworkBehaviour
 	[SerializeField]
 	private float activationCooldown;
 
-	public float cooldownRemaining;
+	[HideInInspector] public float cooldownRemaining;
     private bool isHighlighted;
 
     private void Update()
