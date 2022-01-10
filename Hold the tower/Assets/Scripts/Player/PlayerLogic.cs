@@ -489,7 +489,7 @@ public class PlayerLogic : NetworkBehaviour
                                 if (selfMovement.SetWallSlideDirection())
                                 {
                                     isWallSliding = true;
-                                    CmdPlayerFootstepSource("PlayerFootstep");
+                                    CmdPlayerFootstepSource("PlayerWallRide");
                                 }
                             }
                         }
