@@ -5,6 +5,7 @@ using Mirror;
 
 public class ChunckSwitcher : MonoBehaviour
 {
+    public float activationRange = 12f;
     public ButtonManager linkedChunck;
     public BlockBehaviour linkedButton;
 
