@@ -31,15 +31,15 @@ MonoBehaviour:
   gravityForce: 30
   jumpForwardForce: 2
   jumpForce: 12
-  wallJumpNormalForce: 11
-  wallJumpUpwardForce: 1
-  maxWallJumpAngleDeviation: 30
+  wallJumpNormalForce: 12
+  wallJumpUpwardForce: 0.8
+  maxWallJumpAngleDeviation: 35
   wallJumpMinAngleToCancelDeviation: 140
   wallSlideGravity: 30
   wallSlideMaxGravitySpeed: 1.5
   wallSlideSpeedDampening: 5
   wallRideSpeed: 11
-  minHorizontalSpeedToStartWallRide: 10
+  minHorizontalSpeedToStartWallRide: 5
   climbHeight: 1.5
   climbWidth: 1.3
   timeToClimb: 0.1
@@ -202,7 +202,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   switchChunckAimMaxDistance: 0
-  switchChunckRangeMaxDistance: 10
+  switchChunckRangeMaxDistance: 12
   captureOverdriveText: Capture overdrive
   goToGoalText: Reach the enemy goal
   defendText: Take back the overdrive
