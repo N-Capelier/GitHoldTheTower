@@ -54,6 +54,7 @@ public class SensorPlayer : MonoBehaviour
             if (other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
             {
                 selfTransform.GetComponent<PlayerLogic>().CmdGetFlag();
+                selfLogic.CmdPlayGlobalSound("PlayerOverdriveSteal");
             }
 
             selfTransform.GetComponent<PlayerMovement>().StopPunch();

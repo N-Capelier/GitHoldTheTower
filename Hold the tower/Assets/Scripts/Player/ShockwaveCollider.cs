@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class ShockwaveCollider : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class ShockwaveCollider : MonoBehaviour
 	[SerializeField] GameObject shockwaveRenderer1;
 	[SerializeField] GameObject shockwaveRenderer2;
 	[SerializeField] GameObject shockwaveRenderer3;
+	bool playedSound = false;
 
 	private void FixedUpdate()
 	{
@@ -58,6 +60,8 @@ public class ShockwaveCollider : MonoBehaviour
 		expandDuration = (1 - _playerPunchLoadFactor) * maxExpandDuration;
 		expandDuration = expandDuration.Remap(0f, maxExpandDuration, .5f, maxExpandDuration);
 
+		SoundManager.Instance.PlaySoundEvent("PlayerPunchWave");
+
 		maxRadius *= _playerPunchLoadFactor;
 		if(_playerPunchLoadFactor == 0f)
 			maxRadius = minRadius;
@@ -67,8 +71,19 @@ public class ShockwaveCollider : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (isVisual)
+		if (isVisual && playedSound == false)
+		{
+			if (other.CompareTag("Wall"))
+			{
+				BlockBehaviour block = other.GetComponent<BlockBehaviour>();
+				if (block.isDestroyable)
+				{
+					playedSound = true;
+					block.StartCoroutine(block.WaitAndPlayDissolveSound());
+				}
+			}
 			return;
+		}
 
 		if (other.CompareTag("Wall"))
 		{
@@ -80,5 +95,4 @@ public class ShockwaveCollider : MonoBehaviour
 			}
 		}
 	}
-
 }
