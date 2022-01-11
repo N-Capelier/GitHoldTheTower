@@ -333,7 +333,7 @@ public class PlayerLogic : NetworkBehaviour
 
         if(isTouchingTheGround)
         {
-            if(touchingGroundFlag)
+            if (touchingGroundFlag)
             {
                 CmdPlayerSource("PlayerJumpOff");
                 touchingGroundFlag = false;
