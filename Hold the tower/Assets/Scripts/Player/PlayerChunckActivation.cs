@@ -149,7 +149,7 @@ public class PlayerChunckActivation : MonoBehaviour
             switchInputIndicator.fillAmount = aimedSwitcher.linkedChunck.GetCDRatio();
             aimedSwitcher.linkedChunck.HighlightChunck(true);
 
-            if (Input.GetKeyDown(selfParams.switchChunckKey))
+            if (Input.GetKeyDown(selfParams.switchChunckKey) || Input.GetButtonDown("YButton"))
             {
                 if (aimedSwitcher.linkedChunck.GetCDRatio() == 1)
                 {

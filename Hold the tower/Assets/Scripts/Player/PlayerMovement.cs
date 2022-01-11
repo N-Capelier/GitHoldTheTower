@@ -108,11 +108,11 @@ public class PlayerMovement : MonoBehaviour
     {
         moveDirection = direction;
 
-        selfRbd.velocity += direction * selfParams.runningForce * Time.deltaTime;
+        selfRbd.velocity += direction.normalized * selfParams.runningForce * Time.deltaTime;
 
-        if (GetHorizontalVelocity().magnitude > selfParams.maxRunningSpeed)
+        if (GetHorizontalVelocity().magnitude > selfParams.maxRunningSpeed * moveDirection.magnitude)
         {
-            SetHorizontalVelocity(selfRbd.velocity.normalized * selfParams.maxRunningSpeed);
+            SetHorizontalVelocity(selfRbd.velocity.normalized * selfParams.maxRunningSpeed * moveDirection.magnitude);
         }
     }
 
