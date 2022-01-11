@@ -856,6 +856,10 @@ public class PlayerLogic : NetworkBehaviour
                 doOnce = false;
                 SoundManager.Instance.PlaySoundEvent("LevelStarting");
             }
+            else
+            {
+                SoundManager.Instance.PlaySoundEvent("PlayerSpawn");
+            }
             
             Transform spawnPoint;
             spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(spawnPosition);
@@ -1133,12 +1137,12 @@ public class PlayerLogic : NetworkBehaviour
 
     //Use this for playing audio over network with PlayerSource AudioSource
     [Command(requiresAuthority =false)]
-    private void CmdPlayerSource(string thisEventName)
+    public void CmdPlayerSource(string thisEventName)
     {
         RpcPlayerSource(thisEventName);
     }
     [ClientRpc]
-    private void RpcPlayerSource(string thisEventName)
+    public void RpcPlayerSource(string thisEventName)
     {
         
         
@@ -1210,13 +1214,13 @@ public class PlayerLogic : NetworkBehaviour
     }
 
     [Command]
-    private void CmdPlayGlobalSound(string thisEventName)
+    public void CmdPlayGlobalSound(string thisEventName)
     {
         RpcPlayGlobalSound(thisEventName);
     }
 
     [ClientRpc]
-    private void RpcPlayGlobalSound(string thisEventName)
+    public void RpcPlayGlobalSound(string thisEventName)
     {
         SoundManager.Instance.PlaySoundEvent(thisEventName);
     }

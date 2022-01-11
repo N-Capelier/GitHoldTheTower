@@ -30,7 +30,7 @@ MonoBehaviour:
     - name: NullSound
       ID: 1
       clip: {fileID: 8300000, guid: 0bf928ec4e4f3ec4388aa58573d003fa, type: 3}
-      volume: 0.5
+      volume: 1
     isLocalized: 1
     isRandom: 0
     isLoop: 1
@@ -51,10 +51,18 @@ MonoBehaviour:
     sounds:
     - name: PlayerJump
       ID: 3
-      clip: {fileID: 8300000, guid: 34e12c161cb59084a8047706b4c79eeb, type: 3}
-      volume: 0.8
+      clip: {fileID: 8300000, guid: f1c9c75a75a918444a26b3f0d8e0541e, type: 3}
+      volume: 0.5
+    - name: PlayerJump
+      ID: 3
+      clip: {fileID: 8300000, guid: d4c175f041345ed4d8d79d6bac3f77eb, type: 3}
+      volume: 0.5
+    - name: PlayerJump
+      ID: 3
+      clip: {fileID: 8300000, guid: 6ccc21d60f3cbfd4aa5c56042079b2a0, type: 3}
+      volume: 0.5
     isLocalized: 1
-    isRandom: 0
+    isRandom: 1
     isLoop: 0
     isMusic: 0
   - name: PlayerWallJump
@@ -74,7 +82,7 @@ MonoBehaviour:
     - name: PlayerJumpOff
       ID: 5
       clip: {fileID: 8300000, guid: 42ef11a620b659342a084a82da0e06d0, type: 3}
-      volume: 0.5
+      volume: 0.2
     isLocalized: 1
     isRandom: 0
     isLoop: 0
@@ -150,7 +158,7 @@ MonoBehaviour:
     sounds:
     - name: PlayerOverdrive
       ID: 12
-      clip: {fileID: 8300000, guid: 0dad3089d990c614f803f2be35f5b84b, type: 3}
+      clip: {fileID: 8300000, guid: 80289738f74e43a43adc092283cd5115, type: 3}
       volume: 0.8
     isLocalized: 1
     isRandom: 0
@@ -188,6 +196,17 @@ MonoBehaviour:
     isLocalized: 0
     isRandom: 0
     isLoop: 0
+    isMusic: 0
+  - name: PlayerWallRide
+    ID: 31
+    sounds:
+    - name: PlayerWallRide
+      ID: 31
+      clip: {fileID: 8300000, guid: 618e4134f1b08ca42bdfeadb600b0eed, type: 3}
+      volume: 0.5
+    isLocalized: 0
+    isRandom: 0
+    isLoop: 1
     isMusic: 0
   - name: LevelEvolvingAnoucement
     ID: 16
@@ -227,7 +246,7 @@ MonoBehaviour:
     sounds:
     - name: LevelBlockDestroyed
       ID: 19
-      clip: {fileID: 8300000, guid: a2a97b97216dab34795e08e68740bf68, type: 3}
+      clip: {fileID: 8300000, guid: 85b816419b442f24a90e99cbef681c05, type: 3}
       volume: 0.8
     isLocalized: 1
     isRandom: 0
@@ -354,14 +373,25 @@ MonoBehaviour:
     isRandom: 0
     isLoop: 1
     isMusic: 1
-  - name: PlayerWallRide
-    ID: 31
+  - name: PlayerOverdriveSteal
+    ID: 30
     sounds:
-    - name: PlayerWallRide
-      ID: 31
-      clip: {fileID: 8300000, guid: 618e4134f1b08ca42bdfeadb600b0eed, type: 3}
-      volume: 0.5
+    - name: PlayerOverdriveSteal
+      ID: 30
+      clip: {fileID: 8300000, guid: 3d1c146bfdd70ba4aad783f81272f013, type: 3}
+      volume: 0.3
     isLocalized: 0
     isRandom: 0
-    isLoop: 1
+    isLoop: 0
+    isMusic: 0
+  - name: PlayerOverdriveGoal
+    ID: 30
+    sounds:
+    - name: PlayerOverdriveGoal
+      ID: 30
+      clip: {fileID: 8300000, guid: 0f3164bea43556247a620b0c37d3f3d1, type: 3}
+      volume: 0.3
+    isLocalized: 0
+    isRandom: 0
+    isLoop: 0
     isMusic: 0

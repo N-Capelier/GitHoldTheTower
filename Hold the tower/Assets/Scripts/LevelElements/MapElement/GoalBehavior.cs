@@ -36,6 +36,7 @@ public class GoalBehavior : NetworkBehaviour
                     else 
                     {
                         other.transform.parent.GetComponent<PlayerLogic>().CmdPlayEquipTeamSound("LevelTeamScores", "LevelEnemyScores");
+                        other.transform.parent.GetComponent<PlayerLogic>().CmdPlayGlobalSound("PlayerOvedriveGoal");
                     }                    
                 }
 
@@ -50,6 +51,7 @@ public class GoalBehavior : NetworkBehaviour
                     else
                     {
                         other.transform.parent.GetComponent<PlayerLogic>().CmdPlayEquipTeamSound("LevelTeamScores", "LevelEnemyScores");
+                        other.transform.parent.GetComponent<PlayerLogic>().CmdPlayGlobalSound("PlayerOvedriveGoal");
                     }
                 }
                 other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
