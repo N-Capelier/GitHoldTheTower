@@ -15,6 +15,10 @@ public class PlayerChunckActivation : MonoBehaviour
     private LayerMask switcherLayer;
     [SerializeField]
     private LayerMask switcherLayerOnly;
+    [SerializeField]
+    private bool needToBeInSight;
+    [SerializeField]
+    private bool useSwitcherCustomRange;
 
     private ChunckSwitcher aimedSwitcher;
     private bool isAimingSwitcher;
@@ -31,7 +35,14 @@ public class PlayerChunckActivation : MonoBehaviour
         if(playerLogic.hasAuthority)
         {
             CheckPlayerAim();
-            CheckPlayerPos();
+            if(useSwitcherCustomRange)
+            {
+                CheckSwitcherPos();
+            }
+            else
+            {
+                CheckPlayerPos();
+            }
             CheckPlayerActivation();
         }
     }
@@ -72,13 +83,61 @@ public class PlayerChunckActivation : MonoBehaviour
                 RaycastHit hit;
                 Physics.Raycast(transform.position, directionToSwitcher, out hit, selfParams.switchChunckRangeMaxDistance, switcherLayer);
 
-                if (directionToSwitcher.magnitude < mindistFromSwitch && hit.collider != null && hit.collider.CompareTag("Switcher"))
+                if (directionToSwitcher.magnitude < mindistFromSwitch && ((hit.collider != null && hit.collider.CompareTag("Switcher")) || !needToBeInSight))
                 {
                     mindistFromSwitch = directionToSwitcher.magnitude;
+                    if(aimedSwitcher != null)
+                    {
+                        aimedSwitcher.linkedChunck.HighlightChunck(false);
+                    }
                     aimedSwitcher = switcherColliders[i].GetComponent<ChunckSwitcher>();
                     isNearbySwitcher = true;
                 }
             }
+        }
+    }
+    public void CheckSwitcherPos()
+    {
+        isNearbySwitcher = false;
+        mindistFromSwitch = 2000;
+        Collider[] switcherColliders = Physics.OverlapSphere(transform.position, selfParams.switchChunckRangeMaxDistance, switcherLayerOnly);
+        List<ChunckSwitcher> switcherNearby = new List<ChunckSwitcher>();
+        ChunckSwitcher potentialSwitch;
+        if (switcherColliders.Length > 0)
+        {
+            Debug.Log("switcher in lit");
+            for (int i = 0; i < switcherColliders.Length; i++)
+            {
+                if (switcherColliders[i].CompareTag("Switcher"))
+                {
+                    potentialSwitch = switcherColliders[i].GetComponent<ChunckSwitcher>();
+                    Debug.Log("added : " + potentialSwitch);
+                    switcherNearby.Add(potentialSwitch);
+                    isNearbySwitcher = true;
+                }
+            }
+        }
+
+        if (isNearbySwitcher)
+        {
+            potentialSwitch = null;
+
+            foreach (ChunckSwitcher switcher in switcherNearby)
+            {
+                directionToSwitcher = switcher.transform.position - transform.position;
+
+                if (directionToSwitcher.magnitude < switcher.activationRange && directionToSwitcher.magnitude < mindistFromSwitch)
+                {
+                    mindistFromSwitch = directionToSwitcher.magnitude;
+                    if (potentialSwitch != null)
+                    {
+                        potentialSwitch.linkedChunck.HighlightChunck(false);
+                    }
+                    potentialSwitch = switcher;
+                }
+            }
+
+            aimedSwitcher = potentialSwitch;
         }
     }
 
@@ -90,7 +149,7 @@ public class PlayerChunckActivation : MonoBehaviour
             switchInputIndicator.fillAmount = aimedSwitcher.linkedChunck.GetCDRatio();
             aimedSwitcher.linkedChunck.HighlightChunck(true);
 
-            if (Input.GetKeyDown(selfParams.switchChunckKey))
+            if (Input.GetKeyDown(selfParams.switchChunckKey) || Input.GetButtonDown("YButton"))
             {
                 if (aimedSwitcher.linkedChunck.GetCDRatio() == 1)
                 {
