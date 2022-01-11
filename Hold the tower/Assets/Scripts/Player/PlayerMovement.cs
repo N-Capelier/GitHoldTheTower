@@ -646,6 +646,7 @@ public class PlayerMovement : MonoBehaviour
     {
         selfLogic.CmdGetFlag();
         selfLogic.CmdHideFlagInGame();
+        SoundManager.Instance.PlaySoundEvent("PlayerOverdriveTaken");
     }
 
     #endregion
