@@ -262,6 +262,7 @@ public class PlayerMovement : MonoBehaviour
     //Manage walljump movement
     public IEnumerator WallJumpManage(Vector3 wallDirection)
     {
+        selfLogic.CmdPlayerSource("PlayerJump");
         isAttackReset = true;
         bool cancelJump = false;
         Vector3 adjustDirection = wallDirection;

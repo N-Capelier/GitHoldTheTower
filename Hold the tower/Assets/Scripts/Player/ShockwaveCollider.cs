@@ -60,13 +60,13 @@ public class ShockwaveCollider : MonoBehaviour
 		expandDuration = (1 - _playerPunchLoadFactor) * maxExpandDuration;
 		expandDuration = expandDuration.Remap(0f, maxExpandDuration, .5f, maxExpandDuration);
 
-		SoundManager.Instance.PlaySoundEvent("PlayerPunchWave");
-
 		maxRadius *= _playerPunchLoadFactor;
 		if(_playerPunchLoadFactor == 0f)
 			maxRadius = minRadius;
 
-		expanding = true;
+        SoundManager.Instance.PlaySoundEvent("PlayerPunchWave");
+
+        expanding = true;
 	}
 
 	private void OnTriggerEnter(Collider other)

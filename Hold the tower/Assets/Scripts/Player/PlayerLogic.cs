@@ -586,7 +586,14 @@ public class PlayerLogic : NetworkBehaviour
         if ((Input.GetMouseButtonDown(selfParams.attackMouseInput) || (Input.GetAxis("RT") > 0 && attackTriggerValueDelta == 0f)) && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown)
         {
             //SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
-            CmdPlayerSource("PlayerPunchCharge");
+            if (hasFlag)
+            {
+                CmdPlayerSource("PlayerPunchChargeFlag");
+            }
+            else
+            {
+                CmdPlayerSource("PlayerPunchCharge");
+            }
             hasStartedCharge = true;
         }
         //Attack load
@@ -604,7 +611,7 @@ public class PlayerLogic : NetworkBehaviour
             }
 
             if(hasFlag)
-            {
+            {                
                 ratioAttack = 0;
                 punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), 0);
                 punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), 0);
@@ -619,7 +626,7 @@ public class PlayerLogic : NetworkBehaviour
 
             }
             else
-            {
+            {                
                 ratioAttack = selfMovement.AttackLoad(timeAttack);
                 punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
                 punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
