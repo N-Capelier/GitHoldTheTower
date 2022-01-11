@@ -82,7 +82,7 @@ MonoBehaviour:
     - name: PlayerJumpOff
       ID: 7
       clip: {fileID: 8300000, guid: 42ef11a620b659342a084a82da0e06d0, type: 3}
-      volume: 0.2
+      volume: 0.1
     isLocalized: 1
     isRandom: 0
     isLoop: 0
@@ -313,7 +313,7 @@ MonoBehaviour:
     - name: LevelButtonActivated
       ID: 28
       clip: {fileID: 8300000, guid: 3ea3def82f4bbe743a0a6ccc4e1e3b40, type: 3}
-      volume: 0.8
+      volume: 0.5
     isLocalized: 1
     isRandom: 0
     isLoop: 0
