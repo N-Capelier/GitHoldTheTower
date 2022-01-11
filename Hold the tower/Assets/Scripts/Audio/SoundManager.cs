@@ -54,6 +54,8 @@ public class SoundManager : Singleton<SoundManager>
 
         value = value / 80f;
 
+        value = value / 2;
+
         if (value != 0)
         {
             sfxMixer.audioMixer.SetFloat("EffectsVolume", Mathf.Log10(value) * 20.0f);
@@ -73,6 +75,8 @@ public class SoundManager : Singleton<SoundManager>
         value = value * 0.80f;
 
         value = value / 80f;
+
+        value = value / 2;
 
         if (value != 0)
         {
