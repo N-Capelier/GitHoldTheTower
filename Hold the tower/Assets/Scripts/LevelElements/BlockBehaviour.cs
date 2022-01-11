@@ -22,7 +22,7 @@ public class BlockBehaviour : MonoBehaviour
 	[Header("Destruction")]
 	//Explosion
 	public bool isDestroyable = false;
-	[SerializeField] [Range(0f, 5f)] float timeBeforeExplosion = 2f;
+	[Range(0f, 5f)] public float timeBeforeExplosion = 2f;
 	[SerializeField] [Range(0f, 5f)] float explosionTime = 2f;
 	[SerializeField] float deathZoneY = -100f;
 	[HideInInspector] public bool isAlive;
@@ -144,8 +144,6 @@ public class BlockBehaviour : MonoBehaviour
 		gameObject.layer = LayerMask.NameToLayer("Default");
 		boxCollider.enabled = false;
 
-		SoundManager.Instance.PlaySoundEvent("LevelBlockDestroyed");
-
 		float _elapsedTime = 0f;
 		float _completion = 0f;
 		while(_elapsedTime < explosionTime)
@@ -174,5 +172,11 @@ public class BlockBehaviour : MonoBehaviour
 
 		effect.transform.localScale = new Vector3(transform.localScale.x * 2 + 0.3f, transform.localScale.y * 2 + 2, transform.localScale.z * 2 + 0.3f);
 
+	}
+
+	public IEnumerator WaitAndPlayDissolveSound()
+	{
+		yield return new WaitForSeconds(timeBeforeExplosion);
+		SoundManager.Instance.PlaySoundEvent("LevelBlockDestroyed", gameObject);
 	}
 }
