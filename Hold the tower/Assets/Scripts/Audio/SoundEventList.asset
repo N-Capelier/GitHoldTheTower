@@ -30,7 +30,7 @@ MonoBehaviour:
     - name: NullSound
       ID: 1
       clip: {fileID: 8300000, guid: 0bf928ec4e4f3ec4388aa58573d003fa, type: 3}
-      volume: 0.2
+      volume: 0.15
     isLocalized: 1
     isRandom: 0
     isLoop: 1
@@ -81,8 +81,8 @@ MonoBehaviour:
     sounds:
     - name: PlayerJumpOff
       ID: 7
-      clip: {fileID: 8300000, guid: 42ef11a620b659342a084a82da0e06d0, type: 3}
-      volume: 0.1
+      clip: {fileID: 8300000, guid: e4fbe5ac95834e141a2578adb64e71e7, type: 3}
+      volume: 0.5
     isLocalized: 1
     isRandom: 0
     isLoop: 0
@@ -169,7 +169,7 @@ MonoBehaviour:
     sounds:
     - name: PlayerOverdrive
       ID: 15
-      clip: {fileID: 8300000, guid: 80289738f74e43a43adc092283cd5115, type: 3}
+      clip: {fileID: 8300000, guid: 0dad3089d990c614f803f2be35f5b84b, type: 3}
       volume: 0.8
     isLocalized: 1
     isRandom: 0
@@ -313,8 +313,8 @@ MonoBehaviour:
     - name: LevelButtonActivated
       ID: 28
       clip: {fileID: 8300000, guid: 3ea3def82f4bbe743a0a6ccc4e1e3b40, type: 3}
-      volume: 0.5
-    isLocalized: 1
+      volume: 1
+    isLocalized: 0
     isRandom: 0
     isLoop: 0
     isMusic: 0
