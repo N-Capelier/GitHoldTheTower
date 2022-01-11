@@ -32,11 +32,12 @@ public class GoalBehavior : NetworkBehaviour
                     if (matchManager.redScore == matchManager.maxScore)
                     {
                         other.transform.parent.GetComponent<PlayerLogic>().CmdPlayEquipTeamSound("LevelMatchWon", "LevelMatchLost");
+                        other.transform.parent.GetComponent<PlayerLogic>().CmdPlayGlobalSound("PlayerOverdriveGoal");
                     }
                     else 
                     {
                         other.transform.parent.GetComponent<PlayerLogic>().CmdPlayEquipTeamSound("LevelTeamScores", "LevelEnemyScores");
-                        other.transform.parent.GetComponent<PlayerLogic>().CmdPlayGlobalSound("PlayerOvedriveGoal");
+                        other.transform.parent.GetComponent<PlayerLogic>().CmdPlayGlobalSound("PlayerOverdriveGoal");
                     }                    
                 }
 
@@ -47,11 +48,12 @@ public class GoalBehavior : NetworkBehaviour
                     if (matchManager.blueScore == matchManager.maxScore)
                     {
                         other.transform.parent.GetComponent<PlayerLogic>().CmdPlayEquipTeamSound("LevelMatchWon", "LevelMatchLost");
+                        other.transform.parent.GetComponent<PlayerLogic>().CmdPlayGlobalSound("PlayerOverdriveGoal");
                     }
                     else
                     {
                         other.transform.parent.GetComponent<PlayerLogic>().CmdPlayEquipTeamSound("LevelTeamScores", "LevelEnemyScores");
-                        other.transform.parent.GetComponent<PlayerLogic>().CmdPlayGlobalSound("PlayerOvedriveGoal");
+                        other.transform.parent.GetComponent<PlayerLogic>().CmdPlayGlobalSound("PlayerOverdriveGoal");
                     }
                 }
                 other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();

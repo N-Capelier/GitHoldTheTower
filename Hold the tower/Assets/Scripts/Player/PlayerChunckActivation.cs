@@ -155,6 +155,7 @@ public class PlayerChunckActivation : MonoBehaviour
                 {
                     aimedSwitcher.linkedChunck.CmdUse();
                     aimedSwitcher.SwitchChunck();
+                    playerLogic.CmdPlayGlobalSound("LevelChunkMovement");
                 }
             }
         }

@@ -52,7 +52,7 @@ public class PlayerPing : NetworkBehaviour
                 {
                     Debug.DrawRay(selfCamera.transform.position, selfCamera.transform.forward * hit.distance, Color.yellow, 5);
                     positionToPing = hit.point + offSetPing;
-                    isPinging = true;
+                    isPinging = true;                    
                 }
             }
 
@@ -113,6 +113,7 @@ public class PlayerPing : NetworkBehaviour
     }
     private IEnumerator PingAlive(Vector3 pos)
     {
+        selfLogic.CmdPlayGlobalSound("PlayerPing");
         selfPingObject.SetActive(true);
         CmdPingAllies(pos);
         float lifeTime = 0f;
