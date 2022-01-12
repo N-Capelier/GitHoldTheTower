@@ -10,6 +10,8 @@ public class SoundManager : Singleton<SoundManager>
 
     public SoundEventList soundEventList;
 
+    public AudioMixerGroup masterMixer;
+
     public AudioMixerGroup sfxMixer;
 
     public AudioMixerGroup musicMixer;
@@ -45,6 +47,27 @@ public class SoundManager : Singleton<SoundManager>
             soundEventList.InitialiseEventIDs();
         }
     }
+
+    public float ChangeMasterVolume(float value)
+    {
+        value = value + 80f;
+
+        value = value * 0.80f;
+
+        value = value / 80f;
+
+        if (value != 0)
+        {
+            sfxMixer.audioMixer.SetFloat("MasterVolume", Mathf.Log10(value) * 20.0f);
+        }
+        else
+        {
+            sfxMixer.audioMixer.SetFloat("MasterVolume", -80f);
+        }
+
+        return value * 100;
+    }
+
 
     public float ChangeSfxVolume(float value)
     {

@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundEventList: {fileID: 11400000, guid: e55ea489aacafa24ab7b352ff6896134, type: 2}
+  masterMixer: {fileID: 24300002, guid: cde55cf782acd164bb731d17649287e1, type: 2}
   sfxMixer: {fileID: 859602042225167352, guid: cde55cf782acd164bb731d17649287e1, type: 2}
   musicMixer: {fileID: 6644533101274923571, guid: cde55cf782acd164bb731d17649287e1, type: 2}
   emptyGameObject: {fileID: 0}
