@@ -532,14 +532,19 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator TimerAttack()
     {
         float timerPunchCD = 0;
+        bool soundOnce = false;
         while(timerPunchCD < selfParams.punchCooldown)
         {
             timerPunchCD += Time.deltaTime;
             selfLogic.UpdatePunchCooldown(timerPunchCD);
+            if (timerPunchCD >= selfParams.punchCooldown - 0.15f && soundOnce == false)
+            {
+                SoundManager.Instance.PlaySoundEvent("PlayerPunchAvailable");
+                soundOnce = true;
+            }
             yield return new WaitForEndOfFrame();
-        }
+        }        
         isAttackInCooldown = false;
-        SoundManager.Instance.PlaySoundEvent("PlayerPunchAvailable");
     }
 
     public float GetPunchAngleRatio(float punchVerticalAngle)
