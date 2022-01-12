@@ -165,6 +165,7 @@ public class PlayerChunckActivation : MonoBehaviour
                     aimedSwitcher.Use();
                     aimedSwitcher.SwitchChunck();
                     playerLogic.CmdPlayGlobalSound("LevelChunkMovement");
+                    SoundManager.Instance.PlaySoundEvent("LevelButtonActivated");
                 }
             }
         }

@@ -82,8 +82,10 @@ public class ScriptableParamsPlayer : ScriptableObject
     public string protectText;
 
     [Header("Sounds")]
+    [Range(-80, 20)] public int masterVolume;
     [Range(-80, 20)] public int musicVolume;
     [Range(-80, 20)] public int effectsVolume;
+    [Range(-80, 20)] public int annoucersVolume;
 
     /*[Range(0f, 1f)] public static float musicVolume;
     [Range(0f, 1f)] public static float effectsVolume;*/

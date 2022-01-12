@@ -13,6 +13,8 @@ public class LevelTransition : NetworkBehaviour
 
     public double timerChange = 5d;
 
+    private bool doOnce = true;
+
     void OnChangeTerrain()
     {
         networkTime = NetworkTime.time;
@@ -34,7 +36,14 @@ public class LevelTransition : NetworkBehaviour
             if (NetworkTime.time >= networkTime + timerChange)
             {
                 RpcSendChange();
+                doOnce = true;
                 //OnChangeTerrain();
+            }
+
+            if (NetworkTime.time >= networkTime + timerChange - 1f && NetworkTime.time <= networkTime + timerChange - 0.1f && doOnce)
+            {
+                SoundManager.Instance.PlaySoundEvent("LevelEvolvingSound");
+                doOnce = false;
             }
         }
 

@@ -10,9 +10,13 @@ public class SoundManager : Singleton<SoundManager>
 
     public SoundEventList soundEventList;
 
+    public AudioMixerGroup masterMixer;
+
     public AudioMixerGroup sfxMixer;
 
     public AudioMixerGroup musicMixer;
+
+    public AudioMixerGroup annoucersMixer;
 
     public GameObject emptyGameObject;
 
@@ -44,6 +48,48 @@ public class SoundManager : Singleton<SoundManager>
             soundEventList.InitialiseSoundIDs();
             soundEventList.InitialiseEventIDs();
         }
+    }
+
+    public float ChangeMasterVolume(float value)
+    {
+        value = value + 80f;
+
+        value = value * 0.80f;
+
+        value = value / 80f;
+
+        if (value != 0)
+        {
+            sfxMixer.audioMixer.SetFloat("MasterVolume", Mathf.Log10(value) * 20.0f);
+        }
+        else
+        {
+            sfxMixer.audioMixer.SetFloat("MasterVolume", -80f);
+        }
+
+        return value * 100;
+    }
+
+    public float ChangeAnnoucerVolume(float value)
+    {
+        value = value + 80f;
+
+        value = value * 0.80f;
+
+        value = value / 80f;
+
+        value = value / 2;
+
+        if (value != 0)
+        {
+            sfxMixer.audioMixer.SetFloat("AnoucersVolume", Mathf.Log10(value) * 20.0f);
+        }
+        else
+        {
+            sfxMixer.audioMixer.SetFloat("AnoucersVolume", -80f);
+        }
+
+        return value * 100;
     }
 
     public float ChangeSfxVolume(float value)
@@ -151,12 +197,26 @@ public class SoundManager : Singleton<SoundManager>
             int temp = UnityEngine.Random.Range(0, thisEvent.sounds.Length - 1);
 
             soundRef.sound = thisEvent.sounds[temp];
-            soundRef.ApplySoundToAudioSource(thisEvent.sounds[temp], thisEvent.isLoop, sfxMixer);
+            if(thisEvent.isAnnoucer)
+            {
+                soundRef.ApplySoundToAudioSource(thisEvent.sounds[temp], thisEvent.isLoop, annoucersMixer);
+            }
+            else
+            {
+                soundRef.ApplySoundToAudioSource(thisEvent.sounds[temp], thisEvent.isLoop, sfxMixer);
+            }            
         }
         else
         {
             soundRef.sound = thisEvent.sounds[0];
-            soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, sfxMixer);
+            if (thisEvent.isAnnoucer)
+            {
+                soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, annoucersMixer);
+            }
+            else
+            {
+                soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, sfxMixer);
+            }
         }
 
         if (soundRef.sound.clip == null)
@@ -367,12 +427,26 @@ public class SoundManager : Singleton<SoundManager>
             int temp = UnityEngine.Random.Range(0, thisEvent.sounds.Length - 1);
 
             soundRef.sound = thisEvent.sounds[temp];
-            soundRef.ApplySoundToAudioSource(thisEvent.sounds[temp], thisEvent.isLoop, sfxMixer);
+            if (thisEvent.isAnnoucer)
+            {
+                soundRef.ApplySoundToAudioSource(thisEvent.sounds[temp], thisEvent.isLoop, annoucersMixer);
+            }
+            else
+            {
+                soundRef.ApplySoundToAudioSource(thisEvent.sounds[temp], thisEvent.isLoop, sfxMixer);
+            }
         }
         else
         {
             soundRef.sound = thisEvent.sounds[0];
-            soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, sfxMixer);
+            if (thisEvent.isAnnoucer)
+            {
+                soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, annoucersMixer);
+            }
+            else
+            {
+                soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, sfxMixer);
+            }
         }
 
         if (soundRef.sound.clip == null)
@@ -473,12 +547,26 @@ public class SoundManager : Singleton<SoundManager>
                 int temp = UnityEngine.Random.Range(0, thisEvent.sounds.Length - 1);
 
                 soundRef.sound = thisEvent.sounds[temp];
-                soundRef.ApplySoundToAudioSource(thisEvent.sounds[temp], thisEvent.isLoop, sfxMixer);
+                if (thisEvent.isAnnoucer)
+                {
+                    soundRef.ApplySoundToAudioSource(thisEvent.sounds[temp], thisEvent.isLoop, annoucersMixer);
+                }
+                else
+                {
+                    soundRef.ApplySoundToAudioSource(thisEvent.sounds[temp], thisEvent.isLoop, sfxMixer);
+                }
             }
             else
             {
                 soundRef.sound = thisEvent.sounds[0];
-                soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, sfxMixer);
+                if (thisEvent.isMusic)
+                {
+                    soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, annoucersMixer);
+                }
+                else
+                {
+                    soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, sfxMixer);
+                }
             }
 
             if (soundRef.sound.clip == null)

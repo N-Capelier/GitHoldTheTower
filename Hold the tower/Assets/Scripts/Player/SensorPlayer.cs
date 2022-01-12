@@ -51,6 +51,7 @@ public class SensorPlayer : MonoBehaviour
         {
             selfLogic.StartHitUi(0.5f);
             selfLogic.CmdCreateParticulePunch(transform.position);
+            selfLogic.CmdPlayerSource("PlayerPunchImpact");
             if (other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
             {
                 selfTransform.GetComponent<PlayerLogic>().CmdGetFlag();
