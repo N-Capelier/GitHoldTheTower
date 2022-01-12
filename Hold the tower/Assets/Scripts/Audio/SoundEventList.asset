@@ -31,7 +31,7 @@ MonoBehaviour:
     - name: NullSound
       ID: 1
       clip: {fileID: 8300000, guid: 0bf928ec4e4f3ec4388aa58573d003fa, type: 3}
-      volume: 0.1
+      volume: 0.3
     isLocalized: 1
     isRandom: 0
     isLoop: 1
@@ -466,12 +466,12 @@ MonoBehaviour:
     isMusic: 1
     isAnnoucer: 0
   - name: PlayerPunchImpact
-    ID: 36
+    ID: 37
     sounds:
     - name: PlayerPunchImpact
-      ID: 38
+      ID: 39
       clip: {fileID: 8300000, guid: 73b2df4527ceb484296fb85e083a49ab, type: 3}
-      volume: 0.3
+      volume: 1
     isLocalized: 0
     isRandom: 0
     isLoop: 0
