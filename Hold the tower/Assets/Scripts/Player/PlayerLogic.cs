@@ -345,7 +345,7 @@ public class PlayerLogic : NetworkBehaviour
             touchingGroundFlag = true;
         }
 
-        if (!selfMovement.isClimbingMovement && !isAttachToWall && !selfMovement.isAttacking && isInControl)
+        if (!selfMovement.isClimbingMovement && !isWallSliding && !selfMovement.isAttacking && isInControl)
         {
             Vector3 keyDirection = new Vector3(Input.GetAxis("Vertical"), 0, Input.GetAxis("Horizontal"));
             
@@ -475,6 +475,7 @@ public class PlayerLogic : NetworkBehaviour
                             if (GetNearbyWallNormal() != Vector3.zero)
                             {
                                 selfMovement.WallJump(GetNearbyWallNormal());
+                                StartCoroutine(NoControl(0.3f));
                                 isAttachToWall = false;
                                 isWallSliding = false;
                             }
@@ -585,6 +586,7 @@ public class PlayerLogic : NetworkBehaviour
     {
         if ((Input.GetMouseButtonDown(selfParams.attackMouseInput) || (Input.GetAxis("RT") > 0 && attackTriggerValueDelta == 0f)) && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown && isInControl)
         {
+            selfMovement.isChargingPunch = true;
             //SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
             if (hasFlag)
             {
@@ -601,14 +603,7 @@ public class PlayerLogic : NetworkBehaviour
         {
             if(!isInControl)
             {
-                hasStartedCharge = false;
-                CmdShowLoadingPunchEnd();
-                punchChargeDisplay.gameObject.SetActive(false);
-                punchChargeDistancePreview.SetActive(false);
-                punchChargeSliderLine.SetActive(false);
-                punchChargeDistancePreview2.SetActive(false);
-                timeAttack = 0;
-                ratioAttack = 0;
+                StopChargingPunch();
             }
             CmdShowLoadingPunchStart();
             timeAttack += Time.deltaTime;
@@ -661,18 +656,9 @@ public class PlayerLogic : NetworkBehaviour
         //Attack lauch
         if ((Input.GetMouseButtonUp(selfParams.attackMouseInput) || (Input.GetAxis("RT") == 0f && attackTriggerValueDelta != 0f)) && hasStartedCharge)
         {
-            CmdShowLoadingPunchEnd();
-            hasStartedCharge = false;
-            punchChargeDisplay.gameObject.SetActive(false);
-            punchChargeDistancePreview.SetActive(false);
-            punchChargeSliderLine.SetActive(false);
-            punchChargeDistancePreview2.SetActive(false);
-            //SoundManager.Instance.PlaySoundEvent("PlayerPunch", playerSource);
-            //SoundManager.Instance.StopSoundWithDelay(playerSource, 0.2f);
             CmdPlayerSource("PlayerPunch");
             selfMovement.Attack(ratioAttack);
-            timeAttack = 0;
-            ratioAttack = 0;
+            StopChargingPunch();
         }
 
         attackTriggerValueDelta = Input.GetAxis("RT");
@@ -684,6 +670,19 @@ public class PlayerLogic : NetworkBehaviour
     {
         punchCooldownDisplay.fillAmount = cdTime / selfParams.punchCooldown;
         punchCooldownSecondDisplay.fillAmount = cdTime / selfParams.punchCooldown;
+    }
+
+    public void StopChargingPunch()
+    {
+        selfMovement.isChargingPunch = false;
+        hasStartedCharge = false;
+        CmdShowLoadingPunchEnd();
+        punchChargeDisplay.gameObject.SetActive(false);
+        punchChargeDistancePreview.SetActive(false);
+        punchChargeSliderLine.SetActive(false);
+        punchChargeDistancePreview2.SetActive(false);
+        timeAttack = 0;
+        ratioAttack = 0;
     }
 
     #endregion

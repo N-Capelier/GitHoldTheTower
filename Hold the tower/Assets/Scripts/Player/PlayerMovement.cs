@@ -110,9 +110,9 @@ public class PlayerMovement : MonoBehaviour
 
         selfRbd.velocity += direction.normalized * selfParams.runningForce * Time.deltaTime;
 
-        if (GetHorizontalVelocity().magnitude > selfParams.maxRunningSpeed * moveDirection.magnitude)
+        if (GetHorizontalVelocity().magnitude > selfParams.maxRunningSpeed * (isChargingPunch ? selfParams.chargeSlowMovementRatio : 1) * moveDirection.magnitude)
         {
-            SetHorizontalVelocity(selfRbd.velocity.normalized * selfParams.maxRunningSpeed * moveDirection.magnitude);
+            SetHorizontalVelocity(selfRbd.velocity.normalized * selfParams.maxRunningSpeed * (isChargingPunch ? selfParams.chargeSlowMovementRatio : 1) * moveDirection.magnitude);
         }
     }
 
@@ -124,15 +124,15 @@ public class PlayerMovement : MonoBehaviour
 
         selfRbd.velocity += direction * selfParams.airControlForce * Time.deltaTime;
 
-        if(hSpeed > selfParams.maxRunningSpeed)
+        if(hSpeed > selfParams.maxRunningSpeed * (isChargingPunch ? selfParams.chargeSlowMovementRatio : 1))
         {
             SetHorizontalVelocity(selfLogic.GetHorizontalVector(selfRbd.velocity) * hSpeed);
         }
         else
         {
-            if (GetHorizontalVelocity().magnitude > selfParams.maxRunningSpeed)
+            if (GetHorizontalVelocity().magnitude > selfParams.maxRunningSpeed * (isChargingPunch ? selfParams.chargeSlowMovementRatio : 1))
             {
-                SetHorizontalVelocity(selfLogic.GetHorizontalVector(selfRbd.velocity) * selfParams.maxRunningSpeed);
+                SetHorizontalVelocity(selfLogic.GetHorizontalVector(selfRbd.velocity) * selfParams.maxRunningSpeed * (isChargingPunch ? selfParams.chargeSlowMovementRatio : 1));
             }
         }
     }
@@ -352,7 +352,7 @@ public class PlayerMovement : MonoBehaviour
     #region Climb
     public bool CanClimb()
     {
-        if(frontBotCollide && !frontTopCollide && !isClimbingMovement)
+        if (frontBotCollide && !frontTopCollide && !isClimbingMovement)
         {
             Climb();
             return true;
@@ -428,11 +428,11 @@ public class PlayerMovement : MonoBehaviour
 
     #region Attack
 
+    [HideInInspector] public bool isChargingPunch;
     public float AttackLoad(float time)
     {
         float ratio = 0;
         punchAngle = Vector3.Angle(Vector3.up, selfCamera.forward);
-
         //Slow player
         //if(selfLogic.isGrounded)
         //{

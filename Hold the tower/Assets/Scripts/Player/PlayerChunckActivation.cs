@@ -19,6 +19,8 @@ public class PlayerChunckActivation : MonoBehaviour
     private bool needToBeInSight;
     [SerializeField]
     private bool useSwitcherCustomRange;
+    [SerializeField]
+    private LineRenderer switchLineDirection;
 
     private ChunckSwitcher aimedSwitcher;
     private bool isAimingSwitcher;
@@ -28,6 +30,7 @@ public class PlayerChunckActivation : MonoBehaviour
     private void Start()
     {
         playerLogic = GetComponent<PlayerLogic>();
+        DisableSwitchLine();
     }
 
     private void Update()
@@ -89,6 +92,8 @@ public class PlayerChunckActivation : MonoBehaviour
                     if(aimedSwitcher != null)
                     {
                         aimedSwitcher.linkedChunck.HighlightChunck(false);
+                        aimedSwitcher.UnSelect();
+                        DisableSwitchLine();
                     }
                     aimedSwitcher = switcherColliders[i].GetComponent<ChunckSwitcher>();
                     isNearbySwitcher = true;
@@ -132,6 +137,8 @@ public class PlayerChunckActivation : MonoBehaviour
                     if (potentialSwitch != null)
                     {
                         potentialSwitch.linkedChunck.HighlightChunck(false);
+                        potentialSwitch.UnSelect();
+                        DisableSwitchLine();
                     }
                     potentialSwitch = switcher;
                 }
@@ -148,12 +155,14 @@ public class PlayerChunckActivation : MonoBehaviour
             switchInputIndicator.gameObject.SetActive(true);
             switchInputIndicator.fillAmount = aimedSwitcher.linkedChunck.GetCDRatio();
             aimedSwitcher.linkedChunck.HighlightChunck(true);
-
+            EnableSwitchLine(aimedSwitcher.gameObject);
+            aimedSwitcher.Select();
             if (Input.GetKeyDown(selfParams.switchChunckKey) || Input.GetButtonDown("YButton"))
             {
                 if (aimedSwitcher.linkedChunck.GetCDRatio() == 1)
                 {
                     aimedSwitcher.linkedChunck.CmdUse();
+                    aimedSwitcher.Use();
                     aimedSwitcher.SwitchChunck();
                     playerLogic.CmdPlayGlobalSound("LevelChunkMovement");
                 }
@@ -165,7 +174,20 @@ public class PlayerChunckActivation : MonoBehaviour
             if (aimedSwitcher != null)
             {
                 aimedSwitcher.linkedChunck.HighlightChunck(false);
+                DisableSwitchLine();
+                aimedSwitcher.UnSelect();
             }
         }
+    }
+
+    public void EnableSwitchLine(GameObject switcher)
+    {
+        switchLineDirection.enabled = true;
+        switchLineDirection.SetPosition(0, transform.position);
+        switchLineDirection.SetPosition(1, switcher.transform.position);
+    }
+    public void DisableSwitchLine()
+    {
+        switchLineDirection.enabled = false;
     }
 }

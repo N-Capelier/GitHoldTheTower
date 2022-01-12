@@ -40,7 +40,7 @@ MonoBehaviour:
   wallSlideSpeedDampening: 5
   wallRideSpeed: 11
   minHorizontalSpeedToStartWallRide: 2
-  climbHeight: 1.5
+  climbHeight: 1
   climbWidth: 1.3
   timeToClimb: 0.1
   climbMovement:
@@ -173,7 +173,7 @@ MonoBehaviour:
   punchPerfectTimingTreshold: 0.15
   punchMaxChargeTime: 0.95
   punchChargeTimeToInstantDestroy: 0.3
-  chargeSlowMovementRatio: 0.5
+  chargeSlowMovementRatio: 0.607
   punchBasePropulsionForce: 60
   punchBaseUpwardPropulsionForce: 20
   punchedNoControlTime: 0.2
