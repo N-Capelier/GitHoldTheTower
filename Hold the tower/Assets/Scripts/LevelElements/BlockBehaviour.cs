@@ -8,6 +8,8 @@ public class BlockBehaviour : MonoBehaviour
 	[SerializeField] public BoxCollider boxCollider;
 	[SerializeField] public MeshRenderer meshRenderer;
 	Material blockMaterial;
+	[SerializeField] GameObject tile;
+	Material tileMaterial;
 
 	[Header("Movement")]
 	//Movement
@@ -47,6 +49,18 @@ public class BlockBehaviour : MonoBehaviour
 
 	private void Start()
 	{
+		if(tile != null)
+		{
+			if (tile.activeSelf)
+				tile.SetActive(false);
+
+			if (isDestroyable)
+			{
+				tile.SetActive(true);
+				tileMaterial = tile.GetComponent<MeshRenderer>().material;
+			}
+		}
+
 		beforeExplosionTimeWait = new WaitForSeconds(timeBeforeExplosion);
 		explosionTimeWait = new WaitForSeconds(explosionTime);
 		waitForEndOfFrame = new WaitForEndOfFrame();
@@ -93,8 +107,9 @@ public class BlockBehaviour : MonoBehaviour
 			StopAllCoroutines();
 			isExploding = false;
 			isAlive = true;
-			blockMaterial.SetFloat("DissolveValue", 0);
-			blockMaterial.SetFloat("PreDissolveAlphaValue", 0);
+			blockMaterial.SetFloat("DissolveValue", 0f);
+			blockMaterial.SetFloat("PreDissolveAlphaValue", 0f);
+			tileMaterial.SetFloat("AlphaValue", 1f);
 			gameObject.layer = LayerMask.NameToLayer("Outlined");
 
 			SetNextTerrainPosition();
@@ -151,6 +166,7 @@ public class BlockBehaviour : MonoBehaviour
 			_elapsedTime += Time.deltaTime;
 			_completion = _elapsedTime / explosionTime;
 			blockMaterial.SetFloat("DissolveValue", Mathf.Lerp(0, 1, _completion));
+			tileMaterial.SetFloat("AlphaValue", Mathf.Lerp(1, 0, _completion));
 			yield return waitForEndOfFrame;
 		}
 
