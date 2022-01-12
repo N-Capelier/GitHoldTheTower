@@ -28,4 +28,8 @@ public class SoundEvent
     [Tooltip("Le Son est-il une musique ?")]
     public bool isMusic;
 
+    [Space()]
+    [Tooltip("Le Son est-il une musique ?")]
+    public bool isAnnoucer;
+
 }
