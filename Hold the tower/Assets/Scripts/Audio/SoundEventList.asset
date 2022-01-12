@@ -411,7 +411,7 @@ MonoBehaviour:
     - name: LevelOverdriveSound
       ID: 34
       clip: {fileID: 8300000, guid: 80289738f74e43a43adc092283cd5115, type: 3}
-      volume: 0.5
+      volume: 0.35
     isLocalized: 1
     isRandom: 0
     isLoop: 1
