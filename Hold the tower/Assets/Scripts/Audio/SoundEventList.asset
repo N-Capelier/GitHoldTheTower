@@ -465,3 +465,15 @@ MonoBehaviour:
     isLoop: 1
     isMusic: 1
     isAnnoucer: 0
+  - name: PlayerPunchImpact
+    ID: 36
+    sounds:
+    - name: PlayerPunchImpact
+      ID: 38
+      clip: {fileID: 8300000, guid: 73b2df4527ceb484296fb85e083a49ab, type: 3}
+      volume: 0.3
+    isLocalized: 0
+    isRandom: 0
+    isLoop: 0
+    isMusic: 0
+    isAnnoucer: 0
