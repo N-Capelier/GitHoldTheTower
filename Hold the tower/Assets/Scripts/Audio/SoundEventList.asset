@@ -166,12 +166,12 @@ MonoBehaviour:
     isMusic: 0
     isAnnoucer: 0
   - name: PlayerPunchImpact
-    ID: 12
+    ID: 37
     sounds:
     - name: PlayerPunchImpact
-      ID: 14
+      ID: 39
       clip: {fileID: 8300000, guid: 73b2df4527ceb484296fb85e083a49ab, type: 3}
-      volume: 0.7
+      volume: 1
     isLocalized: 0
     isRandom: 0
     isLoop: 0
@@ -464,16 +464,4 @@ MonoBehaviour:
     isRandom: 0
     isLoop: 1
     isMusic: 1
-    isAnnoucer: 0
-  - name: PlayerPunchImpact
-    ID: 37
-    sounds:
-    - name: PlayerPunchImpact
-      ID: 39
-      clip: {fileID: 8300000, guid: 73b2df4527ceb484296fb85e083a49ab, type: 3}
-      volume: 1
-    isLocalized: 0
-    isRandom: 0
-    isLoop: 0
-    isMusic: 0
     isAnnoucer: 0
