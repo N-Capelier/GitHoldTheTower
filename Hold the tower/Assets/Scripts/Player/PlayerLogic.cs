@@ -345,7 +345,7 @@ public class PlayerLogic : NetworkBehaviour
             touchingGroundFlag = true;
         }
 
-        if (!selfMovement.isClimbingMovement && !isAttachToWall && !selfMovement.isAttacking && isInControl)
+        if (!selfMovement.isClimbingMovement && !isWallSliding && !selfMovement.isAttacking && isInControl)
         {
             Vector3 keyDirection = new Vector3(Input.GetAxis("Vertical"), 0, Input.GetAxis("Horizontal"));
             
@@ -475,6 +475,7 @@ public class PlayerLogic : NetworkBehaviour
                             if (GetNearbyWallNormal() != Vector3.zero)
                             {
                                 selfMovement.WallJump(GetNearbyWallNormal());
+                                StartCoroutine(NoControl(0.3f));
                                 isAttachToWall = false;
                                 isWallSliding = false;
                             }
@@ -583,8 +584,9 @@ public class PlayerLogic : NetworkBehaviour
     private float punchAngleRatio;
     public void AttackInput()
     {
-        if ((Input.GetMouseButtonDown(selfParams.attackMouseInput) || (Input.GetAxis("RT") > 0 && attackTriggerValueDelta == 0f)) && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown)
+        if ((Input.GetMouseButtonDown(selfParams.attackMouseInput) || (Input.GetAxis("RT") > 0 && attackTriggerValueDelta == 0f)) && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown && isInControl)
         {
+            selfMovement.isChargingPunch = true;
             //SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
             if (hasFlag)
             {
@@ -599,6 +601,10 @@ public class PlayerLogic : NetworkBehaviour
         //Attack load
         if ((Input.GetMouseButton(selfParams.attackMouseInput) || Input.GetAxis("RT") > 0f) && hasStartedCharge)
         {
+            if(!isInControl)
+            {
+                StopChargingPunch();
+            }
             CmdShowLoadingPunchStart();
             timeAttack += Time.deltaTime;
             punchAngleRatio = selfMovement.GetPunchAngleRatio(selfMovement.punchAngle);
@@ -610,8 +616,8 @@ public class PlayerLogic : NetworkBehaviour
                 punchChargeDisplay.gameObject.SetActive(true);
             }
 
-            if(hasFlag)
-            {                
+            if (hasFlag)
+            {
                 ratioAttack = 0;
                 punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), 0);
                 punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), 0);
@@ -626,7 +632,7 @@ public class PlayerLogic : NetworkBehaviour
 
             }
             else
-            {                
+            {
                 ratioAttack = selfMovement.AttackLoad(timeAttack);
                 punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
                 punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
@@ -636,7 +642,7 @@ public class PlayerLogic : NetworkBehaviour
                 punchChargeDistancePreview.transform.localPosition = chargePreviewStartPos + (Vector3.forward * 0.0046923076923077f * selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(ratioAttack) / selfParams.punchSpeedByCharge.Evaluate(1)) * punchAngleRatio; // alors ce chiffre bizarre je l'ai calculer rapport à la courbe de velocité, c'est le coefficient de la distance par rapport à la vitesse du punch
                 punchChargeDistancePreview2.transform.localPosition = punchChargeDistancePreview.transform.localPosition;
                 punchChargeSliderLine.transform.localPosition = (punchChargeDistancePreview.transform.localPosition + chargePreviewStartPos) / 2;
-                if(selfMovement.isPunchInstantDestroy)
+                if (selfMovement.isPunchInstantDestroy)
                 {
                     punchChargeSliderLine.transform.localScale = new Vector3(0.3f, 0.3f, punchChargeDistancePreview.transform.localPosition.z);
                 }
@@ -650,60 +656,11 @@ public class PlayerLogic : NetworkBehaviour
         //Attack lauch
         if ((Input.GetMouseButtonUp(selfParams.attackMouseInput) || (Input.GetAxis("RT") == 0f && attackTriggerValueDelta != 0f)) && hasStartedCharge)
         {
-            CmdShowLoadingPunchEnd();
-            hasStartedCharge = false;
-            punchChargeDisplay.gameObject.SetActive(false);
-            punchChargeDistancePreview.SetActive(false);
-            punchChargeSliderLine.SetActive(false);
-            punchChargeDistancePreview2.SetActive(false);
-            //SoundManager.Instance.PlaySoundEvent("PlayerPunch", playerSource);
-            //SoundManager.Instance.StopSoundWithDelay(playerSource, 0.2f);
             CmdPlayerSource("PlayerPunch");
             selfMovement.Attack(ratioAttack);
-            timeAttack = 0;
-            ratioAttack = 0;
+            StopChargingPunch();
         }
 
-        attackTriggerValueDelta = Input.GetAxis("RT");
-    }
-
-    void AttackInputFromJoystick()
-	{
-        if (Input.GetAxis("RT") > 0 && attackTriggerValueDelta == 0f && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown)
-        {
-            //SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
-            CmdPlayerSource("PlayerPunchCharge");
-             hasStartedCharge = true;
-        }
-        //Attack load
-        if (Input.GetAxis("RT") > 0f && hasStartedCharge)
-        {
-            CmdShowLoadingPunchStart();
-            timeAttack += Time.deltaTime;
-            if (timeAttack > 0.2f)
-            {
-                punchChargeDisplay.gameObject.SetActive(true);
-            }
-            ratioAttack = selfMovement.AttackLoad(timeAttack);
-            punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
-            punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
-
-        }
-        //Attack lauch
-        if (Input.GetAxis("RT") == 0 && attackTriggerValueDelta != 0f && hasStartedCharge)
-        {
-            CmdShowLoadingPunchEnd();
-            hasStartedCharge = false;
-            punchChargeDisplay.gameObject.SetActive(false);
-            //SoundManager.Instance.PlaySoundEvent("PlayerPunch", playerSource);
-            //SoundManager.Instance.StopSoundWithDelay(playerSource, 0.2f);
-            CmdPlayerSource("PlayerPunch");
-            selfMovement.Attack(ratioAttack);
-            timeAttack = 0;
-            ratioAttack = 0;
-        }
-
-        //Refresh attack input value for next frame
         attackTriggerValueDelta = Input.GetAxis("RT");
     }
 
@@ -713,6 +670,19 @@ public class PlayerLogic : NetworkBehaviour
     {
         punchCooldownDisplay.fillAmount = cdTime / selfParams.punchCooldown;
         punchCooldownSecondDisplay.fillAmount = cdTime / selfParams.punchCooldown;
+    }
+
+    public void StopChargingPunch()
+    {
+        selfMovement.isChargingPunch = false;
+        hasStartedCharge = false;
+        CmdShowLoadingPunchEnd();
+        punchChargeDisplay.gameObject.SetActive(false);
+        punchChargeDistancePreview.SetActive(false);
+        punchChargeSliderLine.SetActive(false);
+        punchChargeDistancePreview2.SetActive(false);
+        timeAttack = 0;
+        ratioAttack = 0;
     }
 
     #endregion

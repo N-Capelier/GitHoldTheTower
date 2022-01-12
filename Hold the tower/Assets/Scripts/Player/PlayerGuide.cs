@@ -23,7 +23,15 @@ public class PlayerGuide : MonoBehaviour
     [SerializeField]
     private Vector2 overdriveProgressionMinMaxPos;
     [SerializeField]
+    private Text announcementText;
+    [SerializeField]
+    private Image announcementBack;
+    [SerializeField]
+    private Color announcementBackEnemyColor, announcementBackAllyColor;
+    [SerializeField]
     private Color reachGoalObjectiveColor, captureObjectiveColor, defendObjectiveColor, protectObjectiveColor;
+    [SerializeField]
+    private string flagCapturedByEnemyAnnouncement, flagCapturedByAllyAnnouncement, flagReturnedToCenterAnnouncement, flagCapturedByMeAnnouncement;
 
     private PlayerLogic playerLogic;
     private MatchManager matchManager;
@@ -38,7 +46,7 @@ public class PlayerGuide : MonoBehaviour
     private bool playersSetUp;
     private Vector3 overdriveCurrentPosition;
     private Image objectiveCursorImage;
-
+    private Color textBaseColor;
     Vector3 forwardAxis;
     private void Start()
     {
@@ -46,6 +54,9 @@ public class PlayerGuide : MonoBehaviour
         matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>();
         playerLogic = GetComponent<PlayerLogic>();
         objectiveCursorImage = objectiveCursor.GetComponent<Image>();
+        ownTeamHasOverdrive = false;
+        overdriveIsInCenter = true;
+        textBaseColor = announcementText.color;
     }
 
 
@@ -78,44 +89,15 @@ public class PlayerGuide : MonoBehaviour
                 }
             }
         }
-        /*
-        foreach (NetworkConnectionToClient conn in NetworkServer.connections.Values)
-        {
-            Debug.Log("found value > " + playerLogic.teamName.ToString() + " : " + conn);
-            foreach (NetworkIdentity idOwnedByClient in conn.clientOwnedObjects)
-            {
-                PlayerLogic logic = idOwnedByClient.gameObject.GetComponent<PlayerLogic>();
-
-                Debug.Log(playerLogic.teamName.ToString() + " : " + idOwnedByClient);
-
-                if (logic != null)
-                {
-                    if (logic.teamName == playerLogic.teamName)
-                    {
-                        if(logic != playerLogic)
-                        {
-                            teamMates.Add(logic);
-                            Debug.Log("teamate added");
-                        }
-                        else
-                        {
-                            Debug.Log("skip ading myself");
-                        }
-                    }
-                    else
-                    {
-                        adversaries.Add(logic);
-                        Debug.Log("enemy added");
-                    }
-                }
-            }
-        }*/
     }
 
     Vector2 viewportPosition;
     Vector2 screenPos;
     Vector3 targetDirection;
     float angleFromTarget;
+
+    bool ownTeamHasOverdrive;
+    bool overdriveIsInCenter;
     private void Update()
     {
         if (playerLogic.roundStarted && !playersSetUp)
@@ -187,7 +169,34 @@ public class PlayerGuide : MonoBehaviour
 
                 if (adversaryHasFlag || teamMateHasFlag)
                 {
-                    if(adversaryHasFlag)
+                    if (overdriveIsInCenter)
+                    {
+                        overdriveIsInCenter = false;
+                        if (adversaryHasFlag)
+                        {
+                            StartCoroutine(Announce(flagCapturedByEnemyAnnouncement, false));
+                        }
+                        else
+                        {
+                            StartCoroutine(Announce(flagCapturedByAllyAnnouncement, true));
+                        }
+                    }
+                    else
+                    {
+                        if (adversaryHasFlag && ownTeamHasOverdrive)
+                        {
+                            ownTeamHasOverdrive = false;
+                            StartCoroutine(Announce(flagCapturedByEnemyAnnouncement, false));
+                        }
+
+                        if(teamMateHasFlag && !ownTeamHasOverdrive)
+                        {
+                            ownTeamHasOverdrive = true;
+                            StartCoroutine(Announce(flagCapturedByAllyAnnouncement, true));
+                        }
+                    }
+
+                    if (adversaryHasFlag)
                     {
                         objectiveText.text = selfParams.defendText;
                         objectiveCursorImage.color = defendObjectiveColor;
@@ -203,6 +212,13 @@ public class PlayerGuide : MonoBehaviour
                 }
                 else
                 {
+                    if(!overdriveIsInCenter)
+                    {
+                        overdriveIsInCenter = true;
+                        ownTeamHasOverdrive = false;
+                        StartCoroutine(Announce(flagReturnedToCenterAnnouncement, true));
+                    }
+
                     objectiveText.text = selfParams.captureOverdriveText;
                     objectiveCursorImage.color = captureObjectiveColor;
                     targetObject = flag;
@@ -211,6 +227,12 @@ public class PlayerGuide : MonoBehaviour
             }
             else
             {
+                if (!ownTeamHasOverdrive)
+                {
+                    overdriveIsInCenter = false;
+                    ownTeamHasOverdrive = true;
+                    StartCoroutine(Announce(flagCapturedByMeAnnouncement, true));
+                }
                 targetObject = adverseGoal;
                 overdriveCurrentPosition = transform.position;
                 objectiveText.text = selfParams.goToGoalText;
@@ -248,5 +270,31 @@ public class PlayerGuide : MonoBehaviour
                 allyCursor.gameObject.SetActive(false);
             }
         }
+    }
+
+    private IEnumerator Announce(string announcement, bool isFriendly)
+    {
+        announcementBack.gameObject.SetActive(true);
+        float timer = 0.5f;
+        announcementText.text = announcement;
+        while(timer > 0)
+        {
+            announcementText.color = Color.Lerp(textBaseColor, Color.clear, timer / 0.5f);
+            announcementBack.color = Color.Lerp(isFriendly ? announcementBackAllyColor : announcementBackEnemyColor, Color.clear, timer / 0.5f);
+            yield return new WaitForEndOfFrame();
+            timer -= Time.deltaTime;
+        }
+
+        yield return new WaitForSeconds(2);
+        timer = 0.5f;
+        while (timer > 0)
+        {
+            announcementText.color = Color.Lerp(Color.clear, textBaseColor, timer / 0.5f);
+            announcementBack.color = Color.Lerp(Color.clear, isFriendly ? announcementBackAllyColor : announcementBackEnemyColor, timer / 0.5f);
+            yield return new WaitForEndOfFrame();
+            timer -= Time.deltaTime;
+        }
+        announcementText.text = string.Empty;
+        announcementBack.gameObject.SetActive(false);
     }
 }
