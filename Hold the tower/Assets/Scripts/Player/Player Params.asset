@@ -32,7 +32,7 @@ MonoBehaviour:
   jumpForwardForce: 2
   jumpForce: 12
   wallJumpNormalForce: 13
-  wallJumpUpwardForce: 0.6
+  wallJumpUpwardForce: 0.7
   maxWallJumpAngleDeviation: 40
   wallJumpMinAngleToCancelDeviation: 140
   wallJumpMaxAngleToCancelDeviation: 40
