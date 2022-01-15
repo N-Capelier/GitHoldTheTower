@@ -88,6 +88,8 @@ public class PlayerLogic : NetworkBehaviour
     public GameObject punchChargeDistancePreview2;
     [SerializeField]
     public GameObject punchChargeSliderLine;
+    [SerializeField]
+    public GameObject punchChargeSliderLine2;
 
     [SerializeField]
     private GameObject FlagObject;
@@ -171,7 +173,7 @@ public class PlayerLogic : NetworkBehaviour
         {
             FlagObject = GameObject.Find("Flag");
         }
-
+        basePunchPreviewScale = punchChargeDistancePreview.transform.localScale;
 
         isInControl = true;
         canMove = true;
@@ -583,6 +585,7 @@ public class PlayerLogic : NetworkBehaviour
     #region AttackLogic
 
     private float punchAngleRatio;
+    private Vector3 basePunchPreviewScale;
     public void AttackInput()
     {
         if ((Input.GetMouseButtonDown(selfParams.attackMouseInput) || (Input.GetAxis("RT") > 0 && attackTriggerValueDelta == 0f)) && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown && isInControl)
@@ -612,6 +615,7 @@ public class PlayerLogic : NetworkBehaviour
             punchChargeDistancePreview.SetActive(true);
             punchChargeDistancePreview2.SetActive(true);
             punchChargeSliderLine.SetActive(true);
+            punchChargeSliderLine2.SetActive(true);
             if (timeAttack > 0.2f && !hasFlag)
             {
                 punchChargeDisplay.gameObject.SetActive(true);
@@ -623,14 +627,16 @@ public class PlayerLogic : NetworkBehaviour
                 punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), 0);
                 punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), 0);
 
-                punchChargeDistancePreview.transform.rotation = Quaternion.Euler(0, 0, 0);
-                punchChargeDistancePreview2.transform.rotation = Quaternion.Inverse(selfCamera.rotation);
+                //punchChargeDistancePreview.transform.rotation = Quaternion.Euler(0, 0, 0);
+                //punchChargeDistancePreview2.transform.rotation = Quaternion.Inverse(selfCamera.rotation);
                 punchChargeDistancePreview.transform.localPosition = chargePreviewStartPos + (Vector3.forward * 0.0046923076923077f * selfParams.punchBaseSpeed * Mathf.Clamp(selfParams.punchSpeedByCharge.Evaluate(0), 0, punchAngleRatio) / selfParams.punchSpeedByCharge.Evaluate(1));
                 punchChargeDistancePreview2.transform.localPosition = punchChargeDistancePreview.transform.localPosition;
 
                 punchChargeSliderLine.transform.localPosition = (punchChargeDistancePreview.transform.localPosition + chargePreviewStartPos) / 2;
-                punchChargeSliderLine.transform.localScale = new Vector3(punchChargeSliderLine.transform.localScale.x, punchChargeSliderLine.transform.localScale.y, punchChargeDistancePreview.transform.localPosition.z);
+                punchChargeSliderLine.transform.localScale = new Vector3(punchChargeSliderLine.transform.localScale.x, punchChargeSliderLine.transform.localScale.y, punchChargeDistancePreview.transform.localPosition.z - 0.2f);
 
+                punchChargeSliderLine2.transform.localPosition = punchChargeSliderLine.transform.localPosition;
+                punchChargeSliderLine2.transform.localScale = punchChargeSliderLine.transform.localScale;
             }
             else
             {
@@ -638,19 +644,24 @@ public class PlayerLogic : NetworkBehaviour
                 punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
                 punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
 
-                punchChargeDistancePreview.transform.rotation = Quaternion.Euler(0, 0, 0);
-                punchChargeDistancePreview2.transform.rotation = Quaternion.Inverse(selfCamera.rotation);
+                //punchChargeDistancePreview.transform.rotation = Quaternion.Euler(0, 0, 0);
+                //punchChargeDistancePreview2.transform.rotation = Quaternion.Inverse(selfCamera.rotation);
                 punchChargeDistancePreview.transform.localPosition = chargePreviewStartPos + (Vector3.forward * 0.0046923076923077f * selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(ratioAttack) / selfParams.punchSpeedByCharge.Evaluate(1)) * punchAngleRatio; // alors ce chiffre bizarre je l'ai calculer rapport à la courbe de velocité, c'est le coefficient de la distance par rapport à la vitesse du punch
                 punchChargeDistancePreview2.transform.localPosition = punchChargeDistancePreview.transform.localPosition;
                 punchChargeSliderLine.transform.localPosition = (punchChargeDistancePreview.transform.localPosition + chargePreviewStartPos) / 2;
+                punchChargeSliderLine.transform.localScale = new Vector3(punchChargeSliderLine.transform.localScale.x, punchChargeSliderLine.transform.localScale.y, punchChargeDistancePreview.transform.localPosition.z - 0.2f);
                 if (selfMovement.isPunchInstantDestroy)
                 {
-                    punchChargeSliderLine.transform.localScale = new Vector3(0.3f, 0.3f, punchChargeDistancePreview.transform.localPosition.z);
+                    punchChargeDistancePreview.transform.localScale = basePunchPreviewScale * 1.5f;
+                    punchChargeDistancePreview2.transform.localScale = basePunchPreviewScale * 1.5f;
                 }
                 else
                 {
-                    punchChargeSliderLine.transform.localScale = new Vector3(0.15f, 0.15f, punchChargeDistancePreview.transform.localPosition.z);
+                    punchChargeDistancePreview.transform.localScale = basePunchPreviewScale;
+                    punchChargeDistancePreview2.transform.localScale = basePunchPreviewScale;
                 }
+                punchChargeSliderLine2.transform.localPosition = punchChargeSliderLine.transform.localPosition;
+                punchChargeSliderLine2.transform.localScale = punchChargeSliderLine.transform.localScale;
             }
 
         }
@@ -681,6 +692,7 @@ public class PlayerLogic : NetworkBehaviour
         punchChargeDisplay.gameObject.SetActive(false);
         punchChargeDistancePreview.SetActive(false);
         punchChargeSliderLine.SetActive(false);
+        punchChargeSliderLine2.SetActive(false);
         punchChargeDistancePreview2.SetActive(false);
         timeAttack = 0;
         ratioAttack = 0;
