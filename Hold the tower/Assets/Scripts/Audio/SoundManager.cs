@@ -169,6 +169,8 @@ public class SoundManager : Singleton<SoundManager>
 
         MusicSource1.volume = thisEvent.sounds[0].volume;
 
+        MusicSource1.loop = thisEvent.isLoop;
+
         MusicSource1.Play();
 
     }
