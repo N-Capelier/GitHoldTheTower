@@ -230,9 +230,11 @@ public class PlayerLogic : NetworkBehaviour
         {
             if (objPlayer.GetComponent<PlayerLogic>() != null)
             {
+                Debug.Log("je rentre");
                 if (objPlayer.GetComponent<NetworkIdentity>().hasAuthority)
                 {
                     authorityPlayer = objPlayer;
+                    Debug.Log("je donne l'autorité");
                     Debug.Log(authorityPlayer);
                 }
                 else
@@ -245,14 +247,19 @@ public class PlayerLogic : NetworkBehaviour
         }
 
         GameObject[] allSpectators = GameObject.FindGameObjectsWithTag("Spectator");
-        foreach (GameObject objPlayer in allSpectators)
+        if(allSpectators.Length > 0)
         {
-            if (objPlayer.GetComponent<NetworkIdentity>().hasAuthority)
+            Debug.Log("test");
+            foreach (GameObject objSpectator in allSpectators)
             {
-                authorityPlayer = objPlayer;
-                Debug.Log(authorityPlayer);
+                if (objSpectator.GetComponent<NetworkIdentity>().hasAuthority)
+                {
+                    authorityPlayer = objSpectator;
+                    Debug.Log(authorityPlayer);
+                }
             }
         }
+        
     }
 
     void Update()

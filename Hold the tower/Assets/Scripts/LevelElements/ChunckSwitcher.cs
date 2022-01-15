@@ -12,12 +12,14 @@ public class ChunckSwitcher : MonoBehaviour
     public float activationRange = 12f;
     public ButtonManager linkedChunck;
     public BlockBehaviour linkedButton;
+    public ParticleSystem chunkParticle;
 
     private MeshRenderer display;
 
     private void Start()
     {
         display = GetComponent<MeshRenderer>();
+        StopEffect();
     }
 
     private void Update()
@@ -48,5 +50,15 @@ public class ChunckSwitcher : MonoBehaviour
     public void UnSelect()
     {
         highlight.SetActive(false);
+    }
+
+    public void PlayEffect()
+    {
+        chunkParticle.Play();
+    }
+
+    public void StopEffect()
+    {
+        chunkParticle.Stop();
     }
 }
