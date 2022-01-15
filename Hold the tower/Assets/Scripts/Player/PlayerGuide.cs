@@ -32,6 +32,12 @@ public class PlayerGuide : MonoBehaviour
     private Color reachGoalObjectiveColor, captureObjectiveColor, defendObjectiveColor, protectObjectiveColor;
     [SerializeField]
     private string flagCapturedByEnemyAnnouncement, flagCapturedByAllyAnnouncement, flagReturnedToCenterAnnouncement, flagCapturedByMeAnnouncement;
+    [SerializeField]
+    private Text allyScoreText, enemyScoreText;
+    [SerializeField]
+    private Image overdriveProgressionIconImage;
+    [SerializeField]
+    private Color allyColor, enemyColor;
 
     private PlayerLogic playerLogic;
     private MatchManager matchManager;
@@ -200,11 +206,13 @@ public class PlayerGuide : MonoBehaviour
                     {
                         objectiveText.text = selfParams.defendText;
                         objectiveCursorImage.color = defendObjectiveColor;
+                        overdriveProgressionIconImage.color = enemyColor;
                     }
                     else
                     {
                         objectiveText.text = selfParams.protectText;
                         objectiveCursorImage.color = protectObjectiveColor;
+                        overdriveProgressionIconImage.color = allyColor;
                     }
 
                     targetObject = playerHoldingFlag;
@@ -223,6 +231,7 @@ public class PlayerGuide : MonoBehaviour
                     objectiveCursorImage.color = captureObjectiveColor;
                     targetObject = flag;
                     overdriveCurrentPosition = flag.transform.position;
+                    overdriveProgressionIconImage.color = Color.white;
                 }
             }
             else
@@ -237,6 +246,7 @@ public class PlayerGuide : MonoBehaviour
                 overdriveCurrentPosition = transform.position;
                 objectiveText.text = selfParams.goToGoalText;
                 objectiveCursorImage.color = reachGoalObjectiveColor;
+                overdriveProgressionIconImage.color = allyColor;
             }
 
             Vector3 oDirectionFromOwnGoal = overdriveCurrentPosition - ownGoal.transform.position;
@@ -268,6 +278,17 @@ public class PlayerGuide : MonoBehaviour
             else
             {
                 allyCursor.gameObject.SetActive(false);
+            }
+
+            if (playerLogic.teamName == LobbyPlayerLogic.TeamName.Red)
+            {
+                allyScoreText.text = matchManager.redScore.ToString();
+                enemyScoreText.text = matchManager.blueScore.ToString();
+            }
+            else
+            {
+                allyScoreText.text = matchManager.blueScore.ToString();
+                enemyScoreText.text = matchManager.redScore.ToString();
             }
         }
     }
