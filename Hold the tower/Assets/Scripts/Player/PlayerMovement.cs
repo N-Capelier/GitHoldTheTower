@@ -313,7 +313,6 @@ public class PlayerMovement : MonoBehaviour
             adjustDirection = new Vector3(Mathf.Cos(Mathf.Deg2Rad * jumpAngle), 0, -Mathf.Sin(Mathf.Deg2Rad * jumpAngle));
 
             adjustDirection.Normalize();
-            Debug.Log(jumpAngle);
         }
 
         adjustDirection += new Vector3(0, selfParams.wallJumpUpwardForce, 0);
