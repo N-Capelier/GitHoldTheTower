@@ -31,10 +31,9 @@ ScriptedImporter:
       uid=\"1458534679\" type=\"0\" value=\"0.493\" />\n  <presetinput identifier=\"outputcolor_Roughness\"
       uid=\"1458534861\" type=\"0\" value=\"0.536\" />\n  <presetinput identifier=\"outputcolor_Brillance-Motifs-Puce\"
       uid=\"1458535561\" type=\"0\" value=\"0.504\" />\n  <presetinput identifier=\"outputcolor_Main\"
-      uid=\"1458536131\" type=\"3\" value=\"0.551887,1,0.587087,1\" />\n  <presetinput
-      identifier=\"color_MotifPuce\" uid=\"1458528855\" type=\"2\" value=\"0,0.367,0.423\"
-      />\n  <presetinput identifier=\"color_DallesErosion\" uid=\"1458520196\" type=\"2\"
-      value=\"0.513,0.48,0.55\" />\n </sbspreset>\n"
+      uid=\"1458536131\" type=\"3\" value=\"0.754717,0,0,1\" />\n  <presetinput identifier=\"color_MotifPuce\"
+      uid=\"1458528855\" type=\"2\" value=\"0,0.367,0.423\" />\n  <presetinput identifier=\"color_DallesErosion\"
+      uid=\"1458520196\" type=\"2\" value=\"0.513,0.48,0.55\" />\n </sbspreset>\n"
     shaderName: Universal Render Pipeline/Lit
     materialProperties:
       shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
