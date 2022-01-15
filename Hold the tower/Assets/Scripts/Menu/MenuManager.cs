@@ -15,6 +15,7 @@ public class MenuManager : MonoBehaviour
 	public TextMeshProUGUI usernameInputText, passwordInputText;
 
 	public Text ipInputText;
+	public TMP_InputField inputFieldPseudoText;
 
 	public Text analyticsPath;
 	[SerializeField]
@@ -22,10 +23,17 @@ public class MenuManager : MonoBehaviour
 	MyNewNetworkManager networkManager;
 	MyNewNetworkAuthenticator networkAuthenticator;
 
+	[SerializeField]
+	private ScriptableMenuParams menuParams;
+
+	public string customIp;
+
 	private bool isHost = false;
 
 	void Start()
 	{
+		inputFieldPseudoText.text = menuParams.playerPseudo;
+		ipInputText.text = menuParams.ipToJoin;
 		Cursor.visible = true;
 		Cursor.lockState = CursorLockMode.None;
 		menuObject.SetActive(true);
@@ -35,10 +43,12 @@ public class MenuManager : MonoBehaviour
 		networkAuthenticator = serverManager.GetComponent<MyNewNetworkAuthenticator>();
 	}
 
-	#region Button
+    #region Button
 
-	public void OnPressedHost(string _sceneName)
+    public void OnPressedHost(string _sceneName)
 	{
+		menuParams.playerPseudo = usernameInputText.text;
+		menuParams.ipToJoin = ipInputText.text;
 		networkAuthenticator.lobbyPseudo = usernameInputText.text;
 		networkAuthenticator.lobbyPassword = passwordInputText.text;
 		networkManager.SetGameScene(_sceneName);
@@ -50,6 +60,8 @@ public class MenuManager : MonoBehaviour
 
 	public void OnPressedJoin()
 	{
+		menuParams.playerPseudo = usernameInputText.text;
+		menuParams.ipToJoin = ipInputText.text;
 		networkManager.networkAddress = ipInputText.text; // ipText;//ipInputText.text;
 		networkAuthenticator.lobbyPseudo = usernameInputText.text;
 		networkAuthenticator.lobbyPassword = passwordInputText.text;
@@ -57,6 +69,16 @@ public class MenuManager : MonoBehaviour
 		ChangeMenu();
 		networkManager.StartClient();
 		
+	}
+
+	public void OnPressedCustom()
+    {
+		networkManager.networkAddress = customIp;
+		networkAuthenticator.lobbyPseudo = usernameInputText.text;
+		networkAuthenticator.lobbyPassword = passwordInputText.text;
+
+		ChangeMenu();
+		networkManager.StartClient();
 	}
 
 	public void OnPressedLeave()
@@ -80,6 +102,12 @@ public class MenuManager : MonoBehaviour
 	{
 		menuObject.SetActive(!menuObject.activeSelf);
 		lobbyObject.SetActive(!lobbyObject.activeSelf);
+
+        if (menuObject.activeSelf)
+        {
+			usernameInputText.text = menuParams.playerPseudo;
+			ipInputText.text = menuParams.ipToJoin;
+		}
 	}
 
 	public void AnalyticsExplorer()
