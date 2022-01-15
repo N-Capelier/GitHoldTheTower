@@ -9,6 +9,7 @@ TagManager:
   - Wall
   - Spawner
   - Switcher
+  - Spectator
   layers:
   - Default
   - TransparentFX

@@ -71,7 +71,7 @@ public class SensorPlayer : MonoBehaviour
             BlockBehaviour block = other.GetComponent<BlockBehaviour>();
 
 
-            if(block.isButton)
+            if(block!= null && block.isButton)
 			{
                 if(block.buttonActiveTerrainIndex == block.loadedTerrainID)
 				{

@@ -242,6 +242,15 @@ public class PlayerLogic : NetworkBehaviour
 
         }
 
+        GameObject[] allSpectators = GameObject.FindGameObjectsWithTag("Spectator");
+        foreach (GameObject objPlayer in allSpectators)
+        {
+            if (objPlayer.GetComponent<NetworkIdentity>().hasAuthority)
+            {
+                authorityPlayer = objPlayer;
+                Debug.Log(authorityPlayer);
+            }
+        }
     }
 
     void Update()
@@ -1166,14 +1175,18 @@ public class PlayerLogic : NetworkBehaviour
     [ClientRpc]
     private void RpcPlayEquipTeamSound(string eventAllyTeam, string eventEnemyTeam)
     {
-        if(authorityPlayer.GetComponent<PlayerLogic>().teamName == teamName)
+        if(authorityPlayer.GetComponent<PlayerLogic>() != null) //Check if a spectator
         {
-            SoundManager.Instance.PlaySoundEvent(eventAllyTeam);
+            if (authorityPlayer.GetComponent<PlayerLogic>().teamName == teamName)
+            {
+                SoundManager.Instance.PlaySoundEvent(eventAllyTeam);
+            }
+            else
+            {
+                SoundManager.Instance.PlaySoundEvent(eventEnemyTeam);
+            }
         }
-        else
-        {
-            SoundManager.Instance.PlaySoundEvent(eventEnemyTeam);
-        }
+       
     }
 
     //Pseudo
