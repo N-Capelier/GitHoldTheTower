@@ -563,7 +563,7 @@ public class PlayerLogic : NetworkBehaviour
             float angleDist = lookAngle - wallAngle;
             angleDist = selfMovement.GetClampedAngle(angleDist);
 
-            if (Mathf.Abs(angleDist) > selfParams.wallJumpMinAngleToCancelDeviation)
+            if (Mathf.Abs(angleDist) > selfParams.wallJumpMinAngleToCancelDeviation || Mathf.Abs(angleDist) < selfParams.wallJumpMaxAngleToCancelDeviation)
             {
                 return true;
             }

@@ -61,7 +61,6 @@ public class PlayerPing : NetworkBehaviour
                 isPinging = false;
                 StopCoroutine(PingAlive(positionToPing));
                 StartCoroutine(PingAlive(positionToPing));
-                Debug.Log(positionToPing);
             }
 
             if (!isPinging && !Input.GetMouseButton(selfParams.pingMouseInput))

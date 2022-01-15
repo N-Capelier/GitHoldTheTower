@@ -41,6 +41,7 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float wallJumpUpwardForce;
     public float maxWallJumpAngleDeviation;
     public float wallJumpMinAngleToCancelDeviation;
+    public float wallJumpMaxAngleToCancelDeviation;
     public float wallSlideGravity;
     public float wallSlideMaxGravitySpeed;
     public float wallSlideSpeedDampening;

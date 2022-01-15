@@ -262,7 +262,6 @@ public class PlayerMovement : MonoBehaviour
     //Manage walljump movement
     public IEnumerator WallJumpManage(Vector3 wallDirection)
     {
-        selfLogic.CmdPlayerSource("PlayerJump");
         isAttackReset = true;
         bool cancelJump = false;
         Vector3 adjustDirection = wallDirection;
@@ -292,7 +291,10 @@ public class PlayerMovement : MonoBehaviour
 
             if (Mathf.Abs(angleDist) > selfParams.wallJumpMinAngleToCancelDeviation)
             {
-                jumpAngle = wallAngle;
+                cancelJump = true;
+            }
+            else if(Mathf.Abs(angleDist) < selfParams.wallJumpMaxAngleToCancelDeviation)
+            {
                 cancelJump = true;
             }
             else
@@ -311,12 +313,14 @@ public class PlayerMovement : MonoBehaviour
             adjustDirection = new Vector3(Mathf.Cos(Mathf.Deg2Rad * jumpAngle), 0, -Mathf.Sin(Mathf.Deg2Rad * jumpAngle));
 
             adjustDirection.Normalize();
+            Debug.Log(jumpAngle);
         }
 
         adjustDirection += new Vector3(0, selfParams.wallJumpUpwardForce, 0);
 
         if(!cancelJump)
         {
+            selfLogic.CmdPlayerSource("PlayerJump");
             ResetVelocity();
             ResetVerticalVelocity();
             selfRbd.velocity += adjustDirection * selfParams.wallJumpNormalForce;
