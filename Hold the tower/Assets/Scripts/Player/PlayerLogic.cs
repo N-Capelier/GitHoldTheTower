@@ -131,7 +131,7 @@ public class PlayerLogic : NetworkBehaviour
     private bool doOnce = true;
     //State
     [HideInInspector]
-    public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround, isTouchingWall, isInControl, isSpawning;
+    public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround, isTouchingWall, isInControl, isSpawning, canMove;
 
     [SyncVar]
     public bool hasFlag;
@@ -174,6 +174,7 @@ public class PlayerLogic : NetworkBehaviour
 
 
         isInControl = true;
+        canMove = true;
         firstPersonViewModel.SetActive(false);
         selfCamera.gameObject.SetActive(false);
         hud.SetActive(false);
@@ -345,7 +346,7 @@ public class PlayerLogic : NetworkBehaviour
             touchingGroundFlag = true;
         }
 
-        if (!selfMovement.isClimbingMovement && !isWallSliding && !selfMovement.isAttacking && isInControl)
+        if (!selfMovement.isClimbingMovement && !isWallSliding && !selfMovement.isAttacking && isInControl && canMove)
         {
             Vector3 keyDirection = new Vector3(Input.GetAxis("Vertical"), 0, Input.GetAxis("Horizontal"));
             
@@ -475,7 +476,7 @@ public class PlayerLogic : NetworkBehaviour
                             if (GetNearbyWallNormal() != Vector3.zero)
                             {
                                 selfMovement.WallJump(GetNearbyWallNormal());
-                                StartCoroutine(NoControl(0.3f));
+                                StartCoroutine(NoMovement(selfParams.wallJumpNoAirControlTime));
                                 isAttachToWall = false;
                                 isWallSliding = false;
                             }
@@ -562,7 +563,7 @@ public class PlayerLogic : NetworkBehaviour
             float angleDist = lookAngle - wallAngle;
             angleDist = selfMovement.GetClampedAngle(angleDist);
 
-            if (Mathf.Abs(angleDist) > selfParams.wallJumpMinAngleToCancelDeviation)
+            if (Mathf.Abs(angleDist) > selfParams.wallJumpMinAngleToCancelDeviation || Mathf.Abs(angleDist) < selfParams.wallJumpMaxAngleToCancelDeviation)
             {
                 return true;
             }
@@ -953,6 +954,12 @@ public class PlayerLogic : NetworkBehaviour
         isInControl = false;
         yield return new WaitForSeconds(time);
         isInControl = true;
+    }
+    public IEnumerator NoMovement(float time)
+    {
+        canMove = false;
+        yield return new WaitForSeconds(time);
+        canMove = true;
     }
 
     [Command]
