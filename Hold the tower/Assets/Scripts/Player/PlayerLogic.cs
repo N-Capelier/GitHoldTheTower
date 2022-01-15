@@ -271,6 +271,12 @@ public class PlayerLogic : NetworkBehaviour
         }
 
         ShowFlagToAllPlayer();
+
+        if (hasFlag == false && playerFlagSource.isPlaying)
+        {
+            playerFlagSource.Stop();
+        }
+
     }
 
 
