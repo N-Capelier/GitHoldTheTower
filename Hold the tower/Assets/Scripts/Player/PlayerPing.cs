@@ -88,13 +88,15 @@ public class PlayerPing : NetworkBehaviour
     [ClientRpc]
     private void RpcPingAllies(Vector3 pos)
     {
-        if (selfLogic.authorityPlayer.GetComponent<PlayerLogic>().teamName == selfLogic.teamName)
+        if(selfLogic.authorityPlayer.GetComponent<PlayerLogic>() != null)
         {
-            positionToPing = pos;
-            selfPingObject.transform.position = pos;
-            selfPingObject.SetActive(true);
+            if (selfLogic.authorityPlayer.GetComponent<PlayerLogic>().teamName == selfLogic.teamName)
+            {
+                positionToPing = pos;
+                selfPingObject.transform.position = pos;
+                selfPingObject.SetActive(true);
+            }
         }
-        
     }
 
 

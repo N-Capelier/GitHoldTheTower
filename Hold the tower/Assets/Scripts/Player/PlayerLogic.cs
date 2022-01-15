@@ -135,6 +135,9 @@ public class PlayerLogic : NetworkBehaviour
     [HideInInspector]
     public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround, isTouchingWall, isInControl, isSpawning, canMove;
 
+    [HideInInspector]
+    public bool tryToRespawn = false;
+
     [SyncVar]
     public bool hasFlag;
 
@@ -153,6 +156,8 @@ public class PlayerLogic : NetworkBehaviour
 
     //charge preview
     Vector3 chargePreviewStartPos;
+
+    private Coroutine respawnCor;
 
     void Start()
     {
@@ -239,6 +244,15 @@ public class PlayerLogic : NetworkBehaviour
 
         }
 
+        GameObject[] allSpectators = GameObject.FindGameObjectsWithTag("Spectator");
+        foreach (GameObject objPlayer in allSpectators)
+        {
+            if (objPlayer.GetComponent<NetworkIdentity>().hasAuthority)
+            {
+                authorityPlayer = objPlayer;
+                Debug.Log(authorityPlayer);
+            }
+        }
     }
 
     void Update()
@@ -725,6 +739,8 @@ public class PlayerLogic : NetworkBehaviour
     [TargetRpc]
     public void RpcRespawn(NetworkConnection conn, float maxTimer)
     {
+        //Check if player is alreaddy in spawning
+        
         roundStarted = false;
         timerToStart = NetworkTime.time;
 
@@ -737,10 +753,32 @@ public class PlayerLogic : NetworkBehaviour
             CmdShowFlagInGame();
         }
 
-        StartCoroutine(RespawnManager());
-        
+        if (respawnCor == null)
+            respawnCor = StartCoroutine(RespawnManager());
+        else
+            RespawnInstant();
+
     }
 
+
+    private void RespawnInstant()
+    {
+        if (hasAuthority)
+        {
+            Transform spawnPoint;
+            spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(spawnPosition);
+
+            transform.position = spawnPoint.position; //Obligatoire, sinon ne trouve pas le spawner à la premirèe frame
+            selfCollisionParent.transform.localRotation = spawnPoint.rotation;
+            selfCamera.localRotation = spawnPoint.rotation;
+
+            //Tp player to the spwan point
+            selfSmoothSync.teleportOwnedObjectFromOwner();
+            selfCollsionSmoothSync.teleportOwnedObjectFromOwner();
+
+            roundStarted = true;
+        }
+    }
 
     public IEnumerator RespawnManager()
     {
@@ -788,6 +826,13 @@ public class PlayerLogic : NetworkBehaviour
                 selfMovement.ResetVelocity();
                 selfMovement.ResetVerticalVelocity();
                 hudTextPlayer.text = System.Math.Round(timerMaxToStart -(NetworkTime.time - timerToStart)).ToString();
+                if (tryToRespawn)
+                {
+                    Debug.Log("test");
+                    timerToStart = NetworkTime.time;
+                    tryToRespawn = false;
+                }
+                
                 yield return new WaitForEndOfFrame();
 
             }
@@ -805,6 +850,7 @@ public class PlayerLogic : NetworkBehaviour
             {
                 GameObject.Find("Analytics").GetComponent<PA_Position>().startWrite = true;
             }
+            respawnCor = null;
         }
     }
 
@@ -812,7 +858,11 @@ public class PlayerLogic : NetworkBehaviour
     public void RpcShowGoal(NetworkConnection conn,string text)
     {
         timerToStart = NetworkTime.time;
-        StartCoroutine(GoalMessageManager(text));
+        if(respawnCor == null)
+        {
+            respawnCor = StartCoroutine(GoalMessageManager(text));
+        }
+            
         CmdShowScoreHud();
 
     }
@@ -836,7 +886,7 @@ public class PlayerLogic : NetworkBehaviour
         selfMovement.ResetVelocity();
         roundStarted = false;
         timerToStart = NetworkTime.time;
-        StartCoroutine(RespawnManager());
+        respawnCor = StartCoroutine(RespawnManager());
         FlagObject.SetActive(true);
 
     }
@@ -1137,14 +1187,18 @@ public class PlayerLogic : NetworkBehaviour
     [ClientRpc]
     private void RpcPlayEquipTeamSound(string eventAllyTeam, string eventEnemyTeam)
     {
-        if(authorityPlayer.GetComponent<PlayerLogic>().teamName == teamName)
+        if(authorityPlayer.GetComponent<PlayerLogic>() != null) //Check if a spectator
         {
-            SoundManager.Instance.PlaySoundEvent(eventAllyTeam);
+            if (authorityPlayer.GetComponent<PlayerLogic>().teamName == teamName)
+            {
+                SoundManager.Instance.PlaySoundEvent(eventAllyTeam);
+            }
+            else
+            {
+                SoundManager.Instance.PlaySoundEvent(eventEnemyTeam);
+            }
         }
-        else
-        {
-            SoundManager.Instance.PlaySoundEvent(eventEnemyTeam);
-        }
+       
     }
 
     //Pseudo
