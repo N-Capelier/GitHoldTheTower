@@ -541,7 +541,7 @@ ScriptedImporter:
     generateAllOutputs: 1
     generateMipMaps: 1
     preset: " <sbspreset pkgurl=\"pkg://Plateforme\" label=\"\" >\n  <presetinput
-      identifier=\"$outputsize\" uid=\"2934068319\" type=\"8\" value=\"9,9\" />\n 
+      identifier=\"$outputsize\" uid=\"2934068319\" type=\"8\" value=\"11,11\" />\n 
       <presetinput identifier=\"$randomseed\" uid=\"4186980877\" type=\"4\" value=\"5507\"
       />\n  <presetinput identifier=\"Marbre_Position\" uid=\"3242787359\" type=\"0\"
       value=\"0.387\" />\n  <presetinput identifier=\"Marbre_Contrast_1\" uid=\"3242787357\"
@@ -557,12 +557,12 @@ ScriptedImporter:
       uid=\"3242787391\" type=\"0\" value=\"1\" />\n  <presetinput identifier=\"Marbre_intensity_4\"
       uid=\"3242787389\" type=\"0\" value=\"0.055\" />\n  <presetinput identifier=\"Marbre_opacitymult_1\"
       uid=\"3242787387\" type=\"0\" value=\"0.224\" />\n  <presetinput identifier=\"Marbre_opacitymult_2\"
-      uid=\"3242770494\" type=\"0\" value=\"1\" />\n  <presetinput identifier=\"Metal_Position\"
+      uid=\"3242770494\" type=\"0\" value=\"0\" />\n  <presetinput identifier=\"Metal_Position\"
       uid=\"3242754490\" type=\"0\" value=\"0.665\" />\n  <presetinput identifier=\"Metal_Contrast_1\"
-      uid=\"3242754478\" type=\"0\" value=\"0.472\" />\n  <presetinput identifier=\"Metal_matrix22\"
+      uid=\"3242754478\" type=\"0\" value=\"0.516\" />\n  <presetinput identifier=\"Metal_matrix22\"
       uid=\"3242754474\" type=\"3\" value=\"1.99,0,0,2\" />\n  <presetinput identifier=\"Metal_intensity\"
       uid=\"3242754472\" type=\"0\" value=\"0.4\" />\n  <presetinput identifier=\"Metal_outputcolor\"
-      uid=\"3242754468\" type=\"0\" value=\"1\" />\n  <presetinput identifier=\"Metal_color_02\"
+      uid=\"3242754468\" type=\"0\" value=\"0\" />\n  <presetinput identifier=\"Metal_color_02\"
       uid=\"3242754464\" type=\"2\" value=\"0.486,0.48,0.44\" />\n  <presetinput
       identifier=\"Metal_color_03\" uid=\"3242754526\" type=\"2\" value=\"0.476,0.46,0.46\"
       />\n </sbspreset>\n"
@@ -811,8 +811,8 @@ ScriptedImporter:
     - label: Default
       bOverride: 0
       bLockRatio: 1
-      textureWidth: 512
-      textureHeight: 512
+      textureWidth: 2048
+      textureHeight: 2048
       textureFormatMode: 0
       normalCompressed: 1
       bGenerateOnLoad: 1
