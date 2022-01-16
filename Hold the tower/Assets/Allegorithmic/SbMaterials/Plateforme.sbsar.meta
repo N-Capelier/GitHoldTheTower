@@ -556,16 +556,20 @@ ScriptedImporter:
       uid=\"3242787329\" type=\"0\" value=\"0.085\" />\n  <presetinput identifier=\"Marbre_edge_width\"
       uid=\"3242787391\" type=\"0\" value=\"1\" />\n  <presetinput identifier=\"Marbre_intensity_4\"
       uid=\"3242787389\" type=\"0\" value=\"0.055\" />\n  <presetinput identifier=\"Marbre_opacitymult_1\"
-      uid=\"3242787387\" type=\"0\" value=\"0.224\" />\n  <presetinput identifier=\"Marbre_opacitymult_2\"
+      uid=\"3242787387\" type=\"0\" value=\"0.074\" />\n  <presetinput identifier=\"Marbre_outputcolor\"
+      uid=\"3242787385\" type=\"3\" value=\"0.100445,0.167388,0.179245,1\" />\n 
+      <presetinput identifier=\"Marbre_outputcolor_1\" uid=\"3242787383\" type=\"3\"
+      value=\"0.803922,0.917647,0.889611,1\" />\n  <presetinput identifier=\"Marbre_opacitymult_2\"
       uid=\"3242770494\" type=\"0\" value=\"0\" />\n  <presetinput identifier=\"Metal_Position\"
       uid=\"3242754490\" type=\"0\" value=\"0.665\" />\n  <presetinput identifier=\"Metal_Contrast_1\"
       uid=\"3242754478\" type=\"0\" value=\"0.516\" />\n  <presetinput identifier=\"Metal_matrix22\"
       uid=\"3242754474\" type=\"3\" value=\"1.99,0,0,2\" />\n  <presetinput identifier=\"Metal_intensity\"
       uid=\"3242754472\" type=\"0\" value=\"0.4\" />\n  <presetinput identifier=\"Metal_outputcolor\"
-      uid=\"3242754468\" type=\"0\" value=\"0\" />\n  <presetinput identifier=\"Metal_color_02\"
-      uid=\"3242754464\" type=\"2\" value=\"0.486,0.48,0.44\" />\n  <presetinput
-      identifier=\"Metal_color_03\" uid=\"3242754526\" type=\"2\" value=\"0.476,0.46,0.46\"
-      />\n </sbspreset>\n"
+      uid=\"3242754468\" type=\"0\" value=\"0\" />\n  <presetinput identifier=\"Metal_color_01\"
+      uid=\"3242754466\" type=\"2\" value=\"0.292,0.74,0.719\" />\n  <presetinput
+      identifier=\"Metal_color_02\" uid=\"3242754464\" type=\"2\" value=\"0.442,0.449,0.44\"
+      />\n  <presetinput identifier=\"Metal_color_03\" uid=\"3242754526\" type=\"2\"
+      value=\"0.476,0.46,0.46\" />\n </sbspreset>\n"
     shaderName: Universal Render Pipeline/Lit
     materialProperties:
       shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
