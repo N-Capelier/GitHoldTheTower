@@ -170,7 +170,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   punchPerfectTimingPropulsionMultiplier: 2
-  punchCooldown: 1.3
+  punchCooldown: 1.5
+  punchCooldownWithOverdrive: 2.3
   punchPerfectTiming: 0.8
   punchPerfectTimingTreshold: 0.15
   punchMaxChargeTime: 0.95

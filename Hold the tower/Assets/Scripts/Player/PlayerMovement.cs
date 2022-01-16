@@ -500,7 +500,7 @@ public class PlayerMovement : MonoBehaviour
         float finalBaseSpeed = selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(ratio) * GetPunchAngleRatio(punchAngle);
         if(selfLogic.hasFlag)
         {
-            finalBaseSpeed = selfParams.punchBaseSpeed * Mathf.Clamp(selfParams.punchSpeedByCharge.Evaluate(0), 0, GetPunchAngleRatio(punchAngle));
+            //finalBaseSpeed = selfParams.punchBaseSpeed * Mathf.Clamp(selfParams.punchSpeedByCharge.Evaluate(0), 0, GetPunchAngleRatio(punchAngle));
         }
         punchRatio = ratio;
 
@@ -536,11 +536,11 @@ public class PlayerMovement : MonoBehaviour
     {
         float timerPunchCD = 0;
         bool soundOnce = false;
-        while(timerPunchCD < selfParams.punchCooldown)
+        while(timerPunchCD < (selfLogic.hasFlag ? selfParams.punchCooldownWithOverdrive : selfParams.punchCooldown))
         {
             timerPunchCD += Time.deltaTime;
             selfLogic.UpdatePunchCooldown(timerPunchCD);
-            if (timerPunchCD >= selfParams.punchCooldown - 0.15f && soundOnce == false)
+            if (timerPunchCD >= (selfLogic.hasFlag ? selfParams.punchCooldownWithOverdrive : selfParams.punchCooldown) - 0.15f && soundOnce == false)
             {
                 SoundManager.Instance.PlaySoundEvent("PlayerPunchAvailable");
                 soundOnce = true;
