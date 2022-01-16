@@ -8,6 +8,8 @@ public class PlayerChunckActivation : MonoBehaviour
     [SerializeField]
     private Image switchInputIndicator;
     [SerializeField]
+    private Text switchInputText;
+    [SerializeField]
     private ScriptableParamsPlayer selfParams;
     [SerializeField]
     private Camera playerCamera;
@@ -155,6 +157,14 @@ public class PlayerChunckActivation : MonoBehaviour
             switchInputIndicator.gameObject.SetActive(true);
             switchInputIndicator.fillAmount = aimedSwitcher.linkedChunck.GetCDRatio();
             aimedSwitcher.linkedChunck.HighlightChunck(true);
+            if (aimedSwitcher.linkedChunck.GetCDRatio() == 1)
+            {
+                switchInputText.gameObject.SetActive(true);
+            }
+            else
+            {
+                switchInputText.gameObject.SetActive(false);
+            }
             EnableSwitchLine(aimedSwitcher.gameObject);
             aimedSwitcher.Select();
             if (Input.GetKeyDown(selfParams.switchChunckKey) || Input.GetButtonDown("YButton"))

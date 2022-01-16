@@ -1308,7 +1308,7 @@ public class PlayerLogic : NetworkBehaviour
     [Command]
     private void CmdShowScoreHud()
     {
-        RpcShowScoreHud();
+        //RpcShowScoreHud();
     }
 
     [ClientRpc]
