@@ -465,3 +465,63 @@ MonoBehaviour:
     isLoop: 1
     isMusic: 1
     isAnnoucer: 0
+  - name: UIButtonAccesDenied
+    ID: 36
+    sounds:
+    - name: UIButtonAccesDenied
+      ID: 38
+      clip: {fileID: 8300000, guid: 2cf24ee2e743c1f46a645d4aeba3d49a, type: 3}
+      volume: 1
+    isLocalized: 0
+    isRandom: 0
+    isLoop: 0
+    isMusic: 0
+    isAnnoucer: 0
+  - name: UIButtonActive
+    ID: 36
+    sounds:
+    - name: UIButtonActive
+      ID: 38
+      clip: {fileID: 8300000, guid: dcbd1263b591f544db831f9a04146dbe, type: 3}
+      volume: 1
+    isLocalized: 0
+    isRandom: 0
+    isLoop: 0
+    isMusic: 0
+    isAnnoucer: 0
+  - name: UIButtonClick
+    ID: 36
+    sounds:
+    - name: UIButtonClick
+      ID: 38
+      clip: {fileID: 8300000, guid: 6e2787f06472ca44f9f3aada509bbbe3, type: 3}
+      volume: 1
+    isLocalized: 0
+    isRandom: 0
+    isLoop: 0
+    isMusic: 0
+    isAnnoucer: 0
+  - name: UIButton
+    ID: 36
+    sounds:
+    - name: UIButtonConfirm
+      ID: 38
+      clip: {fileID: 8300000, guid: 4052f4a25dd52c845b90392f958f713a, type: 3}
+      volume: 1
+    isLocalized: 0
+    isRandom: 0
+    isLoop: 0
+    isMusic: 0
+    isAnnoucer: 0
+  - name: UIButtonReturn
+    ID: 36
+    sounds:
+    - name: UIButtonReturn
+      ID: 38
+      clip: {fileID: 8300000, guid: d565759aadc9107448c93d6ea6408594, type: 3}
+      volume: 1
+    isLocalized: 0
+    isRandom: 0
+    isLoop: 0
+    isMusic: 0
+    isAnnoucer: 0

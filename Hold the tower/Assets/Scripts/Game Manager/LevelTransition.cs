@@ -40,7 +40,7 @@ public class LevelTransition : NetworkBehaviour
                 //OnChangeTerrain();
             }
 
-            if (NetworkTime.time >= networkTime + timerChange - 1f && NetworkTime.time <= networkTime + timerChange - 0.1f && doOnce)
+            if (NetworkTime.time >= networkTime + timerChange - 2f && NetworkTime.time <= networkTime + timerChange - 0.1f && doOnce)
             {
                 SoundManager.Instance.PlaySoundEvent("LevelEvolvingSound");
                 doOnce = false;
