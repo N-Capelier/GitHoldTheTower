@@ -195,7 +195,7 @@ MonoBehaviour:
   selfRbd: {fileID: 3467959007138746707}
   selfCamera: {fileID: 9175226997489984019}
   selfAttackCollider: {fileID: 6498416899167114560}
-  FPVAnimatorManager: {fileID: 5815303685373937480}
+  FPVAnimator: {fileID: 5815303685373937480}
   groundCorrection: {x: 0, y: 0, z: 0}
   isPerfectTiming: 0
   isPunchInstantDestroy: 0

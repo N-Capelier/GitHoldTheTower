@@ -638,7 +638,8 @@ public class PlayerLogic : NetworkBehaviour
         //Attack load
         if ((Input.GetMouseButton(selfParams.attackMouseInput) || Input.GetAxis("RT") > 0f) && hasStartedCharge)
         {
-            if(!isInControl)
+            selfMovement.FPVAnimator.AnimateLoadPunch();
+            if (!isInControl)
             {
                 StopChargingPunch();
             }
