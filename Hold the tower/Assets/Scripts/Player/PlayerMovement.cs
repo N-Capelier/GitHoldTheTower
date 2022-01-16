@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private Transform selfCamera;
     [SerializeField]
     public GameObject selfAttackCollider;
+    [SerializeField] FPVAnimatorManager FPVAnimatorManager;
 
     private Vector3 moveDirection = new Vector3(0, 0, 0);
 
@@ -246,6 +247,7 @@ public class PlayerMovement : MonoBehaviour
         {
             selfRbd.velocity += selfLogic.GetHorizontalVector(selfCamera.forward) * selfParams.jumpForwardForce * Time.fixedDeltaTime;
         }
+        FPVAnimatorManager.AnimateJump();
     }
 
     //start WallJump
