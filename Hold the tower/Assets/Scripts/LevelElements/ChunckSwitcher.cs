@@ -44,15 +44,19 @@ public class ChunckSwitcher : MonoBehaviour
 
     public void Select()
     {
-        highlight.SetActive(true);
-        chunkParticle.Play();
-
+        //highlight.SetActive(true);
+        if(!chunkParticle.isPlaying)
+        {
+            Debug.Log("play");
+            chunkParticle.Play();
+        }
     }
 
     public void UnSelect()
     {
-        highlight.SetActive(false);
+        //highlight.SetActive(false);
         chunkParticle.Stop();
+        Debug.Log("stop");
     }
 
 }

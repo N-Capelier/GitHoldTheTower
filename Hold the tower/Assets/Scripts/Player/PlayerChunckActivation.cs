@@ -77,7 +77,6 @@ public class PlayerChunckActivation : MonoBehaviour
     {
         isNearbySwitcher = false;
         Collider[] switcherColliders = Physics.OverlapSphere(transform.position, selfParams.switchChunckRangeMaxDistance, switcherLayerOnly);
-
         if (switcherColliders.Length > 0)
         {
             mindistFromSwitch = selfParams.switchChunckRangeMaxDistance + 50;
@@ -91,7 +90,7 @@ public class PlayerChunckActivation : MonoBehaviour
                 if (directionToSwitcher.magnitude < mindistFromSwitch && ((hit.collider != null && hit.collider.CompareTag("Switcher")) || !needToBeInSight))
                 {
                     mindistFromSwitch = directionToSwitcher.magnitude;
-                    if(aimedSwitcher != null)
+                    if(aimedSwitcher != null && aimedSwitcher != switcherColliders[i].GetComponent<ChunckSwitcher>())
                     {
                         aimedSwitcher.linkedChunck.HighlightChunck(false);
                         aimedSwitcher.UnSelect();
@@ -165,7 +164,7 @@ public class PlayerChunckActivation : MonoBehaviour
             {
                 switchInputText.gameObject.SetActive(false);
             }
-            EnableSwitchLine(aimedSwitcher.gameObject);
+            //EnableSwitchLine(aimedSwitcher.gameObject);
             aimedSwitcher.Select();
 
             if (Input.GetKeyDown(selfParams.switchChunckKey) || Input.GetButtonDown("YButton"))
@@ -188,6 +187,7 @@ public class PlayerChunckActivation : MonoBehaviour
                 aimedSwitcher.linkedChunck.HighlightChunck(false);
                 DisableSwitchLine();
                 aimedSwitcher.UnSelect();
+                aimedSwitcher = null;
             }
         }
     }

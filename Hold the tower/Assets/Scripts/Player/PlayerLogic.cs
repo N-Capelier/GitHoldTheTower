@@ -72,6 +72,8 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     private Text nextRotationTimeText;
     [SerializeField]
+    private GameObject nextRotationTimeOutline;
+    [SerializeField]
     public Image teamColorIndicator;
     [SerializeField]
     public GameObject punchHitUi;
@@ -1339,10 +1341,35 @@ public class PlayerLogic : NetworkBehaviour
         scoreTextBlue.text = matchManager.blueScore.ToString();
     }
 
+
+    private float evolveWarningTimeLeft;
+    private bool evolveWarningState;
     private void UpdateNextTransitionTime()
     {
         float timerBeforeNextTransition = Mathf.Ceil((float)(levelTransition.timerChange - (NetworkTime.time - levelTransition.networkTime)));
         nextRotationTimeText.text = timerBeforeNextTransition.ToString();
+
+        if (timerBeforeNextTransition < 6f)
+        {
+            evolveWarningTimeLeft -= Time.deltaTime;
+            if(evolveWarningTimeLeft <= 0)
+            {
+                nextRotationTimeOutline.SetActive(!nextRotationTimeOutline.activeSelf);
+                if(timerBeforeNextTransition < 3)
+                {
+                    evolveWarningTimeLeft = 0.1f;
+                }
+                else
+                {
+                    evolveWarningTimeLeft = 0.5f;
+                }
+            }
+        }
+        else
+        {
+            evolveWarningTimeLeft = 0;
+            nextRotationTimeOutline.SetActive(false);
+        }
     }
 
     #endregion
