@@ -78,6 +78,8 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     private GameObject punchGetHitUi;
     [SerializeField]
+    private ParticleSystem punchGetHitParticle;
+    [SerializeField]
     private GameObject punchLoadingEffect;
     [SerializeField]
     private GameObject punchHitEffect;
@@ -95,6 +97,8 @@ public class PlayerLogic : NetworkBehaviour
     private GameObject FlagObject;
     [SerializeField]
     private GameObject FlagInGame;
+    [SerializeField]
+    private GameObject overdriveEffects;
 
     [SerializeField]
     private Material redTeamMaterial;
@@ -187,6 +191,7 @@ public class PlayerLogic : NetworkBehaviour
         hud.SetActive(false);
         if (hasAuthority)
         {
+            overdriveEffects.SetActive(false);
             selfCamera.gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
             firstPersonViewModel.SetActive(true);
@@ -644,12 +649,14 @@ public class PlayerLogic : NetworkBehaviour
             if (hasFlag)
             {
                 ratioAttack = 0;
+                selfMovement.AttackLoad(timeAttack);
                 punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), 0);
                 punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), 0);
 
                 //punchChargeDistancePreview.transform.rotation = Quaternion.Euler(0, 0, 0);
                 //punchChargeDistancePreview2.transform.rotation = Quaternion.Inverse(selfCamera.rotation);
-                punchChargeDistancePreview.transform.localPosition = chargePreviewStartPos + (Vector3.forward * 0.0046923076923077f * selfParams.punchBaseSpeed * Mathf.Clamp(selfParams.punchSpeedByCharge.Evaluate(0), 0, punchAngleRatio) / selfParams.punchSpeedByCharge.Evaluate(1));
+                //punchChargeDistancePreview.transform.localPosition = chargePreviewStartPos + (Vector3.forward * 0.0046923076923077f * selfParams.punchBaseSpeed * Mathf.Clamp(selfParams.punchSpeedByCharge.Evaluate(0), 0, punchAngleRatio) / selfParams.punchSpeedByCharge.Evaluate(1));
+                punchChargeDistancePreview.transform.localPosition = chargePreviewStartPos + (Vector3.forward * 0.0046923076923077f * selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(ratioAttack) / selfParams.punchSpeedByCharge.Evaluate(1)) * punchAngleRatio;
                 punchChargeDistancePreview2.transform.localPosition = punchChargeDistancePreview.transform.localPosition;
 
                 punchChargeSliderLine.transform.localPosition = (punchChargeDistancePreview.transform.localPosition + chargePreviewStartPos) / 2;
@@ -700,8 +707,8 @@ public class PlayerLogic : NetworkBehaviour
 
     public void UpdatePunchCooldown(float cdTime)
     {
-        punchCooldownDisplay.fillAmount = cdTime / selfParams.punchCooldown;
-        punchCooldownSecondDisplay.fillAmount = cdTime / selfParams.punchCooldown;
+        punchCooldownDisplay.fillAmount = cdTime / (hasFlag ? selfParams.punchCooldownWithOverdrive : selfParams.punchCooldown);
+        punchCooldownSecondDisplay.fillAmount = cdTime / (hasFlag ? selfParams.punchCooldownWithOverdrive : selfParams.punchCooldown);
     }
 
     public void StopChargingPunch()
@@ -1243,19 +1250,27 @@ public class PlayerLogic : NetworkBehaviour
 
     public IEnumerator GetHitUi(float timelife)
     {
-        punchGetHitUi.SetActive(true);
-        Color temp = punchGetHitUi.GetComponent<Image>().color;
-        temp.a = 1;
-        float time = 0;
-        while (time < timelife)
+        if(punchGetHitUi == null)
         {
-            time += Time.deltaTime;
-            temp.a = 1 - time;
-            punchGetHitUi.GetComponent<Image>().color = temp;
-            yield return new WaitForEndOfFrame();
+            if(punchGetHitParticle != null)
+                punchGetHitParticle.Play();
         }
-        punchGetHitUi.SetActive(false);
-        yield return null;
+        else
+        {
+            punchGetHitUi.SetActive(true);
+            Color temp = punchGetHitUi.GetComponent<Image>().color;
+            temp.a = 1;
+            float time = 0;
+            while (time < timelife)
+            {
+                time += Time.deltaTime;
+                temp.a = 1 - time;
+                punchGetHitUi.GetComponent<Image>().color = temp;
+                yield return new WaitForEndOfFrame();
+            }
+            punchGetHitUi.SetActive(false);
+            yield return null;
+        }
     }
 
     #endregion
