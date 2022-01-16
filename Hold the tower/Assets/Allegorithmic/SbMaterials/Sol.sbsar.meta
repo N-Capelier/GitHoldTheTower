@@ -17,23 +17,24 @@ ScriptedImporter:
     generateAllOutputs: 1
     generateMipMaps: 1
     preset: " <sbspreset pkgurl=\"pkg://Sol\" label=\"\" >\n  <presetinput identifier=\"$outputsize\"
-      uid=\"962021816\" type=\"8\" value=\"9,9\" />\n  <presetinput identifier=\"scale_Motifs01\"
-      uid=\"1458445934\" type=\"0\" value=\"1.807\" />\n  <presetinput identifier=\"position_random_Motifs1\"
+      uid=\"962021816\" type=\"8\" value=\"10,10\" />\n  <presetinput identifier=\"scale_Motifs01\"
+      uid=\"1458445934\" type=\"0\" value=\"1.751\" />\n  <presetinput identifier=\"position_random_Motifs1\"
       uid=\"1458439007\" type=\"0\" value=\"7.39\" />\n  <presetinput identifier=\"scale_Motifs2\"
       uid=\"1458439279\" type=\"0\" value=\"1.8\" />\n  <presetinput identifier=\"edge_width_Motifs2\"
       uid=\"1458440768\" type=\"0\" value=\"1\" />\n  <presetinput identifier=\"opacitymult_Motifs1-2\"
-      uid=\"1458567828\" type=\"0\" value=\"0.54\" />\n  <presetinput identifier=\"opacitymult_Dalles\"
+      uid=\"1458567828\" type=\"0\" value=\"0.627\" />\n  <presetinput identifier=\"opacitymult_Dalles\"
       uid=\"1458551388\" type=\"0\" value=\"0.354\" />\n  <presetinput identifier=\"edge_width_Dalles\"
       uid=\"1458541067\" type=\"0\" value=\"1.87\" />\n  <presetinput identifier=\"x_amount_Dalles\"
       uid=\"1458543051\" type=\"4\" value=\"5\" />\n  <presetinput identifier=\"position_random_Dalles\"
       uid=\"1458543811\" type=\"0\" value=\"2.8\" />\n  <presetinput identifier=\"scale_random_Dalles\"
       uid=\"1458544369\" type=\"0\" value=\"0.166\" />\n  <presetinput identifier=\"opacitymult_MotifPuce\"
-      uid=\"1458534679\" type=\"0\" value=\"0.493\" />\n  <presetinput identifier=\"outputcolor_Roughness\"
+      uid=\"1458534679\" type=\"0\" value=\"0.755\" />\n  <presetinput identifier=\"outputcolor_Roughness\"
       uid=\"1458534861\" type=\"0\" value=\"0.536\" />\n  <presetinput identifier=\"outputcolor_Brillance-Motifs-Puce\"
       uid=\"1458535561\" type=\"0\" value=\"0.504\" />\n  <presetinput identifier=\"outputcolor_Main\"
-      uid=\"1458536131\" type=\"3\" value=\"0.754717,0,0,1\" />\n  <presetinput identifier=\"color_MotifPuce\"
-      uid=\"1458528855\" type=\"2\" value=\"0,0.367,0.423\" />\n  <presetinput identifier=\"color_DallesErosion\"
-      uid=\"1458520196\" type=\"2\" value=\"0.513,0.48,0.55\" />\n </sbspreset>\n"
+      uid=\"1458536131\" type=\"3\" value=\"0.0603061,0.415094,0.392019,1\" />\n 
+      <presetinput identifier=\"color_MotifPuce\" uid=\"1458528855\" type=\"2\" value=\"0,0.367,0.467\"
+      />\n  <presetinput identifier=\"color_DallesErosion\" uid=\"1458520196\" type=\"2\"
+      value=\"0.513,0.48,0.55\" />\n </sbspreset>\n"
     shaderName: Universal Render Pipeline/Lit
     materialProperties:
       shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
@@ -261,8 +262,8 @@ ScriptedImporter:
     - label: Default
       bOverride: 0
       bLockRatio: 1
-      textureWidth: 512
-      textureHeight: 512
+      textureWidth: 1024
+      textureHeight: 1024
       textureFormatMode: 0
       normalCompressed: 1
       bGenerateOnLoad: 1

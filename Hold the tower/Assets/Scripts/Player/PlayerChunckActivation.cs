@@ -167,6 +167,7 @@ public class PlayerChunckActivation : MonoBehaviour
             }
             EnableSwitchLine(aimedSwitcher.gameObject);
             aimedSwitcher.Select();
+
             if (Input.GetKeyDown(selfParams.switchChunckKey) || Input.GetButtonDown("YButton"))
             {
                 if (aimedSwitcher.linkedChunck.GetCDRatio() == 1)
