@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5de97447888aa3c4a9e76eca104c141d
+guid: eea98906dd9236e4db6fcdca0dc87148
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
@@ -7,17 +7,8 @@ ModelImporter:
       74: -7566905066453293195
     second: rest pose action
   - first:
-      74: -6193099808346845775
-    second: handrig|handrigAction
-  - first:
-      74: 7276371047624674203
-    second: handrig|jump
-  - first:
-      74: 2265088940484811118
-    second: handrig|rest pose action
-  - first:
-      74: 2210768670511134477
-    second: Spot|jump
+      74: -459476894525907295
+    second: template idle
   externalObjects: {}
   materials:
     materialImportMode: 2
