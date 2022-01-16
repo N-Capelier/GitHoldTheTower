@@ -110,7 +110,7 @@ MonoBehaviour:
   authorityPlayer: {fileID: 0}
   selfParams: {fileID: 11400000, guid: a24272e5804e7bd4891a2cf20f79574a, type: 2}
   selfCamera: {fileID: 9175226997489984019}
-  selfFirstPersonView: {fileID: 0}
+  selfFirstPersonView: {fileID: 1040958538731049126}
   selfMovement: {fileID: 4205374861408034103}
   playerSource: {fileID: 5834154788554956417}
   playerFlagSource: {fileID: 5169721366987853970}
@@ -2486,7 +2486,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!224 &8950688914791556918 stripped
 RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3454176887610228063, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
+  m_CorrespondingSourceObject: {fileID: 693380040651598469, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
   m_PrefabInstance: {fileID: 6041736891100977769}
   m_PrefabAsset: {fileID: 0}
 --- !u!224 &7456886662093332267 stripped
