@@ -239,7 +239,6 @@ public class PlayerLogic : NetworkBehaviour
                 }
                 else
                 {
-
                     noAuthorityPlayer.Add(objPlayer);
                 }
             }

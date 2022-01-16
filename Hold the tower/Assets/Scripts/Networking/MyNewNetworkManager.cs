@@ -251,9 +251,13 @@ public class MyNewNetworkManager : NetworkManager
     {
         base.OnClientDisconnect(conn);
         Shutdown();
-        Destroy(gameObject);
-        SceneManager.LoadScene("LobbyScene");
-
+        if (SceneManager.GetActiveScene().name != "LobbyScene")
+        {
+            Shutdown();
+            Destroy(gameObject);
+            SceneManager.LoadScene("LobbyScene");
+        }
+        
     }
 
     /// <summary>

@@ -19,7 +19,7 @@ public class ChunckSwitcher : MonoBehaviour
     private void Start()
     {
         display = GetComponent<MeshRenderer>();
-        StopEffect();
+        UnSelect();
     }
 
     private void Update()
@@ -45,20 +45,14 @@ public class ChunckSwitcher : MonoBehaviour
     public void Select()
     {
         highlight.SetActive(true);
+        chunkParticle.Play();
+
     }
 
     public void UnSelect()
     {
         highlight.SetActive(false);
-    }
-
-    public void PlayEffect()
-    {
-        chunkParticle.Play();
-    }
-
-    public void StopEffect()
-    {
         chunkParticle.Stop();
     }
+
 }

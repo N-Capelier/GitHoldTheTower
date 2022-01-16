@@ -10,6 +10,8 @@ public class GoalBehavior : NetworkBehaviour
 
     public PA_Position pa_pos;
 
+    private bool delay;
+
     public void Start()
     {
         if(GameObject.Find("Analytics") != null)
@@ -22,8 +24,9 @@ public class GoalBehavior : NetworkBehaviour
     {
         if(other.tag == "Player")
         {
-            if (other.transform.parent.GetComponent<PlayerLogic>().teamName != goalTeam && other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
+            if (other.transform.parent.GetComponent<PlayerLogic>().teamName != goalTeam && other.transform.parent.GetComponent<PlayerLogic>().hasFlag && delay == false)
             {
+                StartCoroutine(DelayManager());
                 string textToShow = "";
                 if (goalTeam == LobbyPlayerLogic.TeamName.Blue)
                 {
@@ -58,19 +61,24 @@ public class GoalBehavior : NetworkBehaviour
                 }
                 other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
                 CmdTeamWin(textToShow);
-                
-
             }
         }
         
+    }
+
+    public IEnumerator DelayManager()
+    {
+        delay = true;
+        yield return new WaitForSeconds(5f);
+        delay = false;
     }
 
     [Command(requiresAuthority = false)]
     private void CmdRedTeamScore()
     {
         matchManager.redScore++;
-        
     }
+
     [Command(requiresAuthority = false)]
     private void CmdBlueTeamScore()
     {

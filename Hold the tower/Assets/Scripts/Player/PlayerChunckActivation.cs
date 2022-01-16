@@ -158,11 +158,6 @@ public class PlayerChunckActivation : MonoBehaviour
             EnableSwitchLine(aimedSwitcher.gameObject);
             aimedSwitcher.Select();
 
-            if(aimedSwitcher != null)
-            {
-                aimedSwitcher.PlayEffect();
-            }
-
             if (Input.GetKeyDown(selfParams.switchChunckKey) || Input.GetButtonDown("YButton"))
             {
                 if (aimedSwitcher.linkedChunck.GetCDRatio() == 1)
@@ -180,7 +175,6 @@ public class PlayerChunckActivation : MonoBehaviour
             switchInputIndicator.gameObject.SetActive(false);
             if (aimedSwitcher != null)
             {
-                aimedSwitcher.StopEffect();
                 aimedSwitcher.linkedChunck.HighlightChunck(false);
                 DisableSwitchLine();
                 aimedSwitcher.UnSelect();
