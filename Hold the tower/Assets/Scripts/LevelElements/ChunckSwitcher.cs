@@ -47,7 +47,6 @@ public class ChunckSwitcher : MonoBehaviour
         //highlight.SetActive(true);
         if(!chunkParticle.isPlaying)
         {
-            Debug.Log("play");
             chunkParticle.Play();
         }
     }
@@ -56,7 +55,6 @@ public class ChunckSwitcher : MonoBehaviour
     {
         //highlight.SetActive(false);
         chunkParticle.Stop();
-        Debug.Log("stop");
     }
 
 }
