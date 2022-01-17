@@ -167,7 +167,6 @@ public class PlayerLogic : NetworkBehaviour
 
     void Start()
     {
-        Debug.Log("Start");
         matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>(); //Ne pas bouger
         levelTransition = GameObject.Find("GameManager").GetComponent<LevelTransition>();
 
@@ -237,12 +236,9 @@ public class PlayerLogic : NetworkBehaviour
         {
             if (objPlayer.GetComponent<PlayerLogic>() != null)
             {
-                Debug.Log("je rentre");
                 if (objPlayer.GetComponent<NetworkIdentity>().hasAuthority)
                 {
                     authorityPlayer = objPlayer;
-                    Debug.Log("je donne l'autorité");
-                    Debug.Log(authorityPlayer);
                 }
                 else
                 {
