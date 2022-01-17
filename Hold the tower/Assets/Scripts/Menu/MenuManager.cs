@@ -33,6 +33,7 @@ public class MenuManager : MonoBehaviour
 
 	void Start()
 	{
+		SaveManager.LoadParams(ref menuParams);
 		inputFieldPseudoText.text = menuParams.playerPseudo;
 		ipInputText.text = menuParams.ipToJoin;
 		Cursor.visible = true;
@@ -50,6 +51,8 @@ public class MenuManager : MonoBehaviour
 	{
 		menuParams.playerPseudo = usernameInputText.text;
 		menuParams.ipToJoin = ipInputText.text;
+		SaveManager.SaveParams(menuParams);
+
 		networkAuthenticator.lobbyPseudo = usernameInputText.text;
 		networkAuthenticator.lobbyPassword = passwordInputText.text;
 		networkManager.SetGameScene(_sceneName);
@@ -63,6 +66,8 @@ public class MenuManager : MonoBehaviour
 	{
 		menuParams.playerPseudo = usernameInputText.text;
 		menuParams.ipToJoin = ipInputText.text;
+		SaveManager.SaveParams(menuParams);
+
 		networkManager.networkAddress = ipInputText.text; // ipText;//ipInputText.text;
 		networkAuthenticator.lobbyPseudo = usernameInputText.text;
 		networkAuthenticator.lobbyPassword = passwordInputText.text;
