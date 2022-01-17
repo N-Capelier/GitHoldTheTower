@@ -65,7 +65,7 @@ public class SensorPlayer : MonoBehaviour
         {
             if (!selfMovement.CanPlayerClimb())
             {
-                if (Mathf.Abs(selfMovement.directionAttack.y) < 0.6f && selfLogic.IsLookingInWall())
+                if (Mathf.Abs(selfMovement.directionAttack.y) < 0.6f && selfLogic.IsLookingInWall2())
                 {
                     selfTransform.GetComponent<PlayerMovement>().StopPunch();
                     selfLogic.CmdPropulse(-selfMovement.directionAttack.normalized * selfParams.backForceWhenPunchingWall);

@@ -192,6 +192,7 @@ public class PlayerLogic : NetworkBehaviour
         firstPersonViewModel.SetActive(false);
         selfCamera.gameObject.SetActive(false);
         hud.SetActive(false);
+        overviewCameraPos = GameObject.Find("OverviewCameraPosBlueSide").transform;
         if (hasAuthority)
         {
             overdriveEffects.SetActive(false);
@@ -611,6 +612,32 @@ public class PlayerLogic : NetworkBehaviour
         }
     }
 
+    public bool IsLookingInWall2()
+    {
+        Vector3 wallNormal = GetNearbyWallNormal();
+        if (wallNormal != Vector3.zero)
+        {
+            float wallAngle = Vector3.SignedAngle(Vector3.right, wallNormal, Vector3.up);
+            float lookAngle = Vector3.SignedAngle(Vector3.right, GetHorizontalVector(selfCamera.forward).normalized, Vector3.up);
+
+            float angleDist = lookAngle - wallAngle;
+            angleDist = selfMovement.GetClampedAngle(angleDist);
+
+            if (Mathf.Abs(angleDist) > 140)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     #endregion
 
     #region AttackLogic
@@ -700,7 +727,7 @@ public class PlayerLogic : NetworkBehaviour
 
         }
         //Attack lauch
-        if ((Input.GetMouseButtonUp(selfParams.attackMouseInput) || (Input.GetAxis("RT") == 0f && attackTriggerValueDelta != 0f)) && hasStartedCharge)
+        if ((Input.GetJoystickNames().Length == 0 ? !Input.GetMouseButton(selfParams.attackMouseInput) : Input.GetAxis("RT") == 0f) && hasStartedCharge)
         {
             CmdPlayerSource("PlayerPunch");
             selfMovement.Attack(ratioAttack);
@@ -800,11 +827,24 @@ public class PlayerLogic : NetworkBehaviour
         }
     }
 
+    [SerializeField]
+    private Camera overviewCamera;
+    [SerializeField]
+    private Camera highlightCam;
+    [SerializeField]
+    private Camera fpvCam;
+    [SerializeField]
+    private Camera mainCam;
+    private Transform overviewCameraPos;
     public IEnumerator RespawnManager()
     {
         //Find respawn and set spawn
         if (hasAuthority)
         {
+            overviewCamera.enabled = true;
+            highlightCam.enabled = false;
+            fpvCam.enabled = false;
+            mainCam.enabled = false;
             if (doOnce)
             {
                 doOnce = false;
@@ -845,14 +885,16 @@ public class PlayerLogic : NetworkBehaviour
             {
                 selfMovement.ResetVelocity();
                 selfMovement.ResetVerticalVelocity();
-                hudTextPlayer.text = System.Math.Round(timerMaxToStart -(NetworkTime.time - timerToStart)).ToString();
+                hudTextPlayer.text = System.Math.Ceiling(timerMaxToStart -(NetworkTime.time - timerToStart)).ToString();
                 if (tryToRespawn)
                 {
                     Debug.Log("test");
                     timerToStart = NetworkTime.time;
                     tryToRespawn = false;
                 }
-                
+                overviewCamera.transform.position = overviewCameraPos.transform.position;
+                overviewCamera.transform.rotation = overviewCameraPos.transform.rotation;
+
                 yield return new WaitForEndOfFrame();
 
             }
@@ -861,6 +903,10 @@ public class PlayerLogic : NetworkBehaviour
 
             //Unlock Camera
             isSpawning = false;
+            overviewCamera.enabled = false;
+            highlightCam.enabled = true;
+            fpvCam.enabled = true;
+            mainCam.enabled = true;
 
             //adjust Camera rotation
             xRotation = startRot.eulerAngles.x;
