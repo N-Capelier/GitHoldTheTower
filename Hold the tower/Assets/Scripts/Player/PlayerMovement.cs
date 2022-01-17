@@ -364,6 +364,14 @@ public class PlayerMovement : MonoBehaviour
         }
         return false;
     }
+    public bool CanPlayerClimb()
+    {
+        if (frontBotCollide && !frontTopCollide && !isClimbingMovement)
+        {
+            return true;
+        }
+        return false;
+    }
 
     public void Climb()
     {

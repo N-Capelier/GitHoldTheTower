@@ -73,6 +73,7 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float punchedNoControlTime;
     public AnimationCurve punchPropulsionForceByCharge;
     public AnimationCurve punchPropulsionForceByAngle;
+    public float backForceWhenPunchingWall;
 
     [Header("Switch")]
     public float switchChunckAimMaxDistance;

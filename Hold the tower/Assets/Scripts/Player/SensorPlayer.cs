@@ -63,11 +63,19 @@ public class SensorPlayer : MonoBehaviour
         }
         else if(other.CompareTag("Wall"))
         {
-            if (Mathf.Abs(selfMovement.directionAttack.y) < 0.6f)
+            if (!selfMovement.CanPlayerClimb())
+            {
+                if (Mathf.Abs(selfMovement.directionAttack.y) < 0.6f && selfLogic.IsLookingInWall())
+                {
+                    selfTransform.GetComponent<PlayerMovement>().StopPunch();
+                    selfLogic.CmdPropulse(-selfMovement.directionAttack.normalized * selfParams.backForceWhenPunchingWall);
+                }
+            }
+            else
             {
                 selfTransform.GetComponent<PlayerMovement>().StopPunch();
-                selfLogic.CmdPropulse(-selfMovement.directionAttack.normalized * 15);
             }
+
             BlockBehaviour block = other.GetComponent<BlockBehaviour>();
 
             if(block!= null && block.isButton)
