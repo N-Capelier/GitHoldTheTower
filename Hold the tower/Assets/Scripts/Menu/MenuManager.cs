@@ -27,6 +27,7 @@ public class MenuManager : MonoBehaviour
 	private ScriptableMenuParams menuParams;
 
 	public string customIp;
+	public string customIp2;
 
 	private bool isHost = false;
 
@@ -74,6 +75,16 @@ public class MenuManager : MonoBehaviour
 	public void OnPressedCustom()
     {
 		networkManager.networkAddress = customIp;
+		networkAuthenticator.lobbyPseudo = usernameInputText.text;
+		networkAuthenticator.lobbyPassword = passwordInputText.text;
+
+		ChangeMenu();
+		networkManager.StartClient();
+	}
+
+	public void OnPressedCustom2()
+	{
+		networkManager.networkAddress = customIp2;
 		networkAuthenticator.lobbyPseudo = usernameInputText.text;
 		networkAuthenticator.lobbyPassword = passwordInputText.text;
 
