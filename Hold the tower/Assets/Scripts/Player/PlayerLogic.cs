@@ -115,6 +115,8 @@ public class PlayerLogic : NetworkBehaviour
     public GameObject hud;
     [SerializeField]
     public GameObject playerModel;
+    [SerializeField]
+    public GameObject playerModelPivot;
 
     [SyncVar]
     public LobbyPlayerLogic.TeamName teamName;
@@ -184,7 +186,7 @@ public class PlayerLogic : NetworkBehaviour
             FlagObject = GameObject.Find("Flag");
         }
         basePunchPreviewScale = punchChargeDistancePreview.transform.localScale;
-
+        modelBasePos = playerModel.transform.localPosition;
         isInControl = true;
         canMove = true;
         firstPersonViewModel.SetActive(false);
@@ -634,7 +636,8 @@ public class PlayerLogic : NetworkBehaviour
         //Attack load
         if ((Input.GetMouseButton(selfParams.attackMouseInput) || Input.GetAxis("RT") > 0f) && hasStartedCharge)
         {
-            if(!isInControl)
+            selfMovement.FPVAnimator.AnimateLoadPunch();
+            if (!isInControl)
             {
                 StopChargingPunch();
             }
@@ -1090,6 +1093,7 @@ public class PlayerLogic : NetworkBehaviour
         
     }
 
+    private Vector3 modelBasePos;
     [Command]
     private void CmdRotateModel(float rotation)
     {
@@ -1099,7 +1103,9 @@ public class PlayerLogic : NetworkBehaviour
     [ClientRpc]
     private void RpcRotateModel(float rotation)
     {
-        playerModel.transform.rotation = Quaternion.Euler(0,rotation,0);
+        playerModelPivot.transform.localRotation = Quaternion.Euler(0,rotation,0);
+        playerModel.transform.localRotation = Quaternion.identity;
+        playerModel.transform.localPosition = modelBasePos;
     }
 
     //Sound in network

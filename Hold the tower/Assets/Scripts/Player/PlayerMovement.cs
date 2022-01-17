@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private Transform selfCamera;
     [SerializeField]
     public GameObject selfAttackCollider;
-    [SerializeField] FPVAnimatorManager FPVAnimatorManager;
+    public FPVAnimatorManager FPVAnimator;
 
     private Vector3 moveDirection = new Vector3(0, 0, 0);
 
@@ -247,7 +247,7 @@ public class PlayerMovement : MonoBehaviour
         {
             selfRbd.velocity += selfLogic.GetHorizontalVector(selfCamera.forward) * selfParams.jumpForwardForce * Time.fixedDeltaTime;
         }
-        FPVAnimatorManager.AnimateJump();
+        FPVAnimator.AnimateJump();
     }
 
     //start WallJump
@@ -360,6 +360,14 @@ public class PlayerMovement : MonoBehaviour
         if (frontBotCollide && !frontTopCollide && !isClimbingMovement)
         {
             Climb();
+            return true;
+        }
+        return false;
+    }
+    public bool CanPlayerClimb()
+    {
+        if (frontBotCollide && !frontTopCollide && !isClimbingMovement)
+        {
             return true;
         }
         return false;
@@ -492,6 +500,7 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator AttackManage(float ratio) //Coroutine g�rant le mouvement d'attaque
     {
         StartCoroutine(TimerAttack());
+        FPVAnimator.AnimatePunch(true);
         selfAttackCollider.SetActive(true);
         //StopMovement(); ////////////////////////////////////////////////////////////////////////////// Check merge conflict ///////////////////////////////////////////////////
         selfLogic.CmdAttackCollider(true);
@@ -528,6 +537,7 @@ public class PlayerMovement : MonoBehaviour
         canWallJump = true;
         selfRbd.velocity = directionAttack * selfParams.velocityCurve.Evaluate(selfParams.velocityCurve[selfParams.velocityCurve.length - 1].time) * Time.fixedDeltaTime * finalBaseSpeed;
         isAttacking = false;
+        FPVAnimator.AnimatePunch(false);
         isPerfectTiming = false;
         //startPos = transform.position - startPos;
         //Debug.Log("Punch Distance : " + startPos.magnitude);
