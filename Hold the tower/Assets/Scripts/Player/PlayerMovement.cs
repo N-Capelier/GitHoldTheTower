@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private Transform selfCamera;
     [SerializeField]
     public GameObject selfAttackCollider;
+    [SerializeField] FPVAnimatorManager FPVAnimatorManager;
 
     private Vector3 moveDirection = new Vector3(0, 0, 0);
 
@@ -246,6 +247,7 @@ public class PlayerMovement : MonoBehaviour
         {
             selfRbd.velocity += selfLogic.GetHorizontalVector(selfCamera.forward) * selfParams.jumpForwardForce * Time.fixedDeltaTime;
         }
+        FPVAnimatorManager.AnimateJump();
     }
 
     //start WallJump
@@ -262,7 +264,6 @@ public class PlayerMovement : MonoBehaviour
     //Manage walljump movement
     public IEnumerator WallJumpManage(Vector3 wallDirection)
     {
-        selfLogic.CmdPlayerSource("PlayerJump");
         isAttackReset = true;
         bool cancelJump = false;
         Vector3 adjustDirection = wallDirection;
@@ -292,7 +293,10 @@ public class PlayerMovement : MonoBehaviour
 
             if (Mathf.Abs(angleDist) > selfParams.wallJumpMinAngleToCancelDeviation)
             {
-                jumpAngle = wallAngle;
+                cancelJump = true;
+            }
+            else if(Mathf.Abs(angleDist) < selfParams.wallJumpMaxAngleToCancelDeviation)
+            {
                 cancelJump = true;
             }
             else
@@ -317,6 +321,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(!cancelJump)
         {
+            selfLogic.CmdPlayerSource("PlayerJump");
             ResetVelocity();
             ResetVerticalVelocity();
             selfRbd.velocity += adjustDirection * selfParams.wallJumpNormalForce;
@@ -497,7 +502,7 @@ public class PlayerMovement : MonoBehaviour
         float finalBaseSpeed = selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(ratio) * GetPunchAngleRatio(punchAngle);
         if(selfLogic.hasFlag)
         {
-            finalBaseSpeed = selfParams.punchBaseSpeed * Mathf.Clamp(selfParams.punchSpeedByCharge.Evaluate(0), 0, GetPunchAngleRatio(punchAngle));
+            //finalBaseSpeed = selfParams.punchBaseSpeed * Mathf.Clamp(selfParams.punchSpeedByCharge.Evaluate(0), 0, GetPunchAngleRatio(punchAngle));
         }
         punchRatio = ratio;
 
@@ -533,11 +538,11 @@ public class PlayerMovement : MonoBehaviour
     {
         float timerPunchCD = 0;
         bool soundOnce = false;
-        while(timerPunchCD < selfParams.punchCooldown)
+        while(timerPunchCD < (selfLogic.hasFlag ? selfParams.punchCooldownWithOverdrive : selfParams.punchCooldown))
         {
             timerPunchCD += Time.deltaTime;
             selfLogic.UpdatePunchCooldown(timerPunchCD);
-            if (timerPunchCD >= selfParams.punchCooldown - 0.15f && soundOnce == false)
+            if (timerPunchCD >= (selfLogic.hasFlag ? selfParams.punchCooldownWithOverdrive : selfParams.punchCooldown) - 0.15f && soundOnce == false)
             {
                 SoundManager.Instance.PlaySoundEvent("PlayerPunchAvailable");
                 soundOnce = true;

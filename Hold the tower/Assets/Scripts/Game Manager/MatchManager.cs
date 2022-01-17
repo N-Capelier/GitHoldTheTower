@@ -103,7 +103,7 @@ public class MatchManager : NetworkBehaviour
         {
             foreach (NetworkIdentity idOwnedByClient in conn.clientOwnedObjects)
             {
-                if (idOwnedByClient.gameObject.GetComponent<PlayerLogic>() != null)
+                if (idOwnedByClient.gameObject.GetComponent<PlayerLogic>() != null && !idOwnedByClient.gameObject.GetComponent<PlayerLogic>().isSpawning)
                 {
                     idOwnedByClient.gameObject.GetComponent<PlayerLogic>().RpcShowGoal(conn,text);
                 }

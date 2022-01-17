@@ -8,6 +8,8 @@ public class PlayerChunckActivation : MonoBehaviour
     [SerializeField]
     private Image switchInputIndicator;
     [SerializeField]
+    private Text switchInputText;
+    [SerializeField]
     private ScriptableParamsPlayer selfParams;
     [SerializeField]
     private Camera playerCamera;
@@ -75,7 +77,6 @@ public class PlayerChunckActivation : MonoBehaviour
     {
         isNearbySwitcher = false;
         Collider[] switcherColliders = Physics.OverlapSphere(transform.position, selfParams.switchChunckRangeMaxDistance, switcherLayerOnly);
-
         if (switcherColliders.Length > 0)
         {
             mindistFromSwitch = selfParams.switchChunckRangeMaxDistance + 50;
@@ -89,7 +90,7 @@ public class PlayerChunckActivation : MonoBehaviour
                 if (directionToSwitcher.magnitude < mindistFromSwitch && ((hit.collider != null && hit.collider.CompareTag("Switcher")) || !needToBeInSight))
                 {
                     mindistFromSwitch = directionToSwitcher.magnitude;
-                    if(aimedSwitcher != null)
+                    if(aimedSwitcher != null && aimedSwitcher != switcherColliders[i].GetComponent<ChunckSwitcher>())
                     {
                         aimedSwitcher.linkedChunck.HighlightChunck(false);
                         aimedSwitcher.UnSelect();
@@ -155,8 +156,17 @@ public class PlayerChunckActivation : MonoBehaviour
             switchInputIndicator.gameObject.SetActive(true);
             switchInputIndicator.fillAmount = aimedSwitcher.linkedChunck.GetCDRatio();
             aimedSwitcher.linkedChunck.HighlightChunck(true);
-            EnableSwitchLine(aimedSwitcher.gameObject);
+            if (aimedSwitcher.linkedChunck.GetCDRatio() == 1)
+            {
+                switchInputText.gameObject.SetActive(true);
+            }
+            else
+            {
+                switchInputText.gameObject.SetActive(false);
+            }
+            //EnableSwitchLine(aimedSwitcher.gameObject);
             aimedSwitcher.Select();
+
             if (Input.GetKeyDown(selfParams.switchChunckKey) || Input.GetButtonDown("YButton"))
             {
                 if (aimedSwitcher.linkedChunck.GetCDRatio() == 1)
@@ -177,6 +187,7 @@ public class PlayerChunckActivation : MonoBehaviour
                 aimedSwitcher.linkedChunck.HighlightChunck(false);
                 DisableSwitchLine();
                 aimedSwitcher.UnSelect();
+                aimedSwitcher = null;
             }
         }
     }

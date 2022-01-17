@@ -23,7 +23,7 @@ public class MenuSounds : MonoBehaviour
     {
         selfParams.masterVolume = (int)volume;
         float temp = SoundManager.Instance.ChangeMasterVolume(volume);
-        volumeMasterText.text = (temp).ToString();
+        volumeMasterText.text = ((int)temp).ToString();
         //masterMixer.SetFloat("MusicVolume", (int)volume);
         //volumeMusicText.text = ((int)volume).ToString();
 
@@ -33,7 +33,7 @@ public class MenuSounds : MonoBehaviour
     {
         selfParams.musicVolume = (int)volume;
         float temp = SoundManager.Instance.ChangeMusicVolume(volume);
-        volumeMusicText.text = (temp).ToString();
+        volumeMusicText.text = ((int)temp).ToString();
         //masterMixer.SetFloat("MusicVolume", (int)volume);
         //volumeMusicText.text = ((int)volume).ToString();
 
@@ -43,7 +43,7 @@ public class MenuSounds : MonoBehaviour
     {
         selfParams.effectsVolume = (int)volume;
         float temp = SoundManager.Instance.ChangeSfxVolume(volume);
-        volumeEffectsText.text = (temp).ToString();
+        volumeEffectsText.text = ((int)temp).ToString();
         //masterMixer.SetFloat("EffectsVolume", (int)volume);
         //volumeEffectsText.text = ((int)volume).ToString();
     }
@@ -52,7 +52,7 @@ public class MenuSounds : MonoBehaviour
     {
         selfParams.annoucersVolume = (int)volume;
         float temp = SoundManager.Instance.ChangeAnnoucerVolume(volume);
-        volumeAnnoucersText.text = (temp).ToString();
+        volumeAnnoucersText.text = ((int)temp).ToString();
         //masterMixer.SetFloat("EffectsVolume", (int)volume);
         //volumeEffectsText.text = ((int)volume).ToString();
     }

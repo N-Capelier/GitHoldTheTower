@@ -19,6 +19,8 @@ public class ThemeManager : Singleton<ThemeManager>
 	public void InitTerrainBlocks()
 	{
 		blocks = GetComponentsInChildren<BlockBehaviour>();
+		UnityEditor.EditorUtility.SetDirty(this);
+		UnityEditor.AssetDatabase.SaveAssets();
 	}
 
 #endif

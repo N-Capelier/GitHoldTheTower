@@ -169,6 +169,8 @@ public class SoundManager : Singleton<SoundManager>
 
         MusicSource1.volume = thisEvent.sounds[0].volume;
 
+        MusicSource1.loop = thisEvent.isLoop;
+
         MusicSource1.Play();
 
     }
@@ -629,7 +631,72 @@ public class SoundManager : Singleton<SoundManager>
         source.Stop();
     }
 
+    public SoundReference PlayUIEvent(string thisEventName)
+    {
+        //Joue un son écoutable par tous mais qui n'est pas localisé dans l'espace.
 
+        //On commence par créer la référence puis créer l'audioSource qui va jouer le son.
+        SoundReference soundRef = new SoundReference();
+        soundRef.audioSource = gameObject.AddComponent<AudioSource>();
+
+        //On va chercher l'event avec l'ID correspondant;
+        SoundEvent thisEvent = soundEventList.FindEvent(thisEventName);
+
+        //On appliques les infos du son dans l'audiosource
+        if (thisEvent.isRandom)
+        {
+            int temp = UnityEngine.Random.Range(0, thisEvent.sounds.Length - 1);
+
+            soundRef.sound = thisEvent.sounds[temp];
+            if (thisEvent.isAnnoucer)
+            {
+                soundRef.ApplySoundToAudioSource(thisEvent.sounds[temp], thisEvent.isLoop, annoucersMixer);
+            }
+            else
+            {
+                soundRef.ApplySoundToAudioSource(thisEvent.sounds[temp], thisEvent.isLoop, sfxMixer);
+            }
+        }
+        else
+        {
+            soundRef.sound = thisEvent.sounds[0];
+            if (thisEvent.isAnnoucer)
+            {
+                soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, annoucersMixer);
+            }
+            else
+            {
+                soundRef.ApplySoundToAudioSource(thisEvent.sounds[0], thisEvent.isLoop, sfxMixer);
+            }
+        }
+
+        if (soundRef.sound.clip == null)
+        {
+            soundRef.sound = soundEventList.FindEvent(0).sounds[0];
+        }
+
+        //On met la référence du son joué
+        actualMusic = soundRef;
+
+        if (thisEvent.isLocalized)
+        {
+            soundRef.audioSource.spatialize = true;
+            soundRef.audioSource.minDistance = minDistance;
+            soundRef.audioSource.maxDistance = maxDistance;
+            soundRef.audioSource.spatialBlend = spatialBlend;
+            soundRef.audioSource.rolloffMode = audioRolloffMode;
+        }
+        else
+        {
+            soundRef.audioSource.spatialize = false;
+        }
+
+        //On joue le son !
+        StartCoroutine(PlaySFX(soundRef));
+
+        //On retourne la référence du son pour qu'il soit modifiable pas la suite la ou on l'appel.
+        return soundRef;
+    }
 
     //Fontion pour jouer un son simplement.
     /*       public void PlaySoundEffect(SoundEvent playedEvent)

@@ -72,11 +72,15 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     private Text nextRotationTimeText;
     [SerializeField]
+    private GameObject nextRotationTimeOutline;
+    [SerializeField]
     public Image teamColorIndicator;
     [SerializeField]
     public GameObject punchHitUi;
     [SerializeField]
     private GameObject punchGetHitUi;
+    [SerializeField]
+    private ParticleSystem punchGetHitParticle;
     [SerializeField]
     private GameObject punchLoadingEffect;
     [SerializeField]
@@ -88,11 +92,15 @@ public class PlayerLogic : NetworkBehaviour
     public GameObject punchChargeDistancePreview2;
     [SerializeField]
     public GameObject punchChargeSliderLine;
+    [SerializeField]
+    public GameObject punchChargeSliderLine2;
 
     [SerializeField]
     private GameObject FlagObject;
     [SerializeField]
     private GameObject FlagInGame;
+    [SerializeField]
+    private GameObject overdriveEffects;
 
     [SerializeField]
     private Material redTeamMaterial;
@@ -131,7 +139,10 @@ public class PlayerLogic : NetworkBehaviour
     private bool doOnce = true;
     //State
     [HideInInspector]
-    public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround, isTouchingWall, isInControl, isSpawning;
+    public bool isGrounded, isJumping, isAttachToWall, isTouchingTheGround, isTouchingWall, isInControl, isSpawning, canMove;
+
+    [HideInInspector]
+    public bool tryToRespawn = false;
 
     [SyncVar]
     public bool hasFlag;
@@ -152,6 +163,8 @@ public class PlayerLogic : NetworkBehaviour
     //charge preview
     Vector3 chargePreviewStartPos;
 
+    private Coroutine respawnCor;
+
     void Start()
     {
         Debug.Log("Start");
@@ -171,14 +184,16 @@ public class PlayerLogic : NetworkBehaviour
         {
             FlagObject = GameObject.Find("Flag");
         }
-
+        basePunchPreviewScale = punchChargeDistancePreview.transform.localScale;
 
         isInControl = true;
+        canMove = true;
         firstPersonViewModel.SetActive(false);
         selfCamera.gameObject.SetActive(false);
         hud.SetActive(false);
         if (hasAuthority)
         {
+            overdriveEffects.SetActive(false);
             selfCamera.gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
             firstPersonViewModel.SetActive(true);
@@ -222,20 +237,35 @@ public class PlayerLogic : NetworkBehaviour
         {
             if (objPlayer.GetComponent<PlayerLogic>() != null)
             {
+                Debug.Log("je rentre");
                 if (objPlayer.GetComponent<NetworkIdentity>().hasAuthority)
                 {
                     authorityPlayer = objPlayer;
+                    Debug.Log("je donne l'autorité");
                     Debug.Log(authorityPlayer);
                 }
                 else
                 {
-
                     noAuthorityPlayer.Add(objPlayer);
                 }
             }
 
         }
 
+        GameObject[] allSpectators = GameObject.FindGameObjectsWithTag("Spectator");
+        if(allSpectators.Length > 0)
+        {
+            Debug.Log("test");
+            foreach (GameObject objSpectator in allSpectators)
+            {
+                if (objSpectator.GetComponent<NetworkIdentity>().hasAuthority)
+                {
+                    authorityPlayer = objSpectator;
+                    Debug.Log(authorityPlayer);
+                }
+            }
+        }
+        
     }
 
     void Update()
@@ -270,6 +300,12 @@ public class PlayerLogic : NetworkBehaviour
         }
 
         ShowFlagToAllPlayer();
+
+        if (hasFlag == false && playerFlagSource.isPlaying)
+        {
+            playerFlagSource.Stop();
+        }
+
     }
 
 
@@ -345,7 +381,7 @@ public class PlayerLogic : NetworkBehaviour
             touchingGroundFlag = true;
         }
 
-        if (!selfMovement.isClimbingMovement && !isWallSliding && !selfMovement.isAttacking && isInControl)
+        if (!selfMovement.isClimbingMovement && !isWallSliding && !selfMovement.isAttacking && isInControl && canMove)
         {
             Vector3 keyDirection = new Vector3(Input.GetAxis("Vertical"), 0, Input.GetAxis("Horizontal"));
             
@@ -475,7 +511,7 @@ public class PlayerLogic : NetworkBehaviour
                             if (GetNearbyWallNormal() != Vector3.zero)
                             {
                                 selfMovement.WallJump(GetNearbyWallNormal());
-                                StartCoroutine(NoControl(0.3f));
+                                StartCoroutine(NoMovement(selfParams.wallJumpNoAirControlTime));
                                 isAttachToWall = false;
                                 isWallSliding = false;
                             }
@@ -562,7 +598,7 @@ public class PlayerLogic : NetworkBehaviour
             float angleDist = lookAngle - wallAngle;
             angleDist = selfMovement.GetClampedAngle(angleDist);
 
-            if (Mathf.Abs(angleDist) > selfParams.wallJumpMinAngleToCancelDeviation)
+            if (Mathf.Abs(angleDist) > selfParams.wallJumpMinAngleToCancelDeviation || Mathf.Abs(angleDist) < selfParams.wallJumpMaxAngleToCancelDeviation)
             {
                 return true;
             }
@@ -582,6 +618,7 @@ public class PlayerLogic : NetworkBehaviour
     #region AttackLogic
 
     private float punchAngleRatio;
+    private Vector3 basePunchPreviewScale;
     public void AttackInput()
     {
         if ((Input.GetMouseButtonDown(selfParams.attackMouseInput) || (Input.GetAxis("RT") > 0 && attackTriggerValueDelta == 0f)) && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown && isInControl)
@@ -611,6 +648,7 @@ public class PlayerLogic : NetworkBehaviour
             punchChargeDistancePreview.SetActive(true);
             punchChargeDistancePreview2.SetActive(true);
             punchChargeSliderLine.SetActive(true);
+            punchChargeSliderLine2.SetActive(true);
             if (timeAttack > 0.2f && !hasFlag)
             {
                 punchChargeDisplay.gameObject.SetActive(true);
@@ -619,17 +657,21 @@ public class PlayerLogic : NetworkBehaviour
             if (hasFlag)
             {
                 ratioAttack = 0;
+                selfMovement.AttackLoad(timeAttack);
                 punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), 0);
                 punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), 0);
 
-                punchChargeDistancePreview.transform.rotation = Quaternion.Euler(0, 0, 0);
-                punchChargeDistancePreview2.transform.rotation = Quaternion.Inverse(selfCamera.rotation);
-                punchChargeDistancePreview.transform.localPosition = chargePreviewStartPos + (Vector3.forward * 0.0046923076923077f * selfParams.punchBaseSpeed * Mathf.Clamp(selfParams.punchSpeedByCharge.Evaluate(0), 0, punchAngleRatio) / selfParams.punchSpeedByCharge.Evaluate(1));
+                //punchChargeDistancePreview.transform.rotation = Quaternion.Euler(0, 0, 0);
+                //punchChargeDistancePreview2.transform.rotation = Quaternion.Inverse(selfCamera.rotation);
+                //punchChargeDistancePreview.transform.localPosition = chargePreviewStartPos + (Vector3.forward * 0.0046923076923077f * selfParams.punchBaseSpeed * Mathf.Clamp(selfParams.punchSpeedByCharge.Evaluate(0), 0, punchAngleRatio) / selfParams.punchSpeedByCharge.Evaluate(1));
+                punchChargeDistancePreview.transform.localPosition = chargePreviewStartPos + (Vector3.forward * 0.0046923076923077f * selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(ratioAttack) / selfParams.punchSpeedByCharge.Evaluate(1)) * punchAngleRatio;
                 punchChargeDistancePreview2.transform.localPosition = punchChargeDistancePreview.transform.localPosition;
 
                 punchChargeSliderLine.transform.localPosition = (punchChargeDistancePreview.transform.localPosition + chargePreviewStartPos) / 2;
-                punchChargeSliderLine.transform.localScale = new Vector3(punchChargeSliderLine.transform.localScale.x, punchChargeSliderLine.transform.localScale.y, punchChargeDistancePreview.transform.localPosition.z);
+                punchChargeSliderLine.transform.localScale = new Vector3(punchChargeSliderLine.transform.localScale.x, punchChargeSliderLine.transform.localScale.y, punchChargeDistancePreview.transform.localPosition.z - 0.2f);
 
+                punchChargeSliderLine2.transform.localPosition = punchChargeSliderLine.transform.localPosition;
+                punchChargeSliderLine2.transform.localScale = punchChargeSliderLine.transform.localScale;
             }
             else
             {
@@ -637,19 +679,24 @@ public class PlayerLogic : NetworkBehaviour
                 punchChargeSlider1.anchoredPosition = Vector2.Lerp(new Vector2(-punchSliderStartOffset, 0), new Vector2(-punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
                 punchChargeSlider2.anchoredPosition = Vector2.Lerp(new Vector2(punchSliderStartOffset, 0), new Vector2(punchSliderEndOffset, 0), timeAttack / selfParams.punchMaxChargeTime);
 
-                punchChargeDistancePreview.transform.rotation = Quaternion.Euler(0, 0, 0);
-                punchChargeDistancePreview2.transform.rotation = Quaternion.Inverse(selfCamera.rotation);
+                //punchChargeDistancePreview.transform.rotation = Quaternion.Euler(0, 0, 0);
+                //punchChargeDistancePreview2.transform.rotation = Quaternion.Inverse(selfCamera.rotation);
                 punchChargeDistancePreview.transform.localPosition = chargePreviewStartPos + (Vector3.forward * 0.0046923076923077f * selfParams.punchBaseSpeed * selfParams.punchSpeedByCharge.Evaluate(ratioAttack) / selfParams.punchSpeedByCharge.Evaluate(1)) * punchAngleRatio; // alors ce chiffre bizarre je l'ai calculer rapport à la courbe de velocité, c'est le coefficient de la distance par rapport à la vitesse du punch
                 punchChargeDistancePreview2.transform.localPosition = punchChargeDistancePreview.transform.localPosition;
                 punchChargeSliderLine.transform.localPosition = (punchChargeDistancePreview.transform.localPosition + chargePreviewStartPos) / 2;
+                punchChargeSliderLine.transform.localScale = new Vector3(punchChargeSliderLine.transform.localScale.x, punchChargeSliderLine.transform.localScale.y, punchChargeDistancePreview.transform.localPosition.z - 0.2f);
                 if (selfMovement.isPunchInstantDestroy)
                 {
-                    punchChargeSliderLine.transform.localScale = new Vector3(0.3f, 0.3f, punchChargeDistancePreview.transform.localPosition.z);
+                    punchChargeDistancePreview.transform.localScale = basePunchPreviewScale * 1.5f;
+                    punchChargeDistancePreview2.transform.localScale = basePunchPreviewScale * 1.5f;
                 }
                 else
                 {
-                    punchChargeSliderLine.transform.localScale = new Vector3(0.15f, 0.15f, punchChargeDistancePreview.transform.localPosition.z);
+                    punchChargeDistancePreview.transform.localScale = basePunchPreviewScale;
+                    punchChargeDistancePreview2.transform.localScale = basePunchPreviewScale;
                 }
+                punchChargeSliderLine2.transform.localPosition = punchChargeSliderLine.transform.localPosition;
+                punchChargeSliderLine2.transform.localScale = punchChargeSliderLine.transform.localScale;
             }
 
         }
@@ -668,8 +715,8 @@ public class PlayerLogic : NetworkBehaviour
 
     public void UpdatePunchCooldown(float cdTime)
     {
-        punchCooldownDisplay.fillAmount = cdTime / selfParams.punchCooldown;
-        punchCooldownSecondDisplay.fillAmount = cdTime / selfParams.punchCooldown;
+        punchCooldownDisplay.fillAmount = cdTime / (hasFlag ? selfParams.punchCooldownWithOverdrive : selfParams.punchCooldown);
+        punchCooldownSecondDisplay.fillAmount = cdTime / (hasFlag ? selfParams.punchCooldownWithOverdrive : selfParams.punchCooldown);
     }
 
     public void StopChargingPunch()
@@ -680,6 +727,7 @@ public class PlayerLogic : NetworkBehaviour
         punchChargeDisplay.gameObject.SetActive(false);
         punchChargeDistancePreview.SetActive(false);
         punchChargeSliderLine.SetActive(false);
+        punchChargeSliderLine2.SetActive(false);
         punchChargeDistancePreview2.SetActive(false);
         timeAttack = 0;
         ratioAttack = 0;
@@ -712,6 +760,8 @@ public class PlayerLogic : NetworkBehaviour
     [TargetRpc]
     public void RpcRespawn(NetworkConnection conn, float maxTimer)
     {
+        //Check if player is alreaddy in spawning
+        
         roundStarted = false;
         timerToStart = NetworkTime.time;
 
@@ -724,10 +774,32 @@ public class PlayerLogic : NetworkBehaviour
             CmdShowFlagInGame();
         }
 
-        StartCoroutine(RespawnManager());
-        
+        if (respawnCor == null)
+            respawnCor = StartCoroutine(RespawnManager());
+        else
+            RespawnInstant();
+
     }
 
+
+    private void RespawnInstant()
+    {
+        if (hasAuthority)
+        {
+            Transform spawnPoint;
+            spawnPoint = GameObject.FindWithTag("Spawner").transform.GetChild(spawnPosition);
+
+            transform.position = spawnPoint.position; //Obligatoire, sinon ne trouve pas le spawner à la premirèe frame
+            selfCollisionParent.transform.localRotation = spawnPoint.rotation;
+            selfCamera.localRotation = spawnPoint.rotation;
+
+            //Tp player to the spwan point
+            selfSmoothSync.teleportOwnedObjectFromOwner();
+            selfCollsionSmoothSync.teleportOwnedObjectFromOwner();
+
+            roundStarted = true;
+        }
+    }
 
     public IEnumerator RespawnManager()
     {
@@ -775,6 +847,13 @@ public class PlayerLogic : NetworkBehaviour
                 selfMovement.ResetVelocity();
                 selfMovement.ResetVerticalVelocity();
                 hudTextPlayer.text = System.Math.Round(timerMaxToStart -(NetworkTime.time - timerToStart)).ToString();
+                if (tryToRespawn)
+                {
+                    Debug.Log("test");
+                    timerToStart = NetworkTime.time;
+                    tryToRespawn = false;
+                }
+                
                 yield return new WaitForEndOfFrame();
 
             }
@@ -792,6 +871,7 @@ public class PlayerLogic : NetworkBehaviour
             {
                 GameObject.Find("Analytics").GetComponent<PA_Position>().startWrite = true;
             }
+            respawnCor = null;
         }
     }
 
@@ -799,7 +879,11 @@ public class PlayerLogic : NetworkBehaviour
     public void RpcShowGoal(NetworkConnection conn,string text)
     {
         timerToStart = NetworkTime.time;
-        StartCoroutine(GoalMessageManager(text));
+        if(respawnCor == null)
+        {
+            respawnCor = StartCoroutine(GoalMessageManager(text));
+        }
+            
         CmdShowScoreHud();
 
     }
@@ -823,7 +907,7 @@ public class PlayerLogic : NetworkBehaviour
         selfMovement.ResetVelocity();
         roundStarted = false;
         timerToStart = NetworkTime.time;
-        StartCoroutine(RespawnManager());
+        respawnCor = StartCoroutine(RespawnManager());
         FlagObject.SetActive(true);
 
     }
@@ -953,6 +1037,12 @@ public class PlayerLogic : NetworkBehaviour
         isInControl = false;
         yield return new WaitForSeconds(time);
         isInControl = true;
+    }
+    public IEnumerator NoMovement(float time)
+    {
+        canMove = false;
+        yield return new WaitForSeconds(time);
+        canMove = true;
     }
 
     [Command]
@@ -1118,14 +1208,18 @@ public class PlayerLogic : NetworkBehaviour
     [ClientRpc]
     private void RpcPlayEquipTeamSound(string eventAllyTeam, string eventEnemyTeam)
     {
-        if(authorityPlayer.GetComponent<PlayerLogic>().teamName == teamName)
+        if(authorityPlayer.GetComponent<PlayerLogic>() != null) //Check if a spectator
         {
-            SoundManager.Instance.PlaySoundEvent(eventAllyTeam);
+            if (authorityPlayer.GetComponent<PlayerLogic>().teamName == teamName)
+            {
+                SoundManager.Instance.PlaySoundEvent(eventAllyTeam);
+            }
+            else
+            {
+                SoundManager.Instance.PlaySoundEvent(eventEnemyTeam);
+            }
         }
-        else
-        {
-            SoundManager.Instance.PlaySoundEvent(eventEnemyTeam);
-        }
+       
     }
 
     //Pseudo
@@ -1164,19 +1258,27 @@ public class PlayerLogic : NetworkBehaviour
 
     public IEnumerator GetHitUi(float timelife)
     {
-        punchGetHitUi.SetActive(true);
-        Color temp = punchGetHitUi.GetComponent<Image>().color;
-        temp.a = 1;
-        float time = 0;
-        while (time < timelife)
+        if(punchGetHitUi == null)
         {
-            time += Time.deltaTime;
-            temp.a = 1 - time;
-            punchGetHitUi.GetComponent<Image>().color = temp;
-            yield return new WaitForEndOfFrame();
+            if(punchGetHitParticle != null)
+                punchGetHitParticle.Play();
         }
-        punchGetHitUi.SetActive(false);
-        yield return null;
+        else
+        {
+            punchGetHitUi.SetActive(true);
+            Color temp = punchGetHitUi.GetComponent<Image>().color;
+            temp.a = 1;
+            float time = 0;
+            while (time < timelife)
+            {
+                time += Time.deltaTime;
+                temp.a = 1 - time;
+                punchGetHitUi.GetComponent<Image>().color = temp;
+                yield return new WaitForEndOfFrame();
+            }
+            punchGetHitUi.SetActive(false);
+            yield return null;
+        }
     }
 
     #endregion
@@ -1229,7 +1331,7 @@ public class PlayerLogic : NetworkBehaviour
     [Command]
     private void CmdShowScoreHud()
     {
-        RpcShowScoreHud();
+        //RpcShowScoreHud();
     }
 
     [ClientRpc]
@@ -1239,10 +1341,35 @@ public class PlayerLogic : NetworkBehaviour
         scoreTextBlue.text = matchManager.blueScore.ToString();
     }
 
+
+    private float evolveWarningTimeLeft;
+    private bool evolveWarningState;
     private void UpdateNextTransitionTime()
     {
         float timerBeforeNextTransition = Mathf.Ceil((float)(levelTransition.timerChange - (NetworkTime.time - levelTransition.networkTime)));
         nextRotationTimeText.text = timerBeforeNextTransition.ToString();
+
+        if (timerBeforeNextTransition < 6f)
+        {
+            evolveWarningTimeLeft -= Time.deltaTime;
+            if(evolveWarningTimeLeft <= 0)
+            {
+                nextRotationTimeOutline.SetActive(!nextRotationTimeOutline.activeSelf);
+                if(timerBeforeNextTransition < 3)
+                {
+                    evolveWarningTimeLeft = 0.1f;
+                }
+                else
+                {
+                    evolveWarningTimeLeft = 0.5f;
+                }
+            }
+        }
+        else
+        {
+            evolveWarningTimeLeft = 0;
+            nextRotationTimeOutline.SetActive(false);
+        }
     }
 
     #endregion

@@ -61,7 +61,6 @@ public class PlayerPing : NetworkBehaviour
                 isPinging = false;
                 StopCoroutine(PingAlive(positionToPing));
                 StartCoroutine(PingAlive(positionToPing));
-                Debug.Log(positionToPing);
             }
 
             if (!isPinging && !Input.GetMouseButton(selfParams.pingMouseInput))
@@ -89,13 +88,15 @@ public class PlayerPing : NetworkBehaviour
     [ClientRpc]
     private void RpcPingAllies(Vector3 pos)
     {
-        if (selfLogic.authorityPlayer.GetComponent<PlayerLogic>().teamName == selfLogic.teamName)
+        if(selfLogic.authorityPlayer.GetComponent<PlayerLogic>() != null)
         {
-            positionToPing = pos;
-            selfPingObject.transform.position = pos;
-            selfPingObject.SetActive(true);
+            if (selfLogic.authorityPlayer.GetComponent<PlayerLogic>().teamName == selfLogic.teamName)
+            {
+                positionToPing = pos;
+                selfPingObject.transform.position = pos;
+                selfPingObject.SetActive(true);
+            }
         }
-        
     }
 
 

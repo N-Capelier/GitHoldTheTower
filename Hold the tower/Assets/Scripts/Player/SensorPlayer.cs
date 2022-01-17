@@ -70,8 +70,7 @@ public class SensorPlayer : MonoBehaviour
             }
             BlockBehaviour block = other.GetComponent<BlockBehaviour>();
 
-
-            if(block.isButton)
+            if(block!= null && block.isButton)
 			{
                 if(block.buttonActiveTerrainIndex == block.loadedTerrainID)
 				{
@@ -81,25 +80,28 @@ public class SensorPlayer : MonoBehaviour
 				return;
 			}
 
-            if(isShockwaveAvailable && block.isDestroyable)
-			{
-                isShockwaveAvailable = false;
-                shockwaveDelayTimer.SetTime(1f);
-
-                Vector3 _shockwaveSpawnPoint = RayCollisionPoint(other);
-
-                GameObject.Find("GameManager").GetComponent<ThemeInteraction>().CmdInstantiateShockwave(_shockwaveSpawnPoint, selfMovement.punchRatio);
-
-                if (selfMovement.isPunchInstantDestroy)
+            if(block != null)
+            {
+                if (isShockwaveAvailable && block.isDestroyable)
                 {
-                    GameObject _shockWave = Instantiate(shockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
-                    _shockWave.GetComponent<ShockwaveCollider>().Shock(selfMovement.punchRatio);
-                    GameObject.Find("GameManager").GetComponent<ThemeInteraction>().CmdExplode(block.blockID);
-                }
-                else
-                {
-                    GameObject _shockWave = Instantiate(shockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
-                    _shockWave.GetComponent<ShockwaveCollider>().Shock(selfMovement.punchRatio);
+                    isShockwaveAvailable = false;
+                    shockwaveDelayTimer.SetTime(1f);
+
+                    Vector3 _shockwaveSpawnPoint = RayCollisionPoint(other);
+
+                    GameObject.Find("GameManager").GetComponent<ThemeInteraction>().CmdInstantiateShockwave(_shockwaveSpawnPoint, selfMovement.punchRatio);
+
+                    if (selfMovement.isPunchInstantDestroy)
+                    {
+                        GameObject _shockWave = Instantiate(shockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
+                        _shockWave.GetComponent<ShockwaveCollider>().Shock(selfMovement.punchRatio);
+                        GameObject.Find("GameManager").GetComponent<ThemeInteraction>().CmdExplode(block.blockID);
+                    }
+                    else
+                    {
+                        GameObject _shockWave = Instantiate(shockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
+                        _shockWave.GetComponent<ShockwaveCollider>().Shock(selfMovement.punchRatio);
+                    }
                 }
             }
 		}

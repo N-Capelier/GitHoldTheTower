@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -5971272096243198551}
   m_Layer: 0
   m_Name: Goal
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -66,13 +66,7 @@ MonoBehaviour:
   syncInterval: 0.1
   goalTeam: 0
   matchManager: {fileID: 0}
-  maxScore: 2
-  redTeamTextScore: Red Team Score
-  blueTeamTextScore: Blue Team Score
-  redTeamTextWin: Red team win the game
-  blueTeamTextWin: Blue team win the game
-  redScore: 0
-  blueScore: 0
+  pa_pos: {fileID: 0}
 --- !u!65 &-5971272096243198551
 BoxCollider:
   m_ObjectHideFlags: 0

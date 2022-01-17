@@ -293,6 +293,7 @@ public class LevelEditorWindow : EditorWindow
         {
 			themeManager.InitTerrainBlocks();
 		}
+		GUILayout.Space(50);
 		EditorGUILayout.EndHorizontal();
 	}
 

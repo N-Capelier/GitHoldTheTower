@@ -41,11 +41,13 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float wallJumpUpwardForce;
     public float maxWallJumpAngleDeviation;
     public float wallJumpMinAngleToCancelDeviation;
+    public float wallJumpMaxAngleToCancelDeviation;
     public float wallSlideGravity;
     public float wallSlideMaxGravitySpeed;
     public float wallSlideSpeedDampening;
     public float wallRideSpeed;
     public float minHorizontalSpeedToStartWallRide;
+    public float wallJumpNoAirControlTime;
 
     [Header("Climb")]
     public float climbHeight = 5f;
@@ -60,6 +62,7 @@ public class ScriptableParamsPlayer : ScriptableObject
     public AnimationCurve punchSpeedByCharge;
     public float punchPerfectTimingPropulsionMultiplier;
     public float punchCooldown = 0.5f;
+    public float punchCooldownWithOverdrive = 0.5f;
     public float punchPerfectTiming = 0.8f;
     public float punchPerfectTimingTreshold = 0.15f;
     public float punchMaxChargeTime = 1f;
