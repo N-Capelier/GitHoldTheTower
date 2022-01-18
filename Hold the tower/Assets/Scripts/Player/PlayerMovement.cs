@@ -245,7 +245,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetSmoothCameraTilt()
     {
-        //selfCamera.rotation = Quaternion.Euler(selfCamera.rotation.eulerAngles.x, selfCamera.rotation.eulerAngles.y, Mathf.Lerp(selfCamera.rotation.eulerAngles.z, cameraTargetTilt, selfParams.cameraTiltLerpSpeed * Time.deltaTime));
         selfCamera.rotation = Quaternion.Lerp(selfCamera.rotation, Quaternion.Euler(selfCamera.rotation.eulerAngles.x, selfCamera.rotation.eulerAngles.y, cameraTargetTilt), selfParams.cameraTiltLerpSpeed * Time.deltaTime);
     }
 
