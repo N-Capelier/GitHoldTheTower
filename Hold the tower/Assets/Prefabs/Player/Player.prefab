@@ -215,6 +215,7 @@ MonoBehaviour:
   punchAngle: 0
   characterAnimator: {fileID: 6221727766277004646}
   wallSlideDirection: {x: 0, y: 0, z: 0}
+  wallSlideNormal: {x: 0, y: 0, z: 0}
   isChargingPunch: 0
 --- !u!114 &3790924781881019435
 MonoBehaviour:
@@ -6646,7 +6647,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 3071
+    m_Bits: 11263
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

@@ -101,6 +101,11 @@ public class PlayerMovement : MonoBehaviour
         {
             characterAnimator.SetFloat("CharacterSpeed", Mathf.Abs(selfRbd.velocity.x));
         }
+
+        if(selfLogic.hasAuthority)
+        {
+            SetSmoothCameraTilt();
+        }
     }
 
 
@@ -176,14 +181,15 @@ public class PlayerMovement : MonoBehaviour
     }
 
     [HideInInspector] public Vector3 wallSlideDirection;
+    [HideInInspector] public Vector3 wallSlideNormal;
 
     public bool SetWallSlideDirection()
     {
-        wallSlideDirection = selfLogic.GetNearbyWallNormal();
+        wallSlideNormal = selfLogic.GetNearbyWallNormal();
 
-        if(wallSlideDirection != Vector3.zero)
+        if(wallSlideNormal != Vector3.zero)
         {
-            float wallAngle = Vector3.SignedAngle(Vector3.right, wallSlideDirection, Vector3.up);
+            float wallAngle = Vector3.SignedAngle(Vector3.right, wallSlideNormal, Vector3.up);
             //float lookAngle = Vector3.SignedAngle(Vector3.right, selfLogic.GetHorizontalVector(selfCamera.forward).normalized, Vector3.up);
             float lookAngle = Vector3.SignedAngle(Vector3.right, selfLogic.GetHorizontalVector(selfRbd.velocity).normalized, Vector3.up);
             if (Mathf.Abs(GetClampedAngle(lookAngle - GetClampedAngle(wallAngle + 90))) < 90)
@@ -196,8 +202,8 @@ public class PlayerMovement : MonoBehaviour
             }
 
 
-            Debug.DrawRay(transform.position, wallSlideDirection * 3, Color.green, 4);
-            Debug.DrawRay(transform.position, Vector3.up * 0.3f, Color.red, 4);
+            //Debug.DrawRay(transform.position, wallSlideDirection * 3, Color.green, 4);
+            //Debug.DrawRay(transform.position, Vector3.up * 0.3f, Color.red, 4);
             return true;
         }
         else
@@ -217,6 +223,35 @@ public class PlayerMovement : MonoBehaviour
         {
             selfRbd.velocity = new Vector3(wallRideVelocity.x, selfRbd.velocity.y - selfParams.wallSlideGravity * Time.deltaTime, wallRideVelocity.z);
         }
+    }
+    float cameraTargetTilt;
+    public void UpdateWallSlideCameraTilt()
+    {
+        float wallAngle = Vector3.SignedAngle(Vector3.right, wallSlideNormal, Vector3.up);
+        //float lookAngle = Vector3.SignedAngle(Vector3.right, selfLogic.GetHorizontalVector(selfCamera.forward).normalized, Vector3.up);
+        float lookAngle = Vector3.SignedAngle(Vector3.right, selfLogic.GetHorizontalVector(selfRbd.velocity).normalized, Vector3.up);
+        float angleDist = 0;
+        angleDist = wallAngle - lookAngle;
+        if (angleDist > 180)
+        {
+            angleDist -= 360;
+        }
+        else if (angleDist < -180)
+        {
+            angleDist += 360;
+        }
+        cameraTargetTilt = Mathf.Lerp(selfParams.cameraTiltAngle, -selfParams.cameraTiltAngle, (angleDist + 90) / 180);
+    }
+
+    public void SetSmoothCameraTilt()
+    {
+        //selfCamera.rotation = Quaternion.Euler(selfCamera.rotation.eulerAngles.x, selfCamera.rotation.eulerAngles.y, Mathf.Lerp(selfCamera.rotation.eulerAngles.z, cameraTargetTilt, selfParams.cameraTiltLerpSpeed * Time.deltaTime));
+        selfCamera.rotation = Quaternion.Lerp(selfCamera.rotation, Quaternion.Euler(selfCamera.rotation.eulerAngles.x, selfCamera.rotation.eulerAngles.y, cameraTargetTilt), selfParams.cameraTiltLerpSpeed * Time.deltaTime);
+    }
+
+    public void ResetCameraTilt()
+    {
+        cameraTargetTilt = 0;
     }
 
     public void ApplyWallAttachForces()

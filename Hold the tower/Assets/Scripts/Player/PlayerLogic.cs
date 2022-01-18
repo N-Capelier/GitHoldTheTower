@@ -340,7 +340,7 @@ public class PlayerLogic : NetworkBehaviour
         xRotation = Mathf.Clamp(xRotation, -90f, 90);
 
         selfCamera.Rotate(Vector3.up * mouseX);
-        selfCamera.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+        selfCamera.rotation = Quaternion.Euler(xRotation, yRotation, selfCamera.rotation.eulerAngles.z);
         selfCollisionParent.transform.localRotation = Quaternion.Euler(0, selfCamera.rotation.eulerAngles.y, 0);
 
     }
@@ -476,7 +476,7 @@ public class PlayerLogic : NetworkBehaviour
                     isTouchingWall = true;
 
                     Vector3 hSpeed = new Vector3(selfMovement.selfRbd.velocity.x, 0, selfMovement.selfRbd.velocity.z);
-                    if (!Input.GetKey(selfParams.jump) && Input.GetAxis("LT") == 0f)
+                    if (Input.GetKey(selfParams.jump) || Input.GetAxis("LT") == 1f)
                     {
                         if (!isAttachToWall)
                         {
@@ -495,17 +495,19 @@ public class PlayerLogic : NetworkBehaviour
                         if (isWallSliding && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide)
                         {
                             selfMovement.ApplyWallSlideForces();
+                            selfMovement.UpdateWallSlideCameraTilt();
                         }
                         else
                         {
                             selfMovement.ApplyWallAttachForces();
                             isWallSliding = false;
+                            selfMovement.ResetCameraTilt();
                             CmdStopPlayerFootstepSource();
                         }
                     }
                     else
                     {
-                        if (!IsLookingInWall() && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide && selfMovement.SetWallSlideDirection())
+                        if ((Input.GetKeyUp(selfParams.jump) || (Input.GetAxis("LT") == 0f && jumpTriggerValueDelta == 1)) && !IsLookingInWall() && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide && selfMovement.SetWallSlideDirection())
                         {
                             if (GetNearbyWallNormal() != Vector3.zero)
                             {
@@ -513,12 +515,14 @@ public class PlayerLogic : NetworkBehaviour
                                 StartCoroutine(NoMovement(selfParams.wallJumpNoAirControlTime));
                                 isAttachToWall = false;
                                 isWallSliding = false;
+                                selfMovement.ResetCameraTilt();
                             }
                         }
                         else
                         {
                             selfMovement.ApplyGravity();
                             isWallSliding = false;
+                            selfMovement.ResetCameraTilt();
                             CmdStopPlayerFootstepSource();
                         }
                     }
@@ -529,6 +533,7 @@ public class PlayerLogic : NetworkBehaviour
                     selfMovement.ApplyGravity();
                     isTouchingWall = false;
                     isWallSliding = false;
+                    selfMovement.ResetCameraTilt();
                     CmdStopPlayerFootstepSource();
                 }
 
@@ -548,6 +553,7 @@ public class PlayerLogic : NetworkBehaviour
                 }
                 isAttachToWall = false;
                 isWallSliding = false;
+                selfMovement.ResetCameraTilt();
                 //CmdStopPlayerFootstepSource();
                 isTouchingWall = false;
             }

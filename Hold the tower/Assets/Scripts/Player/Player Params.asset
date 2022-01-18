@@ -42,6 +42,8 @@ MonoBehaviour:
   wallRideSpeed: 11
   minHorizontalSpeedToStartWallRide: 2
   wallJumpNoAirControlTime: 0.05
+  cameraTiltAngle: 7
+  cameraTiltLerpSpeed: 30
   climbHeight: 1
   climbWidth: 1.3
   timeToClimb: 0.1
