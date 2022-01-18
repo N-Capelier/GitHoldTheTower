@@ -248,7 +248,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   backForceWhenPunchingWall: 8
   switchChunckAimMaxDistance: 0
-  switchChunckRangeMaxDistance: 12
+  switchChunckRangeMaxDistance: 0.1
   captureOverdriveText: Capture overdrive
   goToGoalText: Reach the enemy goal
   defendText: Take back the overdrive
