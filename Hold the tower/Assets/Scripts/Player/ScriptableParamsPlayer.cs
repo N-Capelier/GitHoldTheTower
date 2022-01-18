@@ -50,6 +50,8 @@ public class ScriptableParamsPlayer : ScriptableObject
     public float wallJumpNoAirControlTime;
     public float cameraTiltAngle;
     public float cameraTiltLerpSpeed;
+    public bool useAlternateWallJump;
+    public float maxTimeToTriggerAlternateWallJump;
 
     [Header("Climb")]
     public float climbHeight = 5f;

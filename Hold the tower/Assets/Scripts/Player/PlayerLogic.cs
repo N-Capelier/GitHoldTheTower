@@ -469,6 +469,8 @@ public class PlayerLogic : NetworkBehaviour
         return horizontalVector.normalized;
     }
 
+    private float timeSinceLastWallSlide;
+    private float timeOfLastWallSlide;
     private bool isWallSliding;
     private void VerticalMovement()
     {
@@ -481,12 +483,23 @@ public class PlayerLogic : NetworkBehaviour
                     isTouchingWall = true;
 
                     Vector3 hSpeed = new Vector3(selfMovement.selfRbd.velocity.x, 0, selfMovement.selfRbd.velocity.z);
-                    if (Input.GetKey(selfParams.jump) || Input.GetAxis("LT") == 1f)
+
+
+                    if (selfParams.useAlternateWallJump
+                        && (Input.GetKeyDown(selfParams.jump) || (Input.GetAxis("LT") == 1f && jumpTriggerValueDelta == 0))
+                        && timeSinceLastWallSlide < selfParams.maxTimeToTriggerAlternateWallJump
+                        && !IsLookingInWall() && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide && selfMovement.SetWallSlideDirection())
+                    {
+                        selfMovement.WallJump(GetNearbyWallNormal());
+                        StartCoroutine(NoMovement(selfParams.wallJumpNoAirControlTime));
+                        isAttachToWall = false;
+                    }
+                    else if (Input.GetKey(selfParams.jump) || Input.GetAxis("LT") == 1f)
                     {
                         if (!isAttachToWall)
                         {
                             isAttachToWall = true;
-                            if (!IsLookingInWall() && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide)
+                            if ((selfParams.useAlternateWallJump ? canMove : true) && !IsLookingInWall() && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide)
                             {
                                 if (selfMovement.SetWallSlideDirection())
                                 {
@@ -501,6 +514,10 @@ public class PlayerLogic : NetworkBehaviour
                         {
                             selfMovement.ApplyWallSlideForces();
                             selfMovement.UpdateWallSlideCameraTilt();
+                            if (selfParams.useAlternateWallJump)
+                            {
+                                timeOfLastWallSlide = Time.time;
+                            }
                         }
                         else
                         {
@@ -512,7 +529,7 @@ public class PlayerLogic : NetworkBehaviour
                     }
                     else
                     {
-                        if ((Input.GetKeyUp(selfParams.jump) || (Input.GetAxis("LT") == 0f && jumpTriggerValueDelta == 1)) && !IsLookingInWall() && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide && selfMovement.SetWallSlideDirection())
+                        if (!selfParams.useAlternateWallJump && (Input.GetKeyUp(selfParams.jump) || (Input.GetAxis("LT") == 0f && jumpTriggerValueDelta == 1)) && !IsLookingInWall() && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide && selfMovement.SetWallSlideDirection())
                         {
                             if (GetNearbyWallNormal() != Vector3.zero)
                             {
@@ -525,6 +542,10 @@ public class PlayerLogic : NetworkBehaviour
                         }
                         else
                         {
+                            if(selfParams.useAlternateWallJump)
+                            {
+                                isAttachToWall = false;
+                            }
                             selfMovement.ApplyGravity();
                             isWallSliding = false;
                             selfMovement.ResetCameraTilt();
@@ -563,6 +584,12 @@ public class PlayerLogic : NetworkBehaviour
                 isTouchingWall = false;
             }
         }
+
+        if(selfParams.useAlternateWallJump && !isWallSliding)
+        {
+            timeSinceLastWallSlide = Time.time - timeOfLastWallSlide;
+        }
+
         jumpTriggerValueDelta = Input.GetAxis("LT");
     }
 

@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
                 StopCoroutine(walkTransitionCoroutine);
             walkTransitionCoroutine = StartCoroutine(WalkTransition());
         }
-        else if (!isMoving && Mathf.Abs(selfRbd.velocity.x) > 0.02f)
+        else if (!isMoving && Mathf.Abs(selfRbd.velocity.magnitude) > 0.02f)
         {
             isMoving = true;
             if (walkTransitionCoroutine != null)
