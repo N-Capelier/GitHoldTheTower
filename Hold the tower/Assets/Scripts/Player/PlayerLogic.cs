@@ -193,6 +193,26 @@ public class PlayerLogic : NetworkBehaviour
         selfCamera.gameObject.SetActive(false);
         hud.SetActive(false);
         overviewCameraPos = GameObject.Find("OverviewCameraPosBlueSide").transform;
+
+
+        GameObject[] allPlayers = GameObject.FindGameObjectsWithTag("Player");
+        noAuthorityPlayer = new List<GameObject>();
+        foreach (GameObject objPlayer in allPlayers)
+        {
+            if (objPlayer.GetComponent<PlayerLogic>() != null)
+            {
+                if (objPlayer.GetComponent<NetworkIdentity>().hasAuthority)
+                {
+                    authorityPlayer = objPlayer;
+                }
+                else
+                {
+                    noAuthorityPlayer.Add(objPlayer);
+                }
+            }
+
+        }
+
         if (hasAuthority)
         {
             overdriveEffects.SetActive(false);
@@ -222,34 +242,20 @@ public class PlayerLogic : NetworkBehaviour
             selfFirstPersonView.SetActive(false);
 
             //Make blue if ally, else make red him red
-            if(GameObject.Find("ServerManager").GetComponent<MyNewNetworkManager>().playerTeamName == teamName)
+            if(authorityPlayer.GetComponent<PlayerLogic>().teamName == teamName)
             {
                 playerMeshRenderer.material = blueTeamMaterial;
+                player3dPseudo.GetComponentInChildren<Text>().color = Color.blue;
             }
             else
             {
                 playerMeshRenderer.material = redTeamMaterial;
+                player3dPseudo.GetComponentInChildren<Text>().color = Color.red;
             }
 
         }
 
-        GameObject[] allPlayers = GameObject.FindGameObjectsWithTag("Player");
-        noAuthorityPlayer = new List<GameObject>();
-        foreach (GameObject objPlayer in allPlayers)
-        {
-            if (objPlayer.GetComponent<PlayerLogic>() != null)
-            {
-                if (objPlayer.GetComponent<NetworkIdentity>().hasAuthority)
-                {
-                    authorityPlayer = objPlayer;
-                }
-                else
-                {
-                    noAuthorityPlayer.Add(objPlayer);
-                }
-            }
-
-        }
+       
 
         GameObject[] allSpectators = GameObject.FindGameObjectsWithTag("Spectator");
         if(allSpectators.Length > 0)
