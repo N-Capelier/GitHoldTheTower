@@ -25,6 +25,7 @@ public class SensorPlayer : MonoBehaviour
     [SerializeField] Camera playerCamera;
     [SerializeField] LayerMask wallLayerMask;
     [SerializeField] GameObject shockwavePrefab;
+    [SerializeField] GameObject instantShockwavePrefab;
 
     Clock shockwaveDelayTimer;
     bool isShockwaveAvailable = true;
@@ -91,7 +92,7 @@ public class SensorPlayer : MonoBehaviour
             if(block != null)
             {
                 if (isShockwaveAvailable && block.isDestroyable)
-                {
+                { 
                     isShockwaveAvailable = false;
                     shockwaveDelayTimer.SetTime(1f);
 
@@ -103,7 +104,8 @@ public class SensorPlayer : MonoBehaviour
                     {
                         GameObject _shockWave = Instantiate(shockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
                         _shockWave.GetComponent<ShockwaveCollider>().Shock(selfMovement.punchRatio);
-                        GameObject.Find("GameManager").GetComponent<ThemeInteraction>().CmdExplode(block.blockID);
+                        Instantiate(instantShockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
+                        //GameObject.Find("GameManager").GetComponent<ThemeInteraction>().CmdExplode(block.blockID);
                     }
                     else
                     {
