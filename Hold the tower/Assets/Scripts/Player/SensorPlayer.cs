@@ -100,18 +100,18 @@ public class SensorPlayer : MonoBehaviour
 
                     GameObject.Find("GameManager").GetComponent<ThemeInteraction>().CmdInstantiateShockwave(_shockwaveSpawnPoint, selfMovement.punchRatio);
 
-                    if (selfMovement.isPunchInstantDestroy)
-                    {
+                    //if (selfMovement.isPunchInstantDestroy)
+                    //{
+                    //    GameObject _shockWave = Instantiate(shockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
+                    //    _shockWave.GetComponent<ShockwaveCollider>().Shock(selfMovement.punchRatio);
+                    //    Instantiate(instantShockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
+                    //    //GameObject.Find("GameManager").GetComponent<ThemeInteraction>().CmdExplode(block.blockID);
+                    //}
+                    //else
+                    //{
                         GameObject _shockWave = Instantiate(shockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
                         _shockWave.GetComponent<ShockwaveCollider>().Shock(selfMovement.punchRatio);
-                        Instantiate(instantShockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
-                        //GameObject.Find("GameManager").GetComponent<ThemeInteraction>().CmdExplode(block.blockID);
-                    }
-                    else
-                    {
-                        GameObject _shockWave = Instantiate(shockwavePrefab, _shockwaveSpawnPoint, Quaternion.identity);
-                        _shockWave.GetComponent<ShockwaveCollider>().Shock(selfMovement.punchRatio);
-                    }
+                    //}
                 }
             }
 		}
