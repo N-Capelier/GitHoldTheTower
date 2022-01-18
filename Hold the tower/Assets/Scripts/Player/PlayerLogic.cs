@@ -192,7 +192,6 @@ public class PlayerLogic : NetworkBehaviour
         firstPersonViewModel.SetActive(false);
         selfCamera.gameObject.SetActive(false);
         hud.SetActive(false);
-        overviewCameraPos = GameObject.Find("OverviewCameraPosBlueSide").transform;
 
 
         GameObject[] allPlayers = GameObject.FindGameObjectsWithTag("Player");
@@ -853,6 +852,8 @@ public class PlayerLogic : NetworkBehaviour
         //Find respawn and set spawn
         if (hasAuthority)
         {
+            if(overviewCameraPos == null)
+                overviewCameraPos = GameObject.Find("OverviewCameraPosBlueSide").transform;
             overviewCamera.enabled = true;
             highlightCam.enabled = false;
             fpvCam.enabled = false;
