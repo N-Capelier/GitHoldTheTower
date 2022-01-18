@@ -591,7 +591,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Hold down "JUMP" to automatically jump when you hit a wall
+  m_text: Release "JUMP" to jump off the wall
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2077,7 +2077,7 @@ PrefabInstance:
       objectReference: {fileID: 1455754499}
     - target: {fileID: 5132679588279635202, guid: 0a2b2a72e900b1e499a707e306b71362, type: 3}
       propertyPath: timerChange
-      value: 1000
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5132679588279635203, guid: 0a2b2a72e900b1e499a707e306b71362, type: 3}
       propertyPath: m_Name
@@ -3531,7 +3531,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7862052711180574709, guid: 8c03972ad677c8b40ac99d89b5f82900, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 25
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 7862052711187857020, guid: 8c03972ad677c8b40ac99d89b5f82900, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3599,7 +3599,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7862052711671280518, guid: 8c03972ad677c8b40ac99d89b5f82900, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 18
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7862052711695876824, guid: 8c03972ad677c8b40ac99d89b5f82900, type: 3}
       propertyPath: m_LocalScale.y
@@ -3619,7 +3619,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7862052711736483142, guid: 8c03972ad677c8b40ac99d89b5f82900, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 17
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7862052711771562312, guid: 8c03972ad677c8b40ac99d89b5f82900, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3631,7 +3631,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7862052711841177520, guid: 8c03972ad677c8b40ac99d89b5f82900, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 7862052711860952618, guid: 8c03972ad677c8b40ac99d89b5f82900, type: 3}
       propertyPath: m_LocalScale.y
@@ -3647,7 +3647,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7862052711884481829, guid: 8c03972ad677c8b40ac99d89b5f82900, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 18
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7862052711947811867, guid: 8c03972ad677c8b40ac99d89b5f82900, type: 3}
       propertyPath: m_LocalScale.y
@@ -3743,7 +3743,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7862052712347394932, guid: 8c03972ad677c8b40ac99d89b5f82900, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 7862052712381380779, guid: 8c03972ad677c8b40ac99d89b5f82900, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3917,6 +3917,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ec0aef1001ed0043b6cf9df4483f627, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1519476202
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1519476203}
+  m_Layer: 0
+  m_Name: OverviewCameraPosBlueSide
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1519476203
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1519476202}
+  m_LocalRotation: {x: -0.19963355, y: 0.6319325, z: -0.20075296, w: -0.7214611}
+  m_LocalPosition: {x: 15.9701185, y: 64.053406, z: -82.05245}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 48
+  m_LocalEulerAnglesHint: {x: 32.805, y: -81.681, z: 2.548}
 --- !u!1001 &1592918639
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3999,15 +4029,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1430553129155428428, guid: bed903f7ee7375346b283d6c3d786213, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -19.93
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 1430553129155428428, guid: bed903f7ee7375346b283d6c3d786213, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 25.37
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 1430553129155428428, guid: bed903f7ee7375346b283d6c3d786213, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -97.76
+      value: -104
       objectReference: {fileID: 0}
     - target: {fileID: 1430553129155428428, guid: bed903f7ee7375346b283d6c3d786213, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4045,6 +4075,18 @@ PrefabInstance:
       propertyPath: linkedChunck
       value: 
       objectReference: {fileID: 1096381987}
+    - target: {fileID: 1430553129155428433, guid: bed903f7ee7375346b283d6c3d786213, type: 3}
+      propertyPath: m_Size.x
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 1430553129155428433, guid: bed903f7ee7375346b283d6c3d786213, type: 3}
+      propertyPath: m_Size.y
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1430553129155428433, guid: bed903f7ee7375346b283d6c3d786213, type: 3}
+      propertyPath: m_Size.z
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1430553129155428439, guid: bed903f7ee7375346b283d6c3d786213, type: 3}
       propertyPath: m_Name
       value: Switcher
@@ -4757,7 +4799,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Jump Towards a wall to automatically start Wallriding
+  m_text: Hold down "JUMP" to start Wallriding
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
