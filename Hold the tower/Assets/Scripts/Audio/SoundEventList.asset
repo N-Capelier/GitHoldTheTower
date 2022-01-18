@@ -166,10 +166,10 @@ MonoBehaviour:
     isMusic: 0
     isAnnoucer: 0
   - name: PlayerPunchImpact
-    ID: 37
+    ID: 12
     sounds:
     - name: PlayerPunchImpact
-      ID: 39
+      ID: 14
       clip: {fileID: 8300000, guid: 73b2df4527ceb484296fb85e083a49ab, type: 3}
       volume: 1
     isLocalized: 0
@@ -278,7 +278,7 @@ MonoBehaviour:
     sounds:
     - name: LevelEvolvingAnoucement
       ID: 23
-      clip: {fileID: 8300000, guid: cb8b17ce0dbb4be47a883a57698f29c8, type: 3}
+      clip: {fileID: 8300000, guid: 292046885b9461e41916550e16e976dc, type: 3}
       volume: 1
     isLocalized: 0
     isRandom: 0
@@ -290,7 +290,7 @@ MonoBehaviour:
     sounds:
     - name: LevelEvolvingAlarm
       ID: 24
-      clip: {fileID: 8300000, guid: f81f3dd7af59596498404ce449b1d36a, type: 3}
+      clip: {fileID: 8300000, guid: 674c215c4042bd9479c691e44d35b9f5, type: 3}
       volume: 0.8
     isLocalized: 0
     isRandom: 0
@@ -339,7 +339,7 @@ MonoBehaviour:
     - name: LevelButtonActivated
       ID: 28
       clip: {fileID: 8300000, guid: 3ea3def82f4bbe743a0a6ccc4e1e3b40, type: 3}
-      volume: 0.9
+      volume: 1
     isLocalized: 0
     isRandom: 0
     isLoop: 0
@@ -466,10 +466,10 @@ MonoBehaviour:
     isMusic: 1
     isAnnoucer: 0
   - name: UIButtonAccesDenied
-    ID: 36
+    ID: 37
     sounds:
     - name: UIButtonAccesDenied
-      ID: 38
+      ID: 39
       clip: {fileID: 8300000, guid: 2cf24ee2e743c1f46a645d4aeba3d49a, type: 3}
       volume: 1
     isLocalized: 0
@@ -478,10 +478,10 @@ MonoBehaviour:
     isMusic: 0
     isAnnoucer: 0
   - name: UIButtonActive
-    ID: 36
+    ID: 38
     sounds:
     - name: UIButtonActive
-      ID: 38
+      ID: 40
       clip: {fileID: 8300000, guid: dcbd1263b591f544db831f9a04146dbe, type: 3}
       volume: 1
     isLocalized: 0
@@ -490,10 +490,10 @@ MonoBehaviour:
     isMusic: 0
     isAnnoucer: 0
   - name: UIButtonClick
-    ID: 36
+    ID: 39
     sounds:
     - name: UIButtonClick
-      ID: 38
+      ID: 41
       clip: {fileID: 8300000, guid: 6e2787f06472ca44f9f3aada509bbbe3, type: 3}
       volume: 1
     isLocalized: 0
@@ -502,10 +502,10 @@ MonoBehaviour:
     isMusic: 0
     isAnnoucer: 0
   - name: UIButton
-    ID: 36
+    ID: 40
     sounds:
     - name: UIButtonConfirm
-      ID: 38
+      ID: 42
       clip: {fileID: 8300000, guid: 4052f4a25dd52c845b90392f958f713a, type: 3}
       volume: 1
     isLocalized: 0
@@ -514,10 +514,10 @@ MonoBehaviour:
     isMusic: 0
     isAnnoucer: 0
   - name: UIButtonReturn
-    ID: 36
+    ID: 41
     sounds:
     - name: UIButtonReturn
-      ID: 38
+      ID: 43
       clip: {fileID: 8300000, guid: d565759aadc9107448c93d6ea6408594, type: 3}
       volume: 1
     isLocalized: 0
