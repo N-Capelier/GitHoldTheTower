@@ -2622,7 +2622,7 @@ GameObject:
   - component: {fileID: 3149200262943194437}
   - component: {fileID: 8060937239361959761}
   - component: {fileID: 1072665183703570073}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: PucnhIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2697,7 +2697,7 @@ GameObject:
   - component: {fileID: 4221562534620855049}
   - component: {fileID: 8189297370767016193}
   - component: {fileID: 187232676306650257}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: PunchCDOutline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2982,7 +2982,7 @@ GameObject:
   - component: {fileID: 6366227271535008041}
   - component: {fileID: 7649252963425333101}
   - component: {fileID: 94502612019177110}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3529,7 +3529,7 @@ GameObject:
   - component: {fileID: 8474563375542923915}
   - component: {fileID: 2447179853784901120}
   - component: {fileID: 3958461819047201193}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: PucnhIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5057,7 +5057,7 @@ GameObject:
   - component: {fileID: 3260598374598921477}
   - component: {fileID: 671804255636431950}
   - component: {fileID: 1007892405325504458}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: ObjectiveInfoText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6119,7 +6119,7 @@ GameObject:
   - component: {fileID: 7877801580552912406}
   - component: {fileID: 1015230016942829754}
   - component: {fileID: 6673417392559798737}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: PunchInputIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7313,7 +7313,7 @@ GameObject:
   - component: {fileID: 1996543806507212140}
   - component: {fileID: 4262985975286837114}
   - component: {fileID: 5863255474067577195}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: PunchCD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8081,7 +8081,7 @@ GameObject:
   - component: {fileID: 6539876424440780900}
   - component: {fileID: 6035057737087078012}
   - component: {fileID: 4785465818258133639}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Cursor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8789,7 +8789,7 @@ GameObject:
   - component: {fileID: 4213780570780926583}
   - component: {fileID: 8242652936888148639}
   - component: {fileID: 4494080260867701745}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: PunchCooldown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10266,7 +10266,7 @@ GameObject:
   - component: {fileID: 1179301370240602571}
   - component: {fileID: 7366158757228566216}
   - component: {fileID: 3334735714786619492}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: PunchInputIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
