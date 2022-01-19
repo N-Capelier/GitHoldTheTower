@@ -222,6 +222,14 @@ public class MenuManager : MonoBehaviour
 		Application.Quit();
 
 	}
+
+	public void BackToMainMenu()
+    {
+		menuObject.SetActive(true);
+		mainMenu.SetActive(false);
+		lobbyObject.SetActive(false);
+		joinMenu.SetActive(false);
+    }
 	#endregion
 
 	#region effect
