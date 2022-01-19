@@ -261,12 +261,12 @@ public class PlayerLogic : NetworkBehaviour
                 if (authorityPlayer.GetComponent<PlayerLogic>().teamName == teamName)
                 {
                     playerMeshRenderer.material = blueTeamMaterial;
-                    player3dPseudo.GetComponentInChildren<Text>().color = Color.blue;
+                    player3dPseudo.GetComponentInChildren<Text>().color = guide.allyColor;
                 }
                 else
                 {
                     playerMeshRenderer.material = redTeamMaterial;
-                    player3dPseudo.GetComponentInChildren<Text>().color = Color.red;
+                    player3dPseudo.GetComponentInChildren<Text>().color = guide.enemyColor;
                 }
             }
             else
