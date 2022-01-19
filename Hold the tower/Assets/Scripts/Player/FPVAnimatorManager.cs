@@ -6,13 +6,23 @@ public class FPVAnimatorManager : MonoBehaviour
 {
 	[Header("References")]
 	[SerializeField] Animator animator;
+	[SerializeField] GameObject loadedParticles;
 	[SerializeField] PlayerLogic logic;
 	[SerializeField] PlayerMovement movement;
 
 	private void Update()
 	{
-		var animatorInfo = animator.GetCurrentAnimatorClipInfo(0);
-		Debug.LogWarning(animatorInfo[0].clip.name);
+		//var animatorInfo = animator.GetCurrentAnimatorClipInfo(0);
+		//Debug.LogWarning(animatorInfo[0].clip.name);
+
+		if((animator.GetBool("isPunchLoaded") && !loadedParticles.activeSelf))
+		{
+			loadedParticles.SetActive(true);
+		}
+		else if(!animator.GetBool("isPunchLoaded") && loadedParticles.activeSelf)
+		{
+			loadedParticles.SetActive(false);
+		}
 
 		if (movement.selfRbd.velocity.x != 0f || movement.selfRbd.velocity.z != 0f)
 		{
