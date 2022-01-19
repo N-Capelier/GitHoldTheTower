@@ -1,27 +1,58 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class FPVAnimatorManager : MonoBehaviour
 {
 	[Header("References")]
 	[SerializeField] Animator animator;
-	[SerializeField] GameObject loadedParticles;
+	[SerializeField] ParticleSystem loadedParticles;
+	ParticleSystem.MainModule psMainModule;
 	[SerializeField] PlayerLogic logic;
 	[SerializeField] PlayerMovement movement;
+	[SerializeField] Transform loadedStartPos, loadedEndPos;
+	Coroutine moveParticlesCoroutine;
+
+	private void Start()
+	{
+		psMainModule = loadedParticles.main;
+	}
 
 	private void Update()
 	{
 		//var animatorInfo = animator.GetCurrentAnimatorClipInfo(0);
 		//Debug.LogWarning(animatorInfo[0].clip.name);
 
-		if((animator.GetBool("isPunchLoaded") && !loadedParticles.activeSelf))
+#if UNITY_EDITOR
+		if(Input.GetKeyDown(KeyCode.P))
 		{
-			loadedParticles.SetActive(true);
+			EditorApplication.isPaused = true;
 		}
-		else if(!animator.GetBool("isPunchLoaded") && loadedParticles.activeSelf)
+#endif
+
+		if(loadedParticles.gameObject.activeSelf)
 		{
-			loadedParticles.SetActive(false);
+			if (animator.GetBool("isPunchLoaded"))
+			{
+				psMainModule.startLifetime = .8f;
+			}
+			else if(animator.GetBool("isLoadingPunch"))
+			{
+				loadedParticles.transform.position = Vector3.Lerp(loadedStartPos.position, loadedEndPos.position, logic.ratioAttack);
+				psMainModule.startLifetime = logic.ratioAttack.Remap(0f, 1f, 0f, .8f);
+			}
+		}
+
+		if(animator.GetBool("isLoadingPunch") && !loadedParticles.gameObject.activeSelf && !logic.hasFlag)
+		{
+			loadedParticles.gameObject.SetActive(true);
+		}
+		else if(((!animator.GetBool("isPunchLoaded") && !animator.GetBool("isLoadingPunch")) || logic.hasFlag) && loadedParticles.gameObject.activeSelf)
+		{
+			loadedParticles.gameObject.SetActive(false);
 		}
 
 		if (movement.selfRbd.velocity.x != 0f || movement.selfRbd.velocity.z != 0f)
@@ -45,6 +76,21 @@ public class FPVAnimatorManager : MonoBehaviour
 		}
 	}
 
+	IEnumerator MoveParticlesOnPunch()
+	{
+		float _completion = 0f;
+		while(_completion < .4f)
+		{
+			Debug.LogWarning(animator.GetBool("isLoadingPunch") + " " + animator.GetBool("isPunchLoaded") + " " + animator.GetBool("isPunching"));
+
+			loadedParticles.transform.position = Vector3.Lerp(loadedEndPos.position, loadedStartPos.position, _completion);
+			//Debug.LogWarning(loadedParticles.transform.position);
+			_completion += Time.deltaTime;
+			yield return new WaitForEndOfFrame();
+		}
+	}
+
+
 	public void AnimateJump()
 	{
 		animator.SetBool("isJumping", true);
@@ -60,5 +106,10 @@ public class FPVAnimatorManager : MonoBehaviour
 	{
 		animator.SetBool("isPunchLoaded", false);
 		animator.SetBool("isPunching", true);
+
+		if(moveParticlesCoroutine == null)
+		{
+			StartCoroutine(MoveParticlesOnPunch());
+		}
 	}
 }
