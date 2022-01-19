@@ -33,50 +33,68 @@ public class LandMarkManager : MonoBehaviour
         {
             if(landMark.typeElement == SwapColorGoal.layer)
             {
-                int layerBlue = landMark.blueSide[0].layer;
-                int layerRed = landMark.redSide[0].layer;
+                int layerBlue = 0;
+                int layerRed = 0;
+                if (landMark.blueSide[0] != null)
+                    layerBlue = landMark.blueSide[0].layer;
+                if (landMark.redSide[0] != null)
+                    layerRed = landMark.redSide[0].layer;
 
                 for (int i =0; i < landMark.blueSide.Count; i++)
                 {
-                    landMark.blueSide[i].layer = layerRed;
+                    if(landMark.blueSide[i] != null)
+                        landMark.blueSide[i].layer = layerRed;
                 }
                 for (int i = 0; i < landMark.redSide.Count; i++)
                 {
-                    landMark.redSide[i].layer = layerBlue;
+                    if (landMark.redSide[i] != null)
+                        landMark.redSide[i].layer = layerBlue;
                 }
             }
 
             if(landMark.typeElement == SwapColorGoal.material)
             {
-                Material blueMaterial = landMark.blueSide[0].GetComponent<Renderer>().sharedMaterial;
-                Material redMaterial = landMark.redSide[0].GetComponent<Renderer>().sharedMaterial;
+                Material blueMaterial = null;
+                Material redMaterial = null;
+                if (landMark.blueSide[0] != null)
+                    blueMaterial = landMark.blueSide[0].GetComponent<Renderer>().sharedMaterial;
+                if (landMark.redSide[0] != null)
+                    redMaterial = landMark.redSide[0].GetComponent<Renderer>().sharedMaterial;
 
                 for (int i = 0; i < landMark.blueSide.Count; i++)
                 {
-                    landMark.blueSide[i].GetComponent<Renderer>().material = redMaterial;
+                    if (landMark.blueSide[i] != null)
+                        landMark.blueSide[i].GetComponent<Renderer>().material = redMaterial;
                     
                 }
 
                 for (int i = 0; i < landMark.redSide.Count; i++)
                 {
-                    landMark.redSide[i].GetComponent<Renderer>().material = blueMaterial;
+                    if (landMark.redSide[i] != null)
+                        landMark.redSide[i].GetComponent<Renderer>().material = blueMaterial;
                 }
             }
 
             if(landMark.typeElement == SwapColorGoal.light)
             {
-                Color blueColor = landMark.blueSide[0].GetComponent<Light>().color;
-                Color redColor = landMark.redSide[0].GetComponent<Light>().color;
+                Color blueColor = Color.clear;
+                Color redColor = Color.clear;
+                if (landMark.blueSide[0] != null)
+                    blueColor = landMark.blueSide[0].GetComponent<Light>().color;
+                if (landMark.redSide[0] != null)
+                    redColor = landMark.redSide[0].GetComponent<Light>().color;
 
                 for (int i = 0; i < landMark.blueSide.Count; i++)
                 {
-                    landMark.blueSide[i].GetComponent<Light>().color = redColor;
+                    if (landMark.blueSide[i] != null)
+                        landMark.blueSide[i].GetComponent<Light>().color = redColor;
                     
                 }
 
                 for (int i = 0; i < landMark.redSide.Count; i++)
                 {
-                    landMark.redSide[i].GetComponent<Light>().color = blueColor;
+                    if (landMark.redSide[i] != null)
+                        landMark.redSide[i].GetComponent<Light>().color = blueColor;
                 }
             }
         }

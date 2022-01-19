@@ -17,7 +17,9 @@ public class PlayerGuide : MonoBehaviour
     [SerializeField]
     private Camera playerCamera;
     [SerializeField]
-    private float borderWidthRatio;
+    private float borderWidthHorizontal;
+    [SerializeField]
+    private float borderWidthVertical;
     [SerializeField]
     private RectTransform overdriveProgressionIcon;
     [SerializeField]
@@ -36,12 +38,14 @@ public class PlayerGuide : MonoBehaviour
     private Text allyScoreText, enemyScoreText;
     [SerializeField]
     private Image overdriveProgressionIconImage;
+
+    public Color allyColor, enemyColor;
     [SerializeField]
-    private Color allyColor, enemyColor;
+    private GameObject objectiveCursorEffect;
 
     private PlayerLogic playerLogic;
     private MatchManager matchManager;
-    private GameObject targetObject;
+    private Vector3 targetPos;
     private GameObject flag;
     private GameObject adverseGoal;
     private GameObject ownGoal;
@@ -101,9 +105,13 @@ public class PlayerGuide : MonoBehaviour
     Vector2 screenPos;
     Vector3 targetDirection;
     float angleFromTarget;
+    int redScore;
+    int blueScore;
 
-    bool ownTeamHasOverdrive;
-    bool overdriveIsInCenter;
+    [HideInInspector]
+    public bool ownTeamHasOverdrive;
+    [HideInInspector]
+    public bool overdriveIsInCenter;
     private void Update()
     {
         if (playerLogic.roundStarted && !playersSetUp)
@@ -125,21 +133,21 @@ public class PlayerGuide : MonoBehaviour
 
         if (playerLogic.hasAuthority && playersSetUp)
         {
-            if (targetObject != null)
+            if (targetPos != Vector3.zero)
             {
-                viewportPosition = playerCamera.WorldToScreenPoint(targetObject.transform.position);
+                viewportPosition = playerCamera.WorldToScreenPoint(targetPos);
                 screenPos = ((viewportPosition * 1920) / playerCamera.scaledPixelWidth) - new Vector2(1920, 1080) / 2;
-                targetDirection = targetObject.transform.position - playerCamera.transform.position;
+                targetDirection = targetPos - playerCamera.transform.position;
                 angleFromTarget = Vector3.Angle(playerCamera.transform.forward, targetDirection);
                 if (angleFromTarget > 90)
                 {
                     screenPos *= -1;
-                    while (screenPos.x < (1920 / 2 - borderWidthRatio) && screenPos.x > -(1920 / 2 - borderWidthRatio) && screenPos.y < (1080 / 2 - borderWidthRatio) && screenPos.y > -(1080 / 2 - borderWidthRatio))
+                    while (screenPos.x < (1920 / 2 - borderWidthHorizontal) && screenPos.x > -(1920 / 2 - borderWidthHorizontal) && screenPos.y < (1080 / 2 - borderWidthVertical) && screenPos.y > -(1080 / 2 - borderWidthVertical))
                     {
                         screenPos += screenPos.normalized;
                     }
                 }
-                screenPos = new Vector2(Mathf.Clamp(screenPos.x, -(1920 / 2 - borderWidthRatio), (1920 / 2 - borderWidthRatio)), Mathf.Clamp(screenPos.y, -(1080 / 2 - borderWidthRatio), (1080 / 2 - borderWidthRatio)));
+                screenPos = new Vector2(Mathf.Clamp(screenPos.x, -(1920 / 2 - borderWidthHorizontal), (1920 / 2 - borderWidthHorizontal)), Mathf.Clamp(screenPos.y, -(1080 / 2 - borderWidthVertical), (1080 / 2 - borderWidthVertical)));
                 objectiveCursor.anchoredPosition = screenPos;
                 objectiveCursor.gameObject.SetActive(true);
             }
@@ -215,21 +223,30 @@ public class PlayerGuide : MonoBehaviour
                         overdriveProgressionIconImage.color = allyColor;
                     }
 
-                    targetObject = playerHoldingFlag;
-                    overdriveCurrentPosition = targetObject.transform.position;
+                    targetPos = playerHoldingFlag.transform.position + Vector3.up;
+                    overdriveCurrentPosition = targetPos;
                 }
                 else
                 {
-                    if(!overdriveIsInCenter)
+                    if (!overdriveIsInCenter)
                     {
                         overdriveIsInCenter = true;
                         ownTeamHasOverdrive = false;
-                        StartCoroutine(Announce(flagReturnedToCenterAnnouncement, true));
+                        if(redScore != matchManager.redScore || blueScore != matchManager.blueScore)
+                        {
+                            redScore = matchManager.redScore;
+                            blueScore = matchManager.blueScore;
+                        }
+                        else
+                        {
+                            StartCoroutine(Announce(flagReturnedToCenterAnnouncement, false));
+                        }
                     }
+
 
                     objectiveText.text = selfParams.captureOverdriveText;
                     objectiveCursorImage.color = captureObjectiveColor;
-                    targetObject = flag;
+                    targetPos = flag.transform.position;
                     overdriveCurrentPosition = flag.transform.position;
                     overdriveProgressionIconImage.color = Color.white;
                 }
@@ -242,7 +259,7 @@ public class PlayerGuide : MonoBehaviour
                     ownTeamHasOverdrive = true;
                     StartCoroutine(Announce(flagCapturedByMeAnnouncement, true));
                 }
-                targetObject = adverseGoal;
+                targetPos = adverseGoal.transform.position;
                 overdriveCurrentPosition = transform.position;
                 objectiveText.text = selfParams.goToGoalText;
                 objectiveCursorImage.color = reachGoalObjectiveColor;
@@ -259,19 +276,19 @@ public class PlayerGuide : MonoBehaviour
 
             if(teamMates.Count > 0)
             {
-                viewportPosition = playerCamera.WorldToScreenPoint(teamMates[0].transform.position);
+                viewportPosition = playerCamera.WorldToScreenPoint(teamMates[0].transform.position + Vector3.up);
                 screenPos = ((viewportPosition * 1920) / playerCamera.scaledPixelWidth) - new Vector2(1920, 1080) / 2;
-                targetDirection = teamMates[0].transform.position - playerCamera.transform.position;
+                targetDirection = (teamMates[0].transform.position + Vector3.up) - playerCamera.transform.position;
                 angleFromTarget = Vector3.Angle(playerCamera.transform.forward, targetDirection);
                 if (angleFromTarget > 90)
                 {
                     screenPos *= -1;
-                    while (screenPos.x < (1920 / 2 - borderWidthRatio) && screenPos.x > -(1920 / 2 - borderWidthRatio) && screenPos.y < (1080 / 2 - borderWidthRatio) && screenPos.y > -(1080 / 2 - borderWidthRatio))
+                    while (screenPos.x < (1920 / 2 - borderWidthHorizontal) && screenPos.x > -(1920 / 2 - borderWidthHorizontal) && screenPos.y < (1080 / 2 - borderWidthVertical) && screenPos.y > -(1080 / 2 - borderWidthVertical))
                     {
                         screenPos += screenPos.normalized;
                     }
                 }
-                screenPos = new Vector2(Mathf.Clamp(screenPos.x, -(1920 / 2 - borderWidthRatio), (1920 / 2 - borderWidthRatio)), Mathf.Clamp(screenPos.y, -(1080 / 2 - borderWidthRatio), (1080 / 2 - borderWidthRatio)));
+                screenPos = new Vector2(Mathf.Clamp(screenPos.x, -(1920 / 2 - borderWidthHorizontal), (1920 / 2 - borderWidthHorizontal)), Mathf.Clamp(screenPos.y, -(1080 / 2 - borderWidthVertical), (1080 / 2 - borderWidthVertical)));
                 allyCursor.anchoredPosition = screenPos;
                 allyCursor.gameObject.SetActive(true);
             }
@@ -293,8 +310,19 @@ public class PlayerGuide : MonoBehaviour
         }
     }
 
+    private IEnumerator WarnObjectiveCursor(int repetitionNumber)
+    {
+        for (int i = 0; i < repetitionNumber; i++)
+        {
+            Image effectImage = Instantiate(objectiveCursorEffect, objectiveCursor).GetComponent<Image>();
+            effectImage.color = objectiveCursorImage.color;
+            yield return new WaitForSeconds(0.3f);
+        }
+    }
+
     private IEnumerator Announce(string announcement, bool isFriendly)
     {
+        StartCoroutine(WarnObjectiveCursor(5));
         announcementBack.gameObject.SetActive(true);
         float timer = 0.5f;
         announcementText.text = announcement;

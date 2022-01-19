@@ -181,6 +181,7 @@ MonoBehaviour:
   hasFlag: 0
   timerMaxToStart: 3
   roundStarted: 0
+  guide: {fileID: 8245477799355024668}
   overviewCamera: {fileID: 5998558298143025046}
   highlightCam: {fileID: 1721525492124953766}
   fpvCam: {fileID: 1040958538525216937}
@@ -370,26 +371,29 @@ MonoBehaviour:
   objectiveCursor: {fileID: 6505430729740005612}
   allyCursor: {fileID: 8950688914791556918}
   playerCamera: {fileID: 5664242416663754116}
-  borderWidthRatio: 150
+  borderWidthHorizontal: 400
+  borderWidthVertical: 200
   overdriveProgressionIcon: {fileID: 2992824913018985113}
   overdriveProgressionMinMaxPos: {x: -340, y: 340}
   announcementText: {fileID: 8203937315706285672}
   announcementBack: {fileID: 2851284107717977598}
   announcementBackEnemyColor: {r: 0.6037736, g: 0, b: 0, a: 0.3529412}
   announcementBackAllyColor: {r: 0.22957456, g: 0.27387878, b: 0.7264151, a: 0.46666667}
-  reachGoalObjectiveColor: {r: 0.6090925, g: 0.3726415, b: 1, a: 1}
-  captureObjectiveColor: {r: 0.8612119, g: 0.7877358, b: 1, a: 1}
-  defendObjectiveColor: {r: 1, g: 0.36320752, b: 0.36320752, a: 1}
-  protectObjectiveColor: {r: 0.3915094, g: 0.4468267, b: 1, a: 1}
-  flagCapturedByEnemyAnnouncement: The enemy has the overdrive
-  flagCapturedByAllyAnnouncement: Your team has the overdrive
-  flagReturnedToCenterAnnouncement: The overdrive returned in the center
-  flagCapturedByMeAnnouncement: You have the overdrive
+  reachGoalObjectiveColor: {r: 1, g: 0.7684327, b: 0, a: 1}
+  captureObjectiveColor: {r: 1, g: 1, b: 1, a: 1}
+  defendObjectiveColor: {r: 1, g: 0.6462264, b: 0.6462264, a: 1}
+  protectObjectiveColor: {r: 0.8915094, g: 0.9013086, b: 1, a: 1}
+  flagCapturedByEnemyAnnouncement: Steal back the overdrive
+  flagCapturedByAllyAnnouncement: Protect your ally
+  flagReturnedToCenterAnnouncement: Get the overdrive
+  flagCapturedByMeAnnouncement: Reach the enemy goal
   allyScoreText: {fileID: 5267247992604390232}
   enemyScoreText: {fileID: 6345052149121753362}
   overdriveProgressionIconImage: {fileID: 7500218931052205480}
   allyColor: {r: 0.17254902, g: 0.5568628, b: 0.8980393, a: 1}
   enemyColor: {r: 0.8980393, g: 0.17254902, b: 0.20000002, a: 1}
+  objectiveCursorEffect: {fileID: 6572356700828366505, guid: b76e641b60dc4004fae82eaca92ac36e, type: 3}
+  overdriveIsInCenter: 0
 --- !u!114 &8222333518582474691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7155,6 +7159,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 7809854827538076609}
+    - target: {fileID: 1280867610586770448, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
+      propertyPath: m_Text
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 1436441765301063273, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
       propertyPath: m_Name
       value: PlayerCanvas
@@ -7163,6 +7171,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 5664242416663754116}
+    - target: {fileID: 2287686322600124307, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
+      propertyPath: m_Text
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 2873284642581760494, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -7259,6 +7271,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 7809854827538076609}
+    - target: {fileID: 5732873377454164904, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
+      propertyPath: m_Text
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 5776434881880666913, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -7274,6 +7290,10 @@ PrefabInstance:
     - target: {fileID: 6064770120498108676, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -4.4000854
+      objectReference: {fileID: 0}
+    - target: {fileID: 6498498961710308061, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
+      propertyPath: m_Text
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 8058828512355223353, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -7593,6 +7613,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2771112604293887708}
     m_Modifications:
+    - target: {fileID: 2374226102535686911, guid: 8bfd8f7f3d50b6a4d82f028a4132da5f, type: 3}
+      propertyPath: m_Size.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2374226102535686911, guid: 8bfd8f7f3d50b6a4d82f028a4132da5f, type: 3}
+      propertyPath: m_Size.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2374226102535686911, guid: 8bfd8f7f3d50b6a4d82f028a4132da5f, type: 3}
+      propertyPath: m_Size.z
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 3860594329391172790, guid: 8bfd8f7f3d50b6a4d82f028a4132da5f, type: 3}
       propertyPath: collide.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -7601,6 +7633,14 @@ PrefabInstance:
       propertyPath: Uncollide.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 4205374861408034103}
+    - target: {fileID: 4179884842803174392, guid: 8bfd8f7f3d50b6a4d82f028a4132da5f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4179884842803174392, guid: 8bfd8f7f3d50b6a4d82f028a4132da5f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5772864376080449880, guid: 8bfd8f7f3d50b6a4d82f028a4132da5f, type: 3}
       propertyPath: selfLogic
       value: 

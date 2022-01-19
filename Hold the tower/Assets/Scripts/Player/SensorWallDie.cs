@@ -10,7 +10,7 @@ public class SensorWallDie : MonoBehaviour
     {
         if (other.CompareTag("Wall") && other.GetComponent<BlockBehaviour>() != null)
         {
-            if(other.GetComponent<BlockBehaviour>().ownVelo.y != 0 && selfLogic.isGrounded)
+            if(other.GetComponent<BlockBehaviour>().ownVelo.y < 0 && selfLogic.isGrounded)
             {
                 selfLogic.CmdForceRespawn(3f);
             }

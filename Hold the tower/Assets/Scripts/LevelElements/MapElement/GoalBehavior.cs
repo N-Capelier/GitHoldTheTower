@@ -7,6 +7,8 @@ public class GoalBehavior : NetworkBehaviour
     [HideInInspector]
     public LobbyPlayerLogic.TeamName goalTeam;
     public MatchManager matchManager;
+    [SerializeField]
+    private ParticleSystem goalEffect;
 
     public PA_Position pa_pos;
 
@@ -59,11 +61,17 @@ public class GoalBehavior : NetworkBehaviour
                         other.transform.parent.GetComponent<PlayerLogic>().CmdPlayGlobalSound("PlayerOverdriveGoal");
                     }
                 }
-                other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
                 CmdTeamWin(textToShow);
+                other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
             }
         }
         
+    }
+
+
+    public void PlayEffect()
+    {
+        goalEffect.Play();
     }
 
     public IEnumerator DelayManager()

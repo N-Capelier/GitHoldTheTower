@@ -167,6 +167,8 @@ public class PlayerLogic : NetworkBehaviour
 
     private Coroutine respawnCor;
 
+    [SerializeField] private PlayerGuide guide;
+
     void Start()
     {
         matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>(); //Ne pas bouger
@@ -244,12 +246,12 @@ public class PlayerLogic : NetworkBehaviour
             if(authorityPlayer.GetComponent<PlayerLogic>().teamName == teamName)
             {
                 playerMeshRenderer.material = blueTeamMaterial;
-                player3dPseudo.GetComponentInChildren<Text>().color = Color.blue;
+                player3dPseudo.GetComponentInChildren<Text>().color = guide.allyColor;
             }
             else
             {
                 playerMeshRenderer.material = redTeamMaterial;
-                player3dPseudo.GetComponentInChildren<Text>().color = Color.red;
+                player3dPseudo.GetComponentInChildren<Text>().color = guide.enemyColor;
             }
 
         }
@@ -469,6 +471,8 @@ public class PlayerLogic : NetworkBehaviour
         return horizontalVector.normalized;
     }
 
+    private float timeSinceLastWallSlide;
+    private float timeOfLastWallSlide;
     private bool isWallSliding;
     private void VerticalMovement()
     {
@@ -481,12 +485,23 @@ public class PlayerLogic : NetworkBehaviour
                     isTouchingWall = true;
 
                     Vector3 hSpeed = new Vector3(selfMovement.selfRbd.velocity.x, 0, selfMovement.selfRbd.velocity.z);
-                    if (Input.GetKey(selfParams.jump) || Input.GetAxis("LT") == 1f)
+
+
+                    if (selfParams.useAlternateWallJump
+                        && (Input.GetKeyDown(selfParams.jump) || (Input.GetAxis("LT") == 1f && jumpTriggerValueDelta == 0))
+                        && timeSinceLastWallSlide < selfParams.maxTimeToTriggerAlternateWallJump
+                        && !IsLookingInWall() && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide && selfMovement.SetWallSlideDirection())
+                    {
+                        selfMovement.WallJump(GetNearbyWallNormal());
+                        StartCoroutine(NoMovement(selfParams.wallJumpNoAirControlTime));
+                        isAttachToWall = false;
+                    }
+                    else if (Input.GetKey(selfParams.jump) || Input.GetAxis("LT") == 1f)
                     {
                         if (!isAttachToWall)
                         {
                             isAttachToWall = true;
-                            if (!IsLookingInWall() && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide)
+                            if ((selfParams.useAlternateWallJump ? canMove : true) && !IsLookingInWall() && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide)
                             {
                                 if (selfMovement.SetWallSlideDirection())
                                 {
@@ -501,6 +516,10 @@ public class PlayerLogic : NetworkBehaviour
                         {
                             selfMovement.ApplyWallSlideForces();
                             selfMovement.UpdateWallSlideCameraTilt();
+                            if (selfParams.useAlternateWallJump)
+                            {
+                                timeOfLastWallSlide = Time.time;
+                            }
                         }
                         else
                         {
@@ -512,7 +531,7 @@ public class PlayerLogic : NetworkBehaviour
                     }
                     else
                     {
-                        if ((Input.GetKeyUp(selfParams.jump) || (Input.GetAxis("LT") == 0f && jumpTriggerValueDelta == 1)) && !IsLookingInWall() && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide && selfMovement.SetWallSlideDirection())
+                        if (!selfParams.useAlternateWallJump && (Input.GetKeyUp(selfParams.jump) || (Input.GetAxis("LT") == 0f && jumpTriggerValueDelta == 1)) && !IsLookingInWall() && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide && selfMovement.SetWallSlideDirection())
                         {
                             if (GetNearbyWallNormal() != Vector3.zero)
                             {
@@ -525,6 +544,10 @@ public class PlayerLogic : NetworkBehaviour
                         }
                         else
                         {
+                            if(selfParams.useAlternateWallJump)
+                            {
+                                isAttachToWall = false;
+                            }
                             selfMovement.ApplyGravity();
                             isWallSliding = false;
                             selfMovement.ResetCameraTilt();
@@ -563,6 +586,12 @@ public class PlayerLogic : NetworkBehaviour
                 isTouchingWall = false;
             }
         }
+
+        if(selfParams.useAlternateWallJump && !isWallSliding)
+        {
+            timeSinceLastWallSlide = Time.time - timeOfLastWallSlide;
+        }
+
         jumpTriggerValueDelta = Input.GetAxis("LT");
     }
 
@@ -724,8 +753,8 @@ public class PlayerLogic : NetworkBehaviour
                 punchChargeSliderLine.transform.localScale = new Vector3(punchChargeSliderLine.transform.localScale.x, punchChargeSliderLine.transform.localScale.y, punchChargeDistancePreview.transform.localPosition.z - 0.2f);
                 if (selfMovement.isPunchInstantDestroy)
                 {
-                    punchChargeDistancePreview.transform.localScale = basePunchPreviewScale * 1.5f;
-                    punchChargeDistancePreview2.transform.localScale = basePunchPreviewScale * 1.5f;
+                    //punchChargeDistancePreview.transform.localScale = basePunchPreviewScale * 1.5f;
+                    //punchChargeDistancePreview2.transform.localScale = basePunchPreviewScale * 1.5f;
                 }
                 else
                 {
@@ -943,16 +972,46 @@ public class PlayerLogic : NetworkBehaviour
         }
             
         CmdShowScoreHud();
-
     }
 
     public IEnumerator GoalMessageManager(string text)
     {
+        guide.overdriveIsInCenter = true;
+        guide.ownTeamHasOverdrive = false;
+        string newText = "";
+        if(text == matchManager.redTeamTextScore)
+        {
+            matchManager.blueGoal.PlayEffect();
+            if (teamName == LobbyPlayerLogic.TeamName.Red)
+            {
+                newText = "Your team scored";
+                hudTextPlayer.color = guide.allyColor;
+            }
+            else
+            {
+                newText = "Enemy team scored";
+                hudTextPlayer.color = guide.enemyColor;
+            }
+        }
+        else
+        {
+            matchManager.redGoal.PlayEffect();
+            if (teamName == LobbyPlayerLogic.TeamName.Red)
+            {
+                newText = "Enemy team scored";
+                hudTextPlayer.color = guide.enemyColor;
+            }
+            else
+            {
+                newText = "Your team scored";
+                hudTextPlayer.color = guide.allyColor;
+            }
+        }
         hudTextPlayer.gameObject.SetActive(true);
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
-            if (text != hudTextPlayer.text)
-                hudTextPlayer.text = text;
+            if (newText != hudTextPlayer.text)
+                hudTextPlayer.text = newText;
             yield return new WaitForEndOfFrame();
 
         }
@@ -967,7 +1026,7 @@ public class PlayerLogic : NetworkBehaviour
         timerToStart = NetworkTime.time;
         respawnCor = StartCoroutine(RespawnManager());
         FlagObject.SetActive(true);
-
+        hudTextPlayer.color = Color.white;
     }
 
     [TargetRpc]
@@ -1030,6 +1089,19 @@ public class PlayerLogic : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdDropFlag()
     {
+        hasFlag = false;
+        CmdStopPlayerFlagSource();
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdDropFlagDelayed(float time)
+    {
+        StartCoroutine(DropFlagDelayed(time));
+    }
+
+    private IEnumerator DropFlagDelayed(float time)
+    {
+        yield return new WaitForSeconds(time);
         hasFlag = false;
         CmdStopPlayerFlagSource();
     }
