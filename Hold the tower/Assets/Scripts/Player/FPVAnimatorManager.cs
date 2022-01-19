@@ -81,7 +81,6 @@ public class FPVAnimatorManager : MonoBehaviour
 		float _completion = 0f;
 		while(_completion < .4f)
 		{
-			Debug.LogWarning(animator.GetBool("isLoadingPunch") + " " + animator.GetBool("isPunchLoaded") + " " + animator.GetBool("isPunching"));
 
 			loadedParticles.transform.position = Vector3.Lerp(loadedEndPos.position, loadedStartPos.position, _completion);
 			//Debug.LogWarning(loadedParticles.transform.position);
