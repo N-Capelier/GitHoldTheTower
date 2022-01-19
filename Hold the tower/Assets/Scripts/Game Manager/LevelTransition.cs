@@ -14,6 +14,8 @@ public class LevelTransition : NetworkBehaviour
     public double timerChange = 5d;
 
     private bool doOnce = true;
+    private bool doOnce1 = true;
+    private bool doOnce2 = true;
 
     void OnChangeTerrain()
     {
@@ -37,10 +39,24 @@ public class LevelTransition : NetworkBehaviour
             {
                 RpcSendChange();
                 doOnce = true;
+                doOnce1 = true;
+                doOnce2 = true;
                 //OnChangeTerrain();
             }
 
-            if (NetworkTime.time >= networkTime + timerChange - 2f && NetworkTime.time <= networkTime + timerChange - 0.1f && doOnce)
+            if (NetworkTime.time >= networkTime + timerChange - 5f && NetworkTime.time <= networkTime + timerChange - 4f && doOnce1)
+            {
+                SoundManager.Instance.PlaySoundEvent("LevelEvolvingAlarm");
+                doOnce1 = false;
+            }
+
+            if (NetworkTime.time >= networkTime + timerChange - 1.5f && NetworkTime.time <= networkTime + timerChange - 0.5f && doOnce2)
+            {
+                SoundManager.Instance.PlaySoundEvent("LevelEvolvingAnoucement");
+                doOnce2 = false;
+            }
+
+            if (NetworkTime.time >= networkTime + timerChange - 1f && NetworkTime.time <= networkTime + timerChange - 0.1f && doOnce)
             {
                 SoundManager.Instance.PlaySoundEvent("LevelEvolvingSound");
                 doOnce = false;
