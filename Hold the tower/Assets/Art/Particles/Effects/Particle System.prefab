@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &441042731302931720
 Transform:
   m_ObjectHideFlags: 0
@@ -1041,12 +1041,12 @@ ParticleSystem:
         - serializedVersion: 3
           time: 0
           value: 0.1379242
-          inSlope: 2.1624615
-          outSlope: 2.1624615
+          inSlope: 2.461175
+          outSlope: 2.461175
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
-          outWeight: 0.07062146
+          outWeight: 0.1002331
         - serializedVersion: 3
           time: 1
           value: 1
@@ -1065,12 +1065,12 @@ ParticleSystem:
         - serializedVersion: 3
           time: 0
           value: 0.4039402
-          inSlope: 0
-          outSlope: 0
+          inSlope: -1.1487825
+          outSlope: -1.1487825
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
-          outWeight: 0.33333334
+          outWeight: 0.114219114
         - serializedVersion: 3
           time: 1
           value: 1

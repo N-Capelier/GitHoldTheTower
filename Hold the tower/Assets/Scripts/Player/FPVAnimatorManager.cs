@@ -1,27 +1,57 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class FPVAnimatorManager : MonoBehaviour
 {
 	[Header("References")]
 	[SerializeField] Animator animator;
-	[SerializeField] GameObject loadedParticles;
+	[SerializeField] ParticleSystem loadedParticles;
+	ParticleSystem.MainModule psMainModule;
 	[SerializeField] PlayerLogic logic;
 	[SerializeField] PlayerMovement movement;
+	[SerializeField] Transform loadedStartPos, loadedEndPos;
+
+	private void Start()
+	{
+		psMainModule = loadedParticles.main;
+	}
 
 	private void Update()
 	{
 		//var animatorInfo = animator.GetCurrentAnimatorClipInfo(0);
 		//Debug.LogWarning(animatorInfo[0].clip.name);
 
-		if((animator.GetBool("isPunchLoaded") && !loadedParticles.activeSelf))
+#if UNITY_EDITOR
+		if(Input.GetKeyDown(KeyCode.P))
 		{
-			loadedParticles.SetActive(true);
+			EditorApplication.isPaused = true;
 		}
-		else if(!animator.GetBool("isPunchLoaded") && loadedParticles.activeSelf)
+#endif
+
+		if(loadedParticles.gameObject.activeSelf)
 		{
-			loadedParticles.SetActive(false);
+			if (animator.GetBool("isPunchLoaded"))
+			{
+				psMainModule.startLifetime = .8f;
+			}
+			else
+			{
+				loadedParticles.transform.position = Vector3.Lerp(loadedStartPos.position, loadedEndPos.position, logic.ratioAttack);
+				psMainModule.startLifetime = logic.ratioAttack.Remap(0f, 1f, 0f, .8f);
+			}
+		}
+
+		if((animator.GetBool("isLoadingPunch") && !loadedParticles.gameObject.activeSelf))
+		{
+			loadedParticles.gameObject.SetActive(true);
+		}
+		else if((!animator.GetBool("isPunchLoaded") && !animator.GetBool("isPunching") && !animator.GetBool("isLoadingPunch")) && loadedParticles.gameObject.activeSelf)
+		{
+			loadedParticles.gameObject.SetActive(false);
 		}
 
 		if (movement.selfRbd.velocity.x != 0f || movement.selfRbd.velocity.z != 0f)
