@@ -229,6 +229,9 @@ AnimatorStateTransition:
     m_ConditionEvent: isLoadingPunch
     m_EventTreshold: 0
   - m_ConditionMode: 2
+    m_ConditionEvent: isPunchLoaded
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
     m_ConditionEvent: isPunching
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
@@ -509,7 +512,8 @@ AnimatorState:
   m_Speed: 0.5
   m_CycleOffset: 0
   m_Transitions: []
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 4707547904425429864}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -524,6 +528,18 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!114 &4707547904425429864
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e23e47efe7fc42e48a4b60f3ea78afe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1101 &4857679924707546027
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

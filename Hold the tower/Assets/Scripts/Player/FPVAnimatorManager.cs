@@ -11,8 +11,8 @@ public class FPVAnimatorManager : MonoBehaviour
 
 	private void Update()
 	{
-		//animatorInfo = animator.GetCurrentAnimatorClipInfo(0);
-		//Debug.LogWarning(animatorInfo[0].clip.name);
+		var animatorInfo = animator.GetCurrentAnimatorClipInfo(0);
+		Debug.LogWarning(animatorInfo[0].clip.name);
 
 		if (movement.selfRbd.velocity.x != 0f || movement.selfRbd.velocity.z != 0f)
 		{
@@ -48,6 +48,7 @@ public class FPVAnimatorManager : MonoBehaviour
 
 	public void AnimatePunch(bool _value)
 	{
+		animator.SetBool("isPunchLoaded", false);
 		animator.SetBool("isPunching", true);
 	}
 }

@@ -13,7 +13,7 @@ public class FPVJumpStartState : StateMachineBehaviour
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
-		if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0 && !animator.IsInTransition(0))
+		if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f && !animator.IsInTransition(0))
 		{
 			animator.SetBool("isJumping", false);
 			animator.SetBool("isInAir", true);
