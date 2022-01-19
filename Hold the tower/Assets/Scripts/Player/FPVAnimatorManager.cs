@@ -6,13 +6,23 @@ public class FPVAnimatorManager : MonoBehaviour
 {
 	[Header("References")]
 	[SerializeField] Animator animator;
+	[SerializeField] GameObject loadedParticles;
 	[SerializeField] PlayerLogic logic;
 	[SerializeField] PlayerMovement movement;
 
 	private void Update()
 	{
-		//animatorInfo = animator.GetCurrentAnimatorClipInfo(0);
+		//var animatorInfo = animator.GetCurrentAnimatorClipInfo(0);
 		//Debug.LogWarning(animatorInfo[0].clip.name);
+
+		if((animator.GetBool("isPunchLoaded") && !loadedParticles.activeSelf))
+		{
+			loadedParticles.SetActive(true);
+		}
+		else if(!animator.GetBool("isPunchLoaded") && loadedParticles.activeSelf)
+		{
+			loadedParticles.SetActive(false);
+		}
 
 		if (movement.selfRbd.velocity.x != 0f || movement.selfRbd.velocity.z != 0f)
 		{
@@ -27,7 +37,7 @@ public class FPVAnimatorManager : MonoBehaviour
 		{
 			animator.SetBool("isJumping", false);
 			animator.SetBool("isInAir", false);
-			animator.SetBool("isImpactingGround", true);
+			//animator.SetBool("isImpactingGround", true);
 		}
 		else if(!animator.GetBool("isInAir") && !animator.GetBool("isJumping") && (!logic.isGrounded && Mathf.Abs(movement.selfRbd.velocity.y) > 1f))
 		{
@@ -48,6 +58,7 @@ public class FPVAnimatorManager : MonoBehaviour
 
 	public void AnimatePunch(bool _value)
 	{
+		animator.SetBool("isPunchLoaded", false);
 		animator.SetBool("isPunching", true);
 	}
 }

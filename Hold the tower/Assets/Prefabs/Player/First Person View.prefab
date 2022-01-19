@@ -5043,6 +5043,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 3307649909632283460}
+  loadedParticles: {fileID: 1840461421284376930}
   logic: {fileID: 0}
   movement: {fileID: 0}
 --- !u!1 &8384092490886017450
@@ -6483,18 +6484,6 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 441042731302931720, guid: 18a1262e968981d41af247a1d3b02474, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.585
-      objectReference: {fileID: 0}
-    - target: {fileID: 441042731302931720, guid: 18a1262e968981d41af247a1d3b02474, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.592
-      objectReference: {fileID: 0}
-    - target: {fileID: 441042731302931720, guid: 18a1262e968981d41af247a1d3b02474, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.392
-      objectReference: {fileID: 0}
-    - target: {fileID: 441042731302931720, guid: 18a1262e968981d41af247a1d3b02474, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
@@ -6524,10 +6513,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8402853148004484915, guid: 18a1262e968981d41af247a1d3b02474, type: 3}
       propertyPath: m_Name
-      value: Particle System
+      value: Loaded Punch particles
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18a1262e968981d41af247a1d3b02474, type: 3}
+--- !u!1 &1840461421284376930 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8402853148004484915, guid: 18a1262e968981d41af247a1d3b02474, type: 3}
+  m_PrefabInstance: {fileID: 7860557626581698129}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7712600749208210265 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 441042731302931720, guid: 18a1262e968981d41af247a1d3b02474, type: 3}

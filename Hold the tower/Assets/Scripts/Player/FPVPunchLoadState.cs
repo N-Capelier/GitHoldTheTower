@@ -13,9 +13,9 @@ public class FPVPunchLoadState : StateMachineBehaviour
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
-		if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0 && !animator.IsInTransition(0))
+		if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f && !animator.IsInTransition(0))
 		{
-			animator.SetBool("isPunchLoaded", false);
+			animator.SetBool("isPunchLoaded", true);
 			animator.SetBool("isLoadingPunch", false);
 		}
 	}
