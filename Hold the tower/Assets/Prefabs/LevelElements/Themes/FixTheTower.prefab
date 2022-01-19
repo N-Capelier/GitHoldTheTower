@@ -5513,7 +5513,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2918058239853018068, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
       propertyPath: m_Name
-      value: Template
+      value: FixTheTower
       objectReference: {fileID: 0}
     - target: {fileID: 2918058239853018069, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
       propertyPath: m_RootOrder
@@ -10841,7 +10841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8601490187157808489, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8601490187157808489, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
       propertyPath: m_IsTrigger
@@ -11089,7 +11089,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8601490187356028908, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8601490187356028908, guid: f8943b31b8215ce4899d43a576d9291e, type: 3}
       propertyPath: m_IsTrigger
