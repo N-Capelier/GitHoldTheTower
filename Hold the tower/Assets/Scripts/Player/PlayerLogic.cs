@@ -212,6 +212,19 @@ public class PlayerLogic : NetworkBehaviour
 
         }
 
+        GameObject[] allSpectators = GameObject.FindGameObjectsWithTag("Spectator");
+        if (allSpectators.Length > 0)
+        {
+            Debug.Log("test");
+            foreach (GameObject objSpectator in allSpectators)
+            {
+                if (objSpectator.GetComponent<NetworkIdentity>().hasAuthority)
+                {
+                    authorityPlayer = objSpectator;
+                }
+            }
+        }
+
         if (hasAuthority)
         {
             overdriveEffects.SetActive(false);
@@ -240,36 +253,37 @@ public class PlayerLogic : NetworkBehaviour
         {
             selfFirstPersonView.SetActive(false);
 
-            //Make blue if ally, else make red him red
-            if(authorityPlayer.GetComponent<PlayerLogic>().teamName == teamName)
+            if (allSpectators.Length < 1)
             {
-                playerMeshRenderer.material = blueTeamMaterial;
-                player3dPseudo.GetComponentInChildren<Text>().color = Color.blue;
+                //Make blue if ally, else make red him red
+                if (authorityPlayer.GetComponent<PlayerLogic>().teamName == teamName)
+                {
+                    playerMeshRenderer.material = blueTeamMaterial;
+                    player3dPseudo.GetComponentInChildren<Text>().color = Color.blue;
+                }
+                else
+                {
+                    playerMeshRenderer.material = redTeamMaterial;
+                    player3dPseudo.GetComponentInChildren<Text>().color = Color.red;
+                }
             }
             else
             {
-                playerMeshRenderer.material = redTeamMaterial;
-                player3dPseudo.GetComponentInChildren<Text>().color = Color.red;
-            }
-
-        }
-
-       
-
-        GameObject[] allSpectators = GameObject.FindGameObjectsWithTag("Spectator");
-        if(allSpectators.Length > 0)
-        {
-            Debug.Log("test");
-            foreach (GameObject objSpectator in allSpectators)
-            {
-                if (objSpectator.GetComponent<NetworkIdentity>().hasAuthority)
+                if(GetComponent<PlayerLogic>().teamName == LobbyPlayerLogic.TeamName.Blue)
                 {
-                    authorityPlayer = objSpectator;
-                    Debug.Log(authorityPlayer);
+                    playerMeshRenderer.material = blueTeamMaterial;
+                    player3dPseudo.GetComponentInChildren<Text>().color = Color.blue;
+                }
+                else
+                {
+                    playerMeshRenderer.material = redTeamMaterial;
+                    player3dPseudo.GetComponentInChildren<Text>().color = Color.red;
                 }
             }
+            
+
         }
-        
+
     }
 
     void Update()
