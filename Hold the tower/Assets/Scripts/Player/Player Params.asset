@@ -44,7 +44,7 @@ MonoBehaviour:
   wallJumpNoAirControlTime: 0.05
   cameraTiltAngle: 7
   cameraTiltLerpSpeed: 30
-  useAlternateWallJump: 1
+  useAlternateWallJump: 0
   maxTimeToTriggerAlternateWallJump: 0.3
   climbHeight: 1
   climbWidth: 1.3

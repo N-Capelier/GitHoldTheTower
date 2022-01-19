@@ -33,8 +33,12 @@ public class LandMarkManager : MonoBehaviour
         {
             if(landMark.typeElement == SwapColorGoal.layer)
             {
-                int layerBlue = landMark.blueSide[0].layer;
-                int layerRed = landMark.redSide[0].layer;
+                int layerBlue = 0;
+                int layerRed = 0;
+                if (landMark.blueSide[0] != null)
+                    layerBlue = landMark.blueSide[0].layer;
+                if (landMark.redSide[0] != null)
+                    layerRed = landMark.redSide[0].layer;
 
                 for (int i =0; i < landMark.blueSide.Count; i++)
                 {
@@ -50,8 +54,12 @@ public class LandMarkManager : MonoBehaviour
 
             if(landMark.typeElement == SwapColorGoal.material)
             {
-                Material blueMaterial = landMark.blueSide[0].GetComponent<Renderer>().sharedMaterial;
-                Material redMaterial = landMark.redSide[0].GetComponent<Renderer>().sharedMaterial;
+                Material blueMaterial = null;
+                Material redMaterial = null;
+                if (landMark.blueSide[0] != null)
+                    blueMaterial = landMark.blueSide[0].GetComponent<Renderer>().sharedMaterial;
+                if (landMark.redSide[0] != null)
+                    redMaterial = landMark.redSide[0].GetComponent<Renderer>().sharedMaterial;
 
                 for (int i = 0; i < landMark.blueSide.Count; i++)
                 {
@@ -69,8 +77,12 @@ public class LandMarkManager : MonoBehaviour
 
             if(landMark.typeElement == SwapColorGoal.light)
             {
-                Color blueColor = landMark.blueSide[0].GetComponent<Light>().color;
-                Color redColor = landMark.redSide[0].GetComponent<Light>().color;
+                Color blueColor = Color.clear;
+                Color redColor = Color.clear;
+                if (landMark.blueSide[0] != null)
+                    blueColor = landMark.blueSide[0].GetComponent<Light>().color;
+                if (landMark.redSide[0] != null)
+                    redColor = landMark.redSide[0].GetComponent<Light>().color;
 
                 for (int i = 0; i < landMark.blueSide.Count; i++)
                 {
