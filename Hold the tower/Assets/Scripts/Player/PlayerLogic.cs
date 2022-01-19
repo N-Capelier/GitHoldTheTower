@@ -214,6 +214,19 @@ public class PlayerLogic : NetworkBehaviour
 
         }
 
+        GameObject[] allSpectators = GameObject.FindGameObjectsWithTag("Spectator");
+        if (allSpectators.Length > 0)
+        {
+            Debug.Log("test");
+            foreach (GameObject objSpectator in allSpectators)
+            {
+                if (objSpectator.GetComponent<NetworkIdentity>().hasAuthority)
+                {
+                    authorityPlayer = objSpectator;
+                }
+            }
+        }
+
         if (hasAuthority)
         {
             overdriveEffects.SetActive(false);
@@ -242,36 +255,38 @@ public class PlayerLogic : NetworkBehaviour
         {
             selfFirstPersonView.SetActive(false);
 
-            //Make blue if ally, else make red him red
-            if(authorityPlayer.GetComponent<PlayerLogic>().teamName == teamName)
+            if (allSpectators.Length < 1)
             {
-                playerMeshRenderer.material = blueTeamMaterial;
-                player3dPseudo.GetComponentInChildren<Text>().color = guide.allyColor;
+                //Make blue if ally, else make red him red
+                if (authorityPlayer.GetComponent<PlayerLogic>().teamName == teamName)
+                {
+                    playerMeshRenderer.material = blueTeamMaterial;
+                    player3dPseudo.GetComponentInChildren<Text>().color = guide.allyColor;
+                }
+                else
+                {
+                    playerMeshRenderer.material = redTeamMaterial;
+                    player3dPseudo.GetComponentInChildren<Text>().color = guide.enemyColor;
+                }
             }
             else
             {
-                playerMeshRenderer.material = redTeamMaterial;
+                if(GetComponent<PlayerLogic>().teamName == LobbyPlayerLogic.TeamName.Blue)
+                {
+                    playerMeshRenderer.material = blueTeamMaterial;
+                    player3dPseudo.GetComponentInChildren<Text>().color = Color.blue;
+                }
+                else
+                {
+                    playerMeshRenderer.material = redTeamMaterial;
+                    player3dPseudo.GetComponentInChildren<Text>().color = Color.red;
+                }
                 player3dPseudo.GetComponentInChildren<Text>().color = guide.enemyColor;
             }
+            
 
         }
 
-       
-
-        GameObject[] allSpectators = GameObject.FindGameObjectsWithTag("Spectator");
-        if(allSpectators.Length > 0)
-        {
-            Debug.Log("test");
-            foreach (GameObject objSpectator in allSpectators)
-            {
-                if (objSpectator.GetComponent<NetworkIdentity>().hasAuthority)
-                {
-                    authorityPlayer = objSpectator;
-                    Debug.Log(authorityPlayer);
-                }
-            }
-        }
-        
     }
 
     void Update()
