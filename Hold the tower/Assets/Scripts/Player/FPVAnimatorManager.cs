@@ -14,6 +14,7 @@ public class FPVAnimatorManager : MonoBehaviour
 	[SerializeField] PlayerLogic logic;
 	[SerializeField] PlayerMovement movement;
 	[SerializeField] Transform loadedStartPos, loadedEndPos;
+	Coroutine moveParticlesCoroutine;
 
 	private void Start()
 	{
@@ -38,18 +39,18 @@ public class FPVAnimatorManager : MonoBehaviour
 			{
 				psMainModule.startLifetime = .8f;
 			}
-			else
+			else if(animator.GetBool("isLoadingPunch"))
 			{
 				loadedParticles.transform.position = Vector3.Lerp(loadedStartPos.position, loadedEndPos.position, logic.ratioAttack);
 				psMainModule.startLifetime = logic.ratioAttack.Remap(0f, 1f, 0f, .8f);
 			}
 		}
 
-		if((animator.GetBool("isLoadingPunch") && !loadedParticles.gameObject.activeSelf))
+		if(animator.GetBool("isLoadingPunch") && !loadedParticles.gameObject.activeSelf && !logic.hasFlag)
 		{
 			loadedParticles.gameObject.SetActive(true);
 		}
-		else if((!animator.GetBool("isPunchLoaded") && !animator.GetBool("isPunching") && !animator.GetBool("isLoadingPunch")) && loadedParticles.gameObject.activeSelf)
+		else if(((!animator.GetBool("isPunchLoaded") && !animator.GetBool("isLoadingPunch")) || logic.hasFlag) && loadedParticles.gameObject.activeSelf)
 		{
 			loadedParticles.gameObject.SetActive(false);
 		}
@@ -75,6 +76,21 @@ public class FPVAnimatorManager : MonoBehaviour
 		}
 	}
 
+	IEnumerator MoveParticlesOnPunch()
+	{
+		float _completion = 0f;
+		while(_completion < .4f)
+		{
+			Debug.LogWarning(animator.GetBool("isLoadingPunch") + " " + animator.GetBool("isPunchLoaded") + " " + animator.GetBool("isPunching"));
+
+			loadedParticles.transform.position = Vector3.Lerp(loadedEndPos.position, loadedStartPos.position, _completion);
+			//Debug.LogWarning(loadedParticles.transform.position);
+			_completion += Time.deltaTime;
+			yield return new WaitForEndOfFrame();
+		}
+	}
+
+
 	public void AnimateJump()
 	{
 		animator.SetBool("isJumping", true);
@@ -90,5 +106,10 @@ public class FPVAnimatorManager : MonoBehaviour
 	{
 		animator.SetBool("isPunchLoaded", false);
 		animator.SetBool("isPunching", true);
+
+		if(moveParticlesCoroutine == null)
+		{
+			StartCoroutine(MoveParticlesOnPunch());
+		}
 	}
 }
