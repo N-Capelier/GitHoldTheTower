@@ -45,7 +45,7 @@ public class PlayerGuide : MonoBehaviour
 
     private PlayerLogic playerLogic;
     private MatchManager matchManager;
-    private GameObject targetObject;
+    private Vector3 targetPos;
     private GameObject flag;
     private GameObject adverseGoal;
     private GameObject ownGoal;
@@ -105,6 +105,8 @@ public class PlayerGuide : MonoBehaviour
     Vector2 screenPos;
     Vector3 targetDirection;
     float angleFromTarget;
+    int redScore;
+    int blueScore;
 
     [HideInInspector]
     public bool ownTeamHasOverdrive;
@@ -131,11 +133,11 @@ public class PlayerGuide : MonoBehaviour
 
         if (playerLogic.hasAuthority && playersSetUp)
         {
-            if (targetObject != null)
+            if (targetPos != Vector3.zero)
             {
-                viewportPosition = playerCamera.WorldToScreenPoint(targetObject.transform.position);
+                viewportPosition = playerCamera.WorldToScreenPoint(targetPos);
                 screenPos = ((viewportPosition * 1920) / playerCamera.scaledPixelWidth) - new Vector2(1920, 1080) / 2;
-                targetDirection = targetObject.transform.position - playerCamera.transform.position;
+                targetDirection = targetPos - playerCamera.transform.position;
                 angleFromTarget = Vector3.Angle(playerCamera.transform.forward, targetDirection);
                 if (angleFromTarget > 90)
                 {
@@ -221,8 +223,8 @@ public class PlayerGuide : MonoBehaviour
                         overdriveProgressionIconImage.color = allyColor;
                     }
 
-                    targetObject = playerHoldingFlag;
-                    overdriveCurrentPosition = targetObject.transform.position;
+                    targetPos = playerHoldingFlag.transform.position + Vector3.up;
+                    overdriveCurrentPosition = targetPos;
                 }
                 else
                 {
@@ -230,13 +232,21 @@ public class PlayerGuide : MonoBehaviour
                     {
                         overdriveIsInCenter = true;
                         ownTeamHasOverdrive = false;
-                        StartCoroutine(Announce(flagReturnedToCenterAnnouncement, false));
+                        if(redScore != matchManager.redScore || blueScore != matchManager.blueScore)
+                        {
+                            redScore = matchManager.redScore;
+                            blueScore = matchManager.blueScore;
+                        }
+                        else
+                        {
+                            StartCoroutine(Announce(flagReturnedToCenterAnnouncement, false));
+                        }
                     }
 
 
                     objectiveText.text = selfParams.captureOverdriveText;
                     objectiveCursorImage.color = captureObjectiveColor;
-                    targetObject = flag;
+                    targetPos = flag.transform.position;
                     overdriveCurrentPosition = flag.transform.position;
                     overdriveProgressionIconImage.color = Color.white;
                 }
@@ -249,7 +259,7 @@ public class PlayerGuide : MonoBehaviour
                     ownTeamHasOverdrive = true;
                     StartCoroutine(Announce(flagCapturedByMeAnnouncement, true));
                 }
-                targetObject = adverseGoal;
+                targetPos = adverseGoal.transform.position;
                 overdriveCurrentPosition = transform.position;
                 objectiveText.text = selfParams.goToGoalText;
                 objectiveCursorImage.color = reachGoalObjectiveColor;
@@ -266,9 +276,9 @@ public class PlayerGuide : MonoBehaviour
 
             if(teamMates.Count > 0)
             {
-                viewportPosition = playerCamera.WorldToScreenPoint(teamMates[0].transform.position);
+                viewportPosition = playerCamera.WorldToScreenPoint(teamMates[0].transform.position + Vector3.up);
                 screenPos = ((viewportPosition * 1920) / playerCamera.scaledPixelWidth) - new Vector2(1920, 1080) / 2;
-                targetDirection = teamMates[0].transform.position - playerCamera.transform.position;
+                targetDirection = (teamMates[0].transform.position + Vector3.up) - playerCamera.transform.position;
                 angleFromTarget = Vector3.Angle(playerCamera.transform.forward, targetDirection);
                 if (angleFromTarget > 90)
                 {

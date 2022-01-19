@@ -972,7 +972,6 @@ public class PlayerLogic : NetworkBehaviour
         }
             
         CmdShowScoreHud();
-        CmdDropFlag(); //sorryyyyyyyyyyyyyyyyyyyyyyyyyyy
     }
 
     public IEnumerator GoalMessageManager(string text)
@@ -982,7 +981,8 @@ public class PlayerLogic : NetworkBehaviour
         string newText = "";
         if(text == matchManager.redTeamTextScore)
         {
-            if(teamName == LobbyPlayerLogic.TeamName.Red)
+            matchManager.blueGoal.PlayEffect();
+            if (teamName == LobbyPlayerLogic.TeamName.Red)
             {
                 newText = "Your team scored";
                 hudTextPlayer.color = guide.allyColor;
@@ -995,6 +995,7 @@ public class PlayerLogic : NetworkBehaviour
         }
         else
         {
+            matchManager.redGoal.PlayEffect();
             if (teamName == LobbyPlayerLogic.TeamName.Red)
             {
                 newText = "Enemy team scored";
@@ -1088,6 +1089,19 @@ public class PlayerLogic : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdDropFlag()
     {
+        hasFlag = false;
+        CmdStopPlayerFlagSource();
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdDropFlagDelayed(float time)
+    {
+        StartCoroutine(DropFlagDelayed(time));
+    }
+
+    private IEnumerator DropFlagDelayed(float time)
+    {
+        yield return new WaitForSeconds(time);
         hasFlag = false;
         CmdStopPlayerFlagSource();
     }

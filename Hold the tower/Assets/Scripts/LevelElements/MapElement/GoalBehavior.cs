@@ -34,7 +34,6 @@ public class GoalBehavior : NetworkBehaviour
                 {
                     textToShow = matchManager.redTeamTextScore;
                     CmdRedTeamScore();
-                    goalEffect.Play();
                     if (matchManager.redScore == matchManager.maxScore)
                     {
                         other.transform.parent.GetComponent<PlayerLogic>().CmdPlayEquipTeamSound("LevelMatchWon", "LevelMatchLost");
@@ -51,7 +50,6 @@ public class GoalBehavior : NetworkBehaviour
                 {
                     textToShow = matchManager.blueTeamTextScore;
                     CmdBlueTeamScore();
-                    goalEffect.Play();
                     if (matchManager.blueScore == matchManager.maxScore)
                     {
                         other.transform.parent.GetComponent<PlayerLogic>().CmdPlayEquipTeamSound("LevelMatchWon", "LevelMatchLost");
@@ -64,10 +62,16 @@ public class GoalBehavior : NetworkBehaviour
                     }
                 }
                 CmdTeamWin(textToShow);
-                //other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
+                other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
             }
         }
         
+    }
+
+
+    public void PlayEffect()
+    {
+        goalEffect.Play();
     }
 
     public IEnumerator DelayManager()
