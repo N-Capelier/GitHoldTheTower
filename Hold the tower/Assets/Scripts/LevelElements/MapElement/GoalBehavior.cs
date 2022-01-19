@@ -7,6 +7,8 @@ public class GoalBehavior : NetworkBehaviour
     [HideInInspector]
     public LobbyPlayerLogic.TeamName goalTeam;
     public MatchManager matchManager;
+    [SerializeField]
+    private ParticleSystem goalEffect;
 
     public PA_Position pa_pos;
 
@@ -32,6 +34,7 @@ public class GoalBehavior : NetworkBehaviour
                 {
                     textToShow = matchManager.redTeamTextScore;
                     CmdRedTeamScore();
+                    goalEffect.Play();
                     if (matchManager.redScore == matchManager.maxScore)
                     {
                         other.transform.parent.GetComponent<PlayerLogic>().CmdPlayEquipTeamSound("LevelMatchWon", "LevelMatchLost");
@@ -48,6 +51,7 @@ public class GoalBehavior : NetworkBehaviour
                 {
                     textToShow = matchManager.blueTeamTextScore;
                     CmdBlueTeamScore();
+                    goalEffect.Play();
                     if (matchManager.blueScore == matchManager.maxScore)
                     {
                         other.transform.parent.GetComponent<PlayerLogic>().CmdPlayEquipTeamSound("LevelMatchWon", "LevelMatchLost");
@@ -59,8 +63,8 @@ public class GoalBehavior : NetworkBehaviour
                         other.transform.parent.GetComponent<PlayerLogic>().CmdPlayGlobalSound("PlayerOverdriveGoal");
                     }
                 }
-                other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
                 CmdTeamWin(textToShow);
+                //other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
             }
         }
         

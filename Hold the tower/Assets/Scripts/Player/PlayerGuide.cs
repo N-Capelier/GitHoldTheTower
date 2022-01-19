@@ -17,7 +17,9 @@ public class PlayerGuide : MonoBehaviour
     [SerializeField]
     private Camera playerCamera;
     [SerializeField]
-    private float borderWidthRatio;
+    private float borderWidthHorizontal;
+    [SerializeField]
+    private float borderWidthVertical;
     [SerializeField]
     private RectTransform overdriveProgressionIcon;
     [SerializeField]
@@ -36,8 +38,10 @@ public class PlayerGuide : MonoBehaviour
     private Text allyScoreText, enemyScoreText;
     [SerializeField]
     private Image overdriveProgressionIconImage;
+
+    public Color allyColor, enemyColor;
     [SerializeField]
-    private Color allyColor, enemyColor;
+    private GameObject objectiveCursorEffect;
 
     private PlayerLogic playerLogic;
     private MatchManager matchManager;
@@ -102,8 +106,10 @@ public class PlayerGuide : MonoBehaviour
     Vector3 targetDirection;
     float angleFromTarget;
 
-    bool ownTeamHasOverdrive;
-    bool overdriveIsInCenter;
+    [HideInInspector]
+    public bool ownTeamHasOverdrive;
+    [HideInInspector]
+    public bool overdriveIsInCenter;
     private void Update()
     {
         if (playerLogic.roundStarted && !playersSetUp)
@@ -134,12 +140,12 @@ public class PlayerGuide : MonoBehaviour
                 if (angleFromTarget > 90)
                 {
                     screenPos *= -1;
-                    while (screenPos.x < (1920 / 2 - borderWidthRatio) && screenPos.x > -(1920 / 2 - borderWidthRatio) && screenPos.y < (1080 / 2 - borderWidthRatio) && screenPos.y > -(1080 / 2 - borderWidthRatio))
+                    while (screenPos.x < (1920 / 2 - borderWidthHorizontal) && screenPos.x > -(1920 / 2 - borderWidthHorizontal) && screenPos.y < (1080 / 2 - borderWidthVertical) && screenPos.y > -(1080 / 2 - borderWidthVertical))
                     {
                         screenPos += screenPos.normalized;
                     }
                 }
-                screenPos = new Vector2(Mathf.Clamp(screenPos.x, -(1920 / 2 - borderWidthRatio), (1920 / 2 - borderWidthRatio)), Mathf.Clamp(screenPos.y, -(1080 / 2 - borderWidthRatio), (1080 / 2 - borderWidthRatio)));
+                screenPos = new Vector2(Mathf.Clamp(screenPos.x, -(1920 / 2 - borderWidthHorizontal), (1920 / 2 - borderWidthHorizontal)), Mathf.Clamp(screenPos.y, -(1080 / 2 - borderWidthVertical), (1080 / 2 - borderWidthVertical)));
                 objectiveCursor.anchoredPosition = screenPos;
                 objectiveCursor.gameObject.SetActive(true);
             }
@@ -220,12 +226,13 @@ public class PlayerGuide : MonoBehaviour
                 }
                 else
                 {
-                    if(!overdriveIsInCenter)
+                    if (!overdriveIsInCenter)
                     {
                         overdriveIsInCenter = true;
                         ownTeamHasOverdrive = false;
-                        StartCoroutine(Announce(flagReturnedToCenterAnnouncement, true));
+                        StartCoroutine(Announce(flagReturnedToCenterAnnouncement, false));
                     }
+
 
                     objectiveText.text = selfParams.captureOverdriveText;
                     objectiveCursorImage.color = captureObjectiveColor;
@@ -266,12 +273,12 @@ public class PlayerGuide : MonoBehaviour
                 if (angleFromTarget > 90)
                 {
                     screenPos *= -1;
-                    while (screenPos.x < (1920 / 2 - borderWidthRatio) && screenPos.x > -(1920 / 2 - borderWidthRatio) && screenPos.y < (1080 / 2 - borderWidthRatio) && screenPos.y > -(1080 / 2 - borderWidthRatio))
+                    while (screenPos.x < (1920 / 2 - borderWidthHorizontal) && screenPos.x > -(1920 / 2 - borderWidthHorizontal) && screenPos.y < (1080 / 2 - borderWidthVertical) && screenPos.y > -(1080 / 2 - borderWidthVertical))
                     {
                         screenPos += screenPos.normalized;
                     }
                 }
-                screenPos = new Vector2(Mathf.Clamp(screenPos.x, -(1920 / 2 - borderWidthRatio), (1920 / 2 - borderWidthRatio)), Mathf.Clamp(screenPos.y, -(1080 / 2 - borderWidthRatio), (1080 / 2 - borderWidthRatio)));
+                screenPos = new Vector2(Mathf.Clamp(screenPos.x, -(1920 / 2 - borderWidthHorizontal), (1920 / 2 - borderWidthHorizontal)), Mathf.Clamp(screenPos.y, -(1080 / 2 - borderWidthVertical), (1080 / 2 - borderWidthVertical)));
                 allyCursor.anchoredPosition = screenPos;
                 allyCursor.gameObject.SetActive(true);
             }
@@ -293,8 +300,19 @@ public class PlayerGuide : MonoBehaviour
         }
     }
 
+    private IEnumerator WarnObjectiveCursor(int repetitionNumber)
+    {
+        for (int i = 0; i < repetitionNumber; i++)
+        {
+            Image effectImage = Instantiate(objectiveCursorEffect, objectiveCursor).GetComponent<Image>();
+            effectImage.color = objectiveCursorImage.color;
+            yield return new WaitForSeconds(0.3f);
+        }
+    }
+
     private IEnumerator Announce(string announcement, bool isFriendly)
     {
+        StartCoroutine(WarnObjectiveCursor(5));
         announcementBack.gameObject.SetActive(true);
         float timer = 0.5f;
         announcementText.text = announcement;

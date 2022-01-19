@@ -167,6 +167,8 @@ public class PlayerLogic : NetworkBehaviour
 
     private Coroutine respawnCor;
 
+    [SerializeField] private PlayerGuide guide;
+
     void Start()
     {
         matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>(); //Ne pas bouger
@@ -244,12 +246,12 @@ public class PlayerLogic : NetworkBehaviour
             if(authorityPlayer.GetComponent<PlayerLogic>().teamName == teamName)
             {
                 playerMeshRenderer.material = blueTeamMaterial;
-                player3dPseudo.GetComponentInChildren<Text>().color = Color.blue;
+                player3dPseudo.GetComponentInChildren<Text>().color = guide.allyColor;
             }
             else
             {
                 playerMeshRenderer.material = redTeamMaterial;
-                player3dPseudo.GetComponentInChildren<Text>().color = Color.red;
+                player3dPseudo.GetComponentInChildren<Text>().color = guide.enemyColor;
             }
 
         }
@@ -751,8 +753,8 @@ public class PlayerLogic : NetworkBehaviour
                 punchChargeSliderLine.transform.localScale = new Vector3(punchChargeSliderLine.transform.localScale.x, punchChargeSliderLine.transform.localScale.y, punchChargeDistancePreview.transform.localPosition.z - 0.2f);
                 if (selfMovement.isPunchInstantDestroy)
                 {
-                    punchChargeDistancePreview.transform.localScale = basePunchPreviewScale * 1.5f;
-                    punchChargeDistancePreview2.transform.localScale = basePunchPreviewScale * 1.5f;
+                    //punchChargeDistancePreview.transform.localScale = basePunchPreviewScale * 1.5f;
+                    //punchChargeDistancePreview2.transform.localScale = basePunchPreviewScale * 1.5f;
                 }
                 else
                 {
@@ -970,16 +972,45 @@ public class PlayerLogic : NetworkBehaviour
         }
             
         CmdShowScoreHud();
-
+        CmdDropFlag(); //sorryyyyyyyyyyyyyyyyyyyyyyyyyyy
     }
 
     public IEnumerator GoalMessageManager(string text)
     {
+        guide.overdriveIsInCenter = true;
+        guide.ownTeamHasOverdrive = false;
+        string newText = "";
+        if(text == matchManager.redTeamTextScore)
+        {
+            if(teamName == LobbyPlayerLogic.TeamName.Red)
+            {
+                newText = "Your team scored";
+                hudTextPlayer.color = guide.allyColor;
+            }
+            else
+            {
+                newText = "Enemy team scored";
+                hudTextPlayer.color = guide.enemyColor;
+            }
+        }
+        else
+        {
+            if (teamName == LobbyPlayerLogic.TeamName.Red)
+            {
+                newText = "Enemy team scored";
+                hudTextPlayer.color = guide.enemyColor;
+            }
+            else
+            {
+                newText = "Your team scored";
+                hudTextPlayer.color = guide.allyColor;
+            }
+        }
         hudTextPlayer.gameObject.SetActive(true);
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
-            if (text != hudTextPlayer.text)
-                hudTextPlayer.text = text;
+            if (newText != hudTextPlayer.text)
+                hudTextPlayer.text = newText;
             yield return new WaitForEndOfFrame();
 
         }
@@ -994,7 +1025,7 @@ public class PlayerLogic : NetworkBehaviour
         timerToStart = NetworkTime.time;
         respawnCor = StartCoroutine(RespawnManager());
         FlagObject.SetActive(true);
-
+        hudTextPlayer.color = Color.white;
     }
 
     [TargetRpc]
