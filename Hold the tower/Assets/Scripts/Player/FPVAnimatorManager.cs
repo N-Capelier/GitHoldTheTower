@@ -27,7 +27,7 @@ public class FPVAnimatorManager : MonoBehaviour
 		{
 			animator.SetBool("isJumping", false);
 			animator.SetBool("isInAir", false);
-			animator.SetBool("isImpactingGround", true);
+			//animator.SetBool("isImpactingGround", true);
 		}
 		else if(!animator.GetBool("isInAir") && !animator.GetBool("isJumping") && (!logic.isGrounded && Mathf.Abs(movement.selfRbd.velocity.y) > 1f))
 		{
