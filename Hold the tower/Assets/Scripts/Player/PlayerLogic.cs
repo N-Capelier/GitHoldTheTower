@@ -254,7 +254,6 @@ public class PlayerLogic : NetworkBehaviour
 
         }
 
-       
 
         GameObject[] allSpectators = GameObject.FindGameObjectsWithTag("Spectator");
         if(allSpectators.Length > 0)
@@ -1455,7 +1454,11 @@ public class PlayerLogic : NetworkBehaviour
         playerFootstepSource.Stop();
         playerSource.Stop();
     }
+
+  
 }
+
+
 
 
 

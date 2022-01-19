@@ -8,16 +8,7 @@ using AnotherFileBrowser.Windows; //Librairy fais par un docteur en informatique
 
 public class MenuManager : MonoBehaviour
 {
-	// Start is called before the first frame update
-
-	public GameObject menuObject, lobbyObject;
-
-	public TextMeshProUGUI usernameInputText, passwordInputText;
-
-	public Text ipInputText;
-	public TMP_InputField inputFieldPseudoText;
-
-	public Text analyticsPath;
+	[Header("Settings")]
 	[SerializeField]
 	private GameObject serverManager;
 	MyNewNetworkManager networkManager;
@@ -26,24 +17,94 @@ public class MenuManager : MonoBehaviour
 	[SerializeField]
 	private ScriptableMenuParams menuParams;
 
+	// Start is called before the first frame update
+	[Header("StartMenu")]
+	public InputField usernameStartMenu;
+
+	[Header("Main Menu Object")]
+	public Text ipInputText;
+	public TextMeshProUGUI usernameInputText, passwordInputText;
+	public TMP_InputField inputFieldPseudoText;
+
+	public Text analyticsPath;
+
 	public string customIp;
 	public string customIp2;
 
 	private bool isHost = false;
 
+	[Header("GameObject Menu")]
+	public GameObject menuObject;
+	public GameObject lobbyObject;
+	public GameObject mainMenu;
+	public GameObject joinMenu;
+
+	[Header("Effect component")]
+
+	[SerializeField]
+	private Text EnterToStart;
+
+	private WaitForEndOfFrame endOfFrame = new WaitForEndOfFrame(); //MERCI NICO
+
 	void Start()
 	{
+		menuObject.SetActive(false);
+		lobbyObject.SetActive(false);
+		joinMenu.SetActive(false);
+		mainMenu.SetActive(true);
+
+		//Load param from json
 		SaveManager.LoadParams(ref menuParams);
 		inputFieldPseudoText.text = menuParams.playerPseudo;
 		ipInputText.text = menuParams.ipToJoin;
+		usernameStartMenu.text = menuParams.playerPseudo;
+
+		//Curso management
 		Cursor.visible = true;
 		Cursor.lockState = CursorLockMode.None;
-		menuObject.SetActive(true);
-		lobbyObject.SetActive(false);
-		//serverManager = GameObject.Find("ServerManager");
+
+		//Find server component
 		networkManager = serverManager.GetComponent<MyNewNetworkManager>();
 		networkAuthenticator = serverManager.GetComponent<MyNewNetworkAuthenticator>();
+
+		//Start all my effect
+		TextBlink(1f, EnterToStart);
 	}
+
+    private void Update()
+    {
+        if (mainMenu.activeSelf)
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+				menuParams.playerPseudo = usernameStartMenu.text;
+				SaveManager.SaveParams(menuParams);
+				SaveManager.LoadParams(ref menuParams);
+				Debug.Log(usernameStartMenu.text);
+
+				menuObject.SetActive(true);
+				mainMenu.SetActive(false);
+				lobbyObject.SetActive(false);
+				joinMenu.SetActive(false);
+
+			}
+        }
+
+        if (menuObject.activeSelf)
+        {
+
+        }
+
+        if (lobbyObject.activeSelf)
+        {
+
+        }
+
+        if (joinMenu.activeSelf)
+        {
+
+        }
+    }
 
     #region Button
 
@@ -68,13 +129,21 @@ public class MenuManager : MonoBehaviour
 		menuParams.ipToJoin = ipInputText.text;
 		SaveManager.SaveParams(menuParams);
 
-		networkManager.networkAddress = ipInputText.text; // ipText;//ipInputText.text;
+		networkManager.networkAddress = ipInputText.text;
 		networkAuthenticator.lobbyPseudo = usernameInputText.text;
 		networkAuthenticator.lobbyPassword = passwordInputText.text;
 
 		ChangeMenu();
 		networkManager.StartClient();
 		
+	}
+
+	public void OnPressedJoinMenu()
+    {
+		menuObject.SetActive(false);
+		lobbyObject.SetActive(false);
+		joinMenu.SetActive(true);
+		mainMenu.SetActive(false);
 	}
 
 	public void OnPressedCustom()
@@ -112,14 +181,15 @@ public class MenuManager : MonoBehaviour
 
 	}
 
-	#endregion
+
 
 	public void ChangeMenu()
 	{
-		menuObject.SetActive(!menuObject.activeSelf);
-		lobbyObject.SetActive(!lobbyObject.activeSelf);
+		menuObject.SetActive(false);
+		joinMenu.SetActive(false);
+		lobbyObject.SetActive(true);
 
-        if (menuObject.activeSelf)
+		if (menuObject.activeSelf)
         {
 			usernameInputText.text = menuParams.playerPseudo;
 			ipInputText.text = menuParams.ipToJoin;
@@ -141,4 +211,50 @@ public class MenuManager : MonoBehaviour
 
 
 	}
+
+	public void ExitGame()
+    {
+		Application.Quit();
+		#if UNITY_EDITOR
+			UnityEditor.EditorApplication.isPlaying = false;
+		#endif
+
+		Application.Quit();
+
+	}
+	#endregion
+
+	#region effect
+
+	//Use this to create a blink during all time
+	public void TextBlink(float timeOfOneBlink, Text textToBlink)
+    {
+		StartCoroutine(ManageTextBlink(timeOfOneBlink, textToBlink));
+	}
+
+	public IEnumerator ManageTextBlink(float timeOfOneBlink,Text textToBlink)
+    {
+		float fadeValue = 1f;
+		while (true)
+        {
+			
+			while (fadeValue > 0f)
+            {
+				fadeValue = textToBlink.color.a - Time.deltaTime / timeOfOneBlink;
+				textToBlink.color = new Color(textToBlink.color.r, textToBlink.color.g, textToBlink.color.b, fadeValue);//textToBlink.color.a - Time.deltaTime/ timeOfOneBlink);
+				yield return endOfFrame;
+			}
+
+			while (fadeValue < 1f)
+            {
+				fadeValue = textToBlink.color.a + Time.deltaTime / timeOfOneBlink;
+				textToBlink.color = new Color(textToBlink.color.r, textToBlink.color.g, textToBlink.color.b, fadeValue);
+				yield return endOfFrame;
+			}
+			yield return endOfFrame;
+        }
+    }
+
+#endregion
+
 }
