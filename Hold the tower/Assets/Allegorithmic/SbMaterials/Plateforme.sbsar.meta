@@ -541,13 +541,12 @@ ScriptedImporter:
     generateAllOutputs: 1
     generateMipMaps: 1
     preset: " <sbspreset pkgurl=\"pkg://Plateforme\" label=\"\" >\n  <presetinput
-      identifier=\"$outputsize\" uid=\"2934068319\" type=\"8\" value=\"11,11\" />\n 
-      <presetinput identifier=\"$randomseed\" uid=\"4186980877\" type=\"4\" value=\"5507\"
-      />\n  <presetinput identifier=\"Marbre_Position\" uid=\"3242787359\" type=\"0\"
-      value=\"0.387\" />\n  <presetinput identifier=\"Marbre_Contrast_1\" uid=\"3242787357\"
-      type=\"0\" value=\"0.63\" />\n  <presetinput identifier=\"Marbre_intensity\"
-      uid=\"3242787355\" type=\"0\" value=\"0.353\" />\n  <presetinput identifier=\"Marbre_scale\"
-      uid=\"3242787353\" type=\"0\" value=\"5.59\" />\n  <presetinput identifier=\"Marbre_opacitymult\"
+      identifier=\"$randomseed\" uid=\"4186980877\" type=\"4\" value=\"5507\" />\n 
+      <presetinput identifier=\"Marbre_Position\" uid=\"3242787359\" type=\"0\" value=\"0.387\"
+      />\n  <presetinput identifier=\"Marbre_Contrast_1\" uid=\"3242787357\" type=\"0\"
+      value=\"0.63\" />\n  <presetinput identifier=\"Marbre_intensity\" uid=\"3242787355\"
+      type=\"0\" value=\"0.353\" />\n  <presetinput identifier=\"Marbre_scale\" uid=\"3242787353\"
+      type=\"0\" value=\"5.59\" />\n  <presetinput identifier=\"Marbre_opacitymult\"
       uid=\"3242787345\" type=\"0\" value=\"0.316\" />\n  <presetinput identifier=\"Marbre_intensity_1\"
       uid=\"3242787343\" type=\"0\" value=\"1\" />\n  <presetinput identifier=\"Marbre_intensity_2\"
       uid=\"3242787341\" type=\"0\" value=\"1\" />\n  <presetinput identifier=\"Marbre_scale_1\"
@@ -815,8 +814,8 @@ ScriptedImporter:
     - label: Default
       bOverride: 0
       bLockRatio: 1
-      textureWidth: 2048
-      textureHeight: 2048
+      textureWidth: 256
+      textureHeight: 256
       textureFormatMode: 0
       normalCompressed: 1
       bGenerateOnLoad: 1
