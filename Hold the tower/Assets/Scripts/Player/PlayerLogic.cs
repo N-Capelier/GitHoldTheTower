@@ -287,6 +287,21 @@ public class PlayerLogic : NetworkBehaviour
 
         }
 
+
+        GameObject[] allSpectators = GameObject.FindGameObjectsWithTag("Spectator");
+        if(allSpectators.Length > 0)
+        {
+            Debug.Log("test");
+            foreach (GameObject objSpectator in allSpectators)
+            {
+                if (objSpectator.GetComponent<NetworkIdentity>().hasAuthority)
+                {
+                    authorityPlayer = objSpectator;
+                    Debug.Log(authorityPlayer);
+                }
+            }
+        }
+        
     }
 
     void Update()
@@ -1546,7 +1561,11 @@ public class PlayerLogic : NetworkBehaviour
         playerFootstepSource.Stop();
         playerSource.Stop();
     }
+
+  
 }
+
+
 
 
 
