@@ -22,7 +22,7 @@ public class MenuManager : MonoBehaviour
 	public InputField usernameStartMenu;
 
 	[Header("Main Menu Object")]
-	public Text ipInputText;
+	public InputField ipInputText;
 	public TextMeshProUGUI usernameInputText, passwordInputText;
 	public TMP_InputField inputFieldPseudoText;
 
@@ -239,7 +239,7 @@ public class MenuManager : MonoBehaviour
 		//Enable the start scene
 		menuObject.SetActive(false);
 		creditMenu.SetActive(false);
-		mainMenu.SetActive(true);
+		mainMenu.SetActive(false);
 		lobbyObject.SetActive(false);
 		joinMenu.SetActive(false);
 		settingsMenu.SetActive(true);
