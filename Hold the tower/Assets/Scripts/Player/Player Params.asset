@@ -35,7 +35,7 @@ MonoBehaviour:
   wallJumpUpwardForce: 0.7
   maxWallJumpAngleDeviation: 40
   wallJumpMinAngleToCancelDeviation: 140
-  wallJumpMaxAngleToCancelDeviation: 70
+  wallJumpMaxAngleToCancelDeviation: 40
   wallSlideGravity: 30
   wallSlideMaxGravitySpeed: 1.5
   wallSlideSpeedDampening: 5
@@ -183,7 +183,7 @@ MonoBehaviour:
   chargeSlowMovementRatio: 0.607
   punchBasePropulsionForce: 60
   punchBaseUpwardPropulsionForce: 20
-  punchedNoControlTime: 0.2
+  punchedNoControlTime: 0.5
   punchPropulsionForceByCharge:
     serializedVersion: 2
     m_Curve:

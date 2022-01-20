@@ -11,7 +11,7 @@ public class BlockBehaviour : MonoBehaviour
 	[SerializeField] GameObject tile;
 	Material tileMaterial;
 
-	[Header("Movement")]
+    [Header("Movement")]
 	//Movement
 	[SerializeField] [Range(0.1f, 15f)] float moveDuration = 1.2f;
 	Vector3 startPosition;
@@ -41,8 +41,9 @@ public class BlockBehaviour : MonoBehaviour
 
 	[Header("Highlight")]
 	public GameObject highlightDisplay;
+    public ParticleSystem chunkActivableParticle;
 
-	[HideInInspector]
+    [HideInInspector]
 	public int blockID;
 	[HideInInspector]
 	public int loadedTerrainID = 0;

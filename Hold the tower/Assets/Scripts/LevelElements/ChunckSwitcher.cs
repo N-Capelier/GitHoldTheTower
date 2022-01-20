@@ -22,9 +22,28 @@ public class ChunckSwitcher : MonoBehaviour
         UnSelect();
     }
 
+    bool readyFlag;
     private void Update()
     {
-        display.sharedMaterial = linkedChunck.GetCDRatio() == 1 ? readyMaterial : rechargingMaterial;
+        if(readyFlag && linkedChunck.GetCDRatio() != 1)
+        {
+            readyFlag = false;
+            display.sharedMaterial = linkedChunck.GetCDRatio() == 1 ? readyMaterial : rechargingMaterial;
+            for (int i = 0; i < linkedChunck.switchables.Length; i++)
+            {
+                linkedChunck.switchables[i].chunkActivableParticle.Stop();
+            }
+        }
+        else if(!readyFlag && linkedChunck.GetCDRatio() == 1)
+        {
+            readyFlag = true;
+            display.sharedMaterial = linkedChunck.GetCDRatio() == 1 ? readyMaterial : rechargingMaterial;
+            for (int i = 0; i < linkedChunck.switchables.Length; i++)
+            {
+                linkedChunck.switchables[i].chunkActivableParticle.Play();
+            }
+        }
+
     }
 
     public bool IsChunckReadyToSwitch()
