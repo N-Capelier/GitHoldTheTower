@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Mirror;
 using Smooth;
+using UnityEngine.Rendering;
 
 //smoothnetworktransform a des bugs, ils faut les corrigers pour lancer le client en �diteur windows
 
@@ -38,6 +39,8 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     private GameObject flagRenderer;
     [SerializeField]
+    private Volume overdrivenVolume;
+    [SerializeField]
     private GameObject selfCollisionParent;
     [SerializeField]
     private SmoothSyncMirror selfSmoothSync;
@@ -65,6 +68,10 @@ public class PlayerLogic : NetworkBehaviour
     public Image punchCooldownSecondDisplay;
     [SerializeField]
     private Text hudTextPlayer;
+    [SerializeField]
+    private RectTransform hudTextBoxMask;
+    [SerializeField]
+    private AnimationCurve hudTextBoxMaskMovement;
     [SerializeField]
     private Text scoreTextBlue;
     [SerializeField]
@@ -113,6 +120,8 @@ public class PlayerLogic : NetworkBehaviour
     private GameObject player3dPseudo;
     [SerializeField]
     public GameObject hud;
+    [SerializeField]
+    public GameObject actionExclusiveHud;
     [SerializeField]
     public GameObject playerModel;
     [SerializeField]
@@ -899,7 +908,8 @@ public class PlayerLogic : NetworkBehaviour
         //Find respawn and set spawn
         if (hasAuthority)
         {
-            if(overviewCameraPos == null)
+            actionExclusiveHud.SetActive(false);
+            if (overviewCameraPos == null)
                 overviewCameraPos = GameObject.Find("OverviewCameraPosBlueSide").transform;
             overviewCamera.enabled = true;
             highlightCam.enabled = false;
@@ -960,6 +970,7 @@ public class PlayerLogic : NetworkBehaviour
             }
             roundStarted = true;
             hudTextPlayer.gameObject.SetActive(false);
+            actionExclusiveHud.SetActive(true);
 
             //Unlock Camera
             isSpawning = false;
@@ -1028,6 +1039,7 @@ public class PlayerLogic : NetworkBehaviour
         hudTextPlayer.gameObject.SetActive(true);
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
+            hudTextBoxMask.sizeDelta = new Vector2(hudTextBoxMaskMovement.Evaluate((float)((NetworkTime.time - timerToStart) / timerMaxToStart)), hudTextBoxMask.sizeDelta.y);
             if (newText != hudTextPlayer.text)
                 hudTextPlayer.text = newText;
             yield return new WaitForEndOfFrame();
@@ -1056,13 +1068,46 @@ public class PlayerLogic : NetworkBehaviour
 
     public IEnumerator EndGameManager(string text)
     {
+        guide.overdriveIsInCenter = true;
+        guide.ownTeamHasOverdrive = false;
         CmdShowScoreHud();
         hudTextPlayer.gameObject.SetActive(true);
 
+        string newText = "";
+        if (text == matchManager.redTeamTextWin)
+        {
+            matchManager.blueGoal.PlayEffect();
+            if (teamName == LobbyPlayerLogic.TeamName.Red)
+            {
+                newText = "Victory";
+                hudTextPlayer.color = guide.allyColor;
+            }
+            else
+            {
+                newText = "Defeat";
+                hudTextPlayer.color = guide.enemyColor;
+            }
+        }
+        else
+        {
+            matchManager.redGoal.PlayEffect();
+            if (teamName == LobbyPlayerLogic.TeamName.Red)
+            {
+                newText = "Defeat";
+                hudTextPlayer.color = guide.enemyColor;
+            }
+            else
+            {
+                newText = "Victory";
+                hudTextPlayer.color = guide.allyColor;
+            }
+        }
+
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
-            if (text != hudTextPlayer.text)
-                hudTextPlayer.text = text;
+            hudTextBoxMask.sizeDelta = new Vector2(hudTextBoxMaskMovement.Evaluate((float)((NetworkTime.time - timerToStart) / timerMaxToStart)), hudTextBoxMask.sizeDelta.y);
+            if (newText != hudTextPlayer.text)
+                hudTextPlayer.text = newText;
             yield return new WaitForEndOfFrame();
 
         }
@@ -1443,12 +1488,14 @@ public class PlayerLogic : NetworkBehaviour
             if (hasAuthority)
             {
                 flagRenderer.SetActive(true);
+                overdrivenVolume.enabled = true;
             }
             FlagInGame.SetActive(true);
         }
         else
         {
             flagRenderer.SetActive(false);
+            overdrivenVolume.enabled = false;
             FlagInGame.SetActive(false);
         }
     }
