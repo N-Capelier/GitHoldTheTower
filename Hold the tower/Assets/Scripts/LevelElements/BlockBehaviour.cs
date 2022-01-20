@@ -82,7 +82,7 @@ public class BlockBehaviour : MonoBehaviour
 
 	public void SetNextTerrainPosition()
 	{
-		if(isDestroyable && !isAlive)
+		if (isDestroyable && !isAlive)
 		{
 				return;
 			//isAlive = true;
@@ -92,9 +92,11 @@ public class BlockBehaviour : MonoBehaviour
 		}
 		boxCollider.enabled = true;
 		startPosition = transform.position;
+
 		loadedTerrainID++;
-		if(loadedTerrainID >= ThemeManager.Instance.terrains.Count)
+		if (loadedTerrainID >= ThemeManager.Instance.terrains.Count)
 			loadedTerrainID = 0;
+
 		targetPosition = ThemeManager.Instance.terrains[loadedTerrainID].positions[blockID];
 		movingToTargetPos = true;
 		elapsedTime = 0f;
@@ -111,6 +113,12 @@ public class BlockBehaviour : MonoBehaviour
 			blockMaterial.SetFloat("PreDissolveAlphaValue", 0f);
 			tileMaterial.SetFloat("AlphaValue", 1f);
 			gameObject.layer = LayerMask.NameToLayer("Outlined");
+
+			loadedTerrainID = ThemeManager.Instance.blocks[0].loadedTerrainID;
+
+			loadedTerrainID++;
+			if (loadedTerrainID >= ThemeManager.Instance.terrains.Count)
+				loadedTerrainID = 0;
 
 			SetNextTerrainPosition();
 		}
@@ -176,18 +184,12 @@ public class BlockBehaviour : MonoBehaviour
 	}
 
 	public void StartButtonActivationEffect()
-
     {
-
-		// JB !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! c'est � toi !
-
 		GameObject effect = Instantiate(ThemeManager.Instance.buttonActivationEffectPrefab, transform);
 
 		SoundManager.Instance.PlaySoundEvent("LevelButtonActivated");
 
-
 		effect.transform.localScale = new Vector3(transform.localScale.x * 2 + 0.3f, transform.localScale.y * 2 + 2, transform.localScale.z * 2 + 0.3f);
-
 	}
 
 	public IEnumerator WaitAndPlayDissolveSound()
