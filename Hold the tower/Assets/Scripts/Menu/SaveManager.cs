@@ -1,14 +1,10 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-
-public enum saveFile
-{
-    menu,
-    playerOption
-}
 
 public class SaveManager
 {
@@ -24,7 +20,7 @@ public class SaveManager
             Directory.CreateDirectory(Application.dataPath + "/Saves");
         }
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream write =  File.Create(Application.dataPath + "/Saves/menuParams");
+        FileStream write =  File.Create(Application.dataPath + "/Saves/menuParams.json");
         string json = JsonUtility.ToJson(menuParams);
         bf.Serialize(write, json);
         write.Close();
@@ -32,19 +28,19 @@ public class SaveManager
 
     public static void LoadParams(ref ScriptableMenuParams menuParams)
     {
-        if (!IsSaveFile())
+        if (!File.Exists(Application.dataPath + "/Saves/menuParams.json"))
         {
             SaveParams(menuParams);
         }
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Open(Application.dataPath + "/Saves/menuParams", FileMode.Open);
+        FileStream file = File.Open(Application.dataPath + "/Saves/menuParams.json", FileMode.Open);
         JsonUtility.FromJsonOverwrite((string)bf.Deserialize(file), menuParams) ;
         file.Close();
     }
 
-    public static void SaveParams(ScriptableParamsPlayer playerParams)
+    /*public static void SaveParams(ScriptableParamsPlayer playerParams)
     {
-        if (!IsSaveFile())
+        if (!File.Exists(Application.dataPath + "/Saves/menuParams"))
         {
             Directory.CreateDirectory(Application.dataPath + "/Saves");
         }
@@ -65,5 +61,34 @@ public class SaveManager
         FileStream file = File.Open(Application.dataPath + "/Saves/menuParams", FileMode.Open);
         JsonUtility.FromJsonOverwrite((string)bf.Deserialize(file), playerParams);
         file.Close();
+    }*/
+
+    public static void LoadParams(ref Dictionary<string, string> ipToSave)
+    {
+        if (!File.Exists(Application.dataPath + "/Saves/IpList.json"))
+        {
+            SaveParams(ref ipToSave);
+        }
+
+        using (StreamReader file = File.OpenText(Application.dataPath + "/Saves/IpList.json"))
+        {
+            JsonSerializer serializer = new JsonSerializer();
+            ipToSave = (Dictionary<string, string>)serializer.Deserialize(file, typeof(Dictionary<string, string>));
+        }
+    }
+
+    public static void SaveParams(ref Dictionary<string,string> ipToSave)
+    {
+        if (!File.Exists(Application.dataPath + "/Saves/IpList.json"))
+        {
+            Directory.CreateDirectory(Application.dataPath + "/Saves");
+        }
+
+        using (StreamWriter file = File.CreateText(Application.dataPath + "/Saves/IpList.json"))
+        {
+            JsonSerializer serializer = new JsonSerializer();
+            serializer.Serialize(file, ipToSave);
+        }
+
     }
 }

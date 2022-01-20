@@ -33,11 +33,24 @@ public class MenuManager : MonoBehaviour
 
 	private bool isHost = false;
 
+	[Header("Join Menu Object")]
+	public InputField nameToSaveTheIp;
+	public GameObject buttonCustomType;
+
+	private List<GameObject> allCustomButton = new List<GameObject>();
+	[SerializeField]
+	private List<RectTransform> allPositionCustomButton;
+
+	[HideInInspector]
+	[SerializeField] private Dictionary<string, string> ipLinkName = new Dictionary<string, string>();
+
 	[Header("GameObject Menu")]
 	public GameObject menuObject;
 	public GameObject lobbyObject;
 	public GameObject mainMenu;
 	public GameObject joinMenu;
+	public GameObject settingsMenu;
+	public GameObject creditMenu;
 
 	[Header("Effect component")]
 
@@ -48,10 +61,20 @@ public class MenuManager : MonoBehaviour
 
 	void Start()
 	{
+
+		//Enable the start scene
 		menuObject.SetActive(false);
+		creditMenu.SetActive(false);
+		mainMenu.SetActive(true);
 		lobbyObject.SetActive(false);
 		joinMenu.SetActive(false);
-		mainMenu.SetActive(true);
+		settingsMenu.SetActive(false);
+
+		//Load all the ip that will be create into button
+		SaveManager.LoadParams(ref ipLinkName);
+
+		//Create all button
+		LoadAllLinkButton();
 
 		//Load param from json
 		SaveManager.LoadParams(ref menuParams);
@@ -59,9 +82,9 @@ public class MenuManager : MonoBehaviour
 		ipInputText.text = menuParams.ipToJoin;
 		usernameStartMenu.text = menuParams.playerPseudo;
 
-		//Curso management
-		Cursor.visible = true;
-		Cursor.lockState = CursorLockMode.None;
+        //Curso management
+        UnityEngine.Cursor.visible = true;
+		UnityEngine.Cursor.lockState = CursorLockMode.None;
 
 		//Find server component
 		networkManager = serverManager.GetComponent<MyNewNetworkManager>();
@@ -80,12 +103,9 @@ public class MenuManager : MonoBehaviour
 				menuParams.playerPseudo = usernameStartMenu.text;
 				SaveManager.SaveParams(menuParams);
 				SaveManager.LoadParams(ref menuParams);
-				Debug.Log(usernameStartMenu.text);
 
-				menuObject.SetActive(true);
-				mainMenu.SetActive(false);
-				lobbyObject.SetActive(false);
-				joinMenu.SetActive(false);
+
+				BackToMainMenu();
 
 			}
         }
@@ -138,12 +158,28 @@ public class MenuManager : MonoBehaviour
 		
 	}
 
+	public void OnPressedJoinCustom(string ipToInput)
+	{
+		menuParams.playerPseudo = usernameInputText.text;
+		menuParams.ipToJoin = ipToInput;
+		SaveManager.SaveParams(menuParams);
+
+		networkManager.networkAddress = ipToInput;
+		networkAuthenticator.lobbyPseudo = usernameInputText.text;
+		networkAuthenticator.lobbyPassword = passwordInputText.text;
+
+		ChangeMenu();
+		networkManager.StartClient();
+
+	}
+
 	public void OnPressedJoinMenu()
     {
 		menuObject.SetActive(false);
 		lobbyObject.SetActive(false);
 		joinMenu.SetActive(true);
 		mainMenu.SetActive(false);
+
 	}
 
 	public void OnPressedCustom()
@@ -168,7 +204,7 @@ public class MenuManager : MonoBehaviour
 
 	public void OnPressedLeave()
 	{
-		ChangeMenu();
+		BackToMainMenu();
 		if (isHost)
 		{
 			networkManager.StopHost();
@@ -186,14 +222,38 @@ public class MenuManager : MonoBehaviour
 	public void ChangeMenu()
 	{
 		menuObject.SetActive(false);
-		joinMenu.SetActive(false);
+		creditMenu.SetActive(true);
+		mainMenu.SetActive(false);
 		lobbyObject.SetActive(true);
+		joinMenu.SetActive(false);
+		settingsMenu.SetActive(false);
 
 		if (menuObject.activeSelf)
         {
 			usernameInputText.text = menuParams.playerPseudo;
 			ipInputText.text = menuParams.ipToJoin;
 		}
+	}
+
+	public void OnPressedSettings() {
+		//Enable the start scene
+		menuObject.SetActive(false);
+		creditMenu.SetActive(false);
+		mainMenu.SetActive(true);
+		lobbyObject.SetActive(false);
+		joinMenu.SetActive(false);
+		settingsMenu.SetActive(true);
+	}
+
+	public void OnPressedCredits()
+    {
+		//Enable the start scene
+		menuObject.SetActive(false);
+		creditMenu.SetActive(true);
+		mainMenu.SetActive(false);
+		lobbyObject.SetActive(false);
+		joinMenu.SetActive(false);
+		settingsMenu.SetActive(false);
 	}
 
 	public void AnalyticsExplorer()
@@ -208,8 +268,6 @@ public class MenuManager : MonoBehaviour
 			analyticsPath.text = path;
 			serverManager.GetComponent<MyNewNetworkManager>().analyticsPath = path;
 		});
-
-
 	}
 
 	public void ExitGame()
@@ -225,11 +283,54 @@ public class MenuManager : MonoBehaviour
 
 	public void BackToMainMenu()
     {
+		SaveManager.LoadParams(ref menuParams);
+		inputFieldPseudoText.text = menuParams.playerPseudo;
+		ipInputText.text = menuParams.ipToJoin;
+
 		menuObject.SetActive(true);
+		creditMenu.SetActive(false);
 		mainMenu.SetActive(false);
 		lobbyObject.SetActive(false);
 		joinMenu.SetActive(false);
-    }
+		settingsMenu.SetActive(false);
+	}
+
+	public void OnPressedCreateprefabButton()
+    {
+		ipLinkName.Add(nameToSaveTheIp.text, ipInputText.text);
+		SaveManager.SaveParams(ref ipLinkName);
+		LoadAllLinkButton();
+
+	}
+
+	public void OnPressedDestroyPrefabButton(string ipLinkKey)
+    {
+		ipLinkName.Remove(ipLinkKey);
+		LoadAllLinkButton();
+		SaveManager.SaveParams(ref ipLinkName);
+	}
+
+	public void LoadAllLinkButton()
+    {
+		int i = 0;
+
+		foreach(GameObject but in allCustomButton)
+        {
+			Destroy(but);
+		}
+
+		foreach (string keyText in ipLinkName.Keys)
+		{
+			GameObject button = Instantiate(buttonCustomType, allPositionCustomButton[i]);
+			button.GetComponentInChildren<Text>().text = keyText;
+			button.GetComponent<Button>().onClick.AddListener(() => { OnPressedJoinCustom(ipLinkName[keyText]); });
+			button.transform.Find("ButtonDestroy").GetComponent<Button>().onClick.AddListener(() => { OnPressedDestroyPrefabButton(keyText);});
+			allCustomButton.Add(button);
+			i++;
+		}
+	}
+
+
 	#endregion
 
 	#region effect
