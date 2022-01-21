@@ -8,4 +8,7 @@ public class ScriptableMenuParams : ScriptableObject
 {
     public string playerPseudo;
     public string ipToJoin;
+
+    public bool isFullScreen;
+    public int ValueInDropDownScreenResolution;
 }

@@ -44,6 +44,20 @@ public class MenuManager : MonoBehaviour
 	[HideInInspector]
 	[SerializeField] private Dictionary<string, string> ipLinkName = new Dictionary<string, string>();
 
+	[Header("Settings menu Object")]
+
+	[SerializeField]
+	private GameObject audioMenuObject;
+	[SerializeField]
+	private GameObject videoMenuObject;
+	[SerializeField]
+	private GameObject controlsMenuObject;
+
+	[SerializeField]
+	private GameObject keyboardMenuObject;
+	[SerializeField]
+	private GameObject gamePadMenuObject;
+
 	[Header("GameObject Menu")]
 	public GameObject menuObject;
 	public GameObject lobbyObject;
@@ -101,7 +115,7 @@ public class MenuManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Return))
             {
 				menuParams.playerPseudo = usernameStartMenu.text;
-				SaveManager.SaveParams(menuParams);
+				SaveManager.SaveParams(ref menuParams);
 				SaveManager.LoadParams(ref menuParams);
 
 
@@ -132,7 +146,7 @@ public class MenuManager : MonoBehaviour
 	{
 		menuParams.playerPseudo = usernameInputText.text;
 		menuParams.ipToJoin = ipInputText.text;
-		SaveManager.SaveParams(menuParams);
+		SaveManager.SaveParams(ref menuParams);
 
 		networkAuthenticator.lobbyPseudo = usernameInputText.text;
 		networkAuthenticator.lobbyPassword = passwordInputText.text;
@@ -147,7 +161,7 @@ public class MenuManager : MonoBehaviour
 	{
 		menuParams.playerPseudo = usernameInputText.text;
 		menuParams.ipToJoin = ipInputText.text;
-		SaveManager.SaveParams(menuParams);
+		SaveManager.SaveParams(ref menuParams);
 
 		networkManager.networkAddress = ipInputText.text;
 		networkAuthenticator.lobbyPseudo = usernameInputText.text;
@@ -162,7 +176,7 @@ public class MenuManager : MonoBehaviour
 	{
 		menuParams.playerPseudo = usernameInputText.text;
 		menuParams.ipToJoin = ipToInput;
-		SaveManager.SaveParams(menuParams);
+		SaveManager.SaveParams(ref menuParams);
 
 		networkManager.networkAddress = ipToInput;
 		networkAuthenticator.lobbyPseudo = usernameInputText.text;
@@ -217,8 +231,6 @@ public class MenuManager : MonoBehaviour
 
 	}
 
-
-
 	public void ChangeMenu()
 	{
 		menuObject.SetActive(false);
@@ -243,6 +255,11 @@ public class MenuManager : MonoBehaviour
 		lobbyObject.SetActive(false);
 		joinMenu.SetActive(false);
 		settingsMenu.SetActive(true);
+
+		//Enable in menu component
+		audioMenuObject.SetActive(true);
+		videoMenuObject.SetActive(false);
+		controlsMenuObject.SetActive(false);
 	}
 
 	public void OnPressedCredits()
@@ -329,6 +346,46 @@ public class MenuManager : MonoBehaviour
 			i++;
 		}
 	}
+
+    #region Settings Button
+
+	public void OnPressedAudioSettings()
+    {
+		audioMenuObject.SetActive(true);
+		videoMenuObject.SetActive(false);
+		controlsMenuObject.SetActive(false);
+
+	}
+
+	public void OnPressedVideoSettings()
+	{
+		audioMenuObject.SetActive(false);
+		videoMenuObject.SetActive(true);
+		controlsMenuObject.SetActive(false);
+	}
+
+	public void OnPressedControlsSettings()
+	{
+		audioMenuObject.SetActive(false);
+		videoMenuObject.SetActive(false);
+		controlsMenuObject.SetActive(true);
+
+		OnPressedKeyboardSettings();
+	}
+
+	public void OnPressedKeyboardSettings()
+    {
+		keyboardMenuObject.SetActive(true);
+		gamePadMenuObject.SetActive(false);
+	}
+
+	public void OnPressedGamePadSettings()
+	{
+		keyboardMenuObject.SetActive(false);
+		gamePadMenuObject.SetActive(true);
+	}
+
+	#endregion
 
 
 	#endregion
