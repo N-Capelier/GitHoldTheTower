@@ -37,7 +37,9 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField] GameObject playerRenderObject;
     [SerializeField] GameObject firstPersonViewModel;
     [SerializeField]
-    private GameObject flagRenderer;
+    private GameObject overdrivenParticles;
+    [SerializeField]
+    private GameObject overdrivenVignette;
     [SerializeField]
     private Volume overdrivenVolume;
     [SerializeField]
@@ -1487,14 +1489,16 @@ public class PlayerLogic : NetworkBehaviour
         {
             if (hasAuthority)
             {
-                flagRenderer.SetActive(true);
+                overdrivenParticles.SetActive(true);
+                overdrivenVignette.SetActive(true);
                 overdrivenVolume.enabled = true;
             }
             FlagInGame.SetActive(true);
         }
         else
         {
-            flagRenderer.SetActive(false);
+            overdrivenParticles.SetActive(false);
+            overdrivenVignette.SetActive(false);
             overdrivenVolume.enabled = false;
             FlagInGame.SetActive(false);
         }
