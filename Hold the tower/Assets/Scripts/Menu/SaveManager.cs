@@ -13,12 +13,13 @@ public class SaveManager
         return Directory.Exists(Application.dataPath + "/Saves");
     }
 
-    public static void SaveParams(ScriptableMenuParams menuParams)
+    public static void SaveParams(ref ScriptableMenuParams menuParams)
     {
         if (!IsSaveFile())
         {
             Directory.CreateDirectory(Application.dataPath + "/Saves");
         }
+
         BinaryFormatter bf = new BinaryFormatter();
         FileStream write =  File.Create(Application.dataPath + "/Saves/menuParams.json");
         string json = JsonUtility.ToJson(menuParams);
@@ -30,7 +31,7 @@ public class SaveManager
     {
         if (!File.Exists(Application.dataPath + "/Saves/menuParams.json"))
         {
-            SaveParams(menuParams);
+            SaveParams(ref menuParams);
         }
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Open(Application.dataPath + "/Saves/menuParams.json", FileMode.Open);
