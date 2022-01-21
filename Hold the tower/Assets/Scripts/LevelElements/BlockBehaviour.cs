@@ -7,7 +7,7 @@ public class BlockBehaviour : MonoBehaviour
 	[Header("Components")]
 	[SerializeField] public BoxCollider boxCollider;
 	[SerializeField] public MeshRenderer meshRenderer;
-	Material blockMaterial;
+	[HideInInspector] public Material blockMaterial;
 	[SerializeField] GameObject tile;
 	Material tileMaterial;
 
@@ -43,7 +43,7 @@ public class BlockBehaviour : MonoBehaviour
 	public GameObject highlightDisplay;
     public ParticleSystem chunkActivableParticle;
 	[HideInInspector] public LevelTransition levelTransition;
-	[SerializeField] private Material blockWarnMaterial;
+	[SerializeField] public Material blockWarnMaterial;
 
 	[HideInInspector]
 	public int blockID;
@@ -78,14 +78,6 @@ public class BlockBehaviour : MonoBehaviour
 		}
 		isAlive = true;
 	}
-
-    private void Update()
-    {
-		if(isInChunck)
-		{
-			UpdateFlickeringBeforAutoSwitch();
-		}
-    }
 
     private void FixedUpdate()
 	{
@@ -214,42 +206,4 @@ public class BlockBehaviour : MonoBehaviour
 		SoundManager.Instance.PlaySoundEvent("LevelBlockDestroyed", gameObject);
 	}
 
-	float evolveWarningTimeLeft;
-	float timerBeforeNextTransition;
-	private void UpdateFlickeringBeforAutoSwitch()
-    {
-		timerBeforeNextTransition = (float)(levelTransition.timerChange - (NetworkTime.time - levelTransition.networkTime));
-
-
-		if (timerBeforeNextTransition < 6f)
-		{
-			evolveWarningTimeLeft -= Time.deltaTime;
-
-			if (evolveWarningTimeLeft <= 0)
-			{
-				if (meshRenderer.sharedMaterial == blockMaterial)
-				{
-					meshRenderer.sharedMaterial = blockWarnMaterial;
-				}
-				else
-				{
-					meshRenderer.sharedMaterial = blockMaterial;
-				}
-
-				if(timerBeforeNextTransition < 2f)
-				{
-					evolveWarningTimeLeft = 0.1f;
-				}
-				else
-				{
-					evolveWarningTimeLeft = 0.5f;
-				}
-			}
-		}
-		else
-		{
-			meshRenderer.sharedMaterial = blockMaterial;
-			evolveWarningTimeLeft = 0;
-		}
-	}
 }
