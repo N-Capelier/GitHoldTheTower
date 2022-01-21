@@ -13,6 +13,7 @@ public class ThemeManager : Singleton<ThemeManager>
 
 	public GameObject buttonActivationEffectPrefab;
 
+	private LevelTransition levelTransition;
 
 #if UNITY_EDITOR
 
@@ -29,11 +30,13 @@ public class ThemeManager : Singleton<ThemeManager>
 	{
 		CreateSingleton();
 
+		levelTransition = GameObject.Find("GameManager").GetComponent<LevelTransition>();
 		blocks = GetComponentsInChildren<BlockBehaviour>();
 
 		for (int i = 0; i < blocks.Length; i++)
         {
 			blocks[i].blockID = i;
+			blocks[i].levelTransition = levelTransition;
         }
 	}
 

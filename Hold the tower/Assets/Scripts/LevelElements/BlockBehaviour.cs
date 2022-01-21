@@ -42,15 +42,23 @@ public class BlockBehaviour : MonoBehaviour
 	[Header("Highlight")]
 	public GameObject highlightDisplay;
     public ParticleSystem chunkActivableParticle;
+	[HideInInspector] public LevelTransition levelTransition;
+	[SerializeField] private Material blockWarnMaterial;
 
-    [HideInInspector]
+	[HideInInspector]
 	public int blockID;
 	[HideInInspector]
 	public int loadedTerrainID = 0;
+	[HideInInspector]
+	public bool isInChunck;
+	[HideInInspector]
+	public bool isSelected;
 
 	private void Start()
 	{
-		if(tile != null)
+		meshRenderer = GetComponent<MeshRenderer>();
+		blockMaterial = meshRenderer.material;
+		if (tile != null)
 		{
 			if (tile.activeSelf)
 				tile.SetActive(false);
@@ -67,12 +75,19 @@ public class BlockBehaviour : MonoBehaviour
 		waitForEndOfFrame = new WaitForEndOfFrame();
 		if(isDestroyable)
 		{
-			blockMaterial = meshRenderer.material;
 		}
 		isAlive = true;
 	}
 
-	private void FixedUpdate()
+    private void Update()
+    {
+		if(isInChunck)
+		{
+			UpdateFlickeringBeforAutoSwitch();
+		}
+    }
+
+    private void FixedUpdate()
 	{
 		double beforeTimeNetwork = NetworkTime.time;
 		if (movingToTargetPos)
@@ -197,5 +212,44 @@ public class BlockBehaviour : MonoBehaviour
 	{
 		yield return new WaitForSeconds(timeBeforeExplosion);
 		SoundManager.Instance.PlaySoundEvent("LevelBlockDestroyed", gameObject);
+	}
+
+	float evolveWarningTimeLeft;
+	float timerBeforeNextTransition;
+	private void UpdateFlickeringBeforAutoSwitch()
+    {
+		timerBeforeNextTransition = (float)(levelTransition.timerChange - (NetworkTime.time - levelTransition.networkTime));
+
+
+		if (timerBeforeNextTransition < 6f)
+		{
+			evolveWarningTimeLeft -= Time.deltaTime;
+
+			if (evolveWarningTimeLeft <= 0)
+			{
+				if (meshRenderer.sharedMaterial == blockMaterial)
+				{
+					meshRenderer.sharedMaterial = blockWarnMaterial;
+				}
+				else
+				{
+					meshRenderer.sharedMaterial = blockMaterial;
+				}
+
+				if(timerBeforeNextTransition < 2f)
+				{
+					evolveWarningTimeLeft = 0.1f;
+				}
+				else
+				{
+					evolveWarningTimeLeft = 0.5f;
+				}
+			}
+		}
+		else
+		{
+			meshRenderer.sharedMaterial = blockMaterial;
+			evolveWarningTimeLeft = 0;
+		}
 	}
 }

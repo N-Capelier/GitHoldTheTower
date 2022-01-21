@@ -10,6 +10,14 @@ public class ButtonManager : NetworkBehaviour
 	[HideInInspector] public float cooldownRemaining;
     private bool isHighlighted;
 
+    private void Start()
+    {
+        for (int i = 0; i < switchables.Length; i++)
+        {
+            switchables[i].isInChunck = true;
+        }
+    }
+
     private void Update()
     {
         if(cooldownRemaining > 0)
@@ -48,6 +56,7 @@ public class ButtonManager : NetworkBehaviour
             for (int i = 0; i < switchables.Length; i++)
             {
                 switchables[i].highlightDisplay.SetActive(doHighlight);
+                switchables[i].isSelected = doHighlight;
             }
         }
     }

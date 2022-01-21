@@ -9736,8 +9736,12 @@ MonoBehaviour:
   buttonManager: {fileID: 0}
   highlightDisplay: {fileID: 8566610688892096865}
   chunkActivableParticle: {fileID: 994691151675547177}
+  levelTransition: {fileID: 0}
+  blockWarnMaterial: {fileID: 2100000, guid: a26558b64928b504f813ebe794b36ddf, type: 2}
   blockID: 0
   loadedTerrainID: 0
+  isInChunck: 0
+  isSelected: 0
 --- !u!1 &3719137877561257968
 GameObject:
   m_ObjectHideFlags: 0
