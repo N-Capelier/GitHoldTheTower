@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 
 public class SoundManager : Singleton<SoundManager>
@@ -47,6 +48,14 @@ public class SoundManager : Singleton<SoundManager>
         {
             soundEventList.InitialiseSoundIDs();
             soundEventList.InitialiseEventIDs();
+        }
+    }
+
+    public void Update()
+    {
+        if (SceneManager.GetActiveScene().name == "LobbyScene" && MusicSource1.isPlaying == false)
+        {
+            PlayMusic("MenuMusic");
         }
     }
 
