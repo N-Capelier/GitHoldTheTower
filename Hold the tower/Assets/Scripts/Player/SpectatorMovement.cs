@@ -26,6 +26,10 @@ public class SpectatorMovement : NetworkBehaviour
     public Transform selfCamera;
     private float yRotation;
     private float xRotation;
+
+    public AnimationCurve curveSpeed;
+    Vector3 targetPos;
+    Quaternion quatRotation;
     #endregion
 
 
@@ -46,6 +50,7 @@ public class SpectatorMovement : NetworkBehaviour
         if (hasAuthority)
         {
             fpsView();
+
             if (Input.GetKey(front))
             {
                 isfront = true;
@@ -75,6 +80,9 @@ public class SpectatorMovement : NetworkBehaviour
             {
                 isdown = true;
             }
+
+            selfTransform.position = Vector3.Lerp(selfTransform.position, targetPos, 0.05f);
+            //quatRotation = Quaternion.Lerp(selfTransform.localRotation, quatRotation, 0.05f);
         }
     }
 
@@ -83,37 +91,37 @@ public class SpectatorMovement : NetworkBehaviour
         if (isfront)
         {
             isfront = false;
-            selfTransform.position += selfCamera.forward * speed;
+            targetPos += selfCamera.forward * speed;
         }
 
         if (isback)
         {
             isback = false;
-            selfTransform.position += -selfCamera.forward * speed;
+            targetPos += -selfCamera.forward * speed;
         }
 
         if (isleft)
         {
             isleft = false;
-            selfTransform.position += -selfCamera.right * speed;
+            targetPos += -selfCamera.right * speed;
         }
 
         if (isright)
         {
             isright = false;
-            selfTransform.position += selfCamera.right * speed;
+            targetPos += selfCamera.right * speed;
         }
 
         if (isup)
         {
             isup = false;
-            selfTransform.position += transform.up * speed;
+            targetPos += transform.up * speed;
         }
 
         if (isdown)
         {
             isdown = false;
-            selfTransform.position += -transform.up * speed;
+            targetPos += -transform.up * speed;
         }
 
     }
@@ -132,6 +140,9 @@ public class SpectatorMovement : NetworkBehaviour
         yRotation += mouseX;
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90);
+
+        //transRotation.Rotate(Vector3.up * mouseX);
+        quatRotation = Quaternion.Euler(xRotation, yRotation, 0f);
 
         selfCamera.Rotate(Vector3.up * mouseX);
         selfCamera.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);

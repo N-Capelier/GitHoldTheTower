@@ -40,7 +40,7 @@ public class PlayerMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(menuKey))
+        if (Input.GetKeyDown(menuKey) && selfLogic.hasAuthority)
         {
             menuIsOpen = !menuIsOpen;
             blackLoadScreen.SetActive(false);

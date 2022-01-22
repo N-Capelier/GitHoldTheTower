@@ -830,7 +830,6 @@ public class PlayerLogic : NetworkBehaviour
 
     #endregion
 
-
     #region Network logic
     [Command]
     public void CmdSwitchCollider(bool isTrigger)
