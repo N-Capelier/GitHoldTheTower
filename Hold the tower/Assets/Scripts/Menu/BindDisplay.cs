@@ -26,6 +26,7 @@ public class BindDisplay : MonoBehaviour
 
     private void Start()
     {
+        SaveManager.LoadParams(ref paramsPlayer);
         DisplayKey();
         DisplaySensy();
         sliderSensy.value = paramsPlayer.mouseSensivity;

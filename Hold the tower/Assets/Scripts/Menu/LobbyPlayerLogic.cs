@@ -25,14 +25,21 @@ public class LobbyPlayerLogic : NetworkBehaviour
 
     [Header("Var")]
     [SerializeField]
-    private TextMeshProUGUI usernameText;
+    private Text usernameText;
     [SerializeField]
     private GameObject readyUi;
     [SerializeField]
     private GameObject readyButton;
     [SerializeField]
     private Image teamImage;
-    
+
+    [SerializeField]
+    private Sprite omgegaImage;
+    [SerializeField]
+    private Sprite psiImage;
+    [SerializeField]
+    private Sprite spectatorImage;
+
     [SerializeField]
     private GameObject[] lobbyPositions;
 
@@ -131,14 +138,17 @@ public class LobbyPlayerLogic : NetworkBehaviour
         switch (newValue)
         {
             case 0:
+                teamImage.sprite = omgegaImage;
                 teamImage.color = Color.red;
                 teamName = TeamName.Red;
                 break;
             case 1:
+                teamImage.sprite = psiImage;
                 teamImage.color = Color.blue;
                 teamName = TeamName.Blue;
                 break;
             case 2:
+                teamImage.sprite = spectatorImage;
                 teamImage.color = Color.grey;
                 teamName = TeamName.Spectator;
                 break;

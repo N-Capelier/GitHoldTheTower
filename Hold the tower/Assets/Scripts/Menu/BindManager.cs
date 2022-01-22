@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BindManager : MonoBehaviour
 {
     [SerializeField]
     private ScriptableParamsPlayer playerInput;
     private bool isBindingForward, isBindingBehind, isBindingLeft, isBindingRight, isBindingJump;
+
+    public UnityEvent showNewTextKey;
+    public UnityEvent showNewSensi;
 
     private void Update()
     {
@@ -106,8 +110,9 @@ public class BindManager : MonoBehaviour
 
     public void BindSensivity(float sensivity)
     {
-        Debug.Log(sensivity);
-        playerInput.mouseSensivity = sensivity;
+        playerInput.mouseSensivity = (int)sensivity;
+        SaveManager.SaveParams(ref playerInput);
+        showNewSensi.Invoke();
     }
 
 
@@ -137,7 +142,8 @@ public class BindManager : MonoBehaviour
                 }
             }
         }
-
+        SaveManager.SaveParams(ref playerInput);
+        showNewTextKey.Invoke();
     }
 
     private bool IgnoreKey()

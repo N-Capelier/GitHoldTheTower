@@ -92,4 +92,32 @@ public class SaveManager
         }
 
     }
+    public static void LoadParams(ref ScriptableParamsPlayer playerParams)
+    {
+        if (!File.Exists(Application.dataPath + "/Saves/PlayerParams.json"))
+        {
+            SaveParams(ref playerParams);
+        }
+
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Open(Application.dataPath + "/Saves/PlayerParams.json", FileMode.Open);
+        JsonUtility.FromJsonOverwrite((string)bf.Deserialize(file), playerParams);
+        file.Close();
+
+    }
+
+    public static void SaveParams(ref ScriptableParamsPlayer playerParams)
+    {
+        if (!File.Exists(Application.dataPath + "/Saves/PlayerParams.json"))
+        {
+            Directory.CreateDirectory(Application.dataPath + "/Saves");
+        }
+
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream write = File.Create(Application.dataPath + "/Saves/PlayerParams.json");
+        string json = JsonUtility.ToJson(playerParams);
+        bf.Serialize(write, json);
+        write.Close();
+
+    }
 }
