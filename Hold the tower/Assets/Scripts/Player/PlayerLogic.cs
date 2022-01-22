@@ -507,7 +507,7 @@ public class PlayerLogic : NetworkBehaviour
     {
         if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking)
         {
-            if (!isGrounded)
+            if (!isGrounded && isInControl)
             {
                 if (selfMovement.IsSomethingCollide())
                 {
