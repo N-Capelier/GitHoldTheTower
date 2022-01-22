@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: LD1
   m_EditorClassIdentifier: 
   mapImage: {fileID: 21300000, guid: cbb6ea24b2380da4fb1bf88ab1e5757f, type: 3}
-  mapName: LD1
-  textDescription: "Premi\xE8re map"
+  mapName: Save the tower
+  textDescription: Arena with evolving terrain and platforming challenges
   sceneNameToLoad: FixTheTower
