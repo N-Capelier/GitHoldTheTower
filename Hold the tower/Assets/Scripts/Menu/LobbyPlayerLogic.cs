@@ -37,7 +37,9 @@ public class LobbyPlayerLogic : NetworkBehaviour
     private Sprite omgegaImage;
     [SerializeField]
     private Sprite psiImage;
-    
+    [SerializeField]
+    private Sprite spectatorImage;
+
     [SerializeField]
     private GameObject[] lobbyPositions;
 
@@ -146,6 +148,7 @@ public class LobbyPlayerLogic : NetworkBehaviour
                 teamName = TeamName.Blue;
                 break;
             case 2:
+                teamImage.sprite = spectatorImage;
                 teamImage.color = Color.grey;
                 teamName = TeamName.Spectator;
                 break;
