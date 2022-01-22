@@ -631,7 +631,7 @@ public class SoundManager : Singleton<SoundManager>
         source.Stop();
     }
 
-    public SoundReference PlayUIEvent(string thisEventName)
+    public void PlayUIEvent(string thisEventName)
     {
         //Joue un son écoutable par tous mais qui n'est pas localisé dans l'espace.
 
@@ -695,7 +695,7 @@ public class SoundManager : Singleton<SoundManager>
         StartCoroutine(PlaySFX(soundRef));
 
         //On retourne la référence du son pour qu'il soit modifiable pas la suite la ou on l'appel.
-        return soundRef;
+        //return soundRef;
     }
 
     //Fontion pour jouer un son simplement.
