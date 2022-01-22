@@ -183,7 +183,7 @@ MonoBehaviour:
   chargeSlowMovementRatio: 0.607
   punchBasePropulsionForce: 60
   punchBaseUpwardPropulsionForce: 20
-  punchedNoControlTime: 0.5
+  punchedNoControlTime: 0.3
   punchPropulsionForceByCharge:
     serializedVersion: 2
     m_Curve:

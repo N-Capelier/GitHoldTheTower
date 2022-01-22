@@ -7,7 +7,7 @@ public class BlockBehaviour : MonoBehaviour
 	[Header("Components")]
 	[SerializeField] public BoxCollider boxCollider;
 	[SerializeField] public MeshRenderer meshRenderer;
-	Material blockMaterial;
+	[HideInInspector] public Material blockMaterial;
 	[SerializeField] GameObject tile;
 	Material tileMaterial;
 
@@ -42,15 +42,23 @@ public class BlockBehaviour : MonoBehaviour
 	[Header("Highlight")]
 	public GameObject highlightDisplay;
     public ParticleSystem chunkActivableParticle;
+	[HideInInspector] public LevelTransition levelTransition;
+	[SerializeField] public Material blockWarnMaterial;
 
-    [HideInInspector]
+	[HideInInspector]
 	public int blockID;
 	[HideInInspector]
 	public int loadedTerrainID = 0;
+	[HideInInspector]
+	public bool isInChunck;
+	[HideInInspector]
+	public bool isSelected;
 
 	private void Start()
 	{
-		if(tile != null)
+		meshRenderer = GetComponent<MeshRenderer>();
+		blockMaterial = meshRenderer.material;
+		if (tile != null)
 		{
 			if (tile.activeSelf)
 				tile.SetActive(false);
@@ -67,12 +75,11 @@ public class BlockBehaviour : MonoBehaviour
 		waitForEndOfFrame = new WaitForEndOfFrame();
 		if(isDestroyable)
 		{
-			blockMaterial = meshRenderer.material;
 		}
 		isAlive = true;
 	}
 
-	private void FixedUpdate()
+    private void FixedUpdate()
 	{
 		double beforeTimeNetwork = NetworkTime.time;
 		if (movingToTargetPos)
@@ -198,4 +205,5 @@ public class BlockBehaviour : MonoBehaviour
 		yield return new WaitForSeconds(timeBeforeExplosion);
 		SoundManager.Instance.PlaySoundEvent("LevelBlockDestroyed", gameObject);
 	}
+
 }
