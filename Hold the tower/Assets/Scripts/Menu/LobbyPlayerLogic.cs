@@ -106,6 +106,14 @@ public class LobbyPlayerLogic : NetworkBehaviour
             team++;
 		}
     }
+
+    public void PlaySound()
+    {
+        SoundManager.Instance.PlayUIEvent("UIButton");
+
+    }
+
+
     #endregion
 
     #region Syncro Logic
