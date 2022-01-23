@@ -294,11 +294,11 @@ MonoBehaviour:
   isSmoothingAuthorityChanges: 0
   transformSource: 0
   whenToUpdateTransform: 0
-  sendRate: 60
+  sendRate: 30
   networkChannel: 1
   childObjectToSync: {fileID: 0}
   setVelocityInsteadOfPositionOnNonOwners: 1
-  maxPositionDifferenceForVelocitySyncing: 1
+  maxPositionDifferenceForVelocitySyncing: 10
   useLocalTransformOnly: 0
   ownerChangeIndicator: 1
   receivedStatesCounter: 0
@@ -7923,7 +7923,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 0c8602fccb6e0754ab0a245b918ab4e8, type: 3}
     - target: {fileID: 6064770120498108676, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -4.4000854
+      value: -4.4000244
       objectReference: {fileID: 0}
     - target: {fileID: 6124811392628486583, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
       propertyPath: m_Type
@@ -7964,6 +7964,10 @@ PrefabInstance:
     - target: {fileID: 6679865047643361527, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
       propertyPath: m_SizeDelta.y
       value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775389240407120726, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.00012207031
       objectReference: {fileID: 0}
     - target: {fileID: 6788613632969443748, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
       propertyPath: m_Color.b
