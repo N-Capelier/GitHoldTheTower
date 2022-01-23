@@ -39,6 +39,7 @@ public class SpectatorMovement : NetworkBehaviour
         if (hasAuthority)
         {
             selfCamera.gameObject.SetActive(true);
+            StartCoroutine(DelayChangeColor());
         }
     }
 
@@ -143,5 +144,27 @@ public class SpectatorMovement : NetworkBehaviour
 
         targetTransform.Rotate(Vector3.up * mouseX);
         targetTransform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+    }
+
+    private IEnumerator DelayChangeColor()
+    {
+        yield return new WaitForSeconds(10f);
+        GameObject[] allPlayers = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject playerObject in allPlayers)
+        {
+            PlayerLogic logic = playerObject.GetComponent<PlayerLogic>();
+            if (logic != null)
+            {
+                if (logic.teamName == LobbyPlayerLogic.TeamName.Blue)
+                {
+                    logic.ChangeColorToBlue();
+                }
+                else
+                {
+                    logic.ChangeColorToBlue();
+                }
+            }
+        }
     }
 }
