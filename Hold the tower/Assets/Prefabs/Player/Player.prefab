@@ -275,7 +275,7 @@ MonoBehaviour:
   snapPositionThreshold: 0
   snapRotationThreshold: 0
   snapScaleThreshold: 0
-  positionLerpSpeed: 0.1
+  positionLerpSpeed: 1
   rotationLerpSpeed: 0.85
   scaleLerpSpeed: 0.85
   timeCorrectionSpeed: 0.1
@@ -298,7 +298,7 @@ MonoBehaviour:
   networkChannel: 1
   childObjectToSync: {fileID: 0}
   setVelocityInsteadOfPositionOnNonOwners: 1
-  maxPositionDifferenceForVelocitySyncing: 10
+  maxPositionDifferenceForVelocitySyncing: 1
   useLocalTransformOnly: 0
   ownerChangeIndicator: 1
   receivedStatesCounter: 0
