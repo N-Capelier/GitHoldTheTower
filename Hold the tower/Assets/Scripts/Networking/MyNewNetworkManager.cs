@@ -231,7 +231,6 @@ public class MyNewNetworkManager : NetworkManager
     public override void OnClientConnect(NetworkConnection conn)//Quand le client se connecte envoit un message contenant le pseudo
     {
         base.OnClientConnect(conn);
-        Debug.Log(GetComponent<MyNewNetworkAuthenticator>().lobbyPseudo);
 
         //Keep player pseudo
         playerPseudo = GetComponent<MyNewNetworkAuthenticator>().lobbyPseudo;
