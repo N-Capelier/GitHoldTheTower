@@ -16,6 +16,8 @@ public class MapDisplay : MonoBehaviour
     private Text nameText;
     [SerializeField]
     private Image mapImage;
+    [SerializeField]
+    private Image mapOverview;
 
     [SerializeField]
     private Button hostButton;
@@ -28,8 +30,9 @@ public class MapDisplay : MonoBehaviour
 
         textDescription.text = mapParams.textDescription;
         nameText.text = mapParams.mapName;
-        mapImage.color = new Color(255, 255, 255, 255);
+        mapImage.color = Color.white;
         mapImage.sprite = mapParams.mapImage;
+        mapOverview.sprite = mapParams.mapOverview;
 
         hostButton.onClick.AddListener(() => { menuManager.OnPressedHost(mapParams.sceneNameToLoad);});
         joinButton.onClick.AddListener(() => { menuManager.OnPressedHost(mapParams.sceneNameToLoad);});
