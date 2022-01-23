@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class ScriptableMaps : ScriptableObject
 {
     public Sprite mapImage;
+    public Sprite mapOverview;
     public string mapName;
     public string textDescription;
 
