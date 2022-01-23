@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerMenu : MonoBehaviour
 {
-    private KeyCode menuKey = KeyCode.Tab;
+    private KeyCode menuKey = KeyCode.Escape;
 
     [SerializeField]
     private PlayerLogic selfLogic;
@@ -93,7 +93,8 @@ public class PlayerMenu : MonoBehaviour
     {
         MyNewNetworkManager.Shutdown();
         Destroy(GameObject.Find("ServerManager"));
- 
+        Destroy(GameObject.Find("SoundManager"));
+
         while (GameObject.Find("ServerManager") != null)
         {
             Debug.Log("hein");
