@@ -265,38 +265,27 @@ public class PlayerLogic : NetworkBehaviour
         {
             selfFirstPersonView.SetActive(false);
 
-            if (allSpectators.Length < 1)
+            if (authorityPlayer.GetComponent<PlayerLogic>().teamName == teamName)
             {
-                //Make blue if ally, else make red him red
-                if (authorityPlayer.GetComponent<PlayerLogic>().teamName == teamName)
-                {
-                    playerMeshRenderer.material = blueTeamMaterial;
-                    player3dPseudo.GetComponentInChildren<Text>().color = guide.allyColor;
-                }
-                else
-                {
-                    playerMeshRenderer.material = redTeamMaterial;
-                    player3dPseudo.GetComponentInChildren<Text>().color = guide.enemyColor;
-                }
+                ChangeColorToBlue();
             }
             else
             {
-                if(GetComponent<PlayerLogic>().teamName == LobbyPlayerLogic.TeamName.Blue)
-                {
-                    playerMeshRenderer.material = blueTeamMaterial;
-                    player3dPseudo.GetComponentInChildren<Text>().color = Color.blue;
-                }
-                else
-                {
-                    playerMeshRenderer.material = redTeamMaterial;
-                    player3dPseudo.GetComponentInChildren<Text>().color = Color.red;
-                }
-                player3dPseudo.GetComponentInChildren<Text>().color = guide.enemyColor;
+                ChangeColorToRed();
             }
-            
-
         }
-        
+    }
+
+    public void ChangeColorToBlue()
+    {
+        playerMeshRenderer.material = blueTeamMaterial;
+        player3dPseudo.GetComponentInChildren<Text>().color = guide.allyColor;
+    }
+
+    public void ChangeColorToRed()
+    {
+        playerMeshRenderer.material = redTeamMaterial;
+        player3dPseudo.GetComponentInChildren<Text>().color = guide.enemyColor;
     }
 
     void Update()
