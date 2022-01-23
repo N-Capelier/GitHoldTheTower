@@ -237,7 +237,7 @@ public class MenuManager : MonoBehaviour
 	public void ChangeMenu()
 	{
 		menuObject.SetActive(false);
-		creditMenu.SetActive(true);
+		creditMenu.SetActive(false);
 		mainMenu.SetActive(false);
 		lobbyObject.SetActive(true);
 		joinMenu.SetActive(false);

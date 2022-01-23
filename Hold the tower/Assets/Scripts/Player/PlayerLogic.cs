@@ -1115,7 +1115,7 @@ public class PlayerLogic : NetworkBehaviour
 
         //Stop Music
         SoundManager.Instance.StopMusic();
-        Destroy(GameObject.Find("SoundManager"));
+        DestroyImmediate(GameObject.Find("SoundManager"));
 
         if (isServer)
         {

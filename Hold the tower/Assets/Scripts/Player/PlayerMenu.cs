@@ -97,7 +97,6 @@ public class PlayerMenu : MonoBehaviour
 
         while (GameObject.Find("ServerManager") != null)
         {
-            Debug.Log("hein");
             yield return new WaitForEndOfFrame();
         }
 
