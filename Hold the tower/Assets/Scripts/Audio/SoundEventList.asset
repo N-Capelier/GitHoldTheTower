@@ -525,3 +525,15 @@ MonoBehaviour:
     isLoop: 0
     isMusic: 0
     isAnnoucer: 0
+  - name: MenuMusic
+    ID: 42
+    sounds:
+    - name: UIButtonReturn
+      ID: 44
+      clip: {fileID: 8300000, guid: 6baacef8925704545a8abcd62abef2f1, type: 3}
+      volume: 1
+    isLocalized: 0
+    isRandom: 0
+    isLoop: 0
+    isMusic: 1
+    isAnnoucer: 0

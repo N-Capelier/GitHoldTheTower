@@ -115,6 +115,7 @@ public class MenuManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Return))
             {
 				menuParams.playerPseudo = usernameStartMenu.text;
+				SoundManager.Instance.PlayUIEvent("UIButtonClick");
 				SaveManager.SaveParams(ref menuParams);
 				SaveManager.LoadParams(ref menuParams);
 

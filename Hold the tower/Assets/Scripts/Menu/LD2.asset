@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: LD2
   m_EditorClassIdentifier: 
   mapImage: {fileID: 21300000, guid: 8e02f963b8ccc704e9d5babf428dabb3, type: 3}
-  mapName: LD2
-  textDescription: Map Nerveuses
+  mapName: Coliseum
+  textDescription: Unstable arena with destroyable ground
   sceneNameToLoad: DEV_LD_2

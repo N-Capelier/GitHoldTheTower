@@ -15,9 +15,10 @@ public class SpectatorMovement : NetworkBehaviour
     #endregion
 
     #region var
+    public Transform targetTransform;
+    public Transform transformToMove;
     private bool isfront, isback, isup, isdown, isleft, isright;
 
-    private Transform selfTransform;
     private float mouseSensivity = 100f;
 
     private float speed = 0.5f;
@@ -26,12 +27,13 @@ public class SpectatorMovement : NetworkBehaviour
     public Transform selfCamera;
     private float yRotation;
     private float xRotation;
+
+    public AnimationCurve curveSpeed;
     #endregion
 
 
     void Start()
     {
-        selfTransform = this.transform;
         Cursor.lockState = CursorLockMode.Locked;
         selfCamera.gameObject.SetActive(false);
         if (hasAuthority)
@@ -46,6 +48,7 @@ public class SpectatorMovement : NetworkBehaviour
         if (hasAuthority)
         {
             fpsView();
+
             if (Input.GetKey(front))
             {
                 isfront = true;
@@ -75,6 +78,10 @@ public class SpectatorMovement : NetworkBehaviour
             {
                 isdown = true;
             }
+
+            transformToMove.position = Vector3.Lerp(transformToMove.position, targetTransform.position, 0.05f);
+            transformToMove.rotation = Quaternion.Lerp(transformToMove.localRotation, targetTransform.rotation, 0.05f);
+            transformToMove.rotation = Quaternion.Euler(transformToMove.rotation.eulerAngles.x, transformToMove.rotation.eulerAngles.y, 0);
         }
     }
 
@@ -83,37 +90,37 @@ public class SpectatorMovement : NetworkBehaviour
         if (isfront)
         {
             isfront = false;
-            selfTransform.position += selfCamera.forward * speed;
+            targetTransform.position += selfCamera.forward * speed;
         }
 
         if (isback)
         {
             isback = false;
-            selfTransform.position += -selfCamera.forward * speed;
+            targetTransform.position += -selfCamera.forward * speed;
         }
 
         if (isleft)
         {
             isleft = false;
-            selfTransform.position += -selfCamera.right * speed;
+            targetTransform.position += -selfCamera.right * speed;
         }
 
         if (isright)
         {
             isright = false;
-            selfTransform.position += selfCamera.right * speed;
+            targetTransform.position += selfCamera.right * speed;
         }
 
         if (isup)
         {
             isup = false;
-            selfTransform.position += transform.up * speed;
+            targetTransform.position += transform.up * speed;
         }
 
         if (isdown)
         {
             isdown = false;
-            selfTransform.position += -transform.up * speed;
+            targetTransform.position += -transform.up * speed;
         }
 
     }
@@ -133,7 +140,8 @@ public class SpectatorMovement : NetworkBehaviour
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90);
 
-        selfCamera.Rotate(Vector3.up * mouseX);
-        selfCamera.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+
+        targetTransform.Rotate(Vector3.up * mouseX);
+        targetTransform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
     }
 }

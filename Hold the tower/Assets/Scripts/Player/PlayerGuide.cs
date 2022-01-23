@@ -188,11 +188,11 @@ public class PlayerGuide : MonoBehaviour
                         overdriveIsInCenter = false;
                         if (adversaryHasFlag)
                         {
-                            StartCoroutine(Announce(flagCapturedByEnemyAnnouncement, false));
+                            StartAnnouncement(flagCapturedByEnemyAnnouncement, false);
                         }
                         else
                         {
-                            StartCoroutine(Announce(flagCapturedByAllyAnnouncement, true));
+                            StartAnnouncement(flagCapturedByAllyAnnouncement, true);
                         }
                     }
                     else
@@ -200,13 +200,13 @@ public class PlayerGuide : MonoBehaviour
                         if (adversaryHasFlag && ownTeamHasOverdrive)
                         {
                             ownTeamHasOverdrive = false;
-                            StartCoroutine(Announce(flagCapturedByEnemyAnnouncement, false));
+                            StartAnnouncement(flagCapturedByEnemyAnnouncement, false);
                         }
 
                         if(teamMateHasFlag && !ownTeamHasOverdrive)
                         {
                             ownTeamHasOverdrive = true;
-                            StartCoroutine(Announce(flagCapturedByAllyAnnouncement, true));
+                            StartAnnouncement(flagCapturedByAllyAnnouncement, true);
                         }
                     }
 
@@ -239,7 +239,7 @@ public class PlayerGuide : MonoBehaviour
                         }
                         else
                         {
-                            StartCoroutine(Announce(flagReturnedToCenterAnnouncement, false));
+                            StartAnnouncement(flagReturnedToCenterAnnouncement, false);
                         }
                     }
 
@@ -257,7 +257,7 @@ public class PlayerGuide : MonoBehaviour
                 {
                     overdriveIsInCenter = false;
                     ownTeamHasOverdrive = true;
-                    StartCoroutine(Announce(flagCapturedByMeAnnouncement, true));
+                    StartAnnouncement(flagCapturedByMeAnnouncement, true);
                 }
                 targetPos = adverseGoal.transform.position;
                 overdriveCurrentPosition = transform.position;
@@ -320,6 +320,14 @@ public class PlayerGuide : MonoBehaviour
         }
     }
 
+    private Coroutine announcementCoroutine;
+    private void StartAnnouncement(string announcementText, bool isFriendly)
+    {
+        if(announcementCoroutine != null)
+            StopCoroutine(announcementCoroutine);
+        announcementCoroutine = StartCoroutine(Announce(announcementText, isFriendly));
+    }
+
     private IEnumerator Announce(string announcement, bool isFriendly)
     {
         StartCoroutine(WarnObjectiveCursor(5));
@@ -345,5 +353,6 @@ public class PlayerGuide : MonoBehaviour
         }
         announcementText.text = string.Empty;
         announcementBack.gameObject.SetActive(false);
+        announcementCoroutine = null;
     }
 }

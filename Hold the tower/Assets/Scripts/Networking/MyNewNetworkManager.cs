@@ -36,7 +36,9 @@ public class MyNewNetworkManager : NetworkManager
 
     [HideInInspector]
     public SoundManager soundManager;
-    
+
+    [SerializeField]
+    public GameObject startTransitionObject;
 
     #region Unity Callbacks
 
@@ -398,6 +400,8 @@ public class MyNewNetworkManager : NetworkManager
     public void StartGame()
     {
         ServerChangeScene(gameScene);
+        startTransitionObject.SetActive(true);
+        startTransitionObject.GetComponent<RectTransform>().SetAsLastSibling(); //Only local
     }
 
     #endregion

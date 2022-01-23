@@ -15,6 +15,9 @@ public class LobbyPlayerLogic : NetworkBehaviour
     [SyncVar(hook = nameof(ChangeTeam))]
     public int team;
 
+    public Color omegaColor;
+    public Color psyColor;
+    public Color spectatorColor;
 
     public enum TeamName
     {
@@ -106,6 +109,14 @@ public class LobbyPlayerLogic : NetworkBehaviour
             team++;
 		}
     }
+
+    public void PlaySound()
+    {
+        SoundManager.Instance.PlayUIEvent("UIButton");
+
+    }
+
+
     #endregion
 
     #region Syncro Logic
@@ -139,17 +150,17 @@ public class LobbyPlayerLogic : NetworkBehaviour
         {
             case 0:
                 teamImage.sprite = omgegaImage;
-                teamImage.color = Color.red;
+                teamImage.color = omegaColor;
                 teamName = TeamName.Red;
                 break;
             case 1:
                 teamImage.sprite = psiImage;
-                teamImage.color = Color.blue;
+                teamImage.color = psyColor;
                 teamName = TeamName.Blue;
                 break;
             case 2:
                 teamImage.sprite = spectatorImage;
-                teamImage.color = Color.grey;
+                teamImage.color = spectatorColor;
                 teamName = TeamName.Spectator;
                 break;
         }

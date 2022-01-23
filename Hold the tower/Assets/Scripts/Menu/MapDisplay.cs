@@ -36,5 +36,9 @@ public class MapDisplay : MonoBehaviour
 
     }
 
+    public void PlaySound()
+    {
+        SoundManager.Instance.PlayUIEvent("UIButtonClick");
+    }
 
 }

@@ -3361,7 +3361,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2
+  m_Text: 0
 --- !u!1 &2832393817412184635
 GameObject:
   m_ObjectHideFlags: 0
@@ -5648,6 +5648,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInput: {fileID: 11400000, guid: a24272e5804e7bd4891a2cf20f79574a, type: 2}
+  showNewTextKey:
+    m_PersistentCalls:
+      m_Calls: []
+  showNewSensi:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &5466651168913206911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7353,7 +7359,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2
+  m_Text: 0
 --- !u!1 &6327624696401789708
 GameObject:
   m_ObjectHideFlags: 0
