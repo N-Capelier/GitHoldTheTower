@@ -5667,9 +5667,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapObjectType: {fileID: 4233669689697048070, guid: 3ce55daa6311de446bdde3f4315208ed, type: 3}
   allMaps:
-  - {fileID: 11400000, guid: 9c3ec22ba21999748a96d5854148a9e5, type: 2}
-  - {fileID: 11400000, guid: b5d61731bbb4cc841beb1899d459ba60, type: 2}
   - {fileID: 11400000, guid: 5deb9e6396adacc4b98a5c4ad2b9d102, type: 2}
+  - {fileID: 11400000, guid: b5d61731bbb4cc841beb1899d459ba60, type: 2}
+  - {fileID: 11400000, guid: 9c3ec22ba21999748a96d5854148a9e5, type: 2}
 --- !u!1 &825981662
 GameObject:
   m_ObjectHideFlags: 0
