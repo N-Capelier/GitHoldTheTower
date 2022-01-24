@@ -128,10 +128,15 @@ public class SensorGround : MonoBehaviour
             ////////////////////////// Add BlockBehaviour to spawn blocks
             if(target.GetComponent<BlockBehaviour>())
 			{
-				selfTransform.position += target.GetComponent<BlockBehaviour>().ownVelo;
-				//selfRbd.velocity += target.GetComponent<BlockBehaviour>().ownVelo;
-
-			}
+                if (selfLogic.hasAuthority)
+                {
+                    selfTransform.position += target.GetComponent<BlockBehaviour>().ownVelo;
+                }
+                else
+                {
+                    selfTransform.position += target.GetComponent<BlockBehaviour>().ownVelo*2f;
+                }
+            }
             //Debug.Log(target.GetComponent<BlockBehaviour>().ownVelo);
         }
 
