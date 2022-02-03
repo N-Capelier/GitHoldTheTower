@@ -41,6 +41,10 @@ public class ButtonManager : NetworkBehaviour
     public void RpcUse()
     {
         cooldownRemaining = activationCooldown;
+        for (int i = 0; i < switchables.Length; i++)
+        {
+            switchables[i].chunkActivableParticle.Play();
+        }
     }
 
     public float GetCDRatio()
