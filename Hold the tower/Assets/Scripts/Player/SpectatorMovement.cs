@@ -6,15 +6,12 @@ public class SpectatorMovement : NetworkBehaviour
 {
 
     #region Input Key
-    private KeyCode front = KeyCode.Z;
-    private KeyCode back = KeyCode.S;
-    private KeyCode up = KeyCode.Space;
     private KeyCode down = KeyCode.LeftShift;
-    private KeyCode left = KeyCode.Q;
-    private KeyCode right = KeyCode.D;
+    public ScriptableParamsPlayer spectatorParams;
     #endregion
 
     #region var
+
     public Transform targetTransform;
     public Transform transformToMove;
     private bool isfront, isback, isup, isdown, isleft, isright;
@@ -29,11 +26,14 @@ public class SpectatorMovement : NetworkBehaviour
     private float xRotation;
 
     public AnimationCurve curveSpeed;
+
+    private SpectatorMenu selfMenu;
     #endregion
 
 
     void Start()
     {
+        selfMenu = GetComponent<SpectatorMenu>();
         Cursor.lockState = CursorLockMode.Locked;
         selfCamera.gameObject.SetActive(false);
         if (hasAuthority)
@@ -47,41 +47,75 @@ public class SpectatorMovement : NetworkBehaviour
     {
         if (hasAuthority)
         {
-            fpsView();
-
-            if (Input.GetKey(front))
+            if (!selfMenu.menuActive)
             {
-                isfront = true;
+                if (!selfMenu.spectatorIsFocus)
+                {
+                    fpsView();
+                }
+                else
+                {
+                    
+                }
+
+                if (Input.GetKey(spectatorParams.front))
+                {
+                    isfront = true;
+                    selfMenu.spectatorIsFocus = false;
+                    selfMenu.playerToFocus = null;
+                }
+
+                if (Input.GetKey(spectatorParams.back))
+                {
+                    isback = true;
+                    selfMenu.spectatorIsFocus = false;
+                    selfMenu.playerToFocus = null;
+                }
+
+                if (Input.GetKey(spectatorParams.left))
+                {
+                    isleft = true;
+                    selfMenu.spectatorIsFocus = false;
+                    selfMenu.playerToFocus = null;
+                }
+
+                if (Input.GetKey(spectatorParams.right))
+                {
+                    isright = true;
+                    selfMenu.spectatorIsFocus = false;
+                    selfMenu.playerToFocus = null;
+                }
+
+                if (Input.GetKey(spectatorParams.jump))
+                {
+                    isup = true;
+                    selfMenu.spectatorIsFocus = false;
+                    selfMenu.playerToFocus = null;
+                }
+
+                if (Input.GetKey(down))
+                {
+                    isdown = true;
+                    selfMenu.spectatorIsFocus = false;
+                    selfMenu.playerToFocus = null;
+                }
+                
             }
 
-            if (Input.GetKey(back))
+            if (!selfMenu.spectatorIsFocus)
             {
-                isback = true;
+                transformToMove.position = Vector3.Lerp(transformToMove.position, targetTransform.position, 0.05f);
+                transformToMove.rotation = Quaternion.Lerp(transformToMove.localRotation, targetTransform.rotation, 0.05f);
+                transformToMove.rotation = Quaternion.Euler(transformToMove.rotation.eulerAngles.x, transformToMove.rotation.eulerAngles.y, 0);
             }
-
-            if (Input.GetKey(left))
+            else
             {
-                isleft = true;
+                if(selfMenu.playerToFocus != null)
+                {
+                    transformToMove.position = selfMenu.playerToFocus.transform.position;
+                    transformToMove.rotation = selfMenu.playerToFocus.transform.rotation;
+                }
             }
-
-            if (Input.GetKey(right))
-            {
-                isright = true;
-            }
-
-            if (Input.GetKey(up))
-            {
-                isup = true;
-            }
-
-            if (Input.GetKey(down))
-            {
-                isdown = true;
-            }
-
-            transformToMove.position = Vector3.Lerp(transformToMove.position, targetTransform.position, 0.05f);
-            transformToMove.rotation = Quaternion.Lerp(transformToMove.localRotation, targetTransform.rotation, 0.05f);
-            transformToMove.rotation = Quaternion.Euler(transformToMove.rotation.eulerAngles.x, transformToMove.rotation.eulerAngles.y, 0);
         }
     }
 

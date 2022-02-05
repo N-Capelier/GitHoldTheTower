@@ -208,6 +208,7 @@ public class MyNewNetworkManager : NetworkManager
     /// <param name="conn">Connection from client.</param>
     public override void OnServerDisconnect(NetworkConnection conn)
     {
+        NetworkServer.DisconnectAll();
         base.OnServerDisconnect(conn);
     }
 
@@ -429,10 +430,20 @@ public class MyNewNetworkManager : NetworkManager
 
     public bool CheckIsReady()
     {
+        int redTeam = 0, blueTeam = 0;
         for (int i = 0; i < lobbyPlayerServer.Length; i++)
         {
             if (lobbyPlayerServer[i] != null)
             {
+                if (lobbyPlayerServer[i].GetComponent<LobbyPlayerLogic>().teamName == LobbyPlayerLogic.TeamName.Blue)
+                {
+                    blueTeam++;
+                }
+                if (lobbyPlayerServer[i].GetComponent<LobbyPlayerLogic>().teamName == LobbyPlayerLogic.TeamName.Red)
+                {
+                    redTeam++;
+                }
+
                 if (!lobbyPlayerServer[i].GetComponent<LobbyPlayerLogic>().isReady)
                 {
                     StartButton.SetActive(false);
@@ -440,8 +451,15 @@ public class MyNewNetworkManager : NetworkManager
                 }
             }
         }
-        StartButton.SetActive(true);
-        return true;
+
+        if((redTeam == blueTeam) || (redTeam == 0 && blueTeam == 1) || (blueTeam == 0 && redTeam == 1) )
+        {
+            StartButton.SetActive(true);
+            return true;
+        }
+
+        return false;
+
     }
     #endregion
 
