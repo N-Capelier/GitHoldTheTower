@@ -84,6 +84,7 @@ public class PlayerMovement : MonoBehaviour
 
         while(_completion < .5f)
 		{
+            //Debug.LogWarning(_completion);
             _elapsedTime += Time.deltaTime;
             _completion = _elapsedTime * 2f;
             if (isMoving)
