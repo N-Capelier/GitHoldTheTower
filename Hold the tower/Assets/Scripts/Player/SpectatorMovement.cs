@@ -16,8 +16,6 @@ public class SpectatorMovement : NetworkBehaviour
     public Transform transformToMove;
     private bool isfront, isback, isup, isdown, isleft, isright;
 
-    private float mouseSensivity = 100f;
-
     private float speed = 0.5f;
 
     //Camera
@@ -61,47 +59,42 @@ public class SpectatorMovement : NetworkBehaviour
                 if (Input.GetKey(spectatorParams.front))
                 {
                     isfront = true;
-                    selfMenu.spectatorIsFocus = false;
-                    selfMenu.playerToFocus = null;
+                    StopFocus();
                 }
 
                 if (Input.GetKey(spectatorParams.back))
                 {
                     isback = true;
-                    selfMenu.spectatorIsFocus = false;
-                    selfMenu.playerToFocus = null;
+                    StopFocus();
                 }
 
                 if (Input.GetKey(spectatorParams.left))
                 {
                     isleft = true;
-                    selfMenu.spectatorIsFocus = false;
-                    selfMenu.playerToFocus = null;
+                    StopFocus();
                 }
 
                 if (Input.GetKey(spectatorParams.right))
                 {
                     isright = true;
-                    selfMenu.spectatorIsFocus = false;
-                    selfMenu.playerToFocus = null;
+                    StopFocus();
                 }
 
                 if (Input.GetKey(spectatorParams.jump))
                 {
                     isup = true;
-                    selfMenu.spectatorIsFocus = false;
-                    selfMenu.playerToFocus = null;
+                    StopFocus();
                 }
 
                 if (Input.GetKey(down))
                 {
                     isdown = true;
-                    selfMenu.spectatorIsFocus = false;
-                    selfMenu.playerToFocus = null;
+                    StopFocus();
                 }
                 
             }
 
+            //Si ne focus pas un jouer, donne sa position
             if (!selfMenu.spectatorIsFocus)
             {
                 transformToMove.position = Vector3.Lerp(transformToMove.position, targetTransform.position, 0.05f);
@@ -111,10 +104,28 @@ public class SpectatorMovement : NetworkBehaviour
             else
             {
                 if(selfMenu.playerToFocus != null)
-                {
-                    transformToMove.position = selfMenu.playerToFocus.transform.position;
-                    transformToMove.rotation = selfMenu.playerToFocus.transform.rotation;
+
+                {   if ((transformToMove.position - selfMenu.playerToFocus.transform.position).magnitude > 10f)
+                    {
+                        transformToMove.position = Vector3.Lerp(transformToMove.position, selfMenu.playerToFocus.transform.position, 0.05f);
+                    }
+                    else
+                    {
+                        Debug.Log((transformToMove.position - selfMenu.playerToFocus.transform.position).magnitude);
+                        selfMenu.nearFocusX = true;
+                    }
+
+                    if(selfMenu.nearFocusX)
+                    {
+                        transformToMove.LookAt(selfMenu.playerToFocus.transform.position);
+                        transformToMove.RotateAround(selfMenu.playerToFocus.transform.position, selfMenu.playerToFocus.transform.up, 20 * Time.deltaTime);
+                    }
                 }
+
+                
+
+                //transformToMove.position = selfMenu.playerToFocus.transform.position;
+                //transformToMove.rotation = selfMenu.playerToFocus.transform.rotation;
             }
         }
     }
@@ -159,14 +170,24 @@ public class SpectatorMovement : NetworkBehaviour
 
     }
 
+    private void StopFocus()
+    {
+        selfMenu.nearFocusX = false;
+        selfMenu.nearFocusY = false;
+        selfMenu.nearFocusZ = false;
+
+        selfMenu.playerToFocus = null;
+        selfMenu.spectatorIsFocus = false;
+    }
+
     private void fpsView()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensivity * Time.deltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * (spectatorParams.mouseSensivity/2) * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * (spectatorParams.mouseSensivity/2) * Time.deltaTime;
 
         #if UNITY_EDITOR
-        mouseX = Input.GetAxis("Mouse X") * mouseSensivity * 4f * Time.deltaTime;
-        mouseY = Input.GetAxis("Mouse Y") * mouseSensivity * 4f * Time.deltaTime;
+        mouseX = Input.GetAxis("Mouse X") * (spectatorParams.mouseSensivity/2) * 4f * Time.deltaTime;
+        mouseY = Input.GetAxis("Mouse Y") * (spectatorParams.mouseSensivity/2) * 4f * Time.deltaTime;
         #endif
 
 

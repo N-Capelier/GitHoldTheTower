@@ -208,7 +208,7 @@ public class MyNewNetworkManager : NetworkManager
     /// <param name="conn">Connection from client.</param>
     public override void OnServerDisconnect(NetworkConnection conn)
     {
-        NetworkServer.DisconnectAll();
+        //NetworkServer.DisconnectAll();
         base.OnServerDisconnect(conn);
     }
 

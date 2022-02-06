@@ -14,6 +14,11 @@ public class SpectatorMenu : NetworkBehaviour
     [Header("Références")]
     [SerializeField] private GameObject canvasMenuObject;
 
+    private MatchManager match; //To get score
+
+    [SerializeField] private Text redScore;
+    [SerializeField] private Text blueScore;
+
     //All the object that contains Button component attach
     //bind to each players on lateStart
     [SerializeField] private GameObject[] buttonPlayerFollow;
@@ -33,6 +38,13 @@ public class SpectatorMenu : NetworkBehaviour
 
     [HideInInspector] public bool menuActive = false;
 
+    [HideInInspector]
+    public bool nearFocusX = false;
+    [HideInInspector]
+    public bool nearFocusY = false;
+    [HideInInspector]
+    public bool nearFocusZ = false;
+
 
     //Gameobject the spectator will focus
     [HideInInspector] public GameObject playerToFocus = null;
@@ -47,7 +59,7 @@ public class SpectatorMenu : NetworkBehaviour
         canvasMenuObject.SetActive(false);
         if (hasAuthority)
         {
-            
+            match = GameObject.Find("GameManager").GetComponent<MatchManager>();
         }
     }
 
@@ -99,6 +111,11 @@ public class SpectatorMenu : NetworkBehaviour
             }
 
         }
+        if(hasAuthority)
+        {
+            redScore.text = match.redScore.ToString();
+            blueScore.text = match.blueScore.ToString();
+        }
 
     }
 
@@ -106,6 +123,9 @@ public class SpectatorMenu : NetworkBehaviour
     {
         playerToFocus = objToFocus;
         spectatorIsFocus = true;
+        nearFocusX = false;
+        nearFocusY = false;
+        nearFocusZ = false;
     }
 
     private void OpenCloseMenu()
