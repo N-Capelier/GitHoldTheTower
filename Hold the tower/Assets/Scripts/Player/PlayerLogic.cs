@@ -362,7 +362,7 @@ public class PlayerLogic : NetworkBehaviour
 
         yRotation += mouseX;
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90);
+        xRotation = Mathf.Clamp(xRotation, -89f, 89);
 
         selfCamera.Rotate(Vector3.up * mouseX);
         selfCamera.rotation = Quaternion.Euler(xRotation, yRotation, selfCamera.rotation.eulerAngles.z);
@@ -491,7 +491,7 @@ public class PlayerLogic : NetworkBehaviour
 
     private float timeSinceLastWallSlide;
     private float timeOfLastWallSlide;
-    private bool isWallSliding;
+    [HideInInspector] public bool isWallSliding;
     private void VerticalMovement()
     {
         if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking)
