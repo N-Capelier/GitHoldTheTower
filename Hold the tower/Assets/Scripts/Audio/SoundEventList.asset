@@ -471,7 +471,7 @@ MonoBehaviour:
     - name: UIButtonAccesDenied
       ID: 39
       clip: {fileID: 8300000, guid: 2cf24ee2e743c1f46a645d4aeba3d49a, type: 3}
-      volume: 1
+      volume: 1.5
     isLocalized: 0
     isRandom: 0
     isLoop: 0
@@ -483,7 +483,7 @@ MonoBehaviour:
     - name: UIButtonActive
       ID: 40
       clip: {fileID: 8300000, guid: dcbd1263b591f544db831f9a04146dbe, type: 3}
-      volume: 1
+      volume: 1.5
     isLocalized: 0
     isRandom: 0
     isLoop: 0
@@ -495,7 +495,7 @@ MonoBehaviour:
     - name: UIButtonClick
       ID: 41
       clip: {fileID: 8300000, guid: 6e2787f06472ca44f9f3aada509bbbe3, type: 3}
-      volume: 1
+      volume: 1.5
     isLocalized: 0
     isRandom: 0
     isLoop: 0
@@ -507,7 +507,7 @@ MonoBehaviour:
     - name: UIButtonConfirm
       ID: 42
       clip: {fileID: 8300000, guid: 4052f4a25dd52c845b90392f958f713a, type: 3}
-      volume: 1
+      volume: 1.5
     isLocalized: 0
     isRandom: 0
     isLoop: 0
@@ -519,7 +519,7 @@ MonoBehaviour:
     - name: UIButtonReturn
       ID: 43
       clip: {fileID: 8300000, guid: d565759aadc9107448c93d6ea6408594, type: 3}
-      volume: 1
+      volume: 1.5
     isLocalized: 0
     isRandom: 0
     isLoop: 0
@@ -531,7 +531,7 @@ MonoBehaviour:
     - name: UIButtonReturn
       ID: 44
       clip: {fileID: 8300000, guid: 6baacef8925704545a8abcd62abef2f1, type: 3}
-      volume: 1
+      volume: 1.5
     isLocalized: 0
     isRandom: 0
     isLoop: 0
