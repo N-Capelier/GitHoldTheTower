@@ -31,7 +31,8 @@ public class ChunckSwitcher : MonoBehaviour
             display.sharedMaterial = linkedChunck.GetCDRatio() == 1 ? readyMaterial : rechargingMaterial;
             for (int i = 0; i < linkedChunck.switchables.Length; i++)
             {
-                linkedChunck.switchables[i].chunkActivableParticle.Stop();
+                //linkedChunck.switchables[i].chunkActivableParticle.Stop();
+                linkedChunck.isManuallySwitchable = false;
             }
         }
         else if(!readyFlag && linkedChunck.GetCDRatio() == 1)
@@ -40,7 +41,8 @@ public class ChunckSwitcher : MonoBehaviour
             display.sharedMaterial = linkedChunck.GetCDRatio() == 1 ? readyMaterial : rechargingMaterial;
             for (int i = 0; i < linkedChunck.switchables.Length; i++)
             {
-                linkedChunck.switchables[i].chunkActivableParticle.Play();
+                //linkedChunck.switchables[i].chunkActivableParticle.Play();
+                linkedChunck.isManuallySwitchable = true;
             }
         }
 

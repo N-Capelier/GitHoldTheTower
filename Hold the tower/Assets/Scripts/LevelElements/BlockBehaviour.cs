@@ -44,8 +44,9 @@ public class BlockBehaviour : MonoBehaviour
     public ParticleSystem chunkActivableParticle;
 	[HideInInspector] public LevelTransition levelTransition;
 	[SerializeField] public Material blockWarnMaterial;
+    [SerializeField] private ParticleSystem blockWarnDirectionParticle;
 
-	[HideInInspector]
+    [HideInInspector]
 	public int blockID;
 	[HideInInspector]
 	public int loadedTerrainID = 0;
@@ -54,7 +55,7 @@ public class BlockBehaviour : MonoBehaviour
 	[HideInInspector]
 	public bool isSelected;
 
-	private void Start()
+    private void Start()
 	{
 		meshRenderer = GetComponent<MeshRenderer>();
 		blockMaterial = meshRenderer.material;
@@ -108,7 +109,21 @@ public class BlockBehaviour : MonoBehaviour
 		targetPosition = ThemeManager.Instance.terrains[loadedTerrainID].positions[blockID];
 		movingToTargetPos = true;
 		elapsedTime = 0f;
-	}
+        UpdatePreviewDirection();
+    }
+
+    public Vector3 GetNextPosDirection()
+    {
+        Vector3 direction = Vector3.zero;
+        int nextTerrainId = loadedTerrainID + 1;
+        if (nextTerrainId >= ThemeManager.Instance.terrains.Count)
+            nextTerrainId = 0;
+
+        direction = ThemeManager.Instance.terrains[nextTerrainId].positions[blockID] - ThemeManager.Instance.terrains[loadedTerrainID].positions[blockID];
+        direction.Normalize();
+
+        return direction;
+    }
 
 	public void SetBlockAlive()
 	{
@@ -204,6 +219,35 @@ public class BlockBehaviour : MonoBehaviour
 	{
 		yield return new WaitForSeconds(timeBeforeExplosion);
 		SoundManager.Instance.PlaySoundEvent("LevelBlockDestroyed", gameObject);
-	}
+    }
 
+    Vector3 nextPosDirection;
+    private void UpdatePreviewDirection()
+    {
+        nextPosDirection = GetNextPosDirection();
+        if (nextPosDirection.y > 0)
+        {
+            blockWarnDirectionParticle.transform.localPosition = Vector3.up;
+            blockWarnDirectionParticle.transform.localRotation = Quaternion.Euler(-90, 0, 0);
+        }
+        else if (nextPosDirection.y < 0)
+        {
+            blockWarnDirectionParticle.transform.position = transform.position + Vector3.up * (transform.localScale.y + 0.8f);
+            blockWarnDirectionParticle.transform.localRotation = Quaternion.Euler(90, 0, 0);
+        }
+    }
+
+    public void StartMovementPreview()
+    {
+        if(!blockWarnDirectionParticle.isPlaying)
+        {
+            UpdatePreviewDirection();
+            blockWarnDirectionParticle.Play();
+        }
+    }
+
+    public void StopMovementPreview()
+    {
+        blockWarnDirectionParticle.Stop();
+    }
 }

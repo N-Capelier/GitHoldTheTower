@@ -9,7 +9,6 @@ public class LevelTransition : NetworkBehaviour
 
     [HideInInspector]
     public double networkTime = 0;
-    private int niveau = 0;
 
     public double timerChange = 5d;
 

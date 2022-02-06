@@ -84,6 +84,7 @@ public class PlayerMovement : MonoBehaviour
 
         while(_completion < .5f)
 		{
+            //Debug.LogWarning(_completion);
             _elapsedTime += Time.deltaTime;
             _completion = _elapsedTime * 2f;
             if (isMoving)
@@ -243,9 +244,29 @@ public class PlayerMovement : MonoBehaviour
         cameraTargetTilt = Mathf.Lerp(selfParams.cameraTiltAngle, -selfParams.cameraTiltAngle, (angleDist + 90) / 180);
     }
 
+    private bool wasUnTilting;
     public void SetSmoothCameraTilt()
     {
-        selfCamera.rotation = Quaternion.Lerp(selfCamera.rotation, Quaternion.Euler(selfCamera.rotation.eulerAngles.x, selfCamera.rotation.eulerAngles.y, cameraTargetTilt), selfParams.cameraTiltLerpSpeed * Time.deltaTime);
+        if(selfLogic.isWallSliding)
+        {
+            wasUnTilting = true;
+        }
+        else
+        {
+            if (Mathf.Abs(selfCamera.rotation.eulerAngles.z - cameraTargetTilt) <= 0.1f)
+            {
+                wasUnTilting = false;
+            }
+        }
+
+        if (wasUnTilting)
+        {
+            selfCamera.rotation = Quaternion.Lerp(selfCamera.rotation, Quaternion.Euler(selfCamera.rotation.eulerAngles.x, selfCamera.rotation.eulerAngles.y, cameraTargetTilt), selfParams.cameraTiltLerpSpeed * Time.deltaTime);
+        }
+        else
+        {
+            selfCamera.rotation = Quaternion.Euler(selfCamera.rotation.eulerAngles.x, selfCamera.rotation.eulerAngles.y, cameraTargetTilt);
+        }
     }
 
     public void ResetCameraTilt()

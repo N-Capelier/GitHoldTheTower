@@ -8,10 +8,6 @@ public class SensorCollider : MonoBehaviour
     public UnityEvent collide;
     public UnityEvent Uncollide;
 
-    private BlockBehaviour contactWall;
-
-    private int nbCollide = 0;
-
     private BoxCollider bcollider;
     private Collider[] walls;
     private bool isOnWall;
@@ -23,17 +19,6 @@ public class SensorCollider : MonoBehaviour
 
     public void Update()
     {
-        /*
-        if(contactWall != null && !contactWall.boxCollider.enabled)
-        {
-            nbCollide--;
-            if (nbCollide == 0)
-            {
-                Debug.Log("Isdestroyed");
-                contactWall = null;
-                Uncollide.Invoke();
-            }
-        }*/
 
         walls = Physics.OverlapBox(bcollider.bounds.center, bcollider.bounds.extents, transform.rotation, LayerMask.GetMask("Outlined"));
         if (walls.Length > 0)

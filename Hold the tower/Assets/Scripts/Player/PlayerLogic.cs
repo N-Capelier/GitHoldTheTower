@@ -362,7 +362,7 @@ public class PlayerLogic : NetworkBehaviour
 
         yRotation += mouseX;
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90);
+        xRotation = Mathf.Clamp(xRotation, -89f, 89);
 
         selfCamera.Rotate(Vector3.up * mouseX);
         selfCamera.rotation = Quaternion.Euler(xRotation, yRotation, selfCamera.rotation.eulerAngles.z);
@@ -491,7 +491,7 @@ public class PlayerLogic : NetworkBehaviour
 
     private float timeSinceLastWallSlide;
     private float timeOfLastWallSlide;
-    private bool isWallSliding;
+    [HideInInspector] public bool isWallSliding;
     private void VerticalMovement()
     {
         if (!selfMovement.isClimbingMovement && !selfMovement.isAttacking)
@@ -506,7 +506,7 @@ public class PlayerLogic : NetworkBehaviour
 
 
                     if (selfParams.useAlternateWallJump
-                        && (Input.GetKeyDown(selfParams.jump) || (Input.GetAxis("LT") == 1f && jumpTriggerValueDelta == 0))
+                        && (Input.GetKeyDown(selfParams.jump) || (Input.GetAxis("LT") == 1f && jumpTriggerValueDelta == 0) || Input.GetButtonDown("LeftBumper") || Input.GetButtonDown("AButton"))
                         && timeSinceLastWallSlide < selfParams.maxTimeToTriggerAlternateWallJump
                         && !IsLookingInWall() && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide && selfMovement.SetWallSlideDirection())
                     {
@@ -514,7 +514,7 @@ public class PlayerLogic : NetworkBehaviour
                         StartCoroutine(NoMovement(selfParams.wallJumpNoAirControlTime));
                         isAttachToWall = false;
                     }
-                    else if (Input.GetKey(selfParams.jump) || Input.GetAxis("LT") == 1f)
+                    else if (Input.GetKey(selfParams.jump) || Input.GetAxis("LT") == 1f || Input.GetButton("LeftBumper") || Input.GetButton("AButton"))
                     {
                         if (!isAttachToWall)
                         {
@@ -549,7 +549,7 @@ public class PlayerLogic : NetworkBehaviour
                     }
                     else
                     {
-                        if (!selfParams.useAlternateWallJump && (Input.GetKeyUp(selfParams.jump) || (Input.GetAxis("LT") == 0f && jumpTriggerValueDelta == 1)) && !IsLookingInWall() && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide && selfMovement.SetWallSlideDirection())
+                        if (!selfParams.useAlternateWallJump && (Input.GetKeyUp(selfParams.jump) || (Input.GetAxis("LT") == 0f && jumpTriggerValueDelta == 1) || Input.GetButtonUp("LeftBumper") || Input.GetButtonUp("AButton")) && !IsLookingInWall() && hSpeed.magnitude > selfParams.minHorizontalSpeedToStartWallRide && selfMovement.SetWallSlideDirection())
                         {
                             if (GetNearbyWallNormal() != Vector3.zero)
                             {
@@ -587,7 +587,7 @@ public class PlayerLogic : NetworkBehaviour
             else
             {
                 selfMovement.ApplyGravity();
-                if ((Input.GetKeyDown(selfParams.jump) || (Input.GetAxis("LT") > 0f && jumpTriggerValueDelta == 0)) && !isJumping && !isAttachToWall)
+                if ((Input.GetKeyDown(selfParams.jump) || (Input.GetAxis("LT") > 0f && jumpTriggerValueDelta == 0) || Input.GetButtonDown("LeftBumper") || Input.GetButtonDown("AButton")) && !isJumping && !isAttachToWall)
                 {
                     CmdPlayerSource("PlayerJump");
                     selfMovement.Jump();
@@ -704,7 +704,7 @@ public class PlayerLogic : NetworkBehaviour
     private Vector3 basePunchPreviewScale;
     public void AttackInput()
     {
-        if ((Input.GetMouseButtonDown(selfParams.attackMouseInput) || (Input.GetAxis("RT") > 0 && attackTriggerValueDelta == 0f)) && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown && isInControl)
+        if ((Input.GetMouseButtonDown(selfParams.attackMouseInput) || (Input.GetAxis("RT") > 0 && attackTriggerValueDelta == 0f) || Input.GetButtonDown("RightBumper")) && !selfMovement.isAttacking && !selfMovement.isAttackInCooldown && isInControl)
         {
             selfMovement.isChargingPunch = true;
             //SoundManager.Instance.PlaySoundEvent("PlayerPunchCharge", playerSource);
@@ -719,7 +719,7 @@ public class PlayerLogic : NetworkBehaviour
             hasStartedCharge = true;
         }
         //Attack load
-        if ((Input.GetMouseButton(selfParams.attackMouseInput) || Input.GetAxis("RT") > 0f) && hasStartedCharge)
+        if ((Input.GetMouseButton(selfParams.attackMouseInput) || Input.GetAxis("RT") > 0f || Input.GetButton("RightBumper")) && hasStartedCharge)
         {
             selfMovement.FPVAnimator.AnimateLoadPunch();
             if (!isInControl)
@@ -785,7 +785,7 @@ public class PlayerLogic : NetworkBehaviour
 
         }
         //Attack lauch
-        if ((Input.GetJoystickNames().Length == 0 ? !Input.GetMouseButton(selfParams.attackMouseInput) : Input.GetAxis("RT") == 0f) && hasStartedCharge)
+        if ((Input.GetJoystickNames().Length == 0 ? !Input.GetMouseButton(selfParams.attackMouseInput) : (Input.GetAxis("RT") == 0f && !Input.GetButton("RightBumper"))) && hasStartedCharge)
         {
             CmdPlayerSource("PlayerPunch");
             selfMovement.Attack(ratioAttack);
@@ -1180,7 +1180,6 @@ public class PlayerLogic : NetworkBehaviour
         }
         else
         {
-            Vector3 correctingDirectedForce;
             if(directedForce.y >= 0)
             {
 

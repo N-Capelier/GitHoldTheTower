@@ -149,6 +149,7 @@ public class PlayerChunckActivation : MonoBehaviour
         }
     }
 
+    bool isSelectedSwitcherInCD;
     public void CheckPlayerActivation()
     {
         if (isNearbySwitcher || isAimingSwitcher)
@@ -159,10 +160,21 @@ public class PlayerChunckActivation : MonoBehaviour
             if (aimedSwitcher.linkedChunck.GetCDRatio() == 1)
             {
                 switchInputText.gameObject.SetActive(true);
+                if(isSelectedSwitcherInCD)
+                {
+                    aimedSwitcher.linkedChunck.isHighlighted = false;
+                    aimedSwitcher.linkedChunck.StopAllMovementPreview();
+                    isSelectedSwitcherInCD = false;
+                }
             }
             else
             {
                 switchInputText.gameObject.SetActive(false);
+                if (!isSelectedSwitcherInCD)
+                {
+                    aimedSwitcher.linkedChunck.isHighlighted = false;
+                    isSelectedSwitcherInCD = true;
+                }
             }
             //EnableSwitchLine(aimedSwitcher.gameObject);
             aimedSwitcher.Select();

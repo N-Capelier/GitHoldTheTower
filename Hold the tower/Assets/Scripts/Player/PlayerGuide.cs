@@ -13,7 +13,15 @@ public class PlayerGuide : MonoBehaviour
     [SerializeField]
     private RectTransform objectiveCursor;
     [SerializeField]
+    private RectTransform objectiveCursorDirection;
+    [SerializeField]
     private RectTransform allyCursor;
+    [SerializeField]
+    private RectTransform allyCursorDirection;
+    [SerializeField]
+    private Image allyCursorImage;
+    [SerializeField]
+    private Text allyCursorDistanecText;
     [SerializeField]
     private Camera playerCamera;
     [SerializeField]
@@ -77,7 +85,7 @@ public class PlayerGuide : MonoBehaviour
 
         GameObject[] allPlayers = GameObject.FindGameObjectsWithTag("Player");
 
-        foreach(GameObject playerObject in allPlayers)
+        foreach (GameObject playerObject in allPlayers)
         {
             PlayerLogic logic = playerObject.GetComponent<PlayerLogic>();
             if (logic != null)
@@ -133,28 +141,7 @@ public class PlayerGuide : MonoBehaviour
 
         if (playerLogic.hasAuthority && playersSetUp)
         {
-            if (targetPos != Vector3.zero)
-            {
-                viewportPosition = playerCamera.WorldToScreenPoint(targetPos);
-                screenPos = ((viewportPosition * 1920) / playerCamera.scaledPixelWidth) - new Vector2(1920, 1080) / 2;
-                targetDirection = targetPos - playerCamera.transform.position;
-                angleFromTarget = Vector3.Angle(playerCamera.transform.forward, targetDirection);
-                if (angleFromTarget > 90)
-                {
-                    screenPos *= -1;
-                    while (screenPos.x < (1920 / 2 - borderWidthHorizontal) && screenPos.x > -(1920 / 2 - borderWidthHorizontal) && screenPos.y < (1080 / 2 - borderWidthVertical) && screenPos.y > -(1080 / 2 - borderWidthVertical))
-                    {
-                        screenPos += screenPos.normalized;
-                    }
-                }
-                screenPos = new Vector2(Mathf.Clamp(screenPos.x, -(1920 / 2 - borderWidthHorizontal), (1920 / 2 - borderWidthHorizontal)), Mathf.Clamp(screenPos.y, -(1080 / 2 - borderWidthVertical), (1080 / 2 - borderWidthVertical)));
-                objectiveCursor.anchoredPosition = screenPos;
-                objectiveCursor.gameObject.SetActive(true);
-            }
-            else
-            {
-                objectiveCursor.gameObject.SetActive(false);
-            }
+            UpdateObjectiveCursor();
 
             if (!playerLogic.hasFlag)
             {
@@ -203,7 +190,7 @@ public class PlayerGuide : MonoBehaviour
                             StartAnnouncement(flagCapturedByEnemyAnnouncement, false);
                         }
 
-                        if(teamMateHasFlag && !ownTeamHasOverdrive)
+                        if (teamMateHasFlag && !ownTeamHasOverdrive)
                         {
                             ownTeamHasOverdrive = true;
                             StartAnnouncement(flagCapturedByAllyAnnouncement, true);
@@ -232,7 +219,7 @@ public class PlayerGuide : MonoBehaviour
                     {
                         overdriveIsInCenter = true;
                         ownTeamHasOverdrive = false;
-                        if(redScore != matchManager.redScore || blueScore != matchManager.blueScore)
+                        if (redScore != matchManager.redScore || blueScore != matchManager.blueScore)
                         {
                             redScore = matchManager.redScore;
                             blueScore = matchManager.blueScore;
@@ -274,28 +261,7 @@ public class PlayerGuide : MonoBehaviour
             float oProgressionRatio = overdriveDistanceFromOwnGoal / (overdriveDistanceFromAdverseGoal + overdriveDistanceFromOwnGoal);
             overdriveProgressionIcon.anchoredPosition = new Vector2(Mathf.Lerp(overdriveProgressionMinMaxPos.x, overdriveProgressionMinMaxPos.y, oProgressionRatio), overdriveProgressionIcon.anchoredPosition.y);
 
-            if(teamMates.Count > 0)
-            {
-                viewportPosition = playerCamera.WorldToScreenPoint(teamMates[0].transform.position + Vector3.up);
-                screenPos = ((viewportPosition * 1920) / playerCamera.scaledPixelWidth) - new Vector2(1920, 1080) / 2;
-                targetDirection = (teamMates[0].transform.position + Vector3.up) - playerCamera.transform.position;
-                angleFromTarget = Vector3.Angle(playerCamera.transform.forward, targetDirection);
-                if (angleFromTarget > 90)
-                {
-                    screenPos *= -1;
-                    while (screenPos.x < (1920 / 2 - borderWidthHorizontal) && screenPos.x > -(1920 / 2 - borderWidthHorizontal) && screenPos.y < (1080 / 2 - borderWidthVertical) && screenPos.y > -(1080 / 2 - borderWidthVertical))
-                    {
-                        screenPos += screenPos.normalized;
-                    }
-                }
-                screenPos = new Vector2(Mathf.Clamp(screenPos.x, -(1920 / 2 - borderWidthHorizontal), (1920 / 2 - borderWidthHorizontal)), Mathf.Clamp(screenPos.y, -(1080 / 2 - borderWidthVertical), (1080 / 2 - borderWidthVertical)));
-                allyCursor.anchoredPosition = screenPos;
-                allyCursor.gameObject.SetActive(true);
-            }
-            else
-            {
-                allyCursor.gameObject.SetActive(false);
-            }
+            UpdateAllyCursor();
 
             if (playerLogic.teamName == LobbyPlayerLogic.TeamName.Red)
             {
@@ -307,6 +273,84 @@ public class PlayerGuide : MonoBehaviour
                 allyScoreText.text = matchManager.blueScore.ToString();
                 enemyScoreText.text = matchManager.redScore.ToString();
             }
+        }
+    }
+
+    Vector2 cursorDirection;
+    private void UpdateObjectiveCursor()
+    {
+        if (targetPos != Vector3.zero)
+        {
+            viewportPosition = playerCamera.WorldToScreenPoint(targetPos);
+            screenPos = ((viewportPosition * 1920) / playerCamera.scaledPixelWidth) - new Vector2(1920, 1080) / 2;
+            targetDirection = targetPos - playerCamera.transform.position;
+            angleFromTarget = Vector3.Angle(playerCamera.transform.forward, targetDirection);
+            if (angleFromTarget > 90)
+            {
+                screenPos *= -1;
+                while (screenPos.x < (1920 / 2 - borderWidthHorizontal) && screenPos.x > -(1920 / 2 - borderWidthHorizontal) && screenPos.y < (1080 / 2 - borderWidthVertical) && screenPos.y > -(1080 / 2 - borderWidthVertical))
+                {
+                    screenPos += screenPos.normalized;
+                }
+            }
+
+            screenPos = new Vector2(Mathf.Clamp(screenPos.x, -(1920 / 2 - borderWidthHorizontal), (1920 / 2 - borderWidthHorizontal)), Mathf.Clamp(screenPos.y, -(1080 / 2 - borderWidthVertical), (1080 / 2 - borderWidthVertical)));
+            if(screenPos.x == -(1920 / 2 - borderWidthHorizontal) || screenPos.x == (1920 / 2 - borderWidthHorizontal) || screenPos.y == -(1080 / 2 - borderWidthVertical) || screenPos.y == (1080 / 2 - borderWidthVertical))
+            {
+                objectiveCursorDirection.gameObject.SetActive(true);
+                cursorDirection = screenPos;
+                objectiveCursorDirection.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, cursorDirection));
+            }
+            else
+            {
+                objectiveCursorDirection.gameObject.SetActive(false);
+            }
+
+            objectiveCursor.anchoredPosition = screenPos;
+            objectiveCursor.gameObject.SetActive(true);
+        }
+        else
+        {
+            objectiveCursor.gameObject.SetActive(false);
+        }
+    }
+
+    private void UpdateAllyCursor()
+    {
+        if (teamMates.Count > 0)
+        {
+            viewportPosition = playerCamera.WorldToScreenPoint(teamMates[0].transform.position + Vector3.up);
+            screenPos = ((viewportPosition * 1920) / playerCamera.scaledPixelWidth) - new Vector2(1920, 1080) / 2;
+            targetDirection = (teamMates[0].transform.position + Vector3.up) - playerCamera.transform.position;
+            angleFromTarget = Vector3.Angle(playerCamera.transform.forward, targetDirection);
+            if (angleFromTarget > 90)
+            {
+                screenPos *= -1;
+                while (screenPos.x < (1920 / 2 - borderWidthHorizontal) && screenPos.x > -(1920 / 2 - borderWidthHorizontal) && screenPos.y < (1080 / 2 - borderWidthVertical) && screenPos.y > -(1080 / 2 - borderWidthVertical))
+                {
+                    screenPos += screenPos.normalized;
+                }
+            }
+            screenPos = new Vector2(Mathf.Clamp(screenPos.x, -(1920 / 2 - borderWidthHorizontal), (1920 / 2 - borderWidthHorizontal)), Mathf.Clamp(screenPos.y, -(1080 / 2 - borderWidthVertical), (1080 / 2 - borderWidthVertical)));
+            if (screenPos.x == -(1920 / 2 - borderWidthHorizontal) || screenPos.x == (1920 / 2 - borderWidthHorizontal) || screenPos.y == -(1080 / 2 - borderWidthVertical) || screenPos.y == (1080 / 2 - borderWidthVertical))
+            {
+                allyCursorImage.enabled = false;
+                allyCursorDirection.gameObject.SetActive(true);
+                cursorDirection = screenPos;
+                allyCursorDirection.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, cursorDirection));
+            }
+            else
+            {
+                allyCursorImage.enabled = true;
+                allyCursorDirection.gameObject.SetActive(false);
+            }
+            allyCursor.anchoredPosition = screenPos;
+            allyCursor.gameObject.SetActive(true);
+            allyCursorDistanecText.text = Mathf.Round(targetDirection.magnitude).ToString() + "m";
+        }
+        else
+        {
+            allyCursor.gameObject.SetActive(false);
         }
     }
 
@@ -323,7 +367,7 @@ public class PlayerGuide : MonoBehaviour
     private Coroutine announcementCoroutine;
     private void StartAnnouncement(string announcementText, bool isFriendly)
     {
-        if(announcementCoroutine != null)
+        if (announcementCoroutine != null)
             StopCoroutine(announcementCoroutine);
         announcementCoroutine = StartCoroutine(Announce(announcementText, isFriendly));
     }
@@ -334,7 +378,7 @@ public class PlayerGuide : MonoBehaviour
         announcementBack.gameObject.SetActive(true);
         float timer = 0.5f;
         announcementText.text = announcement;
-        while(timer > 0)
+        while (timer > 0)
         {
             announcementText.color = Color.Lerp(textBaseColor, Color.clear, timer / 0.5f);
             announcementBack.color = Color.Lerp(isFriendly ? announcementBackAllyColor : announcementBackEnemyColor, Color.clear, timer / 0.5f);
