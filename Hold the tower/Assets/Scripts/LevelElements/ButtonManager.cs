@@ -8,7 +8,7 @@ public class ButtonManager : NetworkBehaviour
 	private float activationCooldown;
 
 	[HideInInspector] public float cooldownRemaining;
-    private bool isHighlighted;
+    [HideInInspector] public bool isHighlighted;
 
     private void Start()
     {
@@ -60,8 +60,32 @@ public class ButtonManager : NetworkBehaviour
             for (int i = 0; i < switchables.Length; i++)
             {
                 switchables[i].highlightDisplay.SetActive(doHighlight);
+                if(doHighlight && GetCDRatio() >= 1)
+                {
+                    switchables[i].StartMovementPreview();
+                }
+                else
+                {
+                    switchables[i].StopMovementPreview();
+                }
                 switchables[i].isSelected = doHighlight;
             }
+        }
+    }
+
+    public void StartAllMovementPreview()
+    {
+        for (int i = 0; i < switchables.Length; i++)
+        {
+            switchables[i].StartMovementPreview();
+        }
+    }
+
+    public void StopAllMovementPreview()
+    {
+        for (int i = 0; i < switchables.Length; i++)
+        {
+            switchables[i].StopMovementPreview();
         }
     }
 }
