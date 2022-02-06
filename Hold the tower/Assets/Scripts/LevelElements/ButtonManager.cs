@@ -9,6 +9,9 @@ public class ButtonManager : NetworkBehaviour
 
 	[HideInInspector] public float cooldownRemaining;
     [HideInInspector] public bool isHighlighted;
+    [HideInInspector] public bool isManuallySwitchable;
+    float activableDisplayState;
+
 
     private void Start()
     {
@@ -27,6 +30,35 @@ public class ButtonManager : NetworkBehaviour
         else
         {
             cooldownRemaining = 0;
+        }
+
+        if(isManuallySwitchable)
+        {
+            if(activableDisplayState < 1)
+            {
+                activableDisplayState += Time.deltaTime * 2f;
+
+                for (int i = 0; i < switchables.Length; i++)
+                {
+                    if(switchables[i].blockMaterial != null)
+                    {
+                        switchables[i].blockMaterial.SetFloat("NormalColorAlpha", Mathf.Lerp(0, 1, activableDisplayState));
+                    }
+                }
+            }
+
+        }
+        else
+        {
+            if (activableDisplayState > 0)
+            {
+                activableDisplayState -= Time.deltaTime * 2f;
+                for (int i = 0; i < switchables.Length; i++)
+                {
+                    if (switchables[i].blockMaterial != null)
+                        switchables[i].blockMaterial.SetFloat("NormalColorAlpha", Mathf.Lerp(0, 1, activableDisplayState));
+                }
+            }
         }
     }
 

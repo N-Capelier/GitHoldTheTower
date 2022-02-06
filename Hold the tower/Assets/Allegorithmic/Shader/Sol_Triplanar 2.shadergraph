@@ -3805,6 +3805,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "c964d14a326d4adbbe4c6fb04a823246"
+                },
+                "m_SlotId": 2
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "c2d6f78670ac44fcaf8798a90e0a3a53"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "cac5c271c4c24c608f11fff77e95d3d6"
                 },
                 "m_SlotId": 3
@@ -5769,6 +5783,21 @@
     "m_Labels": [
         "X"
     ]
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "0ac5ca4d72b74bb19884665f360e8819",
+    "m_Id": 1922393852,
+    "m_DisplayName": "gt",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Vector1_bfa194f652214ca693f2cb04c067e934",
+    "m_StageCapability": 3,
+    "m_Value": -0.5400000214576721,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
@@ -13702,6 +13731,21 @@
         "e32": 0.0,
         "e33": 1.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "5f3b07a561f440a1b457909c32d61f65",
+    "m_Id": 241556873,
+    "m_DisplayName": "Mult",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Vector1_6f29c2229f794fe2b494da2b6961bb0e",
+    "m_StageCapability": 3,
+    "m_Value": 4.460000038146973,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
@@ -24433,6 +24477,12 @@
             "m_Id": "1e1725f43fc647f09a1ae3118af0c397"
         },
         {
+            "m_Id": "0ac5ca4d72b74bb19884665f360e8819"
+        },
+        {
+            "m_Id": "5f3b07a561f440a1b457909c32d61f65"
+        },
+        {
             "m_Id": "768904f1feed4561831aff9c03f3ded7"
         }
     ],
@@ -24448,13 +24498,17 @@
         "b1a45f2a-5a52-4b54-9e8b-40fa8d04c39a",
         "4e862094-85c4-49fc-8245-41d4f888433d",
         "e7a654f6-721a-4fc3-9648-ef1c251aaa00",
-        "887833e9-a5e1-4c80-93cf-0f51b26b20d4"
+        "887833e9-a5e1-4c80-93cf-0f51b26b20d4",
+        "92262dd2-a1b3-4b64-a9bc-41bb3aa3bd4a",
+        "0c0c9d24-2669-4033-bfc3-24b7cf6f489e"
     ],
     "m_PropertyIds": [
         -1409936156,
         -1975359147,
         2059148085,
-        580485053
+        580485053,
+        1922393852,
+        241556873
     ]
 }
 

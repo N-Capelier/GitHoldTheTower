@@ -8,8 +8,6 @@ public class SensorGround : MonoBehaviour
     public UnityEvent collide;
     public UnityEvent Uncollide;
 
-    private int nbCollide = 0;
-
     [SerializeField]
     private PlayerMovement selfMovement;
     [SerializeField]
@@ -34,19 +32,6 @@ public class SensorGround : MonoBehaviour
 
     public void Update()
     {
-        /*
-        if (contactGround != null && !contactGround.boxCollider.enabled)
-        {
-            nbCollide--;
-            Debug.Log("destroy not on ground second one");
-            if (nbCollide == 0)
-            {
-                Debug.Log("destroy not on ground");
-                contactGround = null;
-                Uncollide.Invoke();
-            }
-        }
-        */
 
         grounds = Physics.OverlapBox(bcollider.bounds.center, bcollider.bounds.extents, transform.rotation, LayerMask.GetMask("Outlined"));
         if(grounds.Length > 0)

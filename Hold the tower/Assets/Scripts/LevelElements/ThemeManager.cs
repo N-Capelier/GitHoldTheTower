@@ -121,19 +121,26 @@ public class ThemeManager : Singleton<ThemeManager>
 			timerBeforeNextTransition = (float)(levelTransition.timerChange - (NetworkTime.time - levelTransition.networkTime));
 
 
-			if (timerBeforeNextTransition < 6f)
-			{
-				evolveWarningTimeLeft -= Time.deltaTime;
-				warningEndFlag = true;
-				if (evolveWarningTimeLeft <= 0)
-				{
-					for (int i = 0; i < blocks.Length; i++)
-					{
-						if (blocks[i].isInChunck)
-						{
-							if (blocks[i].meshRenderer.sharedMaterial == blocks[i].blockMaterial)
-							{
-								blocks[i].meshRenderer.sharedMaterial = blocks[i].blockWarnMaterial;
+            if (timerBeforeNextTransition < 6f)
+            {
+                for (int i = 0; i < blocks.Length; i++)
+                {
+                    if (blocks[i].isInChunck)
+                    {
+                        blocks[i].StartMovementPreview();
+                    }
+                }
+                evolveWarningTimeLeft -= Time.deltaTime;
+                warningEndFlag = true;
+                if (evolveWarningTimeLeft <= 0)
+                {
+                    for (int i = 0; i < blocks.Length; i++)
+                    {
+                        if (blocks[i].isInChunck)
+                        {
+                            if (blocks[i].meshRenderer.sharedMaterial == blocks[i].blockMaterial)
+                            {
+                                blocks[i].meshRenderer.sharedMaterial = blocks[i].blockWarnMaterial;
 							}
 							else
 							{
@@ -159,7 +166,8 @@ public class ThemeManager : Singleton<ThemeManager>
 					if (blocks[i].isInChunck)
 					{
 						blocks[i].meshRenderer.sharedMaterial = blocks[i].blockMaterial;
-					}
+                        blocks[i].StopMovementPreview();
+                    }
 				}
 				warningEndFlag = false;
 				evolveWarningTimeLeft = 0;

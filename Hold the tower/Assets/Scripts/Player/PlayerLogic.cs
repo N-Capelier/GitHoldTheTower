@@ -1175,7 +1175,6 @@ public class PlayerLogic : NetworkBehaviour
         }
         else
         {
-            Vector3 correctingDirectedForce;
             if(directedForce.y >= 0)
             {
 

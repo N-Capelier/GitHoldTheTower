@@ -113,6 +113,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - DissolveValue: 0
+    - NormalColorAlpha: 0
     - PreDissolveAlphaValue: 0
     - Vector1_0bfe0e6f4db444518e53e46a086fc232: 0.16
     - Vector1_1c80f940b2f9448193f4eeadf87a5598: 0.6

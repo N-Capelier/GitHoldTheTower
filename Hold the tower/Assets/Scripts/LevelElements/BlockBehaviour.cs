@@ -55,7 +55,7 @@ public class BlockBehaviour : MonoBehaviour
 	[HideInInspector]
 	public bool isSelected;
 
-	private void Start()
+    private void Start()
 	{
 		meshRenderer = GetComponent<MeshRenderer>();
 		blockMaterial = meshRenderer.material;
@@ -239,8 +239,11 @@ public class BlockBehaviour : MonoBehaviour
 
     public void StartMovementPreview()
     {
-        UpdatePreviewDirection();
-        blockWarnDirectionParticle.Play();
+        if(!blockWarnDirectionParticle.isPlaying)
+        {
+            UpdatePreviewDirection();
+            blockWarnDirectionParticle.Play();
+        }
     }
 
     public void StopMovementPreview()
