@@ -898,6 +898,11 @@ public class PlayerLogic : NetworkBehaviour
         //Find respawn and set spawn
         if (hasAuthority)
         {
+            //Hard stop punch
+            StopChargingPunch();
+            selfMovement.FPVAnimator.StopAnimatePunch();
+
+
             actionExclusiveHud.SetActive(false);
             if (overviewCameraPos == null)
                 overviewCameraPos = GameObject.Find("OverviewCameraPosBlueSide").transform;

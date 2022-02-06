@@ -88,26 +88,33 @@ public class LobbyPlayerLogic : NetworkBehaviour
     [Command]
     public void ButtonLeft()
     {
-        if(team - 1 < 0)
+        if (!isReady)
         {
-            team = 2;
+            if (team - 1 < 0)
+            {
+                team = 2;
+            }
+            else
+            {
+                team--;
+            }
         }
-        else
-		{
-            team--;
-		}
+
     }
     [Command]
     public void ButtonRight()
     {
-        if (team + 1 > 2)
+        if (!isReady)
         {
-            team = 0;
+            if (team + 1 > 2)
+            {
+                team = 0;
+            }
+            else
+            {
+                team++;
+            }
         }
-        else
-		{
-            team++;
-		}
     }
 
     public void PlaySound()

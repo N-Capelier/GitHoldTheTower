@@ -16,15 +16,28 @@ public class FPVAnimatorManager : MonoBehaviour
 	[SerializeField] Transform loadedStartPos, loadedEndPos;
 	Coroutine moveParticlesCoroutine;
 
+	private Vector3 previousPos;
+	private bool isMooving;
+
 	private void Start()
 	{
 		psMainModule = loadedParticles.main;
+		previousPos = transform.position;
 	}
 
 	private void Update()
 	{
-		//var animatorInfo = animator.GetCurrentAnimatorClipInfo(0);
-		//Debug.LogWarning(animatorInfo[0].clip.name);
+        //var animatorInfo = animator.GetCurrentAnimatorClipInfo(0);
+        //Debug.LogWarning(animatorInfo[0].clip.name);
+        if (transform.hasChanged)
+        {
+			if (!previousPos.x.Equals(transform.position.x) || previousPos.z.Equals(transform.position.z))
+            {
+				isMooving = true;
+			}
+			transform.hasChanged = false;
+		}
+
 
 #if UNITY_EDITOR
 		if(Input.GetKeyDown(KeyCode.P))
@@ -110,5 +123,11 @@ public class FPVAnimatorManager : MonoBehaviour
 		{
 			StartCoroutine(MoveParticlesOnPunch());
 		}
+	}
+
+	public void StopAnimatePunch()
+    {
+		animator.SetBool("isPunchLoaded", false);
+		animator.SetBool("isPunching", false);
 	}
 }
