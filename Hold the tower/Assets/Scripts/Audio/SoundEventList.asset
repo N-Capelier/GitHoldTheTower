@@ -54,18 +54,10 @@ MonoBehaviour:
     sounds:
     - name: PlayerJump
       ID: 3
-      clip: {fileID: 8300000, guid: f1c9c75a75a918444a26b3f0d8e0541e, type: 3}
-      volume: 0.4
-    - name: PlayerJump
-      ID: 4
       clip: {fileID: 8300000, guid: d4c175f041345ed4d8d79d6bac3f77eb, type: 3}
       volume: 0.5
-    - name: PlayerJump
-      ID: 5
-      clip: {fileID: 8300000, guid: 6ccc21d60f3cbfd4aa5c56042079b2a0, type: 3}
-      volume: 0.5
     isLocalized: 1
-    isRandom: 1
+    isRandom: 0
     isLoop: 0
     isMusic: 0
     isAnnoucer: 0
@@ -73,7 +65,7 @@ MonoBehaviour:
     ID: 4
     sounds:
     - name: PlayerWallJump
-      ID: 6
+      ID: 4
       clip: {fileID: 8300000, guid: 2a7f8c98c8d445644abe9a3625400b9b, type: 3}
       volume: 0.4
     isLocalized: 1
@@ -85,7 +77,7 @@ MonoBehaviour:
     ID: 5
     sounds:
     - name: PlayerJumpOff
-      ID: 7
+      ID: 5
       clip: {fileID: 8300000, guid: e4fbe5ac95834e141a2578adb64e71e7, type: 3}
       volume: 0.4
     isLocalized: 1
@@ -97,7 +89,7 @@ MonoBehaviour:
     ID: 6
     sounds:
     - name: NullSound
-      ID: 8
+      ID: 6
       clip: {fileID: 8300000, guid: ecc60e6ac6344b043820e1118d68a4ac, type: 3}
       volume: 0.7
     isLocalized: 1
@@ -109,7 +101,7 @@ MonoBehaviour:
     ID: 7
     sounds:
     - name: NullSound
-      ID: 9
+      ID: 7
       clip: {fileID: 8300000, guid: 10f36f00e21dca8468235a72777a1b66, type: 3}
       volume: 0.7
     isLocalized: 0
@@ -121,7 +113,7 @@ MonoBehaviour:
     ID: 8
     sounds:
     - name: PlayerPunchChargeFlag
-      ID: 10
+      ID: 8
       clip: {fileID: 8300000, guid: 7ecb4a3b3ec8c824e80cb4d5e9fbc2f4, type: 3}
       volume: 1
     isLocalized: 0
@@ -133,7 +125,7 @@ MonoBehaviour:
     ID: 9
     sounds:
     - name: PlayerPunchAvailable
-      ID: 11
+      ID: 9
       clip: {fileID: 8300000, guid: 3982895e113627f40bc2453afe4d71f6, type: 3}
       volume: 0.9
     isLocalized: 0
@@ -145,7 +137,7 @@ MonoBehaviour:
     ID: 10
     sounds:
     - name: PlayerPunchWave
-      ID: 12
+      ID: 10
       clip: {fileID: 8300000, guid: 62920df976e71b24c84d188150408190, type: 3}
       volume: 1
     isLocalized: 0
@@ -157,7 +149,7 @@ MonoBehaviour:
     ID: 11
     sounds:
     - name: PlayerPunched
-      ID: 13
+      ID: 11
       clip: {fileID: 8300000, guid: baf3e846f64aedc40aeb49bf35053520, type: 3}
       volume: 0.7
     isLocalized: 0
@@ -169,7 +161,7 @@ MonoBehaviour:
     ID: 12
     sounds:
     - name: PlayerPunchImpact
-      ID: 14
+      ID: 12
       clip: {fileID: 8300000, guid: 73b2df4527ceb484296fb85e083a49ab, type: 3}
       volume: 1
     isLocalized: 0
@@ -181,7 +173,7 @@ MonoBehaviour:
     ID: 13
     sounds:
     - name: PlayerOverdrive
-      ID: 15
+      ID: 13
       clip: {fileID: 8300000, guid: 0dad3089d990c614f803f2be35f5b84b, type: 3}
       volume: 0.5
     isLocalized: 1
@@ -193,7 +185,7 @@ MonoBehaviour:
     ID: 14
     sounds:
     - name: PlayerOverdriveTaken
-      ID: 16
+      ID: 14
       clip: {fileID: 8300000, guid: f09d40e9bf371cc41a4cf45c0ce07b74, type: 3}
       volume: 1
     isLocalized: 0
@@ -205,7 +197,7 @@ MonoBehaviour:
     ID: 15
     sounds:
     - name: PlayerOverdriveSteal
-      ID: 17
+      ID: 15
       clip: {fileID: 8300000, guid: 3d1c146bfdd70ba4aad783f81272f013, type: 3}
       volume: 1
     isLocalized: 0
@@ -217,7 +209,7 @@ MonoBehaviour:
     ID: 16
     sounds:
     - name: PlayerOverdriveGoal
-      ID: 18
+      ID: 16
       clip: {fileID: 8300000, guid: 0f3164bea43556247a620b0c37d3f3d1, type: 3}
       volume: 0.8
     isLocalized: 0
@@ -229,7 +221,7 @@ MonoBehaviour:
     ID: 17
     sounds:
     - name: PlayerPing
-      ID: 19
+      ID: 17
       clip: {fileID: 8300000, guid: 2de86fbd86a8e2749903afb3d6d5ce95, type: 3}
       volume: 1
     isLocalized: 0
@@ -241,7 +233,7 @@ MonoBehaviour:
     ID: 18
     sounds:
     - name: PlayerDeath
-      ID: 20
+      ID: 18
       clip: {fileID: 8300000, guid: 7f8f79f8ed02e494ba77e1023043a318, type: 3}
       volume: 1
     isLocalized: 0
@@ -253,7 +245,7 @@ MonoBehaviour:
     ID: 19
     sounds:
     - name: PlayerSpawn
-      ID: 21
+      ID: 19
       clip: {fileID: 8300000, guid: e1f354643e4b4344d96660ff0dded852, type: 3}
       volume: 1
     isLocalized: 0
@@ -265,7 +257,7 @@ MonoBehaviour:
     ID: 20
     sounds:
     - name: PlayerWallRide
-      ID: 22
+      ID: 20
       clip: {fileID: 8300000, guid: 618e4134f1b08ca42bdfeadb600b0eed, type: 3}
       volume: 0.4
     isLocalized: 0
@@ -277,7 +269,7 @@ MonoBehaviour:
     ID: 21
     sounds:
     - name: LevelEvolvingAnoucement
-      ID: 23
+      ID: 21
       clip: {fileID: 8300000, guid: 292046885b9461e41916550e16e976dc, type: 3}
       volume: 1
     isLocalized: 0
@@ -289,7 +281,7 @@ MonoBehaviour:
     ID: 22
     sounds:
     - name: LevelEvolvingAlarm
-      ID: 24
+      ID: 22
       clip: {fileID: 8300000, guid: 674c215c4042bd9479c691e44d35b9f5, type: 3}
       volume: 0.8
     isLocalized: 0
@@ -301,7 +293,7 @@ MonoBehaviour:
     ID: 23
     sounds:
     - name: LevelEvolvingSound
-      ID: 25
+      ID: 23
       clip: {fileID: 8300000, guid: 5a90b787c576cd048ac816efd3475f2d, type: 3}
       volume: 0.8
     isLocalized: 0
@@ -313,7 +305,7 @@ MonoBehaviour:
     ID: 24
     sounds:
     - name: LevelChunkMovement
-      ID: 26
+      ID: 24
       clip: {fileID: 8300000, guid: 8b3b3724998a66c41aed7048e7857e1c, type: 3}
       volume: 0.7
     isLocalized: 0
@@ -325,7 +317,7 @@ MonoBehaviour:
     ID: 25
     sounds:
     - name: LevelBlockDestroyed
-      ID: 27
+      ID: 25
       clip: {fileID: 8300000, guid: 85b816419b442f24a90e99cbef681c05, type: 3}
       volume: 0.7
     isLocalized: 1
@@ -337,7 +329,7 @@ MonoBehaviour:
     ID: 26
     sounds:
     - name: LevelButtonActivated
-      ID: 28
+      ID: 26
       clip: {fileID: 8300000, guid: 3ea3def82f4bbe743a0a6ccc4e1e3b40, type: 3}
       volume: 1
     isLocalized: 0
@@ -349,7 +341,7 @@ MonoBehaviour:
     ID: 27
     sounds:
     - name: LevelEnemyScores
-      ID: 29
+      ID: 27
       clip: {fileID: 8300000, guid: 4b1ab022944159043b2fbd99156b7391, type: 3}
       volume: 1
     isLocalized: 0
@@ -361,7 +353,7 @@ MonoBehaviour:
     ID: 28
     sounds:
     - name: LevelTeamScores
-      ID: 30
+      ID: 28
       clip: {fileID: 8300000, guid: b6916bf98c5515f47998a5b6053a222c, type: 3}
       volume: 1
     isLocalized: 0
@@ -373,7 +365,7 @@ MonoBehaviour:
     ID: 29
     sounds:
     - name: LevelMatchLost
-      ID: 31
+      ID: 29
       clip: {fileID: 8300000, guid: 3cd6f8dbe3f4b20469dcb7fce2780fdd, type: 3}
       volume: 1
     isLocalized: 0
@@ -385,7 +377,7 @@ MonoBehaviour:
     ID: 30
     sounds:
     - name: LevelMatchWon
-      ID: 32
+      ID: 30
       clip: {fileID: 8300000, guid: daa65685fa616a344b4276c9fbd23be6, type: 3}
       volume: 1
     isLocalized: 0
@@ -397,7 +389,7 @@ MonoBehaviour:
     ID: 31
     sounds:
     - name: LevelOverdriveDropped
-      ID: 33
+      ID: 31
       clip: {fileID: 8300000, guid: b4511d19390af964fa2b0325df0f2c1c, type: 3}
       volume: 1
     isLocalized: 0
@@ -409,7 +401,7 @@ MonoBehaviour:
     ID: 32
     sounds:
     - name: LevelOverdriveSound
-      ID: 34
+      ID: 32
       clip: {fileID: 8300000, guid: 80289738f74e43a43adc092283cd5115, type: 3}
       volume: 0.35
     isLocalized: 1
@@ -421,7 +413,7 @@ MonoBehaviour:
     ID: 33
     sounds:
     - name: LevelTakenEnemy
-      ID: 35
+      ID: 33
       clip: {fileID: 8300000, guid: e9ae88916d5be904ca1a13b37838fbc8, type: 3}
       volume: 1
     isLocalized: 0
@@ -433,7 +425,7 @@ MonoBehaviour:
     ID: 34
     sounds:
     - name: LevelTakenTeam
-      ID: 36
+      ID: 34
       clip: {fileID: 8300000, guid: 9c7327b6f7bf5b4478ba4524c23d4b61, type: 3}
       volume: 1
     isLocalized: 0
@@ -445,7 +437,7 @@ MonoBehaviour:
     ID: 35
     sounds:
     - name: LevelStarting
-      ID: 37
+      ID: 35
       clip: {fileID: 8300000, guid: 9d771e2dea3374144b325e4ccdaa5554, type: 3}
       volume: 0.8
     isLocalized: 0
@@ -457,7 +449,7 @@ MonoBehaviour:
     ID: 36
     sounds:
     - name: LevelRedTeamScores
-      ID: 38
+      ID: 36
       clip: {fileID: 8300000, guid: 8e0f04b12fabe7542ace9f468ff041e6, type: 3}
       volume: 0.3
     isLocalized: 0
@@ -469,7 +461,7 @@ MonoBehaviour:
     ID: 37
     sounds:
     - name: UIButtonAccesDenied
-      ID: 39
+      ID: 37
       clip: {fileID: 8300000, guid: 2cf24ee2e743c1f46a645d4aeba3d49a, type: 3}
       volume: 1.5
     isLocalized: 0
@@ -481,7 +473,7 @@ MonoBehaviour:
     ID: 38
     sounds:
     - name: UIButtonActive
-      ID: 40
+      ID: 38
       clip: {fileID: 8300000, guid: dcbd1263b591f544db831f9a04146dbe, type: 3}
       volume: 1.5
     isLocalized: 0
@@ -493,7 +485,7 @@ MonoBehaviour:
     ID: 39
     sounds:
     - name: UIButtonClick
-      ID: 41
+      ID: 39
       clip: {fileID: 8300000, guid: 6e2787f06472ca44f9f3aada509bbbe3, type: 3}
       volume: 1.5
     isLocalized: 0
@@ -505,7 +497,7 @@ MonoBehaviour:
     ID: 40
     sounds:
     - name: UIButtonConfirm
-      ID: 42
+      ID: 40
       clip: {fileID: 8300000, guid: 4052f4a25dd52c845b90392f958f713a, type: 3}
       volume: 1.5
     isLocalized: 0
@@ -517,7 +509,7 @@ MonoBehaviour:
     ID: 41
     sounds:
     - name: UIButtonReturn
-      ID: 43
+      ID: 41
       clip: {fileID: 8300000, guid: d565759aadc9107448c93d6ea6408594, type: 3}
       volume: 1.5
     isLocalized: 0
@@ -529,7 +521,7 @@ MonoBehaviour:
     ID: 42
     sounds:
     - name: UIButtonReturn
-      ID: 44
+      ID: 42
       clip: {fileID: 8300000, guid: 6baacef8925704545a8abcd62abef2f1, type: 3}
       volume: 1.5
     isLocalized: 0
