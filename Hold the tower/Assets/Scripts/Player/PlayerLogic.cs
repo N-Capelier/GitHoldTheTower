@@ -857,7 +857,7 @@ public class PlayerLogic : NetworkBehaviour
             CmdShowFlagInGame();
         }
 
-        CmdPlayGlobalSound("PlayerExpulsed");
+        
 
         if (respawnCor == null)
             respawnCor = StartCoroutine(RespawnManager());

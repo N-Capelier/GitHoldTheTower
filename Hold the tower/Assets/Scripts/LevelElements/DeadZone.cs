@@ -28,5 +28,6 @@ public class DeadZone : MonoBehaviour
     private void RespawnAPlayer(GameObject player)
     {
         player.transform.parent.GetComponentInParent<PlayerLogic>().RpcRespawn(player.transform.parent.GetComponent<NetworkIdentity>().connectionToClient, 3f);
+        player.transform.parent.GetComponentInParent<PlayerLogic>().CmdPlayGlobalSound("PlayerExpulsed");
     }
 }

@@ -196,6 +196,8 @@ public class SoundManager : Singleton<SoundManager>
 
     public void PlayAmbiance()
     {
+        ambiance = gameObject.AddComponent<AudioSource>();    
+        
         PlaySoundEvent("GameAmbiance",ambiance);
 
     }
@@ -203,6 +205,7 @@ public class SoundManager : Singleton<SoundManager>
     public void StopAmbiance()
     {
         ambiance.Stop();
+        Destroy(ambiance);
     }
 
     public SoundReference PlaySoundEvent(SoundEvent thisEvent)
