@@ -415,6 +415,7 @@ public class PlayerMovement : MonoBehaviour
         if (frontBotCollide && !frontTopCollide && !isClimbingMovement)
         {
             Climb();
+            SoundManager.Instance.PlaySoundEvent("PlayerUp");
             return true;
         }
         return false;

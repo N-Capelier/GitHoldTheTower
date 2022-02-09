@@ -148,6 +148,7 @@ public class MyNewNetworkManager : NetworkManager
         {
             soundManager.StopMusic();
             soundManager.PlayMusic("GameMusic");
+            soundManager.PlayAmbiance();
 
             //Reset number
             nbBlueTeam = 0;
@@ -164,6 +165,7 @@ public class MyNewNetworkManager : NetworkManager
         else
         {
             soundManager.StopMusic();
+            soundManager.StopAmbiance();
         }
        
     }

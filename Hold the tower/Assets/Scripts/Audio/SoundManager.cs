@@ -37,6 +37,8 @@ public class SoundManager : Singleton<SoundManager>
 
     public AudioRolloffMode audioRolloffMode;
 
+    private AudioSource ambiance;
+
     private void Awake()
 	{
         CreateSingleton(true);
@@ -192,7 +194,16 @@ public class SoundManager : Singleton<SoundManager>
 
     }
 
+    public void PlayAmbiance()
+    {
+        PlaySoundEvent("GameAmbiance",ambiance);
 
+    }
+
+    public void StopAmbiance()
+    {
+        ambiance.Stop();
+    }
 
     public SoundReference PlaySoundEvent(SoundEvent thisEvent)
     {

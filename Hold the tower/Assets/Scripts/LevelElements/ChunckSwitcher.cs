@@ -43,6 +43,7 @@ public class ChunckSwitcher : MonoBehaviour
             {
                 //linkedChunck.switchables[i].chunkActivableParticle.Play();
                 linkedChunck.isManuallySwitchable = true;
+                SoundManager.Instance.PlaySoundEvent("ChunkOn");
             }
         }
 
