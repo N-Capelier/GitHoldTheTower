@@ -39,6 +39,8 @@ public class SoundManager : Singleton<SoundManager>
 
     private AudioSource ambiance;
 
+    private AudioSource playerFall;
+
     private void Awake()
 	{
         CreateSingleton(true);
@@ -206,6 +208,24 @@ public class SoundManager : Singleton<SoundManager>
     {
         ambiance.Stop();
         Destroy(ambiance);
+    }
+
+    public void PlayerFall()
+    {
+        if(playerFall == null)
+        {
+            playerFall = gameObject.AddComponent<AudioSource>();
+            PlaySoundEvent("PlayerFall", playerFall);
+        }
+    }
+
+    public void stopPlayerFall()
+    {
+        if (playerFall != null)
+        {
+            playerFall.Stop();
+            Destroy(playerFall);
+        }
     }
 
     public SoundReference PlaySoundEvent(SoundEvent thisEvent)

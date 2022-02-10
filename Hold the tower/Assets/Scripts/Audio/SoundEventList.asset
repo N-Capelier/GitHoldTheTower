@@ -43,7 +43,7 @@ MonoBehaviour:
     - name: PlayerUp
       ID: 2
       clip: {fileID: 8300000, guid: 149a7fbc94de8cf4698c1cc5f0009a32, type: 3}
-      volume: 1
+      volume: 0.6
     isLocalized: 0
     isRandom: 0
     isLoop: 0
@@ -535,7 +535,7 @@ MonoBehaviour:
     - name: UIButtonReturn
       ID: 43
       clip: {fileID: 8300000, guid: 161b9ccc02a136e4cb98c9811076b45a, type: 3}
-      volume: 1
+      volume: 0.5
     isLocalized: 0
     isRandom: 0
     isLoop: 1
@@ -560,7 +560,7 @@ MonoBehaviour:
       ID: 45
       clip: {fileID: 8300000, guid: 00e8129926c73394f8e6fe6327190bcd, type: 3}
       volume: 1
-    isLocalized: 1
+    isLocalized: 0
     isRandom: 0
     isLoop: 0
     isMusic: 0
