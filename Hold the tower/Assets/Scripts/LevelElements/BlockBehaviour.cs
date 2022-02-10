@@ -227,12 +227,12 @@ public class BlockBehaviour : MonoBehaviour
         nextPosDirection = GetNextPosDirection();
         if (nextPosDirection.y > 0)
         {
-            blockWarnDirectionParticle.transform.localPosition = Vector3.up;
+            //blockWarnDirectionParticle.transform.localPosition = Vector3.up;
             blockWarnDirectionParticle.transform.localRotation = Quaternion.Euler(-90, 0, 0);
         }
         else if (nextPosDirection.y < 0)
         {
-            blockWarnDirectionParticle.transform.position = transform.position + Vector3.up * (transform.localScale.y + 0.8f);
+            //blockWarnDirectionParticle.transform.position = transform.position + Vector3.up * (transform.localScale.y + 0.8f);
             blockWarnDirectionParticle.transform.localRotation = Quaternion.Euler(90, 0, 0);
         }
     }
