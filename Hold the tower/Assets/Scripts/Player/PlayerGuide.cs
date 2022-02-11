@@ -15,6 +15,8 @@ public class PlayerGuide : MonoBehaviour
     [SerializeField]
     private RectTransform objectiveCursorDirection;
     [SerializeField]
+    private RectTransform objectiveCursorPointer;
+    [SerializeField]
     private RectTransform allyCursor;
     [SerializeField]
     private RectTransform allyCursorDirection;
@@ -75,6 +77,7 @@ public class PlayerGuide : MonoBehaviour
         ownTeamHasOverdrive = false;
         overdriveIsInCenter = true;
         textBaseColor = announcementText.color;
+        objectivePointerBasePos = objectiveCursorPointer.anchoredPosition;
     }
 
 
@@ -365,12 +368,18 @@ public class PlayerGuide : MonoBehaviour
     }
 
     private Coroutine announcementCoroutine;
+    private Coroutine objectiveCursorPointerRoutine;
     private void StartAnnouncement(string announcementText, bool isFriendly)
     {
         if (announcementCoroutine != null)
             StopCoroutine(announcementCoroutine);
         announcementCoroutine = StartCoroutine(Announce(announcementText, isFriendly));
+
+        if (objectiveCursorPointerRoutine != null)
+            StopCoroutine(objectiveCursorPointerRoutine);
+        objectiveCursorPointerRoutine = StartCoroutine(PointObjective());
     }
+
 
     private IEnumerator Announce(string announcement, bool isFriendly)
     {
@@ -398,5 +407,22 @@ public class PlayerGuide : MonoBehaviour
         announcementText.text = string.Empty;
         announcementBack.gameObject.SetActive(false);
         announcementCoroutine = null;
+    }
+
+    private Vector2 objectivePointerBasePos;
+    private IEnumerator PointObjective()
+    {
+        objectiveCursorPointer.gameObject.SetActive(true);
+        objectiveCursorPointer.anchoredPosition = objectivePointerBasePos;
+        yield return new WaitForSeconds(0.8f);
+        float timer = 1f;
+        while(timer > 0 && Vector2.Distance(objectiveCursorPointer.anchoredPosition, objectiveCursor.anchoredPosition) > 15f)
+        {
+            timer -= Time.deltaTime;
+            objectiveCursorPointer.anchoredPosition = Vector2.Lerp(objectiveCursorPointer.anchoredPosition, objectiveCursor.anchoredPosition, Time.deltaTime * 5f);
+            yield return new WaitForEndOfFrame();
+        }
+        objectiveCursorPointer.gameObject.SetActive(false);
+        objectiveCursorPointerRoutine = null;
     }
 }
