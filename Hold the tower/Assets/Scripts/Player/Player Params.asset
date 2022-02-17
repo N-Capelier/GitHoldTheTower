@@ -39,7 +39,7 @@ MonoBehaviour:
   wallSlideGravity: 30
   wallSlideMaxGravitySpeed: 1.5
   wallSlideSpeedDampening: 5
-  wallRideSpeed: 11
+  wallRideSpeed: 13
   minHorizontalSpeedToStartWallRide: 2
   wallJumpNoAirControlTime: 0.05
   cameraTiltAngle: 7
