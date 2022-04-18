@@ -244,6 +244,7 @@ MonoBehaviour:
   punchRatio: 0
   punchAngle: 0
   characterAnimator: {fileID: 6221727766277004646}
+  movementAnimationTransitionSpeed: 10
   wallSlideDirection: {x: 0, y: 0, z: 0}
   wallSlideNormal: {x: 0, y: 0, z: 0}
   isChargingPunch: 0
