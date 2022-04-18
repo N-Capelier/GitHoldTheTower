@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
 using AnotherFileBrowser.Windows; //Librairy fais par un docteur en informatique indien, pas des lol, il a du devenir fou pour faire cett merde, merci à lui
-
+using Steamworks;
 public class MenuManager : MonoBehaviour
 {
 	[Header("Settings")]
@@ -73,6 +73,7 @@ public class MenuManager : MonoBehaviour
 
 	private WaitForEndOfFrame endOfFrame = new WaitForEndOfFrame(); //MERCI NICO
 
+
 	void Start()
 	{
 
@@ -96,8 +97,17 @@ public class MenuManager : MonoBehaviour
 		ipInputText.text = menuParams.ipToJoin;
 		usernameStartMenu.text = menuParams.playerPseudo;
 
-        //Curso management
-        UnityEngine.Cursor.visible = true;
+        //If connected to steam put steam pseudo
+        if (SteamManager.Initialized)
+        {
+			inputFieldPseudoText.text = SteamFriends.GetPersonaName();
+			usernameStartMenu.text = SteamFriends.GetPersonaName();
+
+		}
+		 
+
+		//Curso management
+		UnityEngine.Cursor.visible = true;
 		UnityEngine.Cursor.lockState = CursorLockMode.None;
 
 		//Find server component
@@ -106,6 +116,10 @@ public class MenuManager : MonoBehaviour
 
 		//Start all my effect
 		TextBlink(1f, EnterToStart);
+
+		//Steam
+		SteamAchievement.UnlockAchievement("WELCOM_OSA");
+
 	}
 
     private void Update()
@@ -158,6 +172,13 @@ public class MenuManager : MonoBehaviour
 		ChangeMenu();
 		isHost = true;
 		networkManager.StartHost();
+
+        if (SteamManager.Initialized)
+        {
+			SteamAPICall_t apicall = SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, 5);
+			
+
+		}
 	}
 
 	public void OnPressedJoin()
@@ -226,10 +247,22 @@ public class MenuManager : MonoBehaviour
 		{
 			networkManager.StopHost();
 			isHost = false;
+			if (SteamManager.Initialized)
+			{
+				Debug.LogWarning(networkManager.lobbySteamId);
+				SteamMatchmaking.DeleteLobbyData(networkManager.lobbySteamId, "HostKey");
+				SteamMatchmaking.LeaveLobby(networkManager.lobbySteamId);
+			}
+
 		}
 		else
 		{
 			networkManager.StopClient();
+			
+			if (SteamManager.Initialized)
+			{
+				SteamMatchmaking.LeaveLobby(networkManager.lobbySteamId);
+			}
 		}
 
 	}
@@ -425,5 +458,10 @@ public class MenuManager : MonoBehaviour
     }
 
 #endregion
+
+	protected void OnLeaveLobbySteam(LobbyChatUpdate_t callback)
+    {
+
+    }
 
 }

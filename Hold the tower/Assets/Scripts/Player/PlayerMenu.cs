@@ -85,25 +85,11 @@ public class PlayerMenu : MonoBehaviour
         {
             MyNewNetworkManager.singleton.StopHost();
         }
-        
-        StartCoroutine(BackToMenuManager());
-    }
 
-    private IEnumerator BackToMenuManager()
-    {
         MyNewNetworkManager.Shutdown();
-        Destroy(GameObject.Find("ServerManager"));
         Destroy(GameObject.Find("SoundManager"));
+        Destroy(GameObject.Find("ServerManager"));
 
-        while (GameObject.Find("ServerManager") != null)
-        {
-            yield return new WaitForEndOfFrame();
-        }
-
-        yield return new WaitForSeconds(2f);
-        SceneManager.LoadSceneAsync("LobbyScene");
-
-        yield return new WaitForEndOfFrame();
     }
 
     public void OpenSettings()

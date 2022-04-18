@@ -1120,7 +1120,7 @@ public class PlayerLogic : NetworkBehaviour
             MyNewNetworkManager.singleton.StopClient();
         }
 
-
+        Destroy(MyNewNetworkManager.singleton.gameObject);
     }
 
     //Punch and getPunch Logic
@@ -1309,8 +1309,6 @@ public class PlayerLogic : NetworkBehaviour
     [ClientRpc]
     public void RpcPlayerSource(string thisEventName)
     {
-        
-        
         SoundManager.Instance.PlaySoundEvent(thisEventName, ChooseAudioSource());
         
     }

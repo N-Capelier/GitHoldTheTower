@@ -6231,6 +6231,75 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &767844886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 767844888}
+  - component: {fileID: 767844887}
+  - component: {fileID: 767844889}
+  - component: {fileID: 767844890}
+  m_Layer: 0
+  m_Name: SteamManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &767844887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767844886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1c76518fcf31ec42bb5f6c05cfa2615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &767844888
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767844886}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 13.473679, y: -71.122025, z: 100.472626}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &767844889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767844886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dab769125e671441bc07856ffbe3536, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &767844890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767844886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebbca895d84b9c84fbd16e3916b54130, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &769408970
 GameObject:
   m_ObjectHideFlags: 0
@@ -13375,9 +13444,10 @@ GameObject:
   - component: {fileID: 1715714064}
   - component: {fileID: 1715714067}
   - component: {fileID: 1715714065}
-  - component: {fileID: 1715714066}
   - component: {fileID: 1715714069}
   - component: {fileID: 1715714068}
+  - component: {fileID: 1715714066}
+  - component: {fileID: 1715714070}
   m_Layer: 0
   m_Name: ServerManager
   m_TagString: Untagged
@@ -13428,22 +13498,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1715714063}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
+  m_Script: {fileID: 11500000, guid: e6e55fca1f4e4844593a3dd65a3ecb39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Port: 25565
-  DualMode: 1
-  NoDelay: 1
-  Interval: 5
-  Timeout: 10000
-  FastResend: 2
-  CongestionWindow: 0
-  SendWindowSize: 4096
-  ReceiveWindowSize: 4096
-  NonAlloc: 1
-  debugLog: 1
-  statisticsGUI: 0
-  statisticsLog: 0
+  Channels: 0200000001000000
+  Timeout: 25
+  AllowSteamRelay: 1
+  UseNextGenSteamNetworking: 1
 --- !u!114 &1715714067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13501,6 +13562,8 @@ MonoBehaviour:
   analyticsPath: 
   soundManager: {fileID: 2068529658}
   startTransitionObject: {fileID: 1568407546}
+  lobbySteamId:
+    m_SteamID: 0
 --- !u!114 &1715714068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13536,6 +13599,30 @@ MonoBehaviour:
   OnServerFound:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1715714070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715714063}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7424c1070fad4ba2a7a96b02fbeb4bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  port: 7777
+  NoDelay: 1
+  SendTimeout: 5000
+  ReceiveTimeout: 30000
+  serverMaxMessageSize: 16384
+  serverMaxReceivesPerTick: 10000
+  serverSendQueueLimitPerConnection: 10000
+  serverReceiveQueueLimitPerConnection: 10000
+  clientMaxMessageSize: 16384
+  clientMaxReceivesPerTick: 1000
+  clientSendQueueLimit: 10000
+  clientReceiveQueueLimit: 10000
 --- !u!1 &1718704027
 GameObject:
   m_ObjectHideFlags: 0
