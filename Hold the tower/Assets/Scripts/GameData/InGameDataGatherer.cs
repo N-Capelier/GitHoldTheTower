@@ -2,22 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InGameDataGatherer : MonoBehaviour
+public class InGameDataGatherer : Singleton<InGameDataGatherer>
 {
-	InGameData data;
+	public InGameData data;
+
+	private void Awake()
+	{
+		CreateSingleton(true);
+	}
 
 	private void Start()
 	{
 		data = new InGameData();
 	}
 
-	public void SendInGameData()
+	public void ResetData()
 	{
-
-	}
-
-	public InGameData RetrieveInGameData()
-	{
-		return data;
+		data = new InGameData();
 	}
 }

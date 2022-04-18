@@ -5,5 +5,5 @@ using UnityEngine;
 public class InGameData
 {
 	public int kills;
-	public float timeWithOverdrive;
+	public double timeWithOverdrive;
 }
