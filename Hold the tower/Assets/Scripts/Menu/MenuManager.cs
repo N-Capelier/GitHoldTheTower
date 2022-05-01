@@ -65,8 +65,9 @@ public class MenuManager : MonoBehaviour
 	public GameObject joinMenu;
 	public GameObject settingsMenu;
 	public GameObject creditMenu;
+    public GameObject mapSelectionMenu;
 
-	[Header("Effect component")]
+    [Header("Effect component")]
 
 	[SerializeField]
 	private Text EnterToStart;
@@ -126,7 +127,7 @@ public class MenuManager : MonoBehaviour
     {
         if (mainMenu.activeSelf)
         {
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (Input.anyKeyDown)
             {
                 ValidateUsername();
 			}
@@ -151,6 +152,7 @@ public class MenuManager : MonoBehaviour
     public void ValidateUsername()
     {
         menuParams.playerPseudo = usernameStartMenu.text;
+        //menuParams.playerPseudo = SteamFriends.GetPersonaName();
         SoundManager.Instance.PlayUIEvent("UIButtonClick");
         SaveManager.SaveParams(ref menuParams);
         SaveManager.LoadParams(ref menuParams);
