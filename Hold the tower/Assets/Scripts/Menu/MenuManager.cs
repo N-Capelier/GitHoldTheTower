@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityEditor;
 using TMPro;
 using AnotherFileBrowser.Windows; //Librairy fais par un docteur en informatique indien, pas des lol, il a du devenir fou pour faire cett merde, merci à lui
@@ -74,8 +75,15 @@ public class MenuManager : MonoBehaviour
 
 	private WaitForEndOfFrame endOfFrame = new WaitForEndOfFrame(); //MERCI NICO
 
+	[SerializeField]
+	private List<int> cinematicSceneIndex;
 
-	void Start()
+    private void Awake()
+    {
+		SceneManager.LoadScene(cinematicSceneIndex[Random.Range(0, cinematicSceneIndex.Count)], LoadSceneMode.Additive);
+    }
+
+    void Start()
 	{
 
 		//Enable the start scene
@@ -277,6 +285,7 @@ public class MenuManager : MonoBehaviour
 		lobbyObject.SetActive(true);
 		joinMenu.SetActive(false);
 		settingsMenu.SetActive(false);
+		mapSelectionMenu.SetActive(false);
 
 		if (menuObject.activeSelf)
         {

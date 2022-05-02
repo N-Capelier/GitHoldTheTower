@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Dev/DEV_Rifts.unity
     guid: c18717be325e9b4499b79fabc4ab1bf1
+  - enabled: 1
+    path: Assets/Scenes/Game/Cinematic_FixTheTower.unity
+    guid: ba42524bf5644e6438888f60c3bc296a
   m_configObjects: {}
