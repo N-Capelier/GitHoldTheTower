@@ -364,6 +364,7 @@ public class MyNewNetworkManager : NetworkManager
         {
             GameObject obj = Instantiate(lobbyPlayer);
             obj.GetComponent<LobbyPlayerLogic>().clientPseudo = msg.pseudo;
+            obj.GetComponent<LobbyPlayerLogic>().mapName = gameScene;
             obj.transform.position = new Vector3(0, 0, 0);
             NetworkServer.AddPlayerForConnection(conn, obj);
             AddToServerArray(obj);

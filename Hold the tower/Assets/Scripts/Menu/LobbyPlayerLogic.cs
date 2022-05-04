@@ -14,6 +14,8 @@ public class LobbyPlayerLogic : NetworkBehaviour
     public string clientPseudo;
     [SyncVar(hook = nameof(ChangeTeam))]
     public int team;
+    [SyncVar]
+    public string mapName;
 
     public Color omegaColor;
     public Color psyColor;
@@ -71,6 +73,8 @@ public class LobbyPlayerLogic : NetworkBehaviour
         {
             serverManager.GetComponent<MyNewNetworkManager>().CheckIsReady(); //Quand un client se connecte mettre a jour le bouton lancer
         }
+
+        GameObject.Find("LobbyMapTitle").GetComponent<Text>().text = mapName;
 
     }
 
