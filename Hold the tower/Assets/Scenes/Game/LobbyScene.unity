@@ -15699,6 +15699,16 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  allMapImage:
+  - {fileID: 21300000, guid: 95e6bedbd4aadca4e9bbbbf8432f4c22, type: 3}
+  - {fileID: 21300000, guid: 804b0e55d52003a4bbd2118dd4160f6e, type: 3}
+  - {fileID: 21300000, guid: f3614a3724823f94cb2c37b51de291ed, type: 3}
+  - {fileID: 21300000, guid: a8d9f0e0fe20f6541afc59743930584d, type: 3}
+  allMapName:
+  - 
+  - 
+  - 
+  - 
   playerTeamName: 0
   playerPseudo: 
   gameScene: AG_3C01

@@ -16,6 +16,7 @@ public class LobbyPlayerLogic : NetworkBehaviour
     public int team;
     [SyncVar]
     public string mapName;
+    public Sprite mapImage;
 
     public Color omegaColor;
     public Color psyColor;
@@ -75,6 +76,7 @@ public class LobbyPlayerLogic : NetworkBehaviour
         }
 
         GameObject.Find("LobbyMapTitle").GetComponent<Text>().text = mapName;
+        GameObject.Find("LobbyMapImage").GetComponent<Image>().sprite = mapImage;
 
     }
 
