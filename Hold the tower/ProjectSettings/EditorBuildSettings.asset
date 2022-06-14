@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Game/LobbyScene.unity
     guid: 0fcc151014fda6a49b10ef6b18532b97
   - enabled: 1
-    path: Assets/Scenes/Dev/Tutorial Simulation.unity
+    path: Assets/Scenes/Game/Tutorial Simulation.unity
     guid: 129e3e5342193a24d88f8ee1197ff4c8
   - enabled: 1
     path: Assets/Scenes/Game/Colliseum.unity
@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Game/Save the Tower.unity
     guid: 0662d937b9fb82c4bb1e0103b2f023c1
   - enabled: 1
-    path: Assets/Scenes/Dev/Rifts.unity
+    path: Assets/Scenes/Game/Rifts.unity
     guid: c18717be325e9b4499b79fabc4ab1bf1
   - enabled: 1
     path: Assets/Scenes/Game/Cinematic_FixTheTower.unity

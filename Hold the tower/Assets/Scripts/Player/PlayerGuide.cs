@@ -47,6 +47,8 @@ public class PlayerGuide : MonoBehaviour
     [SerializeField]
     private Text allyScoreText, enemyScoreText;
     [SerializeField]
+    private Text maxAllyScoreText, maxEnemyScoreText;
+    [SerializeField]
     private Image overdriveProgressionIconImage;
 
     public Color allyColor, enemyColor;
@@ -72,6 +74,9 @@ public class PlayerGuide : MonoBehaviour
     {
         flag = GameObject.Find("Flag");
         matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>();
+        maxAllyScoreText.text = "/" + matchManager.maxScore;
+        maxEnemyScoreText.text = "/" + matchManager.maxScore;
+
         playerLogic = GetComponent<PlayerLogic>();
         objectiveCursorImage = objectiveCursor.GetComponent<Image>();
         ownTeamHasOverdrive = false;
