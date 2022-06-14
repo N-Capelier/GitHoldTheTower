@@ -46,4 +46,19 @@ public class SteamAchievement : MonoBehaviour
         }
 
     }
+
+    public static void UnlockAchievementValue(string id, float value)
+    {
+        if (!SteamManager.Initialized)
+            return;
+
+        SteamUserStats.GetStat(id, out float statValue);
+
+        if (statValue < value)
+        {
+            SteamUserStats.SetStat(id, value);
+            SteamUserStats.StoreStats();
+        }
+
+    }
 }
