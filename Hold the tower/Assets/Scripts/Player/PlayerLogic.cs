@@ -1130,7 +1130,7 @@ public class PlayerLogic : NetworkBehaviour
                 hudTextPlayer.color = guide.allyColor;
             }
         }
-        //hudStats.InitHudStats();
+        hudStats.InitHudStats(InGameDataGatherer.Instance.mapText, InGameDataGatherer.Instance.mapImage, newText, InGameDataGatherer.Instance.data.kills.ToString(), InGameDataGatherer.Instance.data.points.ToString(), InGameDataGatherer.Instance.data.timeWithOverdrive.ToString());
 
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {
