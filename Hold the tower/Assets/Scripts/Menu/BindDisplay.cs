@@ -9,15 +9,15 @@ public class BindDisplay : MonoBehaviour
     private ScriptableParamsPlayer paramsPlayer;
 
     [SerializeField]
-    private Text textForwardBind;
+    public Text textForwardBind;
     [SerializeField]
-    private Text textLeftBind;
+    public Text textLeftBind;
     [SerializeField]
-    private Text textRightBind;
+    public Text textRightBind;
     [SerializeField]
-    private Text textBehindBind;
+    public Text textBehindBind;
     [SerializeField]
-    private Text textJumpBind;
+    public Text textJumpBind;
 
     [SerializeField]
     private Text textSensy;
