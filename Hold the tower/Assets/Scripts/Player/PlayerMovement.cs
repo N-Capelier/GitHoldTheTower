@@ -53,52 +53,15 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] Animator characterAnimator;
 
-    bool isMoving = false;
-
-    private void FixedUpdate()
-    {
-        //if (!isClimbingMovement)
-        //{
-        //    selfRbd.velocity += hspd + vspd + attackspd;
-        //}
-
-        if (isMoving && GetHorizontalVelocity().magnitude < 0.02f)
-        {
-            isMoving = false;
-            if(walkTransitionCoroutine != null)
-                StopCoroutine(walkTransitionCoroutine);
-            walkTransitionCoroutine = StartCoroutine(WalkTransition());
-        }
-        else if (!isMoving && GetHorizontalVelocity().magnitude > 0.02f)
-        {
-            isMoving = true;
-            if (walkTransitionCoroutine != null)
-                StopCoroutine(walkTransitionCoroutine);
-            walkTransitionCoroutine = StartCoroutine(WalkTransition());
-        }
-    }
-
-    IEnumerator WalkTransition()
-	{
-        float _elapsedTime = 0f, _completion = 0f;
-
-        while(_completion < .5f)
-		{
-            //Debug.LogWarning(_completion);
-            _elapsedTime += Time.deltaTime;
-            _completion = _elapsedTime * 2f;
-            if (isMoving)
-                characterAnimator.SetFloat("CharacterSpeed", Mathf.Lerp(0f, 2f, _completion));
-            else
-                characterAnimator.SetFloat("CharacterSpeed", Mathf.Lerp(2f, 0f, 1f -_completion));
-            yield return waitForEndOfFrame;
-        }
-        yield return waitForEndOfFrame;
-	}
+    [SerializeField] float movementAnimationTransitionSpeed;
 
 	private void Update()
 	{
-        if (characterAnimator.gameObject.activeSelf)
+        UpdateMovementAnimation();
+
+        Debug.LogWarning(characterAnimator.GetFloat("CharacterSpeed"));
+
+		if (characterAnimator.gameObject.activeSelf)
         {
             characterAnimator.SetFloat("CharacterSpeed", GetHorizontalVelocity().magnitude);
         }
@@ -736,10 +699,38 @@ public class PlayerMovement : MonoBehaviour
         SoundManager.Instance.PlaySoundEvent("PlayerOverdriveTaken");
     }
 
-    #endregion
+	#endregion
 
-    #region Getter/Setter
-    public Vector3 GetVelocity()
+	#region Animation
+
+    void UpdateMovementAnimation()
+	{
+        if (characterAnimator.gameObject.activeSelf)
+        {
+            Debug.LogError("activeself");
+            if (GetHorizontalVelocity().magnitude <= 0.02f && characterAnimator.GetFloat("CharacterSpeed") >= 0f)
+            {
+                Debug.LogError("down");
+
+                characterAnimator.SetFloat("CharacterSpeed", characterAnimator.GetFloat("CharacterSpeed") - movementAnimationTransitionSpeed * Time.deltaTime);
+            }
+            else if (GetHorizontalVelocity().magnitude >= 0.02f && characterAnimator.GetFloat("CharacterSpeed") <= 2f)
+            {
+                Debug.LogError("up");
+
+                characterAnimator.SetFloat("CharacterSpeed", characterAnimator.GetFloat("CharacterSpeed") + movementAnimationTransitionSpeed * Time.deltaTime);
+            }
+        }
+        else
+		{
+            Debug.LogError("not active");
+		}
+    }
+
+	#endregion
+
+	#region Getter/Setter
+	public Vector3 GetVelocity()
     {
         return selfRbd.velocity;
     }

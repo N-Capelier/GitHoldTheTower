@@ -11,9 +11,11 @@ using UnityEngine.Rendering;
 
 public class PlayerLogic : NetworkBehaviour
 {
-    private WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
+    #region Variables
 
-    private List<GameObject> noAuthorityPlayer;
+    InGameDataGatherer dataGatherer;
+
+	private List<GameObject> noAuthorityPlayer;
     public GameObject authorityPlayer;
 
     [SerializeField]
@@ -180,19 +182,28 @@ public class PlayerLogic : NetworkBehaviour
 
     [SerializeField] private PlayerGuide guide;
 
-    void Start()
+	#endregion
+
+	#region Unity messages
+
+	void Start()
     {
         matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>(); //Ne pas bouger
         levelTransition = GameObject.Find("GameManager").GetComponent<LevelTransition>();
 
         chargePreviewStartPos = punchChargeDistancePreview.transform.localPosition;
 
+        if(hasAuthority)
+		{
+            dataGatherer = InGameDataGatherer.Instance;
+            dataGatherer.CreateNewInGameData();
+        }
+
         //Analytics
         if (GameObject.Find("Analytics") != null)
         {
             GameObject.Find("Analytics").GetComponent<PA_Position>().analyticGameObjectPosition.Add(transform);
         }
-        //
 
         if (FlagObject != null)
         {
@@ -276,28 +287,17 @@ public class PlayerLogic : NetworkBehaviour
         }
     }
 
-    public void ChangeColorToBlue()
-    {
-        playerMeshRenderer.material = blueTeamMaterial;
-        player3dPseudo.GetComponentInChildren<Text>().color = guide.allyColor;
-    }
-
-    public void ChangeColorToRed()
-    {
-        playerMeshRenderer.material = redTeamMaterial;
-        player3dPseudo.GetComponentInChildren<Text>().color = guide.enemyColor;
-    }
-
-    void Update()
+	void Update()
     {
         //Stop Movement if in the menu
         if (!selfMenu.menuIsOpen && !isSpawning)
         {
             fpsView();
-
         }
 
         UpdateNextTransitionTime();
+
+        UpdateTimeWithFlag();
 
         if (hasAuthority && roundStarted)
         {
@@ -332,6 +332,23 @@ public class PlayerLogic : NetworkBehaviour
         }
     }
 
+	#endregion
+
+	#region Team Attribution
+
+	public void ChangeColorToBlue()
+    {
+        playerMeshRenderer.material = blueTeamMaterial;
+        player3dPseudo.GetComponentInChildren<Text>().color = guide.allyColor;
+    }
+
+    public void ChangeColorToRed()
+    {
+        playerMeshRenderer.material = redTeamMaterial;
+        player3dPseudo.GetComponentInChildren<Text>().color = guide.enemyColor;
+    }
+
+	#endregion
 
     #region Movement Logic
 
@@ -618,11 +635,9 @@ public class PlayerLogic : NetworkBehaviour
     #region Collision
     public void OnCollisionEnter(Collision info)
     {
-        Vector3 point = info.contacts[0].point;
         normalWallJump = info.contacts[0].normal;
-
-        //Debug.DrawRay(point, (normalWallJump + new Vector3(0, 0.5f, 0)) * 10, Color.red, 2.5f);
     }
+
     public Vector3 GetNearbyWallNormal()
     {
         Vector3 wallNormal = Vector3.zero;
@@ -1180,15 +1195,6 @@ public class PlayerLogic : NetworkBehaviour
         }
         else
         {
-            if(directedForce.y >= 0)
-            {
-
-            }
-            else
-            {
-
-            }
-            Debug.Log(directedForce);
             GetPunch(directedForce); //For debugging
         }
         
@@ -1323,7 +1329,6 @@ public class PlayerLogic : NetworkBehaviour
     private void RpcPlayerFootstepSource(string thisEventName)
     {
         SoundManager.Instance.PlaySoundEvent(thisEventName, playerFootstepSource);
-        
     }
 
     //Use this to stop audio over network with PlayerSource AudioSource
@@ -1357,6 +1362,7 @@ public class PlayerLogic : NetworkBehaviour
     {
         RpcPlayerFlagSource(thisEventName);
     }
+
     [ClientRpc]
     private void RpcPlayerFlagSource(string thisEventName)
     {
@@ -1568,7 +1574,24 @@ public class PlayerLogic : NetworkBehaviour
 
     #endregion
 
-    public AudioSource ChooseAudioSource()
+    #region DataGathering
+
+    void UpdateTimeWithFlag()
+	{
+        if (!hasAuthority)
+            return;
+
+        if(hasFlag)
+		{
+            dataGatherer.data.timeWithOverdrive += Time.deltaTime;
+		}
+	}
+
+	#endregion
+
+	#region Audio
+
+	public AudioSource ChooseAudioSource()
     {
         foreach (AudioSource source in audioSources)
         {
@@ -1589,10 +1612,5 @@ public class PlayerLogic : NetworkBehaviour
         playerSource.Stop();
     }
 
-  
+	#endregion
 }
-
-
-
-
-
