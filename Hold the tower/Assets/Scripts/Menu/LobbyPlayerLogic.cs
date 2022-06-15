@@ -77,6 +77,10 @@ public class LobbyPlayerLogic : NetworkBehaviour
 
         GameObject.Find("LobbyMapTitle").GetComponent<Text>().text = mapName;
         GameObject.Find("LobbyMapImage").GetComponent<Image>().sprite = mapImage;
+        if (hasAuthority)
+        {
+            InGameDataGatherer.Instance.FillMapData(mapImage, mapName);
+        }
 
     }
 

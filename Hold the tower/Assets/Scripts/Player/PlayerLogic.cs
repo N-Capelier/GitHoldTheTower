@@ -125,6 +125,8 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     public GameObject hud;
     [SerializeField]
+    private HUD_Stats hudStats;
+    [SerializeField]
     public GameObject actionExclusiveHud;
     [SerializeField]
     public GameObject playerModel;
@@ -1112,6 +1114,7 @@ public class PlayerLogic : NetworkBehaviour
                 hudTextPlayer.color = guide.allyColor;
             }
         }
+        //hudStats.InitHudStats();
 
         while (NetworkTime.time - timerToStart <= timerMaxToStart)
         {

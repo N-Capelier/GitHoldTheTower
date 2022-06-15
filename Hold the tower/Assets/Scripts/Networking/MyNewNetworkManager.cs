@@ -266,6 +266,8 @@ public class MyNewNetworkManager : NetworkManager
             pseudo = GetComponent<MyNewNetworkAuthenticator>().lobbyPseudo
         };
         NetworkClient.Send(clientMsg);
+
+        //InGameDataGatherer.Instance.
     }
 
     /// <summary>
