@@ -12,6 +12,8 @@ public class SensorWallDie : MonoBehaviour
         {
             if(other.GetComponent<BlockBehaviour>().ownVelo.y < 0 && selfLogic.isGrounded)
             {
+                DeadZone.InvokePlayerDeath(selfLogic);
+
                 selfLogic.CmdForceRespawn(3f);
             }
         }

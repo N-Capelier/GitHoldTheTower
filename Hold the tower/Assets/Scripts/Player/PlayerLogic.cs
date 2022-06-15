@@ -182,11 +182,15 @@ public class PlayerLogic : NetworkBehaviour
 
     [SerializeField] private PlayerGuide guide;
 
-	#endregion
+    [SerializeField] [Range(0f, 10f)] float killTime;
+    [HideInInspector] public bool isTagged = false;
+    public Clock taggedTimer;
 
-	#region Unity messages
+    #endregion
 
-	void Start()
+    #region Unity messages
+
+    void Start()
     {
         matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>(); //Ne pas bouger
         levelTransition = GameObject.Find("GameManager").GetComponent<LevelTransition>();
@@ -197,7 +201,11 @@ public class PlayerLogic : NetworkBehaviour
 		{
             dataGatherer = InGameDataGatherer.Instance;
             dataGatherer.CreateNewInGameData();
+
+            DeadZone.OnDeath += OnPlayerKilled;
         }
+
+        taggedTimer = new Clock();
 
         //Analytics
         if (GameObject.Find("Analytics") != null)
@@ -308,10 +316,10 @@ public class PlayerLogic : NetworkBehaviour
             CmdRotateModel(selfCamera.rotation.eulerAngles.y);
 
             //Respawn player
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                CmdForceRespawn(3f);
-            }
+            //if (Input.GetKeyDown(KeyCode.R))
+            //{
+            //    CmdForceRespawn(3f);
+            //}
         }
 
         if(!hasAuthority)
@@ -331,6 +339,14 @@ public class PlayerLogic : NetworkBehaviour
             selfParams.useAlternateWallJump = !selfParams.useAlternateWallJump;
         }
     }
+
+	private void OnDestroy()
+	{
+		if(hasAuthority)
+		{
+            DeadZone.OnDeath -= OnPlayerKilled;
+        }
+	}
 
 	#endregion
 
@@ -1586,6 +1602,25 @@ public class PlayerLogic : NetworkBehaviour
         if(hasFlag)
 		{
             dataGatherer.data.timeWithOverdrive += Time.deltaTime;
+		}
+	}
+
+    public void SetTagged()
+	{
+        isTagged = true;
+        taggedTimer.SetTime(killTime);
+	}
+
+    void OnTaggedTimerEnd()
+	{
+        isTagged = false;
+	}
+
+    void OnPlayerKilled(bool isTagged)
+	{
+        if(isTagged)
+		{
+            InGameDataGatherer.Instance.data.kills++;
 		}
 	}
 
