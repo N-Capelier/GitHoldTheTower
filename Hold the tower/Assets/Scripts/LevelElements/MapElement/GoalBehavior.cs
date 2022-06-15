@@ -26,10 +26,19 @@ public class GoalBehavior : NetworkBehaviour
     {
         if(other.tag == "Player")
         {
-            if (other.transform.parent.GetComponent<PlayerLogic>().teamName != goalTeam && other.transform.parent.GetComponent<PlayerLogic>().hasFlag && delay == false)
+
+            PlayerLogic scoringPlayer = other.transform.parent.GetComponent<PlayerLogic>();
+
+            if (other.transform.parent.GetComponent<PlayerLogic>().teamName != goalTeam && scoringPlayer.hasFlag && delay == false)
             {
                 StartCoroutine(DelayManager());
                 string textToShow = "";
+
+                if(scoringPlayer.hasAuthority)
+				{
+                    InGameDataGatherer.Instance.data.points++;
+				}
+
                 if (goalTeam == LobbyPlayerLogic.TeamName.Blue)
                 {
                     textToShow = matchManager.redTeamTextScore;

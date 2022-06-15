@@ -6,4 +6,5 @@ public class InGameData
 {
 	public int kills;
 	public double timeWithOverdrive;
+	public int points;
 }

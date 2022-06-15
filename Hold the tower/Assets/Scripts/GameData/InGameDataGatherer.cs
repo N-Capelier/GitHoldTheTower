@@ -11,12 +11,7 @@ public class InGameDataGatherer : Singleton<InGameDataGatherer>
 		CreateSingleton(true);
 	}
 
-	private void Start()
-	{
-		data = new InGameData();
-	}
-
-	public void ResetData()
+	public void CreateNewInGameData()
 	{
 		data = new InGameData();
 	}

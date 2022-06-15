@@ -196,7 +196,7 @@ public class PlayerLogic : NetworkBehaviour
         if(hasAuthority)
 		{
             dataGatherer = InGameDataGatherer.Instance;
-            dataGatherer.ResetData();
+            dataGatherer.CreateNewInGameData();
         }
 
         //Analytics
@@ -1331,7 +1331,6 @@ public class PlayerLogic : NetworkBehaviour
     private void RpcPlayerFootstepSource(string thisEventName)
     {
         SoundManager.Instance.PlaySoundEvent(thisEventName, playerFootstepSource);
-        
     }
 
     //Use this to stop audio over network with PlayerSource AudioSource
@@ -1365,6 +1364,7 @@ public class PlayerLogic : NetworkBehaviour
     {
         RpcPlayerFlagSource(thisEventName);
     }
+
     [ClientRpc]
     private void RpcPlayerFlagSource(string thisEventName)
     {
