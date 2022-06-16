@@ -117,6 +117,15 @@ MonoBehaviour:
   isReady: 0
   clientPseudo: Player
   team: 0
+  mapName: 
+  mapImageNumber: 0
+  mapImage: {fileID: 0}
+  allMapImage:
+  - {fileID: 0}
+  - {fileID: 21300000, guid: 9d95892d554b3fd49bc00e243415e528, type: 3}
+  - {fileID: 21300000, guid: f3614a3724823f94cb2c37b51de291ed, type: 3}
+  - {fileID: 21300000, guid: a8d9f0e0fe20f6541afc59743930584d, type: 3}
+  - {fileID: 21300000, guid: 5d85cc11bf51e6145955e40f562137e8, type: 3}
   omegaColor: {r: 1, g: 0.37832665, b: 0, a: 1}
   psyColor: {r: 0.5711801, g: 0.18396229, b: 1, a: 1}
   spectatorColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}

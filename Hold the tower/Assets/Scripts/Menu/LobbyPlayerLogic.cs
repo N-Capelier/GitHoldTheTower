@@ -16,7 +16,11 @@ public class LobbyPlayerLogic : NetworkBehaviour
     public int team;
     [SyncVar]
     public string mapName;
+    [SyncVar(hook = nameof(ChangeMapImage))]
+    public int mapImageNumber = -1;
+    [HideInInspector]
     public Sprite mapImage;
+    public Sprite[] allMapImage;
 
     public Color omegaColor;
     public Color psyColor;
@@ -73,13 +77,6 @@ public class LobbyPlayerLogic : NetworkBehaviour
         if (isServer)
         {
             serverManager.GetComponent<MyNewNetworkManager>().CheckIsReady(); //Quand un client se connecte mettre a jour le bouton lancer
-        }
-
-        GameObject.Find("LobbyMapTitle").GetComponent<Text>().text = mapName;
-        GameObject.Find("LobbyMapImage").GetComponent<Image>().sprite = mapImage;
-        if (hasAuthority)
-        {
-            InGameDataGatherer.Instance.FillMapData(mapImage, mapName);
         }
 
     }
@@ -187,5 +184,14 @@ public class LobbyPlayerLogic : NetworkBehaviour
         }
         
     } //Syncronise l'ui
+
+
+    public void ChangeMapImage(int oldValue, int newValue)
+    {
+        mapImage = allMapImage[newValue];
+        GameObject.Find("LobbyMapImage").GetComponent<Image>().sprite = mapImage;
+        GameObject.Find("LobbyMapTitle").GetComponent<Text>().text = mapName;
+        InGameDataGatherer.Instance.FillMapData(mapImage, mapName);
+    }
     #endregion
 }

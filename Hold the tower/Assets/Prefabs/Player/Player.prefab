@@ -211,7 +211,8 @@ MonoBehaviour:
   timerMaxToStart: 3
   roundStarted: 0
   guide: {fileID: 8245477799355024668}
-  killTimer: 5
+  killTime: 6
+  isTagged: 0
   isWallSliding: 0
   overviewCamera: {fileID: 5998558298143025046}
   highlightCam: {fileID: 1721525492124953766}

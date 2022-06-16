@@ -22,7 +22,6 @@ public class MyNewNetworkManager : NetworkManager
     public GameObject[] lobbyPlayerServer = new GameObject[5];
     public GameObject[] SpawnPlayerPosition = new GameObject[5];
     public Sprite[] allMapImage = new Sprite[4];
-    public string[] allMapName = new string[4];
 
     [HideInInspector]
     public LobbyPlayerLogic.TeamName playerTeamName;
@@ -370,30 +369,30 @@ public class MyNewNetworkManager : NetworkManager
             LobbyPlayerLogic newlobbyPlayer = obj.GetComponent<LobbyPlayerLogic>();
 
             newlobbyPlayer.clientPseudo = msg.pseudo;
-            switch(gameScene)
-            {
-                case "Save the Tower":
-                    newlobbyPlayer.mapImage = allMapImage[0];
-                    break;
-
-                case "Colliseum":
-                    newlobbyPlayer.mapImage = allMapImage[1];
-                    break;
-
-                case "Rifts":
-                    newlobbyPlayer.mapImage = allMapImage[2];
-                    break;
-
-                case "Tutorial Simulation":
-                    newlobbyPlayer.mapImage = allMapImage[3];
-                    break;
-            }
-
             newlobbyPlayer.mapName = gameScene;
-
             obj.transform.position = new Vector3(0, 0, 0);
             NetworkServer.AddPlayerForConnection(conn, obj);
             AddToServerArray(obj);
+
+            switch (gameScene)
+            {
+                case "Save the Tower":
+                    newlobbyPlayer.mapImageNumber = 4;
+                    break;
+
+                case "Colliseum":
+                    newlobbyPlayer.mapImageNumber = 1;
+                    break;
+
+                case "Rifts":
+                    newlobbyPlayer.mapImageNumber = 2;
+                    break;
+
+                case "Tutorial Simulation":
+                    newlobbyPlayer.mapImageNumber = 3;
+                    break;
+            }
+
         }
         
     } //Spawn l'objet lobbyPlayer et configure le server
