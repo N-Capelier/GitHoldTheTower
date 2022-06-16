@@ -12,10 +12,14 @@ public class BindManager : MonoBehaviour
     public UnityEvent showNewTextKey;
     public UnityEvent showNewSensi;
 
+    public BindDisplay bindDisplay;
+
     private void Update()
     {
         if (isBindingForward)
         {
+            if(bindDisplay != null)
+                bindDisplay.textForwardBind.text = "...";
             if (Input.anyKeyDown && IgnoreKey())
             {
                 BindSave("front");
@@ -30,6 +34,8 @@ public class BindManager : MonoBehaviour
 
         if (isBindingBehind)
         {
+            if (bindDisplay != null)
+                bindDisplay.textBehindBind.text = "...";
             if (Input.anyKeyDown && IgnoreKey())
             {
                 BindSave("behind");
@@ -43,6 +49,8 @@ public class BindManager : MonoBehaviour
 
         if (isBindingLeft)
         {
+            if (bindDisplay != null)
+                bindDisplay.textLeftBind.text = "...";
             if (Input.anyKeyDown && IgnoreKey())
             {
                 BindSave("left");
@@ -57,6 +65,8 @@ public class BindManager : MonoBehaviour
 
         if (isBindingRight)
         {
+            if (bindDisplay != null)
+                bindDisplay.textRightBind.text = "...";
             if (Input.anyKeyDown && IgnoreKey())
             {
                 BindSave("right");
@@ -71,6 +81,8 @@ public class BindManager : MonoBehaviour
 
         if (isBindingJump)
         {
+            if (bindDisplay != null)
+                bindDisplay.textJumpBind.text = "...";
             if (Input.anyKeyDown && IgnoreKey())
             {
                 BindSave("jump");
