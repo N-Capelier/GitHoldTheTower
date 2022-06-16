@@ -29,11 +29,6 @@ public class GoalBehavior : NetworkBehaviour
 
             PlayerLogic scoringPlayer = other.transform.parent.GetComponent<PlayerLogic>();
 
-            if (scoringPlayer.hasAuthority)
-            {
-                SteamAchievement.AddStatValue("stat_Goal", 1);
-            }
-
             if (other.transform.parent.GetComponent<PlayerLogic>().teamName != goalTeam && scoringPlayer.hasFlag && delay == false)
             {
                 StartCoroutine(DelayManager());
@@ -42,7 +37,9 @@ public class GoalBehavior : NetworkBehaviour
                 if(scoringPlayer.hasAuthority)
 				{
                     InGameDataGatherer.Instance.data.points++;
-				}
+                    SteamAchievement.AddStatValue("stat_Goal", 1);
+
+                }
 
                 if (goalTeam == LobbyPlayerLogic.TeamName.Blue)
                 {
