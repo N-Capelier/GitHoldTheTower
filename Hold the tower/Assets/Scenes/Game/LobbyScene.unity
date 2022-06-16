@@ -3024,7 +3024,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -825, y: -405}
+  m_AnchoredPosition: {x: -1674, y: 107.5}
   m_SizeDelta: {x: 264, y: 65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &314955397
@@ -3908,7 +3908,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &411848237
 GameObject:
@@ -7961,7 +7961,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &767844889
 MonoBehaviour:
@@ -12531,7 +12531,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 413, y: -398}
+  m_AnchoredPosition: {x: 413, y: 101.49997}
   m_SizeDelta: {x: 423, y: 103}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1260122443
@@ -14394,10 +14394,10 @@ RectTransform:
   m_Father: {fileID: 408179669}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1568407548
 MonoBehaviour:
@@ -15840,11 +15840,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 9d95892d554b3fd49bc00e243415e528, type: 3}
   - {fileID: 21300000, guid: f3614a3724823f94cb2c37b51de291ed, type: 3}
   - {fileID: 21300000, guid: a8d9f0e0fe20f6541afc59743930584d, type: 3}
-  allMapName:
-  - 
-  - 
-  - 
-  - 
   playerTeamName: 0
   playerPseudo: 
   gameScene: AG_3C01
@@ -25356,7 +25351,7 @@ Transform:
   - {fileID: 2044831973446888231}
   - {fileID: 2044831973446888225}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!199 &605221875847309916
 ParticleSystemRenderer:

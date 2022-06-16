@@ -1108,6 +1108,7 @@ public class PlayerLogic : NetworkBehaviour
             if (teamName == LobbyPlayerLogic.TeamName.Red)
             {
                 newText = "Victory";
+                SteamAchievement.AddStatValue("stat_Win", 1);
                 hudTextPlayer.color = guide.allyColor;
             }
             else
@@ -1127,6 +1128,7 @@ public class PlayerLogic : NetworkBehaviour
             else
             {
                 newText = "Victory";
+                SteamAchievement.AddStatValue("stat_Win", 1);
                 hudTextPlayer.color = guide.allyColor;
             }
         }

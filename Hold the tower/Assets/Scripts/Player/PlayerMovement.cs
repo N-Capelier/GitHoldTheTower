@@ -59,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
 	{
         UpdateMovementAnimation();
 
-        Debug.LogWarning(characterAnimator.GetFloat("CharacterSpeed"));
+        //Debug.LogWarning(characterAnimator.GetFloat("CharacterSpeed"));
 
 		if (characterAnimator.gameObject.activeSelf)
         {
@@ -710,20 +710,20 @@ public class PlayerMovement : MonoBehaviour
             Debug.LogError("activeself");
             if (GetHorizontalVelocity().magnitude <= 0.02f && characterAnimator.GetFloat("CharacterSpeed") >= 0f)
             {
-                Debug.LogError("down");
+                //Debug.LogError("down");
 
                 characterAnimator.SetFloat("CharacterSpeed", characterAnimator.GetFloat("CharacterSpeed") - movementAnimationTransitionSpeed * Time.deltaTime);
             }
             else if (GetHorizontalVelocity().magnitude >= 0.02f && characterAnimator.GetFloat("CharacterSpeed") <= 2f)
             {
-                Debug.LogError("up");
+                //Debug.LogError("up");
 
                 characterAnimator.SetFloat("CharacterSpeed", characterAnimator.GetFloat("CharacterSpeed") + movementAnimationTransitionSpeed * Time.deltaTime);
             }
         }
         else
 		{
-            Debug.LogError("not active");
+            //Debug.LogError("not active");
 		}
     }
 

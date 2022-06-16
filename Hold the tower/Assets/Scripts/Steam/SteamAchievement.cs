@@ -32,6 +32,18 @@ public class SteamAchievement : MonoBehaviour
 
     }
 
+    public static void AddStatValue(string id, int valueToAdd)
+    {
+        if (!SteamManager.Initialized)
+            return;
+
+        SteamUserStats.GetStat(id, out int statValue);
+        SteamUserStats.SetStat(id, statValue+valueToAdd);
+
+        SteamUserStats.StoreStats();
+
+    }
+
     public static void UnlockAchievementValue(string id, int value)
     {
         if (!SteamManager.Initialized)
@@ -60,5 +72,22 @@ public class SteamAchievement : MonoBehaviour
             SteamUserStats.StoreStats();
         }
 
+    }
+
+    public static void TryToUnlockAchievement(string id, int value)
+    {
+        if (!SteamManager.Initialized)
+            return;
+
+        SteamUserStats.GetStat(id, out float statValue);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.T))
+        {
+            SteamUserStats.ResetAllStats(true);
+            SteamUserStats.StoreStats();
+        }
     }
 }

@@ -57,6 +57,7 @@ public class SensorPlayer : MonoBehaviour
             {
                 selfTransform.GetComponent<PlayerLogic>().CmdGetFlag();
                 selfLogic.CmdPlayGlobalSound("PlayerOverdriveSteal");
+                SteamAchievement.AddStatValue("stat_Steal", 1);
             }
 
             selfTransform.GetComponent<PlayerMovement>().StopPunch();
