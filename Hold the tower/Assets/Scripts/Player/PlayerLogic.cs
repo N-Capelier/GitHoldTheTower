@@ -336,10 +336,10 @@ public class PlayerLogic : NetworkBehaviour
             playerFlagSource.Stop();
         }
 
-        if(Input.GetKeyDown(KeyCode.J))
-        {
-            selfParams.useAlternateWallJump = !selfParams.useAlternateWallJump;
-        }
+        //if(Input.GetKeyDown(KeyCode.J))
+        //{
+        //    selfParams.useAlternateWallJump = !selfParams.useAlternateWallJump;
+        //}
     }
 
 	private void OnDestroy()
