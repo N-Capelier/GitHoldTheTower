@@ -535,7 +535,6 @@ public class MyNewNetworkManager : NetworkManager
         if(MenuManagerObject != null)
         {
             MenuManagerObject.GetComponent<MenuManager>().OnPressedJoinCustom(hostAdresse);
-            Debug.LogWarning("Join");
         }
         
     }
