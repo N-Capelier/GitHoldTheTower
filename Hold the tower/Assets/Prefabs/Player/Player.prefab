@@ -7228,9 +7228,49 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 7809854827538076609}
+    - target: {fileID: 1173071377689518661, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1436441765301063273, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
       propertyPath: m_Name
       value: PlayerCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 1613000311110900905, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1613000311110900905, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1613000311110900905, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5204818065857996584}
+    - target: {fileID: 1613000311110900905, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1613000311110900905, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DisconnectPlayerFromMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 1613000311110900905, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1613000311110900905, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerLogic, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1613000311110900905, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: PlayerMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1613000311110900905, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2136428236381293162, guid: 867e7c10c17a55e439e6d58cdc44688b, type: 3}
       propertyPath: m_Camera

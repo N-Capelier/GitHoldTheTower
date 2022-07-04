@@ -1134,7 +1134,7 @@ public class PlayerLogic : NetworkBehaviour
         }
         hudStats.InitHudStats(InGameDataGatherer.Instance.mapText, InGameDataGatherer.Instance.mapImage, newText, InGameDataGatherer.Instance.data.kills.ToString(), InGameDataGatherer.Instance.data.points.ToString(), InGameDataGatherer.Instance.data.timeWithOverdrive.ToString());
 
-        while (NetworkTime.time - timerToStart <= timerMaxToStart)
+        while (NetworkTime.time - timerToStart <= 30f)
         {
             hudTextBoxMask.sizeDelta = new Vector2(hudTextBoxMaskMovement.Evaluate((float)((NetworkTime.time - timerToStart) / timerMaxToStart)), hudTextBoxMask.sizeDelta.y);
             if (newText != hudTextPlayer.text)
@@ -1143,6 +1143,24 @@ public class PlayerLogic : NetworkBehaviour
 
         }
 
+        //Stop Music
+        SoundManager.Instance.StopMusic();
+        DestroyImmediate(GameObject.Find("SoundManager"));
+
+        if (isServer)
+        {
+            MyNewNetworkManager.singleton.StopHost();
+        }
+        else
+        {
+            MyNewNetworkManager.singleton.StopClient();
+        }
+
+        Destroy(MyNewNetworkManager.singleton.gameObject);
+    }
+
+    public void DisconnectPlayerFromMenu()
+    {
         //Stop Music
         SoundManager.Instance.StopMusic();
         DestroyImmediate(GameObject.Find("SoundManager"));
