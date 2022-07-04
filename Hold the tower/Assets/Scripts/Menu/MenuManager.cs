@@ -259,7 +259,6 @@ public class MenuManager : MonoBehaviour
 			isHost = false;
 			if (SteamManager.Initialized)
 			{
-				Debug.LogWarning(networkManager.lobbySteamId);
 				SteamMatchmaking.DeleteLobbyData(networkManager.lobbySteamId, "HostKey");
 				SteamMatchmaking.LeaveLobby(networkManager.lobbySteamId);
 			}

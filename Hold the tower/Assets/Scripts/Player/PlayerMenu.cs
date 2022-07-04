@@ -77,6 +77,10 @@ public class PlayerMenu : MonoBehaviour
 
     public void BackToMenu()
     {
+        //Stop Music
+        SoundManager.Instance.StopMusic();
+        DestroyImmediate(GameObject.Find("SoundManager"));
+
         if (selfLogic.isClientOnly)
         {
             MyNewNetworkManager.singleton.StopClient();
@@ -86,9 +90,7 @@ public class PlayerMenu : MonoBehaviour
             MyNewNetworkManager.singleton.StopHost();
         }
 
-        MyNewNetworkManager.Shutdown();
-        Destroy(GameObject.Find("SoundManager"));
-        Destroy(GameObject.Find("ServerManager"));
+        Destroy(MyNewNetworkManager.singleton.gameObject);
 
     }
 

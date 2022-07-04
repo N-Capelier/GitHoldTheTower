@@ -104,6 +104,7 @@ public class MyNewNetworkManager : NetworkManager
     public override void OnDestroy()
     {
         base.OnDestroy();
+
     }
 
     #endregion
@@ -338,6 +339,7 @@ public class MyNewNetworkManager : NetworkManager
     /// </summary>
     public override void OnStopServer() {
         ClearArray(lobbyPlayerServer);
+
     }
 
     /// <summary>
