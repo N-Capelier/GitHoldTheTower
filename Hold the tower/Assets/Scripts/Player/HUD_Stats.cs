@@ -21,6 +21,11 @@ public class HUD_Stats : MonoBehaviour
     private TMP_Text timeText;
 
 
+    private void Start()
+    {
+        //this.gameObject.SetActive(false);
+    }
+
     public void InitHudStats(string mapName, Sprite mapSprite, string victoryLoose, string kills, string points, string time)
     {
         this.gameObject.SetActive(true);
@@ -30,5 +35,7 @@ public class HUD_Stats : MonoBehaviour
         killsText.text = kills;
         pointsText.text = points;
         timeText.text = time;
+
+        Cursor.lockState = CursorLockMode.None;
     }
 }

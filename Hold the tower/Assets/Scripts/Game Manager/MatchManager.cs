@@ -91,6 +91,7 @@ public class MatchManager : NetworkBehaviour
             {
                 if (idOwnedByClient.gameObject.GetComponent<PlayerLogic>() != null)
                 {
+                    idOwnedByClient.gameObject.GetComponent<PlayerLogic>().StopAllCoroutines();
                     idOwnedByClient.gameObject.GetComponent<PlayerLogic>().RpcRespawn(conn,3f);
                 }
             }
