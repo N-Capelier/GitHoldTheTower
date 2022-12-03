@@ -707,7 +707,7 @@ public class PlayerMovement : MonoBehaviour
 	{
         if (characterAnimator.gameObject.activeSelf)
         {
-            Debug.LogError("activeself");
+            //Debug.LogError("activeself");
             if (GetHorizontalVelocity().magnitude <= 0.02f && characterAnimator.GetFloat("CharacterSpeed") >= 0f)
             {
                 //Debug.LogError("down");

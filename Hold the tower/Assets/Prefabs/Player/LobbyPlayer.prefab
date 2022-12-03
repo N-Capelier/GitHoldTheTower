@@ -123,9 +123,9 @@ MonoBehaviour:
   allMapImage:
   - {fileID: 0}
   - {fileID: 21300000, guid: 9d95892d554b3fd49bc00e243415e528, type: 3}
-  - {fileID: 21300000, guid: f3614a3724823f94cb2c37b51de291ed, type: 3}
-  - {fileID: 21300000, guid: a8d9f0e0fe20f6541afc59743930584d, type: 3}
-  - {fileID: 21300000, guid: 5d85cc11bf51e6145955e40f562137e8, type: 3}
+  - {fileID: 21300000, guid: 5b1816cee08dab541869bd2e2e32f8f2, type: 3}
+  - {fileID: 21300000, guid: 9ec10dc34c96f8d4a8449a9c31c4656e, type: 3}
+  - {fileID: 21300000, guid: 097b2865dacfa6f438f3543d62c4c249, type: 3}
   omegaColor: {r: 1, g: 0.37832665, b: 0, a: 1}
   psyColor: {r: 0.5711801, g: 0.18396229, b: 1, a: 1}
   spectatorColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}

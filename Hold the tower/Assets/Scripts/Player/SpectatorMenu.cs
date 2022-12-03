@@ -16,6 +16,7 @@ public class SpectatorMenu : NetworkBehaviour
 
     private MatchManager match; //To get score
 
+    [SerializeField] private GameObject fullScore;
     [SerializeField] private Text redScore;
     [SerializeField] private Text blueScore;
 
@@ -75,7 +76,19 @@ public class SpectatorMenu : NetworkBehaviour
             }
         }
 
-        if(hasAuthority && AllClientAreReady() && lateStart)
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            if (fullScore.activeSelf)
+            {
+                fullScore.SetActive(false);
+            }
+            else
+            {
+                fullScore.SetActive(true);
+            }
+        }
+
+        if (hasAuthority && AllClientAreReady() && lateStart)
         {
             lateStart = false;
 

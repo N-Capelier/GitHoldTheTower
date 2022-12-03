@@ -2207,6 +2207,7 @@ MonoBehaviour:
   syncInterval: 0.1
   menuKey: 27
   canvasMenuObject: {fileID: 564303935386174252}
+  fullScore: {fileID: 7989954161791050428}
   redScore: {fileID: 6271501041077034913}
   blueScore: {fileID: 2548257363542708847}
   buttonPlayerFollow:
@@ -6882,6 +6883,7 @@ MonoBehaviour:
   showNewSensi:
     m_PersistentCalls:
       m_Calls: []
+  bindDisplay: {fileID: 0}
 --- !u!114 &63664913078550357
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,6 +17,10 @@ public class MatchManager : NetworkBehaviour
     [SyncVar]
     public int blueScore;
 
+
+    [SyncVar]
+    public int currentPlayerWithFlagIndex;
+
     public GoalBehavior redGoal;
     public GoalBehavior blueGoal;
 
