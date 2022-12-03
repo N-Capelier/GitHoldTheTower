@@ -73,7 +73,9 @@ public class GoalBehavior : NetworkBehaviour
                     }
                 }
                 CmdTeamWin(textToShow);
-                other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
+
+                //other.transform.parent.GetComponent<PlayerLogic>().CmdDropFlag();
+                matchManager.RpcChangeFlagPlayer(-1);
             }
         }
         

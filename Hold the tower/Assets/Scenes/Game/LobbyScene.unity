@@ -15772,6 +15772,7 @@ GameObject:
   - component: {fileID: 1715714065}
   - component: {fileID: 1715714069}
   - component: {fileID: 1715714068}
+  - component: {fileID: 1715714066}
   - component: {fileID: 1715714070}
   m_Layer: 0
   m_Name: ServerManager
@@ -15814,6 +15815,22 @@ MonoBehaviour:
       m_Calls: []
   lobbyPseudo: 
   lobbyPassword: 
+--- !u!114 &1715714066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715714063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6e55fca1f4e4844593a3dd65a3ecb39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Channels: 0200000001000000
+  Timeout: 25
+  AllowSteamRelay: 1
+  UseNextGenSteamNetworking: 1
 --- !u!114 &1715714067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15833,7 +15850,7 @@ MonoBehaviour:
   serverTickRate: 60
   offlineScene: 
   onlineScene: 
-  transport: {fileID: 0}
+  transport: {fileID: 1715714066}
   networkAddress: localhost
   maxConnections: 5
   disconnectInactiveConnections: 0
@@ -15920,7 +15937,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1715714063}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7424c1070fad4ba2a7a96b02fbeb4bb, type: 3}
   m_Name: 

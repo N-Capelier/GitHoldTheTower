@@ -53,7 +53,7 @@ public class PlayerLogic : NetworkBehaviour
     [SerializeField]
     private PlayerMenu selfMenu;
 
-    private MatchManager matchManager;
+    public MatchManager matchManager;
     private LevelTransition levelTransition;
 
     [SerializeField]
@@ -139,6 +139,8 @@ public class PlayerLogic : NetworkBehaviour
     public int spawnPosition;
     [SyncVar(hook = nameof(SetPseudo))]
     public string pseudoPlayer;
+
+    public int ownPlayerIndex;
 
     private float yRotation, xRotation;
 
@@ -340,6 +342,8 @@ public class PlayerLogic : NetworkBehaviour
         //{
         //    selfParams.useAlternateWallJump = !selfParams.useAlternateWallJump;
         //}
+
+        UpdateFlagOwning();
     }
 
 	private void OnDestroy()
@@ -883,11 +887,13 @@ public class PlayerLogic : NetworkBehaviour
 
         StopAllSounds();
 
-        if (hasFlag)
+        if (matchManager.currentPlayerWithFlagIndex == ownPlayerIndex)
         {
             CmdPlayGlobalSound("LevelOverdriveDropped");
-            CmdDropFlag();
-            CmdShowFlagInGame();
+            //CmdDropFlag();
+            //CmdShowFlagInGame();
+            Debug.Log("should Lose flag");
+            matchManager.RpcChangeFlagPlayer(-1);
         }
 
         if (respawnCor == null)
@@ -1216,17 +1222,19 @@ public class PlayerLogic : NetworkBehaviour
     private IEnumerator DropFlagDelayed(float time)
     {
         yield return new WaitForSeconds(time);
-        hasFlag = false;
+        //hasFlag = false;
         CmdStopPlayerFlagSource();
     }
 
     [Command(requiresAuthority = false)]
     public void CmdGetPunch(NetworkIdentity netid,Vector3 directedForce)
     {
+        /*
         if (hasFlag)
         {
             hasFlag = false;
         }
+        */
 
         if(netid.connectionToClient != null)
         {
@@ -1519,6 +1527,36 @@ public class PlayerLogic : NetworkBehaviour
     #endregion
 
     #region Flag Logic
+
+    private void UpdateFlagOwning()
+    {
+        Debug.Log("current flag player index : " + matchManager.currentPlayerWithFlagIndex);
+        if(matchManager.currentPlayerWithFlagIndex == -1)
+        {
+            CmdShowFlagInGame();
+            hasFlag = false;
+        }
+        else
+        {
+            CmdHideFlagInGame();
+            if (matchManager.currentPlayerWithFlagIndex == ownPlayerIndex)
+            {
+                if (!hasFlag)
+                {
+                    //hasFlag = true;
+                    CmdGetFlag();
+                }
+            }
+            else
+            {
+                if (hasFlag)
+                {
+                    //hasFlag = false;
+                    CmdDropFlag();
+                }
+            }
+        }
+    }
 
     private void ShowFlagToAllPlayer()
     {

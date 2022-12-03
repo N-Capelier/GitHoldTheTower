@@ -44,6 +44,7 @@ public class MatchManager : NetworkBehaviour
     {
         redGoal.goalTeam = LobbyPlayerLogic.TeamName.Red;
         blueGoal.goalTeam = LobbyPlayerLogic.TeamName.Blue;
+        currentPlayerWithFlagIndex = -1;
     }
 
     void Update()
@@ -91,12 +92,15 @@ public class MatchManager : NetworkBehaviour
     {
         foreach (NetworkConnectionToClient conn in NetworkServer.connections.Values)
         {
+            int playerIndex = 0;
             foreach (NetworkIdentity idOwnedByClient in conn.clientOwnedObjects)
             {
                 if (idOwnedByClient.gameObject.GetComponent<PlayerLogic>() != null)
                 {
                     idOwnedByClient.gameObject.GetComponent<PlayerLogic>().StopAllCoroutines();
                     idOwnedByClient.gameObject.GetComponent<PlayerLogic>().RpcRespawn(conn,3f);
+                    idOwnedByClient.gameObject.GetComponent<PlayerLogic>().ownPlayerIndex = playerIndex;
+                    playerIndex++;
                 }
             }
         }
@@ -127,6 +131,27 @@ public class MatchManager : NetworkBehaviour
                 if (idOwnedByClient.gameObject.GetComponent<PlayerLogic>() != null)
                 {
                     idOwnedByClient.gameObject.GetComponent<PlayerLogic>().RpcEndGame(conn, text);
+                }
+            }
+        }
+    }
+
+
+    [Server]
+    public void RpcChangeFlagPlayer(int newFlagPlayer)
+    {
+        currentPlayerWithFlagIndex = newFlagPlayer;
+
+        foreach (NetworkConnectionToClient conn in NetworkServer.connections.Values)
+        {
+            foreach (NetworkIdentity idOwnedByClient in conn.clientOwnedObjects)
+            {
+                if (idOwnedByClient.gameObject.GetComponent<PlayerLogic>() != null)
+                {
+                    //idOwnedByClient.gameObject.GetComponent<PlayerLogic>().ownPlayerIndex = currentPlayerWithFlagIndex;
+                    idOwnedByClient.gameObject.GetComponent<PlayerLogic>().matchManager.currentPlayerWithFlagIndex = newFlagPlayer;
+
+                    Debug.Log("new player with flag : " + newFlagPlayer);
                 }
             }
         }

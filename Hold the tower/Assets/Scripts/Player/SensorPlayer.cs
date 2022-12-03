@@ -54,7 +54,9 @@ public class SensorPlayer : MonoBehaviour
             selfLogic.CmdPlayerSource("PlayerPunchImpact");
             if (other.transform.parent.GetComponent<PlayerLogic>().hasFlag)
             {
-                selfTransform.GetComponent<PlayerLogic>().CmdGetFlag();
+                //selfTransform.GetComponent<PlayerLogic>().CmdGetFlag();
+
+                selfTransform.GetComponent<PlayerLogic>().matchManager.RpcChangeFlagPlayer(selfTransform.GetComponent<PlayerLogic>().ownPlayerIndex);
                 selfLogic.CmdPlayGlobalSound("PlayerOverdriveSteal");
                 SteamAchievement.AddStatValue("stat_Steal", 1);
             }
