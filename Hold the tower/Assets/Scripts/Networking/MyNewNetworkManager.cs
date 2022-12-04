@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Mirror;
 using System.Collections;
-using Steamworks;
 
 /*
 	Documentation: https://mirror-networking.gitbook.io/docs/components/network-manager
@@ -42,13 +41,6 @@ public class MyNewNetworkManager : NetworkManager
     [SerializeField]
     public GameObject startTransitionObject;
 
-    //Steam
-
-    protected Callback<LobbyCreated_t> lobbyCreated;
-    protected Callback<GameLobbyJoinRequested_t> lobbyJoinRequest;
-    protected Callback<LobbyEnter_t> lobbyEnter;
-
-    public CSteamID lobbySteamId;
 
     #region Unity Callbacks
 
@@ -81,13 +73,13 @@ public class MyNewNetworkManager : NetworkManager
         soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
         //Stop music when player is back to Menu
         soundManager.StopMusic();
-
+        /*
         if (SteamManager.Initialized)
         {
             lobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
             lobbyJoinRequest = Callback<GameLobbyJoinRequested_t>.Create(OnLobbyJoinRequested);
             lobbyEnter = Callback<LobbyEnter_t>.Create(OnLobbyEnter);
-        }
+        }*/
     }
 
     /// <summary>
@@ -182,8 +174,6 @@ public class MyNewNetworkManager : NetworkManager
             };
             
             conn.Send(msg);
-
-            SteamMatchmaking.LeaveLobby(lobbySteamId);
         }
         else
         {
@@ -512,32 +502,4 @@ public class MyNewNetworkManager : NetworkManager
 
     }
     #endregion
-
-    private void OnLobbyCreated(LobbyCreated_t callback)
-    {
-        lobbySteamId = new CSteamID(callback.m_ulSteamIDLobby);
-        SteamMatchmaking.SetLobbyData(lobbySteamId, "HostKey",SteamUser.GetSteamID().ToString());
-    }
-
-    private void OnLobbyJoinRequested(GameLobbyJoinRequested_t callback)
-    {
-        lobbySteamId = callback.m_steamIDLobby;
-        SteamMatchmaking.JoinLobby(lobbySteamId);
-    }
-
-    private void OnLobbyEnter(LobbyEnter_t callback)
-    {
-        if (NetworkServer.active)
-        {
-            return;
-        }
-
-        string hostAdresse = SteamMatchmaking.GetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "HostKey");
-
-        if(MenuManagerObject != null)
-        {
-            MenuManagerObject.GetComponent<MenuManager>().OnPressedJoinCustom(hostAdresse);
-        }
-        
-    }
 }

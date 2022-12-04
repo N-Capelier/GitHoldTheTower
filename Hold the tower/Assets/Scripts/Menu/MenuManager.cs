@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 using TMPro;
 using AnotherFileBrowser.Windows; //Librairy fais par un docteur en informatique indien, pas des lol, il a du devenir fou pour faire cett merde, merci à lui
-using Steamworks;
+
 public class MenuManager : MonoBehaviour
 {
 	[Header("Settings")]
@@ -91,7 +91,7 @@ public class MenuManager : MonoBehaviour
 		creditMenu.SetActive(false);
 		mainMenu.SetActive(true);
 		lobbyObject.SetActive(false);
-		joinMenu.SetActive(false);
+		//joinMenu.SetActive(false);
 		settingsMenu.SetActive(false);
 
 		//Load all the ip that will be create into button
@@ -107,12 +107,14 @@ public class MenuManager : MonoBehaviour
 		usernameStartMenu.text = menuParams.playerPseudo;
 
         //If connected to steam put steam pseudo
+
+		/*
         if (SteamManager.Initialized)
         {
 			inputFieldPseudoText.text = SteamFriends.GetPersonaName();
 			usernameStartMenu.text = SteamFriends.GetPersonaName();
 
-		}
+		}*/
 		 
 
 		//Curso management
@@ -126,8 +128,6 @@ public class MenuManager : MonoBehaviour
 		//Start all my effect
 		TextBlink(1f, EnterToStart);
 
-		//Steam
-		SteamAchievement.UnlockAchievement("WELCOM_OSA");
 
 	}
 
@@ -182,13 +182,6 @@ public class MenuManager : MonoBehaviour
 		ChangeMenu();
 		isHost = true;
 		networkManager.StartHost();
-
-        if (SteamManager.Initialized)
-        {
-			SteamAPICall_t apicall = SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, 5);
-			
-
-		}
 	}
 
 	public void OnPressedJoin()
@@ -257,21 +250,11 @@ public class MenuManager : MonoBehaviour
 		{
 			networkManager.StopHost();
 			isHost = false;
-			if (SteamManager.Initialized)
-			{
-				SteamMatchmaking.DeleteLobbyData(networkManager.lobbySteamId, "HostKey");
-				SteamMatchmaking.LeaveLobby(networkManager.lobbySteamId);
-			}
 
 		}
 		else
 		{
 			networkManager.StopClient();
-			
-			if (SteamManager.Initialized)
-			{
-				SteamMatchmaking.LeaveLobby(networkManager.lobbySteamId);
-			}
 		}
 
 	}
@@ -282,7 +265,7 @@ public class MenuManager : MonoBehaviour
 		creditMenu.SetActive(false);
 		mainMenu.SetActive(false);
 		lobbyObject.SetActive(true);
-		joinMenu.SetActive(false);
+		//joinMenu.SetActive(false);
 		settingsMenu.SetActive(false);
 		mapSelectionMenu.SetActive(false);
 
@@ -299,7 +282,7 @@ public class MenuManager : MonoBehaviour
 		creditMenu.SetActive(false);
 		mainMenu.SetActive(false);
 		lobbyObject.SetActive(false);
-		joinMenu.SetActive(false);
+		//joinMenu.SetActive(false);
 		settingsMenu.SetActive(true);
 
 		//Enable in menu component
@@ -315,7 +298,7 @@ public class MenuManager : MonoBehaviour
 		creditMenu.SetActive(true);
 		mainMenu.SetActive(false);
 		lobbyObject.SetActive(false);
-		joinMenu.SetActive(false);
+		//joinMenu.SetActive(false);
 		settingsMenu.SetActive(false);
 	}
 
@@ -354,7 +337,7 @@ public class MenuManager : MonoBehaviour
 		creditMenu.SetActive(false);
 		mainMenu.SetActive(false);
 		lobbyObject.SetActive(false);
-		joinMenu.SetActive(false);
+		//joinMenu.SetActive(false);
 		settingsMenu.SetActive(false);
 	}
 
@@ -468,10 +451,5 @@ public class MenuManager : MonoBehaviour
     }
 
 #endregion
-
-	protected void OnLeaveLobbySteam(LobbyChatUpdate_t callback)
-    {
-
-    }
 
 }

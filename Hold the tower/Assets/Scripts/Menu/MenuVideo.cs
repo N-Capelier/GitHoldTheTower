@@ -82,6 +82,9 @@ public class MenuVideo : MonoBehaviour
             case 5:
                 Screen.SetResolution(1680, 1050, fullSceenToggle.isOn);
                 break;
+            case 6:
+                Screen.SetResolution(640, 360, fullSceenToggle.isOn);
+                break;
 
             default:
                 break;

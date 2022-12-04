@@ -53,7 +53,7 @@ public class MatchManager : NetworkBehaviour
         {
             startGame = true;
             ActivatePlayer();
-
+            SetPlayersIndex();
         }
         
     }
@@ -92,17 +92,32 @@ public class MatchManager : NetworkBehaviour
     {
         foreach (NetworkConnectionToClient conn in NetworkServer.connections.Values)
         {
-            int playerIndex = 0;
             foreach (NetworkIdentity idOwnedByClient in conn.clientOwnedObjects)
             {
                 if (idOwnedByClient.gameObject.GetComponent<PlayerLogic>() != null)
                 {
                     idOwnedByClient.gameObject.GetComponent<PlayerLogic>().StopAllCoroutines();
                     idOwnedByClient.gameObject.GetComponent<PlayerLogic>().RpcRespawn(conn,3f);
-                    idOwnedByClient.gameObject.GetComponent<PlayerLogic>().ownPlayerIndex = playerIndex;
-                    playerIndex++;
                 }
             }
+        }
+    }
+
+    [Server]
+    private void SetPlayersIndex()
+    {
+        int playerIndex = 0;
+        foreach (NetworkConnectionToClient conn in NetworkServer.connections.Values)
+        {
+            foreach (NetworkIdentity idOwnedByClient in conn.clientOwnedObjects)
+            {
+                if (idOwnedByClient.gameObject.GetComponent<PlayerLogic>() != null)
+                {
+                    idOwnedByClient.gameObject.GetComponent<PlayerLogic>().SetPlayerIndex(playerIndex);
+                    Debug.Log("player with id : " + idOwnedByClient.netId + " has index : " + playerIndex);
+                }
+            }
+            playerIndex++;
         }
     }
 
@@ -136,9 +151,14 @@ public class MatchManager : NetworkBehaviour
         }
     }
 
+    [Command(requiresAuthority = false)]
+    public void CmdChangeFlagPlayerIndex(int newFlagPlayer)
+    {
+        ChangeFlagPlayer(newFlagPlayer);
+    }
 
     [Server]
-    public void RpcChangeFlagPlayer(int newFlagPlayer)
+    public void ChangeFlagPlayer(int newFlagPlayer)
     {
         currentPlayerWithFlagIndex = newFlagPlayer;
 
@@ -148,7 +168,6 @@ public class MatchManager : NetworkBehaviour
             {
                 if (idOwnedByClient.gameObject.GetComponent<PlayerLogic>() != null)
                 {
-                    //idOwnedByClient.gameObject.GetComponent<PlayerLogic>().ownPlayerIndex = currentPlayerWithFlagIndex;
                     idOwnedByClient.gameObject.GetComponent<PlayerLogic>().matchManager.currentPlayerWithFlagIndex = newFlagPlayer;
 
                     Debug.Log("new player with flag : " + newFlagPlayer);
