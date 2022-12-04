@@ -694,7 +694,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void takeFlag()
     {
-        selfLogic.matchManager.RpcChangeFlagPlayer(selfLogic.ownPlayerIndex);
+        selfLogic.matchManager.CmdChangeFlagPlayerIndex(selfLogic.ownPlayerIndex);
         //selfLogic.CmdGetFlag();
         //selfLogic.CmdHideFlagInGame();
         SoundManager.Instance.PlaySoundEvent("PlayerOverdriveTaken");

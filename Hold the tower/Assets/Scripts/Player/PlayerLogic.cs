@@ -107,7 +107,7 @@ public class PlayerLogic : NetworkBehaviour
     public GameObject punchChargeSliderLine2;
 
     [SerializeField]
-    private GameObject FlagObject;
+    private GameObject GameFlagObject;
     [SerializeField]
     private GameObject FlagInGame;
     [SerializeField]
@@ -139,7 +139,7 @@ public class PlayerLogic : NetworkBehaviour
     public int spawnPosition;
     [SyncVar(hook = nameof(SetPseudo))]
     public string pseudoPlayer;
-
+    [SyncVar]
     public int ownPlayerIndex;
 
     private float yRotation, xRotation;
@@ -194,9 +194,13 @@ public class PlayerLogic : NetworkBehaviour
 
     #region Unity messages
 
-    void Start()
+    private void Awake()
     {
         matchManager = GameObject.Find("GameManager").GetComponent<MatchManager>(); //Ne pas bouger
+    }
+
+    void Start()
+    {
         levelTransition = GameObject.Find("GameManager").GetComponent<LevelTransition>();
 
         chargePreviewStartPos = punchChargeDistancePreview.transform.localPosition;
@@ -217,10 +221,8 @@ public class PlayerLogic : NetworkBehaviour
             GameObject.Find("Analytics").GetComponent<PA_Position>().analyticGameObjectPosition.Add(transform);
         }
 
-        if (FlagObject != null)
-        {
-            FlagObject = GameObject.Find("Flag");
-        }
+        GameFlagObject = GameObject.Find("Flag");
+
         basePunchPreviewScale = punchChargeDistancePreview.transform.localScale;
         modelBasePos = playerModel.transform.localPosition;
         isInControl = true;
@@ -331,7 +333,7 @@ public class PlayerLogic : NetworkBehaviour
             player3dPseudo.transform.rotation = Quaternion.LookRotation(transform.position - authorityPlayer.transform.position);
         }
 
-        ShowFlagToAllPlayer();
+        UpdateFlagToAllPlayer();
 
         if (hasFlag == false && playerFlagSource.isPlaying)
         {
@@ -892,8 +894,7 @@ public class PlayerLogic : NetworkBehaviour
             CmdPlayGlobalSound("LevelOverdriveDropped");
             //CmdDropFlag();
             //CmdShowFlagInGame();
-            Debug.Log("should Lose flag");
-            matchManager.RpcChangeFlagPlayer(-1);
+            matchManager.CmdChangeFlagPlayerIndex(-1); 
         }
 
         if (respawnCor == null)
@@ -901,6 +902,12 @@ public class PlayerLogic : NetworkBehaviour
         else
             RespawnInstant();
 
+    }
+
+    public void SetPlayerIndex(int index)
+    {
+        //Debug.Log("player " + pseudoPlayer + " got index " + index);
+        ownPlayerIndex = index;
     }
 
 
@@ -1089,7 +1096,7 @@ public class PlayerLogic : NetworkBehaviour
         roundStarted = false;
         timerToStart = NetworkTime.time;
         respawnCor = StartCoroutine(RespawnManager());
-        FlagObject.SetActive(true);
+        GameFlagObject.SetActive(true);
         hudTextPlayer.color = Color.white;
     }
 
@@ -1201,7 +1208,7 @@ public class PlayerLogic : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdGetFlag()
     {
-        hasFlag = true;
+        //hasFlag = true;
         CmdPlayEquipTeamSound("LevelTakenTeam", "LevelTakenEnemy");
         CmdPlayerFlagSource("PlayerOverdrive");
     }
@@ -1209,7 +1216,7 @@ public class PlayerLogic : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdDropFlag()
     {
-        hasFlag = false;
+        //hasFlag = false;
         CmdStopPlayerFlagSource();
     }
 
@@ -1417,7 +1424,7 @@ public class PlayerLogic : NetworkBehaviour
 
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     private void CmdStopPlayerFlagSource()
     {
         RpcStopPlayerFlagSource();
@@ -1530,35 +1537,37 @@ public class PlayerLogic : NetworkBehaviour
 
     private void UpdateFlagOwning()
     {
-        Debug.Log("current flag player index : " + matchManager.currentPlayerWithFlagIndex);
-        if(matchManager.currentPlayerWithFlagIndex == -1)
+        if (matchManager.currentPlayerWithFlagIndex == -1)
         {
-            CmdShowFlagInGame();
+            //CmdShowFlagInGame(); 
+            GameFlagObject.SetActive(true);
             hasFlag = false;
         }
         else
         {
-            CmdHideFlagInGame();
+            //CmdHideFlagInGame(); 
+            GameFlagObject.SetActive(false);
             if (matchManager.currentPlayerWithFlagIndex == ownPlayerIndex)
             {
                 if (!hasFlag)
                 {
-                    //hasFlag = true;
-                    CmdGetFlag();
+                    hasFlag = true;
+                    //CmdGetFlag(); 
                 }
             }
             else
             {
                 if (hasFlag)
                 {
-                    //hasFlag = false;
-                    CmdDropFlag();
+                    hasFlag = false;
+                    //CmdDropFlag(); 
                 }
             }
         }
+        //Debug.Log("player with index : " + ownPlayerIndex + " and name : " + pseudoPlayer + " has flag : " + hasFlag); 
     }
 
-    private void ShowFlagToAllPlayer()
+    private void UpdateFlagToAllPlayer()
     {
         if (hasFlag)
         {
@@ -1587,7 +1596,7 @@ public class PlayerLogic : NetworkBehaviour
     [ClientRpc]
     public void RpcHideFlagInGame()
     {
-        FlagObject.SetActive(false);
+        GameFlagObject.SetActive(false);
     }
 
     [Command]
@@ -1599,7 +1608,7 @@ public class PlayerLogic : NetworkBehaviour
     [ClientRpc]
     private void RpcShowFlagInGame()
     {
-        FlagObject.SetActive(true);
+        GameFlagObject.SetActive(true);
     }
 
     #endregion
