@@ -124,12 +124,16 @@ public class LobbyPlayerLogic : NetworkBehaviour
         }
     }
 
-    public void PlaySound()
+    public void PlaySoundSwitchTeam()
+    {
+        SoundManager.Instance.PlayUIEvent("UIButtonActive");
+
+    }
+    public void PlaySoundValidateTeam()
     {
         SoundManager.Instance.PlayUIEvent("UIButton");
 
     }
-
 
     #endregion
 

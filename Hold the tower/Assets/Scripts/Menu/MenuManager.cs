@@ -474,4 +474,10 @@ public class MenuManager : MonoBehaviour
 
     }
 
+
+	public void OpenSteamFriendsList()
+    {
+		SteamFriends.ActivateGameOverlay("friends");
+
+	}
 }
