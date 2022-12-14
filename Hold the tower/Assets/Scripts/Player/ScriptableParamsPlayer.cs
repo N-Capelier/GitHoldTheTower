@@ -8,8 +8,8 @@ public class ScriptableParamsPlayer : ScriptableObject
 
     #region Key
     [Header("Input")]
-    public KeyCode front = KeyCode.Z;
-    public KeyCode left = KeyCode.Q;
+    public KeyCode front = KeyCode.W;
+    public KeyCode left = KeyCode.A;
     public KeyCode right = KeyCode.D;
     public KeyCode back = KeyCode.S;
 

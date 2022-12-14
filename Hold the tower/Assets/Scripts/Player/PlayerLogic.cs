@@ -1552,6 +1552,11 @@ public class PlayerLogic : NetworkBehaviour
                 if (!hasFlag)
                 {
                     hasFlag = true;
+
+                    //CmdPlayEquipTeamSound("LevelTakenTeam", "LevelTakenEnemy");
+                    RpcPlayEquipTeamSound("LevelTakenTeam", "LevelTakenEnemy");
+                    RpcPlayerFlagSource("PlayerOverdrive");
+                    //CmdPlayerFlagSource("PlayerOverdrive");
                     //CmdGetFlag(); 
                 }
             }
@@ -1560,6 +1565,8 @@ public class PlayerLogic : NetworkBehaviour
                 if (hasFlag)
                 {
                     hasFlag = false;
+                    RpcStopPlayerFlagSource();
+                    //CmdStopPlayerFlagSource();
                     //CmdDropFlag(); 
                 }
             }
